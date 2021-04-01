@@ -1,0 +1,74 @@
+\begin{thebibliography}{10}
+
+\bibitem{principe2000neural}
+J.~C. Principe, N.~R. Euliano, and W.~C. Lefebvre, {\em Neural and adaptive
+  systems: fundamentals through simulations}, vol.~672.
+\newblock Wiley New York, 2000.
+
+\bibitem{romano2018unsupervised}
+J.~M.~T. Romano, R.~Attux, C.~C. Cavalcante, and R.~Suyama, {\em Unsupervised
+  signal processing: channel equalization and source separation}.
+\newblock CRC Press, 2018.
+
+\bibitem{erdogmus2006linear}
+D.~Erdogmus and J.~C. Principe, ``From linear adaptive filtering to nonlinear
+  information processing-the design and analysis of information processing
+  systems,'' {\em IEEE Signal Processing Magazine}, vol.~23, no.~6, pp.~14--33,
+  2006.
+
+\bibitem{haykin2008adaptive}
+S.~S. Haykin, {\em Adaptive filter theory}.
+\newblock Pearson Education India, 2008.
+
+\bibitem{bishop2006pattern}
+C.~M. Bishop, {\em Pattern recognition and machine learning}.
+\newblock springer, 2006.
+
+\bibitem{connor1994recurrent}
+J.~T. Connor, R.~D. Martin, and L.~E. Atlas, ``Recurrent neural networks and
+  robust time series prediction,'' {\em IEEE transactions on neural networks},
+  vol.~5, no.~2, pp.~240--254, 1994.
+
+\bibitem{greff2016lstm}
+K.~Greff, R.~K. Srivastava, J.~Koutn{\'\i}k, B.~R. Steunebrink, and
+  J.~Schmidhuber, ``Lstm: A search space odyssey,'' {\em IEEE transactions on
+  neural networks and learning systems}, vol.~28, no.~10, pp.~2222--2232, 2016.
+
+\bibitem{cho2014learning}
+K.~Cho, B.~Van~Merriënboer, C.~Gulcehre, D.~Bahdanau, F.~Bougares, H.~Schwenk,
+  and Y.~Bengio, ``Learning phrase representations using rnn encoder-decoder
+  for statistical machine translation,'' {\em arXiv preprint arXiv:1406.1078},
+  2014.
+
+\bibitem{boccato2013novas}
+L.~Boccato, {\em Novas Propostas e Aplicações de Redes Neurais com Estados de
+  Eco}.
+\newblock Tese (doutorado), Universidade Estadual de Campinas, Faculdade de
+  Engenharia Elétrica e de Computação, Campinas, SP, 2013.
+
+\bibitem{oppenheim1996signals}
+A.~S. W. w. S.~H. Alan V.~Oppenheim, {\em Signals and Systems}.
+\newblock Prentice Hall, 2~ed., 1996.
+
+\bibitem{haykin2010neural}
+S.~Haykin, {\em Neural networks and learning machines, 3/E}.
+\newblock Pearson Education India, 2010.
+
+\bibitem{geron2019hands}
+A.~G{\'e}ron, {\em Hands-on machine learning with Scikit-Learn, Keras, and
+  TensorFlow: Concepts, tools, and techniques to build intelligent systems}.
+\newblock O'Reilly Media, 2019.
+
+\bibitem{guyon2003introduction}
+I.~Guyon and A.~Elisseeff, ``An introduction to variable and feature
+  selection,'' {\em Journal of machine learning research}, vol.~3, no.~Mar,
+  pp.~1157--1182, 2003.
+
+\bibitem{attux2005novos}
+R.~R. de~Faissol~Attux, {\em Novos paradigmas para equalização e
+  identificação de canais baseados em estruturas não-lineares e algoritmos
+  evolutivos}.
+\newblock Tese (doutorado), Universidade Estadual de Campinas, Faculdade de
+  Engenharia Elétrica e de Computação, Campinas, SP, 2005.
+
+\end{thebibliography}

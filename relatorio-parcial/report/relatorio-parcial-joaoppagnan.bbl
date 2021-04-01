@@ -1,0 +1,67 @@
+\begin{thebibliography}{10}
+
+\bibitem{box2015time}
+G.~E. Box, G.~M. Jenkins, G.~C. Reinsel, and G.~M. Ljung, {\em Time series
+  analysis: forecasting and control}.
+\newblock John Wiley \& Sons, 2015.
+
+\bibitem{connor1994recurrent}
+J.~T. Connor, R.~D. Martin, and L.~E. Atlas, ``Recurrent neural networks and
+  robust time series prediction,'' {\em IEEE transactions on neural networks},
+  vol.~5, no.~2, pp.~240--254, 1994.
+
+\bibitem{fiedler1994caos}
+N.~Fiedler-Ferrara and C.~P.~C. do~Prado, {\em Caos: uma introdu{\c{c}}{\~a}o}.
+\newblock Editora Blucher, 1994.
+
+\bibitem{hastie2009elements}
+T.~Hastie, R.~Tibshirani, and J.~Friedman, {\em The elements of statistical
+  learning: data mining, inference, and prediction}.
+\newblock Springer Science \& Business Media, 2009.
+
+\bibitem{geron2019hands}
+A.~G{\'e}ron, {\em Hands-on machine learning with Scikit-Learn, Keras, and
+  TensorFlow: Concepts, tools, and techniques to build intelligent systems}.
+\newblock O'Reilly Media, 2019.
+
+\bibitem{attux2001dinamica}
+R.~R. de~Faissol~Attux, ``Sobre dinâmica caótica e convergência em
+  algoritmos de equalização autodidata,'' dissertação (mestrado),
+  Universidade Estadual de Campinas, Faculdade de Engenharia Elétrica e de
+  Computação, Campinas, SP, 2001.
+
+\bibitem{haykin2010neural}
+S.~Haykin, {\em Neural networks and learning machines, 3/E}.
+\newblock Pearson Education India, 2010.
+
+\bibitem{rosenblatt1958perceptron}
+F.~Rosenblatt, ``The perceptron: a probabilistic model for information storage
+  and organization in the brain.,'' {\em Psychological review}, vol.~65, no.~6,
+  p.~386, 1958.
+
+\bibitem{cybenko1989approximation}
+G.~Cybenko, ``Approximation by superpositions of a sigmoidal function,'' {\em
+  Mathematics of control, signals and systems}, vol.~2, no.~4, pp.~303--314,
+  1989.
+
+\bibitem{ruelle1971nature}
+D.~Ruelle and F.~Takens, ``On the nature of turbulence,'' {\em Les rencontres
+  physiciens-math{\'e}maticiens de Strasbourg-RCP25}, vol.~12, pp.~1--44, 1971.
+
+\bibitem{bishop2006pattern}
+C.~M. Bishop, {\em Pattern recognition and machine learning}.
+\newblock springer, 2006.
+
+\bibitem{may2004simple}
+R.~M. May, ``Simple mathematical models with very complicated dynamics,'' {\em
+  The Theory of Chaotic Attractors}, pp.~85--93, 2004.
+
+\bibitem{henon1976two}
+M.~H{\'e}non, ``A two-dimensional mapping with a strange attractor,'' in {\em
+  The Theory of Chaotic Attractors}, pp.~94--102, Springer, 1976.
+
+\bibitem{mackey1977oscillation}
+M.~C. Mackey and L.~Glass, ``Oscillation and chaos in physiological control
+  systems,'' {\em Science}, vol.~197, no.~4300, pp.~287--289, 1977.
+
+\end{thebibliography}
