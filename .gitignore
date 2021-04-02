@@ -1,0 +1,9 @@
+# nao realizar o upload para o github das seguintes pastas 
+data/interim/
+data/processed/
+nn-sound-denoising-env/
+**/.ipynb_checkpoints/
+.vscode/
+
+# ignorar esses arquivos
+installed.txt
