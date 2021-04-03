@@ -32,8 +32,6 @@ class SerieTemporal:
         self._matriz_entrada = np.array([])
         self._matriz_saida = np.array([])
 
-
-
     def dividir_treino_teste(self, tam_teste):
         """
         Descrição:
