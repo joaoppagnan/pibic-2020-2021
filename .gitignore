@@ -3,6 +3,7 @@ data/interim/
 data/processed/
 pibic2020-env/
 **/.ipynb_checkpoints/
+**/__pycache__/
 .vscode/
 
 # ignorar esses arquivos
