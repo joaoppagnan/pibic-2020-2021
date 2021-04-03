@@ -1,4 +1,4 @@
-# io_gen.py
+# time_series.py
 
 import numpy as np
 
