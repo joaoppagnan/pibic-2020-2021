@@ -26,7 +26,7 @@ ipython kernel install --user --name=<nome_ambiente_virtual>
 
 ## Estruturação do Repositório
 
-A organização dos diretórios foi baseada na realizada no repositório ![eht_imaging](https://github.com/achael/eht-imaging) e na apresentada em ![Cookiecutter Data Science](http://drivendata.github.io/cookiecutter-data-science/). 
+A organização dos diretórios foi baseada na realizada no repositório [eht_imaging](https://github.com/achael/eht-imaging) e na apresentada em [Cookiecutter Data Science](http://drivendata.github.io/cookiecutter-data-science/). 
 
 ## Especificações
 O projeto está sendo desenvolvido em *Python*, mais precisamente, a versão **3.8.5** rodando num sistema operacional *Linux*, na distribuição *Ubuntu 20.04 LTS*. A ferramenta utilizada para o trabalho com as redes neurais foi o *Tensor Flow*, na versão **2.4.1**, utilizando uma *GTX 1070 Ti*, com os *drivers* da *NVIDIA* *460.39*, *Cuda 11.0* e *cuDNN 8.0.4* para auxiliar no treinamento.
