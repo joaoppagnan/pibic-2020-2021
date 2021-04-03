@@ -50,7 +50,6 @@ class SerieTemporal:
         tam_treino = 1.0 - tam_teste
         n_dados = len(self._matriz_saida)
 
-        K = self._K
         return (self._matriz_entrada[:int(tam_treino*n_dados)], self._matriz_entrada[int(n_dados*(1 - tam_teste)):],
                 self._matriz_saida[:int(tam_treino*n_dados)], self._matriz_saida[int(n_dados*(1 - tam_teste)):])
 
