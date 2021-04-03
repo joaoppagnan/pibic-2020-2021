@@ -2,7 +2,7 @@
 
 import numpy as np
 
-def criar_vetores_treino_teste(dados, K, L, n):
+def criar_vetores(dados, K, L, n):
     """
     Descrição:
     ----------
@@ -25,7 +25,7 @@ def criar_vetores_treino_teste(dados, K, L, n):
         raise ValueError("n + 1 deve ser maior ou igual a (K-1)!")
         
     if ((n+L) > (len(dados)-1)):
-        raise ValueError("O passo de predição para o instante atual (n = ", n,") não deve estourar o número de dados na série temporal!")
+        raise ValueError("O passo de predição (L =", L,") somado com o índice atual (n = ", n,") não deve estourar o número de dados na série temporal!")
     
     vetor_entrada = np.array(dados[(n-(K-1)):(n+1)])
     vetor_entrada = np.insert(vetor_entrada, 0, 1) # insere o elemento x^0 no vetor
@@ -33,7 +33,7 @@ def criar_vetores_treino_teste(dados, K, L, n):
     
     return vetor_entrada, vetor_saida
 
-def criar_matrizes_treino_teste(serie_temporal, K, L):
+def criar_matrizes(serie_temporal, K, L):
     """
     Descrição:
     ----------
@@ -58,14 +58,14 @@ def criar_matrizes_treino_teste(serie_temporal, K, L):
     matriz_saida = np.array([])
     
     for n in range((K-1), (num_dados-L)):
-        vetor_entrada, vetor_saida = criar_vetores_treino_teste(serie_temporal, K, L, n)
+        vetor_entrada, vetor_saida = criar_vetores(serie_temporal, K, L, n)
         
-        if(len(matriz_entrada) == 0):
+        if (len(matriz_entrada) == 0):
             matriz_entrada = vetor_entrada
         else:
             matriz_entrada = np.vstack((matriz_entrada, vetor_entrada))
                 
-        if(len(matriz_saida) == 0):
+        if (len(matriz_saida) == 0):
             matriz_saida = np.array([vetor_saida])
         else:
             matriz_saida = np.vstack((matriz_saida, vetor_saida))
