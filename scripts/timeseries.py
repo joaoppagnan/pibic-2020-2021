@@ -56,21 +56,6 @@ class SerieTemporal:
         return (self._matriz_entrada[:int(tam_treino*n_dados)], self._matriz_entrada[int(n_dados*(1 - tam_teste)):],
                 self._matriz_saida[:int(tam_treino*n_dados)], self._matriz_saida[int(n_dados*(1 - tam_teste)):])
 
-    def conjunto_teste(self, n):
-        """
-        Descrição:
-        ----------
-        Função para selecionar os 'n' últimos dados das matrizes para o teste.
-
-        Parâmetros:
-        -----------
-        n: int
-            Quantidade de dados que queremos no conjunto de teste
-        """
-
-        K = self._K
-        return self._matriz_entrada[(n-K):], self._matriz_saida[(n-K):]
-
     def criar_vetores(self, indice):
         """
         Descrição:
