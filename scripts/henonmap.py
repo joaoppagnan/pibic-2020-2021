@@ -1,8 +1,10 @@
 # henonmap.py
 
+import numpy as np
+
 class MapaHenon:
 
-    def __init__(self, a, b, x_inicial, y_inicial):
+    def __init__(self, a, b, posicao_inicial):
         """
         Descrição:
         ----------
@@ -13,16 +15,22 @@ class MapaHenon:
         a: float
             Parâmetro do Mapa de Hénon
         b: float
-            Parâmetro do Mapa de Hénon    
+            Parâmetro do Mapa de Hénon
+        posicao_inicial: np.ndarray
+            Parâmetro das posições xy iniciais do mapa
         """
 
         if not ((type(a) is float) & (type(b) is float)):
-            raise TypeError("Os parâmetros devem ser floats!")        
+            raise TypeError("Os parâmetros devem ser floats!")
+            
+        if not (type(posicao_inicial) is np.ndarray):
+            raise TypeError("O vetor posição inicial deve ser um array do numpy!")
 
-        self._a = a
-        self._b = b
-        self._x_atual = x_inicial
-        self._y_atual = y_inicial
+        self.__a = a
+        self.__b = b
+        self._x_atual = posicao_inicial[0]
+        self._y_atual = posicao_inicial[1]
+        pass
 
     def iterar(self):
         """
@@ -35,16 +43,16 @@ class MapaHenon:
         Nenhum
         """
 
-        x_atual = self._x_atual
-        y_atual = self._x_atual
-        a = self._a
-        b = self._b
+        a = self.__a
+        b = self.__b
+        x = self._x_atual
+        y = self._y_atual
 
-        prox_x = 1 - a*(x_atual**2) + y_atual
-        prox_y = b*x_atual
-
+        prox_x = 1 - a*(x**2) + y
+        prox_y = b*x
         self._x_atual = prox_x
         self._y_atual = prox_y
+        pass
 
     def posicao(self):
         """
@@ -57,5 +65,8 @@ class MapaHenon:
         Nenhum
         """
 
-        posicao = np.array([self._x_atual, self._y_atual])
+        x = self._x_atual
+        y = self._y_atual
+
+        posicao = np.array([x, y])
         return posicao

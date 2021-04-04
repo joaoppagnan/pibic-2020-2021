@@ -12,7 +12,7 @@ class SerieTemporal:
 
         Parâmetros:
         -----------
-        dados: np.array
+        dados: np.ndarray
             Conjunto de valores da série temporal
         K: int
             O número de entradas utilizado para a predição
@@ -29,11 +29,13 @@ class SerieTemporal:
         if (L > len(dados)):
             raise ValueError("L deve ser menor que o número de dados temporais!")
 
-        self._dados = dados
-        self._K = K
-        self._L = L
+        self.__dados = dados
+        self.__K = K
+        self.__L = L
         self._matriz_entrada = np.array([])
         self._matriz_saida = np.array([])
+
+        pass
 
     def _criar_vetores(self, indice):
         """
@@ -47,20 +49,21 @@ class SerieTemporal:
             A posicao a partir da qual se deseja prever algum valor
         """
 
-        K, L = self._K, self._L
+        K, L = self.__K, self.__L
+        dados = self.__dados
     
         # checa se a partir da posição atual podemos criar um vetor de amostras dado um K
         if ((indice + 1) < (K - 1)):
             raise ValueError("(indice + 1) = "+str(indice + 1)+" deve ser maior ou igual a (K - 1) = "+str(K - 1)+" !")
         
         # checa se o valor que queremos prever (que vai ser armazenado na matriz de saida), está dentro da série temporal
-        if ((indice+L) > (len(self._dados)-1)):
+        if ((indice+L) > (len(dados)-1)):
             raise ValueError("O passo de predição (L = "+str(L)+") somado com o índice atual (indice = "+str(indice)+") não deve estourar o número de dados na série temporal!")
     
-        vetor_entrada = np.array(self._dados[(indice-(K-1)):(indice+1)])
+        vetor_entrada = np.array(dados[(indice-(K-1)):(indice+1)])
         vetor_entrada = np.insert(vetor_entrada, 0, 1) # insere o elemento x^0 no vetor
-        vetor_saida = np.array(self._dados[indice+L])
-    
+        vetor_saida = np.array(dados[indice+L])
+
         return vetor_entrada, vetor_saida    
 
     def dividir_treino_teste(self, tam_teste):
@@ -78,11 +81,14 @@ class SerieTemporal:
         if ((tam_teste < 0.0) | (tam_teste > 1.0)):
             raise ValueError("A proporção dos dados de teste deve ser entre 0.0 e 1.0!")
             
+        matriz_entrada = self._matriz_entrada
+        matriz_saida = self._matriz_saida
+            
         tam_treino = 1.0 - tam_teste
-        n_dados = len(self._matriz_saida)
+        n_dados = len(matriz_saida)
 
-        return (self._matriz_entrada[:int(tam_treino*n_dados)], self._matriz_entrada[int(n_dados*(1 - tam_teste)):],
-                self._matriz_saida[:int(tam_treino*n_dados)], self._matriz_saida[int(n_dados*(1 - tam_teste)):])
+        return (matriz_entrada[:int(tam_treino*n_dados)], matriz_entrada[int(n_dados*(1 - tam_teste)):],
+                matriz_saida[:int(tam_treino*n_dados)], matriz_saida[int(n_dados*(1 - tam_teste)):])
 
     def criar_matrizes(self):
         """
@@ -95,8 +101,8 @@ class SerieTemporal:
         Nenhum
         """
     
-        K, L = self._K, self._L
-        num_dados = len(self._dados)
+        K, L = self.__K, self.__L
+        num_dados = len(self.__dados)
     
         for indice in range((K-1), (num_dados-L)):
             vetor_entrada, vetor_saida = self._criar_vetores(indice)
@@ -110,3 +116,5 @@ class SerieTemporal:
                 self._matriz_saida = np.array([vetor_saida])
             else:
                 self._matriz_saida = np.vstack((self._matriz_saida, vetor_saida))
+
+        pass
