@@ -4,7 +4,7 @@ import numpy as np
 
 class MapaHenon:
 
-    def __init__(self, a, b, posicao_inicial):
+    def __init__(self, a, b, estado_inicial):
         """
         Descrição:
         ----------
@@ -16,24 +16,24 @@ class MapaHenon:
             Parâmetro do Mapa de Hénon
         b: float
             Parâmetro do Mapa de Hénon
-        posicao_inicial: np.ndarray
+        estado_inicial: np.ndarray
             Parâmetro das posições xy iniciais do mapa e do instante n inicial (deve ser 0)
         """
 
         if not ((type(a) is float) & (type(b) is float)):
             raise TypeError("Os parâmetros devem ser floats!")
             
-        if not (type(posicao_inicial) is np.ndarray):
-            raise TypeError("O vetor posição inicial deve ser um array do numpy!")
+        if not (type(estado_inicial) is np.ndarray):
+            raise TypeError("O vetor estado inicial deve ser um array do numpy!")
             
-        if not (posicao_inicial[2] == 0):
+        if not (estado_inicial[2] == 0):
             raise ValueError("O instante inicial deve ser igual a 0!")
 
         self.__a = a
         self.__b = b
-        self._x_atual = posicao_inicial[0]
-        self._y_atual = posicao_inicial[1]
-        self._n_atual = posicao_inicial[2]
+        self._x_atual = estado_inicial[0]
+        self._y_atual = estado_inicial[1]
+        self._n_atual = estado_inicial[2]
         pass
 
     def iterar(self):
@@ -60,11 +60,11 @@ class MapaHenon:
         self._n_atual = n + 1
         pass
 
-    def posicao(self):
+    def ler_estado(self):
         """
         Descrição:
         ----------
-        Retorna a posição x,y atual do mapa
+        Retorna o estado atual (x, y, n) do mapa
 
         Parâmetros:
         -----------
@@ -75,5 +75,5 @@ class MapaHenon:
         y = self._y_atual
         n = self._n_atual
 
-        posicao = np.array([x, y, n])
-        return posicao
+        estado = np.array([x, y, n])
+        return estado
