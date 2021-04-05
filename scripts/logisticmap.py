@@ -1,5 +1,7 @@
 # logisticmap.py
 
+import numpy as np
+
 class MapaLogistico:
 
     def __init__(self, r, estado_inicial):
