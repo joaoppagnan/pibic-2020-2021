@@ -4,7 +4,7 @@ import numpy as np
 
 class MapaHenon:
 
-    def __init__(self, a, b, estado_inicial):
+    def __init__(self, estado_inicial, a=1.4, b=0.3):
         """
         Descrição:
         ----------
@@ -12,12 +12,16 @@ class MapaHenon:
 
         Parâmetros:
         -----------
+        estado_inicial: np.ndarray
+            Parâmetro das posições xy iniciais do mapa e do instante n inicial (deve ser 0)
         a: float
             Parâmetro do Mapa de Hénon
         b: float
             Parâmetro do Mapa de Hénon
-        estado_inicial: np.ndarray
-            Parâmetro das posições xy iniciais do mapa e do instante n inicial (deve ser 0)
+            
+        Retorna:
+        --------
+        Nada
         """
 
         if not ((type(a) is float) & (type(b) is float)):
@@ -45,6 +49,10 @@ class MapaHenon:
         Parâmetros:
         -----------
         Nenhum
+        
+        Retorna:
+        --------
+        Nada
         """
 
         a = self.__a
@@ -69,6 +77,10 @@ class MapaHenon:
         Parâmetros:
         -----------
         Nenhum
+        
+        Retorna:
+        --------
+        Um np.ndarray com as coordenadas (x, y, n) atuais do mapa
         """
 
         x = self._x_atual

@@ -18,6 +18,10 @@ class SerieTemporal:
             O número de entradas utilizado para a predição
         L: int
             O passo de predição     
+            
+        Retorna:
+        --------
+        Nada
         """
 
         if not type(dados) is np.ndarray:
@@ -34,19 +38,22 @@ class SerieTemporal:
         self.__L = L
         self._matriz_entrada = np.array([])
         self._matriz_saida = np.array([])
-
         pass
 
     def _criar_vetores(self, indice):
         """
         Descrição:
         ----------
-        Função para criar os vetores de entrada e saída para as etapas de treinamento e teste para uma série temporal.
+        Função interna para criar os vetores de entrada e saída para as etapas de treinamento e teste para uma série temporal
     
         Parâmetros:
         -----------
         indice: int
             A posicao a partir da qual se deseja prever algum valor
+            
+        Retorna:
+        --------
+        Os vetores de entrada e saída para o índice escolhido no formato np.ndarray
         """
 
         K, L = self.__K, self.__L
@@ -70,12 +77,16 @@ class SerieTemporal:
         """
         Descrição:
         ----------
-        Função para selecionar os 'n' primeiros dados das matrizes para o treinamento.
+        Função para selecionar os tam_teste*len(matriz_entrada) últimos dados das matrizes para o teste
 
         Parâmetros:
         -----------
         tam_teste: float
-            Proporção de dados que iremos separar para o teste. Deve ser entre 0.0 e 1.0.
+            Proporção de dados que iremos separar para o teste. Deve ser entre 0.0 e 1.0
+            
+        Retorna:
+        --------
+        O conjunto de teste e treinamento para a proporção solicitada no formato np.ndarray
         """
         
         if ((tam_teste < 0.0) | (tam_teste > 1.0)):
@@ -94,11 +105,15 @@ class SerieTemporal:
         """
         Descrição:
         ----------
-        Função para criar as matrizes com os vetores de entrada e saída para as etapas de treinamento e teste.
+        Função para criar as matrizes com os vetores de entrada e saída para as etapas de treinamento e teste
     
         Parâmetros:
         -----------
         Nenhum
+        
+        Retorna:
+        --------
+        Nada
         """
     
         K, L = self.__K, self.__L
@@ -116,5 +131,4 @@ class SerieTemporal:
                 self._matriz_saida = np.array([vetor_saida])
             else:
                 self._matriz_saida = np.vstack((self._matriz_saida, vetor_saida))
-
         pass
