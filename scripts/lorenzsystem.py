@@ -54,9 +54,9 @@ class SistemaLorenz:
         Parâmetros:
         -----------
         estado_inicial: np.ndarray
-            Vetor das posições xyz atuais do sistema
+            Vetor das posições xyz atuais do sistema    
         t: float
-            Instante t no qual estamos calculando as derivadas    
+            Instante t no qual estamos calculando as derivadas
             
         Retorna:
         --------
@@ -65,6 +65,9 @@ class SistemaLorenz:
         
         if not (type(estado_atual) is np.ndarray):
             raise TypeError("O vetor estado atual deve ser um array do numpy!")        
+        
+        if not (type(t) is float):
+            raise TypeError("t deve ser um float!")
         
         sigma = self._sigma
         beta = self._beta
@@ -95,6 +98,15 @@ class SistemaLorenz:
         --------
         Um vetor com as soluções estimadas e um vetor com os instantes temporais utilizados
         """
+        
+        if not ((type(t_inicial) is int) & (t_inicial >= 0)):
+            raise TypeError("t_inicial deve ser um int não nulo!")
+            
+        if not ((type(t_final) is int) & (t_final > 0)):
+            raise TypeError("t_final deve ser um int positivo!")
+            
+        if not ((type(n_instantes) is int) & (n_instantes > 0)):
+            raise TypeError("n_instantes deve ser um int positivo!")            
         
         estado_inicial = self._estado_inicial
         instantes_temporais = np.linspace(t_inicial, t_final, n_instantes)
