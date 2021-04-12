@@ -4,7 +4,7 @@ import numpy as np
 
 class MapaLogistico:
 
-    def __init__(self, r, estado_inicial):
+    def __init__(self, estado_inicial, r=3.86):
         """
         Descrição:
         ----------
@@ -12,10 +12,14 @@ class MapaLogistico:
 
         Parâmetros:
         -----------
-        r: float
-            Parâmetro do Mapa Logístico representando a taxa de crescimento populacional. Deve ser entre 0.0 e 4.0.
         estado_inicial: np.ndarray
             Parâmetro da população x inicial do mapa e do instante n inicial (deve ser 0)
+        r: float
+            Parâmetro do Mapa Logístico representando a taxa de crescimento populacional. Deve ser entre 0.0 e 4.0
+            
+        Retorna:
+        --------
+        Nada
         """
 
         if not ((type(r) is float) & ((r >= 0) & (r <= 4) )):
@@ -44,6 +48,10 @@ class MapaLogistico:
         Parâmetros:
         -----------
         Nenhum
+        
+        Retorna:
+        --------
+        Nada
         """
         
         r = self._r
@@ -55,7 +63,7 @@ class MapaLogistico:
         self._n_atual = n + 1
         pass
     
-    def atualizar_r(self, r):
+    def atualizar_r(self, r=3.86):
         """
         Descrição:
         ----------
@@ -64,7 +72,11 @@ class MapaLogistico:
         Parâmetros:
         -----------
         r: float
-            Parâmetro do Mapa Logístico representando a taxa de crescimento populacional. Deve ser entre 0.0 e 4.0.
+            Parâmetro do Mapa Logístico representando a taxa de crescimento populacional. Deve ser entre 0.0 e 4.0
+            
+        Retorna:
+        --------
+        Nada
         """
         
         if not ((type(r) is float) & ((r >= 0) & (r <= 4) )):
@@ -83,6 +95,10 @@ class MapaLogistico:
         -----------
         estado_inicial: np.ndarray
             Parâmetro da população x do mapa e do instante n 
+            
+        Retorna:
+        --------
+        Nada
         """
         
         if not (type(estado) is np.ndarray):
@@ -104,6 +120,10 @@ class MapaLogistico:
         Parâmetros:
         -----------
         Nenhum
+        
+        Retorna:
+        --------
+        Um array do numpy (np.ndarray) com o estado (x, n) atual do mapa
         """
 
         x = self._x_atual
