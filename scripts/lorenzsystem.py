@@ -33,10 +33,10 @@ class SistemaLorenz:
         if not (((type(sigma) is int) | (type(sigma) is float)) & (sigma > 0)):
             raise TypeError("Sigma deve ser um int ou float positivo!")
 
-        if not (((type(beta) is int) | (type(beta) is float)) & (beta >= 0)):
+        if not (((type(beta) is int) | (type(beta) is float)) & (beta > 0)):
             raise TypeError("Beta deve ser um int ou float positivo!")
 
-        if not (((type(rho) is int) | (type(rho) is float)) & (rho >= 0)):
+        if not (((type(rho) is int) | (type(rho) is float)) & (rho > 0)):
             raise TypeError("Rho deve ser um int ou float positivo!")
         
         self._estado_inicial = estado_inicial
