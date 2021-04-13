@@ -53,7 +53,7 @@ class SistemaLorenz:
         
         Parâmetros:
         -----------
-        estado_inicial: np.ndarray
+        estado_atual: np.ndarray
             Vetor das posições xyz atuais do sistema    
         t: float
             Instante t no qual estamos calculando as derivadas
