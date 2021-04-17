@@ -5,7 +5,7 @@ from jitcdde import jitcdde, y, t
 
 class MackeyGlass:
     
-    def __init__(self, p_iniciais, tau, gamma=0.1, beta=0.2, theta=1, n=10, dt=0.0001):
+    def __init__(self, inicializacao='padrao', tau=6, gamma=0.1, beta=0.2, theta=1, n=10, dt=1.0):
         """
         Descrição:
         ----------
@@ -13,8 +13,10 @@ class MackeyGlass:
 
         Parâmetros:
         -----------
-        p_iniciais: np.ndarray
-            Valores iniciais da concentração de glóbulos vermelhos no sangue. O numero de valores deve ser igual à Tau
+        inicializacao: str
+            String referente ao tipo de valores iniciais utilizado para as equações. 
+            Se for 'padrao', utiliza a mesma usada no paper de Mackey e Glass, ie, 0.1 para todos os instantes anteriores ao início da medição.
+            Caso seja 'aleatoria', utiliza valores aleatorios para esses instantes anteriores.
         tau: int
             Parâmetro das Equações de Mackey-Glass
         gamma: int ou float
@@ -33,8 +35,8 @@ class MackeyGlass:
         Nada
         """
         
-        if not (type(p_iniciais) is np.ndarray):
-            raise TypeError("0 valor da concentração de glóbulos vermelhos no sangue deve ser um array do numpy!")
+        if not (type(inicializacao) is str):
+            raise TypeError("O tipo da inicialização deve ser uma string!")
         
         if not (((type(gamma) is int) | (type(gamma) is float)) & (gamma > 0)):
             raise TypeError("Gamma deve ser um int ou float positivo!")
@@ -54,7 +56,16 @@ class MackeyGlass:
         if not ((type(dt) is float) & (dt > 0)):
             raise TypeError("dt deve ser um float positivo!")
         
-        self._p_iniciais = p_iniciais/theta # normaliza os valores iniciais pelo theta dado
+        if (inicializacao == 'padrao'):
+            p_iniciais = (np.ones((tau, 1))*0.1)*theta
+            
+        elif (inicializacao == 'aleatoria'):
+            p_iniciais = np.random.rand(tau, 1)*theta
+            
+        else:
+            raise ValueError("O tipo da inicialização deve ser um dos dois apresentados(aleatoria ou padrao)!")
+        
+        self._p_iniciais = p_iniciais
         self._gamma = gamma
         self._beta = beta
         self._theta = theta
@@ -81,9 +92,10 @@ class MackeyGlass:
         gamma = self._gamma
         beta = self._beta
         tau = self._tau
+        theta = self._theta
         n = self._n
         
-        dp_dt = ((beta)*y(0,t-tau))/(1 + (y(0,t-tau))**n) - gamma*y(0)
+        dp_dt = ((beta)*y(0,t-tau)*(theta**n))/((theta**n) + (y(0,t-tau))**n) - gamma*y(0)
         return [dp_dt]
     
     def calcular(self, t_inicial, t_final):
