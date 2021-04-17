@@ -23,7 +23,7 @@ class MackeyGlass:
             Parâmetro das Equações de Mackey-Glass
         theta: int ou float
             Parâmetro das Equações de Mackey-Glass
-        n: int
+        n: int ou float
             Parâmetro das Equações de Mackey-Glass
         dt: float
             Tamanho do diferencial de tempo que iremos utilizar nos cálculos, ou seja, a resolução temporal de nossa solução
@@ -48,13 +48,13 @@ class MackeyGlass:
         if not (((type(tau) is int) | (type(tau) is float)) & (tau > 0)):
             raise TypeError("Tau deve ser um int ou float positivo!")
                 
-        if not ((type(n) is int) & (n > 0)):
-            raise TypeError("n deve ser um int positivo!")
+        if not (((type(n) is int) | (type(n) is float)) & (n > 0)):
+            raise TypeError("n deve ser um int ou float positivo!")
             
         if not ((type(dt) is float) & (dt > 0)):
             raise TypeError("dt deve ser um float positivo!")
         
-        self._p_iniciais = p_iniciais
+        self._p_iniciais = p_iniciais/theta # normaliza os valores iniciais pelo theta dado
         self._gamma = gamma
         self._beta = beta
         self._theta = theta
@@ -80,11 +80,10 @@ class MackeyGlass:
         
         gamma = self._gamma
         beta = self._beta
-        theta = self._theta
         tau = self._tau
         n = self._n
         
-        dp_dt = (beta*((theta)**n)*y(0,t-tau))/(((theta)**n) + (y(0,t-tau)**n)) - gamma*y(0)
+        dp_dt = ((beta)*y(0,t-tau))/(1 + (y(0,t-tau))**n) - gamma*y(0)
         return [dp_dt]
     
     def calcular(self, t_inicial, t_final):
@@ -128,7 +127,7 @@ class MackeyGlass:
         DDE.add_past_points(condicoes_iniciais)
         DDE.step_on_discontinuities()
         DDE.set_integration_parameters(first_step = dt, max_step = dt)
-         
+        
         instantes_temporais = np.arange(t_inicial, t_final, dt)
         t_integracao = np.arange(DDE.t + t_inicial, DDE.t + t_final, dt)
         

@@ -97,8 +97,6 @@ class SistemaLorenz:
             Instante temporal em que iniciamos os cálculos
         t_final: int
             Instante temporal em que terminamos os cálculos
-        n_instantes: int
-            Número de instantes temporais em que faremos a estimação
             
         Retorna:
         --------
