@@ -5,7 +5,7 @@ from scipy.integrate import odeint
 
 class SistemaLorenz:
     
-    def __init__(self, estado_inicial, sigma=10, beta=8/3, rho=28):
+    def __init__(self, estado_inicial, sigma=10, beta=8/3, rho=28, dt=0.0001):
         """
         Descrição:
         ----------
@@ -21,10 +21,12 @@ class SistemaLorenz:
             Parâmetro do Sistema de Lorenz
         rho: int ou float
             Parâmetro do Sistema de Lorenz
+        dt: float
+            Tamanho do diferencial de tempo que iremos utilizar nos cálculos, ou seja, a resolução temporal de nossa solução
             
         Retorna:
         --------
-        Nada.
+        Nada
         """
         
         if not (type(estado_inicial) is np.ndarray):
@@ -33,16 +35,20 @@ class SistemaLorenz:
         if not (((type(sigma) is int) | (type(sigma) is float)) & (sigma > 0)):
             raise TypeError("Sigma deve ser um int ou float positivo!")
 
-        if not (((type(beta) is int) | (type(beta) is float)) & (beta >= 0)):
+        if not (((type(beta) is int) | (type(beta) is float)) & (beta > 0)):
             raise TypeError("Beta deve ser um int ou float positivo!")
 
-        if not (((type(rho) is int) | (type(rho) is float)) & (rho >= 0)):
+        if not (((type(rho) is int) | (type(rho) is float)) & (rho > 0)):
             raise TypeError("Rho deve ser um int ou float positivo!")
+            
+        if not ((type(dt) is float) & (dt > 0)):
+            raise TypeError("dt deve ser um float positivo!")
         
         self._estado_inicial = estado_inicial
         self._sigma = sigma
         self._beta = beta
         self._rho = rho
+        self._dt = dt
         pass
     
     def _equacoes(self, estado_atual, t):
@@ -53,7 +59,7 @@ class SistemaLorenz:
         
         Parâmetros:
         -----------
-        estado_inicial: np.ndarray
+        estado_atual: np.ndarray
             Vetor das posições xyz atuais do sistema    
         t: float
             Instante t no qual estamos calculando as derivadas
@@ -79,7 +85,7 @@ class SistemaLorenz:
         dz_dt = x * y - beta * z
         return [dx_dt, dy_dt, dz_dt]
     
-    def calcular(self, t_inicial, t_final, n_instantes=10000):
+    def calcular(self, t_inicial, t_final):
         """
         Descrição:
         ----------
@@ -91,8 +97,6 @@ class SistemaLorenz:
             Instante temporal em que iniciamos os cálculos
         t_final: int
             Instante temporal em que terminamos os cálculos
-        n_instantes: int
-            Número de instantes temporais em que faremos a estimação
             
         Retorna:
         --------
@@ -103,12 +107,12 @@ class SistemaLorenz:
             raise TypeError("t_inicial deve ser um int não nulo!")
             
         if not ((type(t_final) is int) & (t_final > 0)):
-            raise TypeError("t_final deve ser um int positivo!")
-            
-        if not ((type(n_instantes) is int) & (n_instantes > 0)):
-            raise TypeError("n_instantes deve ser um int positivo!")            
+            raise TypeError("t_final deve ser um int positivo!")        
         
         estado_inicial = self._estado_inicial
+        dt = self._dt
+        
+        n_instantes = int((t_final - t_inicial)/dt)
         instantes_temporais = np.linspace(t_inicial, t_final, n_instantes)
         
         solucoes = odeint(self._equacoes, t=instantes_temporais, y0=estado_inicial)
