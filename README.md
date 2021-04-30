@@ -35,7 +35,7 @@ docker build -t <nome_da_imagem> .
 
 Em seguida, para rodar um *container* com ela, que será deletado quando o encerrarmos (*flag* `-rm`):
 ```
-docker run -p 9999:8888 --gpus all -it -v $(pwd):/pibic2020-docker --rm pibic2020-docker
+docker run -p 9999:8888 --gpus all -it -v $(pwd):/<nome-da-imagem> --rm <nome-da-imagem>
 ```
 Vale mencionar que o **Dockerfile** já contém as instruções para instalar os pacotes necessários para o *Python*, evitando a necessidade de um ambiente virtual.
 
