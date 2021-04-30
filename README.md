@@ -35,9 +35,11 @@ docker build -t <nome_da_imagem> .
 
 Em seguida, para rodar um *container* com ela, que será deletado quando o encerrarmos (*flag* `-rm`):
 ```
-docker run --gpus all -it -v $(pwd):/pibic2020-docker --rm pibic2020-docker
+docker run -p 9999:8888 --gpus all -it -v $(pwd):/pibic2020-docker --rm pibic2020-docker
 ```
-Vale mencionar que o **Dockerfile** já contém as instruções para instalar os pacotes necessários para o *Python*, evitando a necessidade de um ambiente virtual. Essa imagem foi construída em cima da imagem `tensorflow/tensorflow:2.4.1-gpu`.
+Vale mencionar que o **Dockerfile** já contém as instruções para instalar os pacotes necessários para o *Python*, evitando a necessidade de um ambiente virtual.
+
+Essa imagem foi construída em cima da imagem `tensorflow/tensorflow:2.4.1-gpu` e ela é feita para utilizar o *Jupyter Lab*.
 
 ## Estruturação do Repositório
 A organização dos diretórios foi baseada na realizada no repositório [eht_imaging](https://github.com/achael/eht-imaging) e na apresentada em [Cookiecutter Data Science](http://drivendata.github.io/cookiecutter-data-science/). 
