@@ -44,6 +44,7 @@ Para inicializar o *Jupyter Lab* no *container*:
 ```
 jupyter lab --ip='0.0.0.0' --port=8888 --no-browser --allow-root
 ```
+Em seguida, copue e cole o último *link* fornecido no terminal, substituindo o "8888" por "9999".
 
 ## Estruturação do Repositório
 A organização dos diretórios foi baseada na realizada no repositório [eht_imaging](https://github.com/achael/eht-imaging) e na apresentada em [Cookiecutter Data Science](http://drivendata.github.io/cookiecutter-data-science/). 
