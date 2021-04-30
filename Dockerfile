@@ -16,7 +16,8 @@ RUN pip3 install --trusted-host pypi.python.org -r requirements.txt
 RUN apt install nodejs -y
 #RUN jupyter labextension install @jupyter-widgets/jupyterlab-manager
 
-RUN apt install texlive dvipng texlive-latex-extra texlive-fonts-recommended -y
+# para poder utilizar o latex no matplotlib
+RUN apt install texlive dvipng texlive-latex-extra texlive-fonts-recommended ghostscript cm-super -y
 
 # libera a porta pro jupyter
 EXPOSE 8888
