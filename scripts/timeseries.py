@@ -68,7 +68,6 @@ class SerieTemporal:
             raise ValueError("O passo de predição (L = "+str(L)+") somado com o índice atual (indice = "+str(indice)+") não deve estourar o número de dados na série temporal!")
     
         vetor_entrada = np.array(dados[(indice-(K-1)):(indice+1)])
-        vetor_entrada = np.insert(vetor_entrada, 0, 1) # insere o elemento x^0 no vetor
         vetor_saida = np.array(dados[indice+L])
 
         return vetor_entrada, vetor_saida    
