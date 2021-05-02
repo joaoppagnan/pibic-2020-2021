@@ -35,7 +35,7 @@ docker build -t <nome_da_imagem> .
 
 Em seguida, para rodar um *container* com ela, que será deletado quando o encerrarmos (*flag* `-rm`):
 ```
-docker run -p 9999:8888 --gpus all -it -v $(pwd):/<nome-da-imagem> --rm <nome-da-imagem>
+docker run -p 8888:8888 --gpus all -it -v $(pwd):/<nome-da-imagem> --rm <nome-da-imagem>
 ```
 Vale mencionar que o **Dockerfile** já contém as instruções para instalar os pacotes necessários para o *Python*, evitando a necessidade de um ambiente virtual.
 
@@ -44,7 +44,7 @@ Para inicializar o *Jupyter Lab* no *container*:
 ```
 jupyter lab --ip='0.0.0.0' --port=8888 --no-browser --allow-root
 ```
-Em seguida, copue e cole o último *link* fornecido no terminal, substituindo o "8888" por "9999".
+Em seguida, copie e cole o último *link* fornecido no seu navegador. O *Jupyter Lab* deve abrir.
 
 ## Estruturação do Repositório
 A organização dos diretórios foi baseada na realizada no repositório [eht_imaging](https://github.com/achael/eht-imaging) e na apresentada em [Cookiecutter Data Science](http://drivendata.github.io/cookiecutter-data-science/). 
