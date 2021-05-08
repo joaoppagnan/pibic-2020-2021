@@ -97,8 +97,13 @@ class SerieTemporal:
         tam_treino = 1.0 - tam_teste
         n_dados = len(matriz_saida)
 
-        return (matriz_entrada[:int(tam_treino*n_dados)], matriz_entrada[int(n_dados*(1 - tam_teste)):],
-                matriz_saida[:int(tam_treino*n_dados)], matriz_saida[int(n_dados*(1 - tam_teste)):])
+        X_treino = np.array(matriz_entrada[:int(tam_treino*n_dados)])
+        X_teste = np.array(matriz_entrada[int(n_dados*(1 - tam_teste)):])
+        y_treino = np.array(matriz_saida[:int(tam_treino*n_dados)])
+        y_teste = np.array(matriz_saida[int(n_dados*(1 - tam_teste)):])
+        
+        return (X_treino, X_teste,
+                y_treino, y_teste)
 
     def criar_matrizes(self):
         """
