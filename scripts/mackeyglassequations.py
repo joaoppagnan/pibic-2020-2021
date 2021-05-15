@@ -9,7 +9,7 @@ class MackeyGlass:
         """
         Descrição:
         ----------
-        Construtor da classe 'SistemaLorenz'
+        Construtor da classe 'MackeyGlass'
 
         Parâmetros:
         -----------
