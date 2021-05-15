@@ -14,7 +14,9 @@ RUN apt install python3.8 -y
 RUN python3.8 -m pip install --upgrade pip
 RUN pip3 install --trusted-host pypi.python.org -r requirements.txt
 RUN apt install nodejs -y
-#RUN jupyter labextension install @jupyter-widgets/jupyterlab-manager
+
+# para resolver o sistema de mackey-glass
+RUN apt install build-essential libssl-dev libffi-dev python3.8-dev -y
 
 # para poder utilizar o latex no matplotlib
 RUN apt install texlive dvipng texlive-latex-extra texlive-fonts-recommended ghostscript cm-super -y
