@@ -16,4 +16,5 @@ scipy==1.6.0
 seaborn==0.11.1
 tensorflow==2.4.1
 sphinx==3.4.3
+symengine==0.7.2
 sympy==1.8
