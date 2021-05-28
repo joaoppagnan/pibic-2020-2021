@@ -86,6 +86,7 @@ class SerieTemporal:
         Retorna:
         --------
         O conjunto de teste e treinamento para a proporção solicitada no formato np.ndarray
+        A ordem das saídas é: X_treino, X_teste, y_treino, y_teste
         """
         
         if ((tam_teste < 0.0) | (tam_teste > 1.0)):
@@ -105,6 +106,54 @@ class SerieTemporal:
         return (X_treino, X_teste,
                 y_treino, y_teste)
 
+    def dividir_treino_teste_validacao(self, tam_teste, tam_val):
+        """
+        Descrição:
+        ----------
+        Função para selecionar os tam_teste*len(matriz_entrada) últimos dados das matrizes para o teste e
+        os tam_val*len(matriz_treino) para validação
+
+        Parâmetros:
+        -----------
+        tam_teste: float
+            Proporção de dados que iremos separar para o teste. Deve ser entre 0.0 e 1.0
+        tam_val: float
+            Proporção de dados do conjunto de treino que iremos separar para validação. Deve ser entre 0.0 e 1.0
+
+        Retorna:
+        --------
+        O conjunto de teste, treinamento e validação para as proporções solicitadas no formato np.ndarray
+        A ordem das saídas é: X_treino, X_val, X_teste, y_treino, y_val, y_teste
+        """        
+        
+        if ((tam_teste < 0.0) | (tam_teste > 1.0)):
+            raise ValueError("A proporção dos dados de teste deve ser entre 0.0 e 1.0!")
+
+        if ((tam_val < 0.0) | (tam_val > 1.0)):
+            raise ValueError("A proporção dos dados de validação deve ser entre 0.0 e 1.0!")            
+            
+        matriz_entrada = self._matriz_entrada
+        matriz_saida = self._matriz_saida
+            
+        tam_treino_total = 1.0 - tam_teste
+        n_dados_total = len(matriz_saida)
+
+        X_treino_total = np.array(matriz_entrada[:int(tam_treino_total*n_dados_total)])
+        X_teste = np.array(matriz_entrada[int(n_dados_total*(1 - tam_teste)):])
+        y_treino_total = np.array(matriz_saida[:int(tam_treino_total*n_dados_total)])
+        y_teste = np.array(matriz_saida[int(n_dados_total*(1 - tam_teste)):])
+        
+        tam_treino = 1.0 - tam_val
+        n_dados_treino = len(y_treino_total)        
+        
+        X_treino = np.array(X_treino_total[:int(tam_treino*n_dados_treino)])
+        X_val = np.array(X_treino_total[int(n_dados_treino*(1 - tam_val)):])
+        y_treino = np.array(y_treino_total[:int(tam_treino*n_dados_treino)])
+        y_val = np.array(y_treino_total[int(n_dados_treino*(1 - tam_val)):])        
+        
+        return (X_treino, X_val, X_teste,
+                y_treino, y_val, y_teste)        
+    
     def criar_matrizes(self):
         """
         Descrição:
