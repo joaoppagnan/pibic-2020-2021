@@ -1,6 +1,6 @@
 \documentclass[a4paper, 12pt]{article}
 \usepackage[utf8]{inputenc}
-\usepackage{kpfonts}
+\usepackage{newpxtext, newpxmath}
 \usepackage[breaklinks=true]{hyperref}
 \usepackage{graphicx}
 \usepackage{caption}
@@ -41,14 +41,14 @@
 
 \includegraphics[width=0.15\textwidth]{logo-unicamp.pdf}\\[1.0cm]
 
-\textsc{\Large Programa Institucional de Bolsas de Iniciação Científica - PIBIC}\\[0.5cm]
+\textsc{\Large Estágio Científico e Tecnológico I - EE015}\\[0.5cm]
 
-\textsc{\large Relatório Parcial}\\[1.5cm]
+\textsc{\large Relatório Final}\\[1.5cm]
 
 {\Large \bfseries Predição de Séries Temporais Baseada em Redes Neurais Artificiais}\\[2.5cm]
 
 \begin{flushleft}
-Submetido à \\ Pró-Reitoria de Pesquisa da Universidade Estadual de Campinas\\[1.5cm]
+Submetido à \\ Faculdade de Engenharia Elétrica e Computação (FEEC)\\[1.5cm]
 
 Departamento de Engenharia de Computação e Automação Industrial (DCA)\\
 Faculdade de Engenharia Elétrica e de Computação (FEEC)\\
@@ -82,8 +82,14 @@ Paralelamente aos estudos realizados  durante o projeto de iniciação científi
 
 Por fim, na Seção 4 são indicados os próximos passos deste projeto de iniciação científica visando sua conclusão ao final deste primeiro semestre de 2021. 
 
-\section{Redes Neurais e Sistemas Caóticos}
-\subsection{Redes Neurais Artificiais}
+\section{Modelos de Preditores}
+
+\subsection{Modelos Lineares}
+
+\subsection{Modelos Não-lineares}
+
+Os modelos não-lineares estudados foram as famosas redes neurais artificiais.
+
 As redes neurais artificiais são ferramentas computacionais cujas estruturas são inspiradas no funcionamento das redes neurais biológicas presentes em cérebros de animais desenvolvidos, em especial do ser humano. Podemos interpretar um neurônio (tanto biológico, quanto artificial) como uma unidade de processamento de informação \cite{haykin2010neural}. 
 
 Analogamente, uma rede neural artificial é uma estrutura formada por vários neurô\-nios artificiais interconectados, a qual é capaz de processar estímulos (sinais) de entrada e de produzir respostas conforme a tarefa desejada. Existem alguns modelos matemáticos para o neurônio artificial, sendo o \textit{perceptron} um dos mais usuais (vide Seção 2.1.1). Além disso, os neurônios podem ser organizados de diferentes maneiras para construir a arquitetura (ou topologia) da rede neural, a qual é tipicamente estruturada em camadas. Por fim, os neurônios artificiais podem exibir uma estrutura interna que varia de acordo com a arquitetura desejada para a aplicação.
@@ -339,7 +345,7 @@ As LSTMs manipulam o vetor $\mathbf{c}(t)$, aprendendo durante o treinamento o q
 
 À semelhança das redes MLP, o treinamento de uma LSTM também é realizado através de algoritmos de otimização baseados em derivadas da função custo; a diferença é que agora é necessário propagar as derivadas ao longo da estrutura e, também, ao longo do tempo devido às realimentações. O algoritmo BPTT (\textit{backpropagation-through-time}) representa a extensão do backpropagation para o cenário das redes recorrentes \cite{geron2019hands}. 
 
-\subsection{Sistemas com Dinâmica Caótica}
+\section{Sistemas com Dinâmica Caótica}
 Como dito anteriormente, sistemas com dinâmica cáotica se destacam pois, apesar de serem determinísticos, apresentam dependência sensitiva em relação às condições iniciais (DSCI). Dessa forma, duas trajetórias que partem de posições relativamente próximas no espaço de estados podem evoluir de uma forma totalmente distinta devido às não-linearidades presentes que amplificam as diferenças entre essas condições iniciais \cite{fiedler1994caos}.
 
 De forma resumida, a dinâmica caótica é marcada pela presença dos seguintes aspectos \cite{attux2001dinamica}:
