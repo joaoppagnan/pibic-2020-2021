@@ -112,6 +112,7 @@ class ModeloMLP():
         Descrição:
         ----------
         Método utilizado para o gridsearch da MLP
+        Essa função não altera o modelo do objeto, é apenas para o Gridsearch!
         
         Parâmetros:
         -----------
@@ -137,7 +138,34 @@ class ModeloMLP():
         --------
         Um modelo já compilado para ser fornecido ao KerasRegressor
         """
-    
+
+        if not (type(batch_normalization) is str):
+            raise TypeError("A escolha do batch normalization deve ser uma string!")
+            
+        if not ((batch_normalization == 'ON') | (batch_normalization == 'OFF')):
+            raise ValueError("A string do batch normalization deve ser um ON ou OFF")
+            
+        if not (type(activation) is str):
+            raise TypeError("A função de ativação deve ser uma string!")  
+
+        if not (type(init_mode) is str):
+            raise TypeError("A inicialização deve ser uma string!")              
+        
+        if not (type(n_neurons) is int):
+            raise TypeError("O número de neurônios deve ser um int!")
+            
+        if not (type(n_neurons) is int):
+            raise TypeError("O número de camadas intermediárias deve ser um int!")         
+            
+        if not(type(optimizer) is str):
+            raise TypeError("O otimizador deve ser uma string!")
+            
+        if not(type(learning_rate) is float):
+            raise TypeError("O learning rate deve ser um float!")
+            
+        if not(type(loss) is str):
+            raise TypeError("A função custo deve ser uma string!")     
+            
         # dimensoes de entrada
         input_size = self._input_size
         
