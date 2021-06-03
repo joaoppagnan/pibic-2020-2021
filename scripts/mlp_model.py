@@ -35,7 +35,7 @@ class ModeloMLP():
         self.modelo = None
         pass
         
-    def construir_mlp(self, batch_normalization='OFF', activation='selu',
+    def get_model(self, batch_normalization='OFF', activation='selu',
                       init_mode='lecun_normal', n_neurons=30,
                       n_hidden_layers=1):
         """
@@ -105,7 +105,106 @@ class ModeloMLP():
         self._modelo = modelo
         pass
     
-    def compilar(self, optimizer='Nadam', learning_rate=0.001, loss="mean_squared_error"):
+    def gridsearch(self, batch_normalization='OFF', activation='selu',
+                   init_mode='lecun_normal', n_neurons=30, n_hidden_layers=1,
+                   optimizer='Nadam', learning_rate=0.001, loss="mean_squared_error"):
+        """
+        Descrição:
+        ----------
+        Método utilizado para o gridsearch da MLP
+        Essa função não altera o modelo do objeto, é apenas para o Gridsearch!
+        
+        Parâmetros:
+        -----------
+        batch_normalization: str
+            Informa se deve "ON" ou se não deve "OFF" utiizar uma camada de
+            batch normalization após a camada de entrada
+        activation: str
+            Função de ativação a ser utilizada nas camadas intermediárias
+        init_mode: str
+            Inicialização a ser utilizada para o ajuste dos pesos dos neurônios
+        n_neurons: int
+            Número de neurônios a ser utilizado na camada intermediária
+        n_hidden_layers: int
+            Número de camadas intermediárias       
+        optimizer: str
+            Otimizador a ser utilizado
+        learning_rate: float
+            Taxa de aprendizagem
+        loss: str
+            Função custo
+
+        Retorna:
+        --------
+        Um modelo já compilado para ser fornecido ao KerasRegressor
+        """
+
+        if not (type(batch_normalization) is str):
+            raise TypeError("A escolha do batch normalization deve ser uma string!")
+            
+        if not ((batch_normalization == 'ON') | (batch_normalization == 'OFF')):
+            raise ValueError("A string do batch normalization deve ser um ON ou OFF")
+            
+        if not (type(activation) is str):
+            raise TypeError("A função de ativação deve ser uma string!")  
+
+        if not (type(init_mode) is str):
+            raise TypeError("A inicialização deve ser uma string!")              
+        
+        if not (type(n_neurons) is int):
+            raise TypeError("O número de neurônios deve ser um int!")
+            
+        if not (type(n_neurons) is int):
+            raise TypeError("O número de camadas intermediárias deve ser um int!")         
+            
+        if not(type(optimizer) is str):
+            raise TypeError("O otimizador deve ser uma string!")
+            
+        if not(type(learning_rate) is float):
+            raise TypeError("O learning rate deve ser um float!")
+            
+        if not(type(loss) is str):
+            raise TypeError("A função custo deve ser uma string!")     
+            
+        # dimensoes de entrada
+        input_size = self._input_size
+        
+        # nome da rede
+        name = self._name
+    
+        # define o otimizador
+        if (optimizer=='Nadam'):
+            model_optimizer = keras.optimizers.Nadam()
+        
+        # learning_rate
+        model_optimizer.learning_rate.assign(learning_rate)
+    
+        # define o modelo e adiciona a camada de entrada
+        model = keras.Sequential(name=name)
+        model.add(keras.layers.Dense(input_size, input_dim=input_size,
+                                     name="camada_de_entrada", activation = 'linear'))
+        
+        # batch nomralization
+        if (batch_normalization == 'ON'):
+            model.add(keras.layers.BatchNormalization(name="camada_de_batch_normalization"))
+            
+        # camadas intermediarias
+        for i in range(0, n_hidden_layers):
+            model.add(keras.layers.Dense(n_neurons, activation=activation,
+                                         kernel_initializer=init_mode, name="camada_intermediaria_"+str(i+1)))
+        
+        # camada de saida
+        model.add(keras.layers.Dense(1, activation='linear', name="camada_de_saida"))
+    
+        # compila e monta o modelo
+        model.compile(
+            optimizer = model_optimizer,
+            loss = loss)
+        model.build()
+        
+        return model
+    
+    def build(self, optimizer='Nadam', learning_rate=0.001, loss="mean_squared_error"):
         """
         Descrição:
         ----------
@@ -152,7 +251,7 @@ class ModeloMLP():
         self._modelo = modelo
         pass
     
-    def visualizar(self):
+    def view(self):
         """
         Descrição:
         ----------
@@ -260,7 +359,7 @@ class ModeloMLP():
         y_pred = modelo.predict(X_teste)
         return y_pred
     
-    def avaliar_modelo(self, X_treino, X_val, X_teste, y_treino, y_val, y_teste, n_repeticoes = 5, batch_size=10, early_stopping="ON", epochs=100):
+    def evaluate(self, X_treino, X_val, X_teste, y_treino, y_val, y_teste, n_repeticoes = 5, batch_size=10, early_stopping="ON", epochs=100):
         """
         Definição:
         ----------
@@ -358,7 +457,7 @@ class ModeloMLP():
         
         return (mse_med, mse_dev)
     
-    def salvar_modelo(self, nome_do_arquivo, h5="OFF"):
+    def save(self, nome_do_arquivo, h5="OFF"):
         """
         Definição:
         ----------
@@ -394,7 +493,7 @@ class ModeloMLP():
         
         return print("O modelo foi salvo!")
     
-    def carregar_modelo(self, nome_do_arquivo):
+    def load(self, nome_do_arquivo):
         """
         Definição:
         ----------

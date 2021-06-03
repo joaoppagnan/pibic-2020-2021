@@ -1,0 +1,391 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{newpxtext, newpxmath}
+\usepackage[breaklinks=true]{hyperref}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage[left=3cm, right=2cm, top=3cm, bottom=2cm]{geometry}
+\geometry{a4paper}
+\usepackage{fancyhdr}
+\usepackage[brazilian]{babel}
+\usepackage{siunitx}
+\usepackage{float}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt} 
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+\graphicspath{{../figures/}}
+\sisetup{output-decimal-marker={.}}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{cleveref}
+\usepackage{spverbatim}
+\usepackage{setspace}
+\setlength{\parskip}{1em}
+\singlespacing
+
+\newcommand{\empt}[2]{$#1^{\langle #2 \rangle}$}
+
+\usepackage{amsmath}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,fit, positioning, arrows.meta}
+\usetikzlibrary{backgrounds}
+\usepgflibrary{shapes.multipart}
+
+\begin{document}
+\begin{titlepage}
+\newcommand{\HRule}{\rule{\linewidth}{1.5mm}}
+	
+\center
+
+\includegraphics[width=0.15\textwidth]{logo-unicamp.pdf}\\[1.0cm]
+
+\textsc{\Large Estágio Científico e Tecnológico I - EE015}\\[0.5cm]
+
+\textsc{\large Relatório Final}\\[1.5cm]
+
+{\Large \bfseries Predição de Séries Temporais Baseada em Redes Neurais Artificiais}\\[2.5cm]
+
+\begin{flushleft}
+Submetido à \\ Faculdade de Engenharia Elétrica e Computação (FEEC)\\[1.5cm]
+
+Departamento de Engenharia de Computação e Automação Industrial (DCA)\\
+Faculdade de Engenharia Elétrica e de Computação (FEEC)\\
+Universidade Estadual de Campinas (UNICAMP)\\
+CEP 13083-852, Campinas - SP\\[1.0cm]
+
+Aluno: João Pedro de Oliveira Pagnan\\
+Orientador: Prof. Levy Boccato \\[4.5cm]
+\end{flushleft}	
+	
+Campinas, \today
+
+\end{titlepage}
+
+\newpage
+
+\section{Introdução}
+A predição de séries temporais é uma das aplicações mais interessantes do tratamento de informação. O desafio de antecipar padrões de comportamento e construir modelos que sejam apropriados para explicar determinados fenômenos da natureza tem importância para a biologia, economia, automação industrial, meteorologia e diversas outras áreas da ciência \cite{box2015time}.
+
+Na literatura, encontramos diversos tipos de modelos para a  predição de séries temporais, desde métodos clássicos lineares, como o modelo autorregressivo (AR) \cite{box2015time} até métodos não-lineares utilizando, por exemplo, redes neurais artificiais, sendo que dessas se destacam as redes do tipo \textit{Multilayer Perceptron} (MLP) e as redes recorrentes, especialmente a \textit{Long Short-Term Memory} (LSTM)  \cite{connor1994recurrent}.
+
+Uma classe de sistemas dinâmicos particularmente relevante dentro do contexto de modelagem e predição de séries temporais está ligada à ideia de dinâmica caótica. Diversos fenômenos naturais, como a dinâmica populacional de uma espécie, a dinâmica atmosférica de uma região, ou até mesmo as órbitas de um sistema com três ou mais corpos celestes podem exibir comportamento caótico. Apesar de serem determinísticos (e, portanto, previsíveis), esses sistemas são extremamente sensíveis às condições iniciais \cite{fiedler1994caos}. Isso causa um problema para a predição das séries temporais originadas por eles, pois uma pequena incerteza na medida afetará toda a previsão. 
+
+Tendo em vista o desempenho de modelos não-lineares para previsão de diversas séries temporais \cite{connor1994recurrent}, optamos por estudar a aplicabilidade de redes neurais artificiais à previsão de séries relacionadas a sistemas com dinâmica caótica. 
+
+Essa primeira parte do projeto de iniciação científica teve como objetivo estudar a base teórica das redes neurais artificiais e de outros regressores lineares clássicos, assim como estudar os fundamentos de sistemas dinâmicos e de dinâmica caótica. Os principais modelos estudados e a caracterização dos sistemas caóticos são brevemente apresentados na Seção 2.
+
+O estudo dirigido começou abordando uma revisão de tópicos de probabilidade, teoria da informação e estimação. Em seguida, foi vista a teoria de regressores e classificadores clássicos \cite{hastie2009elements}. Depois disso, o estudo se dirigiu para as redes neurais artificiais MLP e recorrentes \cite{geron2019hands}, para, por fim, concluir o aprendizado de preditores com uma breve exposição dos modelos autorregressivos (AR) e autorregressivos de médias móveis (ARMA) \cite{box2015time}. Com a teoria de predição solidificada, o foco mudou para os fundamentos da teoria de sistemas com dinâmica caótica, utilizando como base as referências \cite{fiedler1994caos} e \cite{attux2001dinamica}.
+
+Paralelamente aos estudos realizados  durante o projeto de iniciação científica, o aluno também pôde fortalecer sua formação em aprendizado de máquina através da disciplina de pós-graduação \textbf{IA048 - Aprendizado de Máquina}, cursada como aluno especial. Com efeito, algumas atividades práticas desta disciplina foram importantes por estimularem o desenvolvimento de alguns ensaios de aplicações de redes neurais artificiais, que serão apresentados na Seção 3.
+
+Por fim, na Seção 4 são indicados os próximos passos deste projeto de iniciação científica visando sua conclusão ao final deste primeiro semestre de 2021. 
+
+\section{Modelos de Preditores}
+
+\subsection{Modelos Lineares}
+
+Apesar desta pesquisa focar na aplicabilidade de modelos preditores não-lineares utilizando redes neurais artificais, é pertinente falarmos um pouco sobre modelos lineares de predição.
+
+O preditor linear mais básico é o autoregressivo (AR).
+
+\subsection{Modelos Não-lineares}
+
+Os modelos não-lineares estudados foram as famosas redes neurais artificiais.
+
+As redes neurais artificiais são ferramentas computacionais cujas estruturas são inspiradas no funcionamento das redes neurais biológicas presentes em cérebros de animais desenvolvidos, em especial do ser humano. Podemos interpretar um neurônio (tanto biológico, quanto artificial) como uma unidade de processamento de informação \cite{haykin2010neural}. 
+
+Analogamente, uma rede neural artificial é uma estrutura formada por vários neurô\-nios artificiais interconectados, a qual é capaz de processar estímulos (sinais) de entrada e de produzir respostas conforme a tarefa desejada. Existem alguns modelos matemáticos para o neurônio artificial, sendo o \textit{perceptron} um dos mais usuais (vide Seção 2.1.1). Além disso, os neurônios podem ser organizados de diferentes maneiras para construir a arquitetura (ou topologia) da rede neural, a qual é tipicamente estruturada em camadas. Por fim, os neurônios artificiais podem exibir uma estrutura interna que varia de acordo com a arquitetura desejada para a aplicação.
+
+Veremos então os dois principais modelos de redes que serão utilizados nessa pesquisa:
+
+\subsubsection{Redes \textit{Multilayer Perceptron} (MLP)}
+Um dos modelos mais utilizados para representar um neurônio artificial, o \textit{Perceptron} \cite{rosenblatt1958perceptron}, é apresentado na Figura \ref{fig:mlp}.
+\begin{figure}[H]
+\begin{center}
+\begin{tikzpicture}[thick,scale=0.7, every node/.style={transform shape}]
+	\tikzstyle{rectangle_style}=[rectangle, draw, minimum height = 15mm, minimum width = 12.5mm]
+	\tikzstyle{circle_style}=[circle, draw]
+	\tikzstyle{dividedrectangle_style}=[draw, rectangle split, rectangle split parts=2, rotate = 90, minimum height = 15mm, minimum width = 10mm]
+	
+	% neuron i
+	\draw node at (-0.33, 0) [] (neuron_i_0) {$x_0 = 1$};
+	\foreach \x in {1,...,2}
+		\draw node at (0, -1.5*\x) [] (neuron_i_\x) {$x_\x$};
+	\foreach \x in {1,...,3}
+		\fill (0, -3.5 - 1.5*\x*0.15) circle (1pt);
+	\draw node at (0, -5) [] (neuron_i_3) {$x_m$};
+	\node at (neuron_i_0.north) [above, inner sep=3mm] {\small \textit{\textit{Entradas}}};			
+	
+	% w_ji
+	\foreach \x in {0,...,2}
+		\draw node at (1.5, -1.5*\x) [circle_style] (w_ji_\x) {$w_{\x}$};
+	\draw node at (1.5, -5) [circle_style] (w_ji_i) {$w_m$};
+	\foreach \x in {1,...,3}
+		\fill (1.5, -3.5 - 1.5*\x*0.15) circle (1pt);
+	\node at (w_ji_0.north) [right, inner sep=5mm] {\small \textit{\textit{bias}}};	
+	\node at (w_ji_i.south) [below, inner sep=3mm] {\small \textit{\textit{Pesos Sinápticos}}};		
+	
+	% neuron j
+	\node at (6.5, -1.5) [circle_style] (neuron_j) {{\Huge $\sum$}};
+	\node at (neuron_j.south) [below, inner sep=3mm] {\small \textit{Junção Somadora}};	
+	
+	% activation
+	\node at (9, -1.5) [rectangle_style] (activation) {$\varphi (\cdot)$};
+	\node at (activation.north) [above, inner sep=1mm] {\small \textit{Função de Ativação}};
+	
+	% output
+	\node at (12, -1.5) [] (output) {$y$};
+	\node at (output.north) [above, inner sep=1mm] {\small \textit{Saída}};	
+
+	% connect: y_i -> w_ji
+	\foreach \i in {0,...,2}
+		\path[->] (neuron_i_\i) edge node[] {} (w_ji_\i);
+	\path[->] (neuron_i_3) edge node[] {} (w_ji_i);
+	
+	% connect: w_ji -> neuron j
+	\foreach \i in {0,...,2}
+		\path[->] (w_ji_\i) edge node[] {} (neuron_j);
+	\path[->] (w_ji_i) edge node[] {} (neuron_j);
+	
+	% connect: neuron j -> activation
+	\path[->] (neuron_j) edge node[above, midway] {$v$} (activation);
+	
+	% connect: activation -> output
+	\path[->] (activation) edge node[] {} (output);
+	
+\end{tikzpicture}
+\caption{Modelo \textit{Perceptron} para o neurônio artificial}
+\label{fig:mlp}
+\end{center}
+\end{figure}
+
+Em termos matemáticos, a saída do neurônio pode ser escrita como:
+\begin{equation}
+y = \varphi(v) = \varphi  \Big(\sum_{i=1}^{m}w_i x_i + w_0 \Big) = \varphi \Big(\sum_{i=0}^{m}w_i x_i \Big) = \varphi (\mathbf{w}^T \cdot \mathbf{x}),
+\end{equation}
+onde $\mathbf{w}$ é o vetor que contém os coeficientes, denominados de pesos sinápticos, que ponderam as entradas do neurônio. 
+
+A escolha da função de ativação $\varphi (\cdot)$ varia de acordo com a aplicação desejada. Ela pode ser desde uma função de \textit{Heaviside}, a puramente linear $\varphi(x) = x$, ou até mesmo a tangente hiperbólica, a função logística ou outras funções não-lineares para mapeamentos mais complexos \cite{geron2019hands}. 
+
+Tipicamente, uma rede neural MLP é composta por um número arbitrário $k$ de  camadas com $n$ neurônios do tipo \textit{Perceptron}, com a característica de que as saídas dos neurônios da $l$-ésima camada são propagadas para a frente, servindo como as entradas de todos os neurônios da camada seguinte ($l+1$). Por isso, este tipo de rede é conhecida como totalmente conectada (ou densa).
+
+Os pesos sinápticos $\mathbf{w}$ são ajustados com um processo iterativo de forma a minimizar uma função custo $J(\mathbf{w})$ que representa uma medida do erro entre as saídas geradas pela rede e as saídas desejadas. Para isso, é frequente o uso de algoritmos de otimização baseados em derivadas da função custo $J(\mathbf{w})$, como o método do gradiente descendente estocástico (SGD, do inglês \textit{stochastic gradient descent}) e o algoritmo Adam (\textit{Adaptive Moment Estimation}) \cite{geron2019hands}. O famoso algoritmo de retropropagação (\textit{backpropagation}) do erro é empregado para viabilizar o cálculo das derivadas com relação aos pesos sinápticos dos neurônios situados nas camadas internas da rede. 
+
+O grande apelo das redes \textit{Multilayer Perceptron} é que elas tem a capacidade de aproximação universal, ou seja, são capazes de aproximar qualquer mapeamento contí\-nuo num domínio compacto com um nível de erro arbitrariamente pequeno. Até mesmo uma MLP com uma única camada intermediária e camada de saída linear já possui esta capacidade \cite{cybenko1989approximation}.
+
+\subsubsection{Redes Recorrentes \textit{Long Short-term Memory} (LSTM)}
+Diferentemente das redes MLP que são \textit{feedforward}, ou seja, que não reutilizam a informação processada dos padrões anteriores para gerar a próxima saída, a ideia central das redes recorrentes é que elas têm estruturas computacionais que podem armazenar os estados anteriores dos neurônios, possuindo também portas não-lineares que regulam o fluxo de informação de entrada e de saída da célula computacional \cite{haykin2010neural}. Uma representação possível de uma célula de uma rede recorrente pode ser vista na Figura \ref{fig:recorrente}. Note que a saída é realimentada (com um atraso temporal) para a entrada do próprio neurônio.
+
+Em especial, as redes LSTM se mostram atraentes pela possibilidade de criar e explorar memórias de curto e de longo prazo. A estrutura da célula ou camada LSTM, assim como as equações presentes nela, são apresentadas na Figura \ref{fig:lstm}. 
+\noindent{
+\begin{figure}[H]
+\begin{minipage}{0.5\textwidth}
+\begin{center}   
+\begin{tikzpicture}[x=0.65pt,y=0.65pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Straight Lines [id:da1554249944842837] 
+\draw    (320.58,202.18) -- (320.19,163.18) ;
+\draw [shift={(320.17,161.18)}, rotate = 449.42] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Shape: Circle [id:dp7598463649301769] 
+\draw   (295.17,136.18) .. controls (295.17,122.38) and (306.36,111.18) .. (320.17,111.18) .. controls (333.97,111.18) and (345.17,122.38) .. (345.17,136.18) .. controls (345.17,149.99) and (333.97,161.18) .. (320.17,161.18) .. controls (306.36,161.18) and (295.17,149.99) .. (295.17,136.18) -- cycle ;
+%Straight Lines [id:da5775924503019426] 
+\draw    (320.17,111.18) -- (319.61,73.18) ;
+\draw [shift={(319.58,71.18)}, rotate = 449.16] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Curve Lines [id:da6508772564279707] 
+\draw    (340.58,116.18) .. controls (404.93,98.36) and (405.58,137.39) .. (343.48,152.73) ;
+\draw [shift={(341.58,153.18)}, rotate = 346.81] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da12570537723123754] 
+\draw    (295.17,136.18) -- (345.17,136.18) ;
+%Straight Lines [id:da42455472986521403] 
+\draw    (304.58,129.68) -- (320.58,129.68) ;
+%Straight Lines [id:da862734419251405] 
+\draw    (320.58,129.68) -- (330.58,119.68) ;
+
+% Text Node
+\draw (392,116) node [anchor=north west][inner sep=0.75pt]   [align=left] {$y(t-1)$};
+% Text Node
+\draw (309,51) node [anchor=north west][inner sep=0.75pt]   [align=left] {$y(t)$};
+% Text Node
+\draw (309,206) node [anchor=north west][inner sep=0.75pt]   [align=left] {$x(t)$};
+% Text Node
+\draw (309,137.5) node [anchor=north west][inner sep=0.75pt]   [align=left] {$\sum$};
+\end{tikzpicture}
+\caption{Célula da rede recorrente}
+\label{fig:recorrente}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+\begin{tikzpicture}[
+    % GLOBAL CFG
+    font=\sf \scriptsize,
+    >=LaTeX,
+    % Styles
+    cell/.style={% For the main box
+        rectangle, 
+        rounded corners=5mm, 
+        draw,
+        very thick,
+        },
+    operator/.style={%For operators like +  and  x
+        circle,
+        draw,
+        inner sep=-0.5pt,
+        minimum height =.2cm,
+        },
+    function/.style={%For functions
+        ellipse,
+        draw,
+        inner sep=1pt
+        },
+    ct/.style={% For external inputs and outputs
+        circle,
+        draw,
+        line width = .75pt,
+        minimum width=1cm,
+        inner sep=1pt,
+        },
+    gt/.style={% For internal inputs
+        rectangle,
+        draw,
+        minimum width=4mm,
+        minimum height=3mm,
+        inner sep=1pt
+        },
+    mylabel/.style={% something new that I have learned
+        font=\scriptsize\sffamily
+        },
+    ArrowC1/.style={% Arrows with rounded corners
+        rounded corners=.25cm,
+        thick,
+        },
+    ArrowC2/.style={% Arrows with big rounded corners
+        rounded corners=.5cm,
+        thick,
+        },
+    scale = 0.95
+    ]
+
+%Start drawing the thing...    
+    % Draw the cell: 
+    \node [cell, minimum height =4cm, minimum width=6cm] at (0,0){} ;
+
+    % Draw inputs named ibox#
+    \node [gt] (ibox1) at (-2,-0.75) {$\sigma$};
+    \node [gt] (ibox2) at (-1.5,-0.75) {$\sigma$};
+    \node [gt, minimum width=1cm] (ibox3) at (-0.5,-0.75) {$\tanh$};
+    \node [gt] (ibox4) at (0.5,-0.75) {$\sigma$};
+
+   % Draw opérators   named mux# , add# and func#
+    \node [operator] (mux1) at (-2,1.5) {$\times$};
+    \node [operator] (add1) at (-0.5,1.5) {+};
+    \node [operator] (mux2) at (-0.5,0) {$\times$};
+    \node [operator] (mux3) at (1.5,0) {$\times$};
+    \node [function] (func1) at (1.5,0.75) {$\tanh$};
+
+    % Draw External inputs? named as basis c,h,x
+    \node[] (c) at (-4,1.5) {$\mathbf{c}(t-1)$};
+    \node[] (h) at (-4,-1.5) {$\mathbf{h}(t-1)$};
+    \node[] (x) at (-2.5,-3) {$\mathbf{x}(t)$};
+
+    % Draw External outputs? named as basis c2,h2,x2
+    \node[] (c2) at (4,1.5) {$\mathbf{c}(t)$};
+    \node[] (h2) at (4,-1.5) {$\mathbf{h}(t)$};
+    \node[] (x2) at (2.5,3) {$\mathbf{h}(t)$};
+    
+    % Draw internals functions, named as basis fi,ii,ci,oi
+    \node[] (fi) at (-2.35,-0.25) {$\mathbf{f}(t)$};
+    \node[] (ii) at (-1.5,0.2) {$\mathbf{i}(t)$};
+    \node[] (ci) at (-0.1,-0.35) {$\mathbf{\tilde{c}}(t)$};
+	\node[] (oi) at (0.5,0.2) {$\mathbf{o}(t)$};      
+	
+    % Draw equations named as basis fe,ie,cie,ce,oe,he
+    \node[] (fe) at (0.5,-2.5) {$\mathbf{f}(t) = \sigma(\mathbf{W}_f [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_f)$};
+    \node[] (ie) at (0.5,-3) {$\mathbf{i}(t) = \sigma(\mathbf{W}_i [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_i)$};
+    \node[] (cie) at (0.5,-3.5) {$\mathbf{\tilde{c}}(t) = \sigma(\mathbf{W}_c [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_c)$};	      
+    \node[] (ce) at (0.5,-4) {$\mathbf{c}(t) = \mathbf{f}(t) \otimes \mathbf{c}(t-1) + \mathbf{i}(t) \otimes \mathbf{\tilde{c}}(t)$};
+    \node[] (oe) at (0.5,-4.5) {$\mathbf{o}(t) = \sigma(\mathbf{W}_o [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_o)$};
+    \node[] (he) at (0.5,-5) {$\mathbf{h}(t) = \mathbf{o}(t) \otimes \tanh (\mathbf{c}(t))$};	 
+    
+% Start connecting all.
+    %Intersections and displacements are used. 
+    % Drawing arrows    
+    \draw [ArrowC1] (c) -- (mux1) -- (add1) -- (c2);
+
+    % Inputs
+    \draw [ArrowC2] (h) -| (ibox4);
+    \draw [ArrowC1] (h -| ibox1)++(-0.5,0) -| (ibox1); 
+    \draw [ArrowC1] (h -| ibox2)++(-0.5,0) -| (ibox2);
+    \draw [ArrowC1] (h -| ibox3)++(-0.5,0) -| (ibox3);
+    \draw [ArrowC1] (x) -- (x |- h)-| (ibox3);
+
+    % Internal
+    \draw [->, ArrowC2] (ibox1) -- (mux1);
+    \draw [->, ArrowC2] (ibox2) |- (mux2);
+    \draw [->, ArrowC2] (ibox3) -- (mux2);
+    \draw [->, ArrowC2] (ibox4) |- (mux3);
+    \draw [->, ArrowC2] (mux2) -- (add1);
+    \draw [->, ArrowC1] (add1 -| func1)++(-0.5,0) -| (func1);
+    \draw [->, ArrowC2] (func1) -- (mux3);
+
+    %Outputs
+    \draw [->, ArrowC2] (mux3) |- (h2);
+    \draw [->] (add1) |- (c2);
+    \draw (c2 -| x2) ++(0,-0.1) coordinate (i1);
+    \draw [-, ArrowC2] (h2 -| x2)++(-0.5,0) -| (i1);
+    \draw [->, ArrowC2] (i1)++(0,0.2) -- (x2);
+
+\end{tikzpicture}
+\caption{Estrutura e equações de uma célula/camada LSTM}
+\label{fig:lstm}
+\end{center}
+\end{minipage}
+\end{figure}
+}
+As LSTMs manipulam o vetor $\mathbf{c}(t)$, aprendendo durante o treinamento o que deve ser guardado nele, o que deve ser descartado e o que deve ser aproveitado para gerar a saída $\mathbf{h}(t)$. Dessa forma, podemos dizer que a atualização do vetor de estados $\mathbf{c}(t)$ é feita com o descarte de informações e a incorporação de novidades vindas da entrada. 
+
+À semelhança das redes MLP, o treinamento de uma LSTM também é realizado através de algoritmos de otimização baseados em derivadas da função custo; a diferença é que agora é necessário propagar as derivadas ao longo da estrutura e, também, ao longo do tempo devido às realimentações. O algoritmo BPTT (\textit{backpropagation-through-time}) representa a extensão do backpropagation para o cenário das redes recorrentes \cite{geron2019hands}. 
+
+\section{Sistemas com Dinâmica Caótica}
+Como dito anteriormente, sistemas com dinâmica cáotica se destacam pois, apesar de serem determinísticos, apresentam dependência sensitiva em relação às condições iniciais (DSCI). Dessa forma, duas trajetórias que partem de posições relativamente próximas no espaço de estados podem evoluir de uma forma totalmente distinta devido às não-linearidades presentes que amplificam as diferenças entre essas condições iniciais \cite{fiedler1994caos}.
+
+De forma resumida, a dinâmica caótica é marcada pela presença dos seguintes aspectos \cite{attux2001dinamica}:
+\begin{enumerate}
+\item Forte sensibilidade com respeito às condições iniciais;
+\item A evolução temporal das variáveis de estado (parâmetros de ordem do sistema) é rápida e tem uma aparência errática;
+\item Um sinal originado por um sistema caótico tem espectro de potências contínuo e de faixa larga;
+\item Há uma produção de informação por parte do sistema;
+\item Dão origem a atratores estranhos (estruturas topológicas que ditam a evolução temporal do fluxo de um sistema caótico) \cite{ruelle1971nature}.
+\end{enumerate}
+
+\section{Ensaios de aplicações de Aprendizado de Máquina}
+Como já foi mencionado, para complementar os estudos da iniciação científica, o aluno cursou como estudante especial a disciplina de pós-graduação \textbf{IA048 - Aprendizado de Máquina} da FEEC. O objetivo foi formar uma base sólida para o uso não só de redes neurais MLP, LSTM e regressores, como também noções de probabilidade, teoria da informação, classificadores, árvores de decisão, clusterizadores e outras ferramentas de \textit{Machine Learning}.
+
+Nessa matéria foram estudados os tópicos de probabilidade, estimação e teoria da informação, conceitos gerais de aprendizado de máquina, regressão linear, classificação linear, redes neurais artificiais MLP, recorrentes e convolucionais, \textit{deep learning}, máqui\-nas de vetores-suporte, aprendizado não-supervisionado, clusterização, modelos de mistura e extração de variáveis latentes, comitês de máquinas, árvores de decisão e \textit{random forest} e aprendizado por reforço, utilizando materiais como \cite{geron2019hands, haykin2010neural, bishop2006pattern, hastie2009elements}.
+
+Algumas das atividades notórias desenvolvidas na disciplina foram o uso de modelos clássicos de regressores lineares e não-lineares para a predição de uma série temporal do número de manchas solares, testes com classificadores utilizando redes neurais MLP e redes convolucionais para cenários binários e multiclasse, e o desenvolvimento de um projeto final composto por um \textit{Autoencoder} utilizando redes convolucionais e profundas para a filtragem de sinais.
+
+O aluno concluiu a disciplina com uma média final de $9.6$, alcançando o conceito A (máximo). 
+
+Com isso, além de reforçar a base teórica necessária para essa pesquisa, foi obtida uma prática com a programação, análise, teste, otimização e implementação de algoritmos de redes neurais, a qual  será bastante útil para a sequência deste projeto de iniciação científica.
+
+\section{Próximos Passos}
+
+Como nessa primeira parte da iniciação o foco foi uma pesquisa bibliográfica dos temas a serem estudados nela, a segunda metade será voltada para a aplicação em si da predição das séries temporais de sistemas caóticos.
+
+Primeiramente, serão definidas as séries temporais que farão parte dos experimentos computacionais, buscando criar cenários diversificados para a análise do comportamento das redes neurais. Algumas possibilidades para o trabalho são os dados referentes ao mapa logístico \cite{may2004simple} e ao mapa de Hénon \cite{henon1976two}, a famosa série Mackey-Glass \cite{mackey1977oscillation} e dados de dinâmica populacional de uma espécie.
+
+Em seguida, determinaremos aspectos mais fundamentais das redes neurais que serão utilizadas, como, por exemplo, a arquitetura empregada, assim como as métricas para o treinamento e análise.
+
+Após isso, faremos a aplicação das redes neurais à predição das séries escolhidas, avaliando a sensibilidade paramétrica de cada estrutura na busca das melhores configurações, a fim de traçar um quadro comparativo entre as técnicas consideradas. 
+
+Por fim, compilaremos os resultados no relatório final, de forma a conter uma discussão ampla e representativa dos ensaios realizados e das conclusões obtidas. 
+
+\bibliographystyle{ieeetr}
+
+{\footnotesize \bibliography{bib}}
+
+\end{document}
