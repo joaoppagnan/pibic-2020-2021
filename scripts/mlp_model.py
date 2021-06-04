@@ -35,7 +35,7 @@ class ModeloMLP():
         self.modelo = None
         pass
         
-    def get_model(self, batch_normalization='OFF', activation='selu',
+    def criar_modelo(self, batch_normalization='OFF', activation='selu',
                       init_mode='lecun_normal', n_neurons=30,
                       n_hidden_layers=1):
         """
@@ -204,7 +204,7 @@ class ModeloMLP():
         
         return model
     
-    def build(self, optimizer='Nadam', learning_rate=0.001, loss="mean_squared_error"):
+    def montar(self, optimizer='Nadam', learning_rate=0.001, loss="mean_squared_error"):
         """
         Descrição:
         ----------
@@ -251,7 +251,7 @@ class ModeloMLP():
         self._modelo = modelo
         pass
     
-    def view(self):
+    def visualizar(self):
         """
         Descrição:
         ----------
@@ -268,7 +268,7 @@ class ModeloMLP():
         
         return self._modelo.summary()
     
-    def fit(self, X_treino, X_val, y_treino, y_val, batch_size=10, early_stopping="ON", epochs=100):
+    def treinar(self, X_treino, X_val, y_treino, y_val, batch_size=10, early_stopping="ON", epochs=100):
         """
         Descrição:
         ----------
@@ -335,7 +335,7 @@ class ModeloMLP():
         self._modelo = modelo
         pass
     
-    def predict(self, X_teste):
+    def predicao(self, X_teste):
         """
         Descrição:
         ----------
@@ -359,7 +359,7 @@ class ModeloMLP():
         y_pred = modelo.predict(X_teste)
         return y_pred
     
-    def evaluate(self, X_treino, X_val, X_teste, y_treino, y_val, y_teste, n_repeticoes = 5, batch_size=10, early_stopping="ON", epochs=100):
+    def avaliar(self, X_treino, X_val, X_teste, y_treino, y_val, y_teste, n_repeticoes = 5, batch_size=10, early_stopping="ON", epochs=100):
         """
         Definição:
         ----------
@@ -457,7 +457,7 @@ class ModeloMLP():
         
         return (mse_med, mse_dev)
     
-    def save(self, nome_do_arquivo, h5="OFF"):
+    def salvar(self, nome_do_arquivo, h5="OFF"):
         """
         Definição:
         ----------
@@ -493,7 +493,7 @@ class ModeloMLP():
         
         return print("O modelo foi salvo!")
     
-    def load(self, nome_do_arquivo):
+    def carregar(self, nome_do_arquivo):
         """
         Definição:
         ----------

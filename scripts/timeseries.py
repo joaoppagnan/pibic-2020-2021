@@ -151,8 +151,8 @@ class SerieTemporal:
         y_treino = np.array(y_treino_total[:int(tam_treino*n_dados_treino)])
         y_val = np.array(y_treino_total[int(n_dados_treino*(1 - tam_val)):])        
         
-        return (X_treino, X_val, X_teste,
-                y_treino, y_val, y_teste)        
+        return (X_treino, X_teste, X_val,
+                y_treino, y_teste, y_val)        
     
     def criar_matrizes(self):
         """
