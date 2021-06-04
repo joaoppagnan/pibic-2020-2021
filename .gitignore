@@ -9,3 +9,13 @@ pibic2020-env/
 # ignorar esses arquivos
 *.pyc
 *~
+*.out
+*.log
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.dvi
+*.blg
+*.bbl
+*.aux
+*.run.xml
