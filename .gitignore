@@ -18,3 +18,4 @@ pibic2020-env/
 *.blg
 *.bbl
 *.aux
+*.run.xml
