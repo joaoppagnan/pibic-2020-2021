@@ -40,8 +40,9 @@ class ModeloLSTM():
         """
         Descrição:
         ----------
-        Função para gerar a rede neural LSTM com os parâmetros especificados
-        Ainda não foi implementada
+        Função para gerar a rede neural LSTM com os parâmetros especificados.
+        A função de ativação é a tangente hiperbólica.
+        Ainda não foi implementada.
         
         Parâmetros:
         -----------
@@ -55,9 +56,8 @@ class ModeloLSTM():
         pass
 
     
-    def gridsearch(self, activation='tanh', init_mode='glorot_uniform',
-                   n_neurons=30, optimizer='Nadam',
-                   learning_rate=0.001, loss="mean_squared_error"):
+    def gridsearch(self, init_mode='glorot_uniform', n_neurons=30, 
+                   optimizer='Nadam', learning_rate=0.001, loss="mean_squared_error"):
         """
         Descrição:
         ----------
@@ -66,8 +66,6 @@ class ModeloLSTM():
         
         Parâmetros:
         -----------
-        activation: str
-            Função de ativação a ser utilizada nas camadas intermediárias
         init_mode: str
             Inicialização a ser utilizada para o ajuste dos pesos dos neurônios
         n_neurons: int
@@ -83,9 +81,6 @@ class ModeloLSTM():
         --------
         Um modelo já compilado para ser fornecido ao KerasRegressor
         """
-            
-        if not (type(activation) is str):
-            raise TypeError("A função de ativação deve ser uma string!")  
 
         if not (type(init_mode) is str):
             raise TypeError("A inicialização deve ser uma string!")              
@@ -110,7 +105,7 @@ class ModeloLSTM():
     
         model = keras.Sequential(name=name)
         model.add(keras.Input(shape=input_shape))
-        model.add(keras.layers.LSTM(n_neurons, activation=activation, kernel_initializer=init_mode, name="camada_lstm"))
+        model.add(keras.layers.LSTM(n_neurons, activation='tanh', kernel_initializer=init_mode, name="camada_lstm"))
         model.add(keras.layers.Dense(1, activation='linear', name="camada_de_saida"))
     
         # define o otimizador e learning rate
