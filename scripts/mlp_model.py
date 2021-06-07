@@ -19,6 +19,7 @@ class ModeloMLP():
             Número de amostras de entrada do preditor
         name: str
             Nome a ser dado para o modelo
+
         Retorna:
         --------
         Nada
@@ -154,7 +155,7 @@ class ModeloMLP():
         if not (type(n_neurons) is int):
             raise TypeError("O número de neurônios deve ser um int!")
             
-        if not (type(n_neurons) is int):
+        if not (type(n_hidden_layers) is int):
             raise TypeError("O número de camadas intermediárias deve ser um int!")         
             
         if not(type(optimizer) is str):
@@ -175,6 +176,8 @@ class ModeloMLP():
         # define o otimizador
         if (optimizer=='Nadam'):
             model_optimizer = keras.optimizers.Nadam()
+        else:
+            model_optimizer = optimizer    
         
         # learning_rate
         model_optimizer.learning_rate.assign(learning_rate)
@@ -359,7 +362,9 @@ class ModeloMLP():
         y_pred = modelo.predict(X_teste)
         return y_pred
     
-    def avaliar(self, X_treino, X_val, X_teste, y_treino, y_val, y_teste, n_repeticoes = 5, batch_size=10, early_stopping="ON", epochs=100):
+    def avaliar(self, X_treino, X_val, X_teste, y_treino,
+                y_val, y_teste, n_repeticoes = 5, batch_size=10,
+                early_stopping="ON", epochs=100):
         """
         Definição:
         ----------

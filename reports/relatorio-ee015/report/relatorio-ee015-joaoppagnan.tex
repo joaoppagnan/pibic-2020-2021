@@ -43,7 +43,7 @@
 
 \textsc{\Large Estágio Científico e Tecnológico I - EE015}\\[0.5cm]
 
-\textsc{\large Relatório Final}\\[1.5cm]
+\textsc{\large Relatório}\\[1.5cm]
 
 {\Large \bfseries Predição de Séries Temporais Baseada em Redes Neurais Artificiais}\\[2.5cm]
 
@@ -68,27 +68,55 @@ Campinas, \today
 \section{Introdução}
 A predição de séries temporais é uma das aplicações mais interessantes do tratamento de informação. O desafio de antecipar padrões de comportamento e construir modelos que sejam apropriados para explicar determinados fenômenos da natureza tem importância para a biologia, economia, automação industrial, meteorologia e diversas outras áreas da ciência \cite{box2015time}.
 
+É possível definir uma série temporal como sendo um conjunto de medidas feitas ao decorrer de um intervalo de tempo, podendo este ser contínuo ou discreto, sobre um fenômeno de interesse. Os sistemas cujas medições formam uma série temporal podem ser originários de processos determinísticos ou estocásticos \cite{box2015time}.
+
+Através da análise e interpretação de uma série temporal, podemos estimar os seus valores futuros, aumentando a informação que podemos obter das observações que já foram realizadas em um sistema.
+
 Na literatura, encontramos diversos tipos de modelos para a  predição de séries temporais, desde métodos clássicos lineares, como o modelo autorregressivo (AR) \cite{box2015time} até métodos não-lineares utilizando, por exemplo, redes neurais artificiais, sendo que dessas se destacam as redes do tipo \textit{Multilayer Perceptron} (MLP) e as redes recorrentes, especialmente a \textit{Long Short-Term Memory} (LSTM)  \cite{connor1994recurrent}.
 
 Uma classe de sistemas dinâmicos particularmente relevante dentro do contexto de modelagem e predição de séries temporais está ligada à ideia de dinâmica caótica. Diversos fenômenos naturais, como a dinâmica populacional de uma espécie, a dinâmica atmosférica de uma região, ou até mesmo as órbitas de um sistema com três ou mais corpos celestes podem exibir comportamento caótico. Apesar de serem determinísticos (e, portanto, previsíveis), esses sistemas são extremamente sensíveis às condições iniciais \cite{fiedler1994caos}. Isso causa um problema para a predição das séries temporais originadas por eles, pois uma pequena incerteza na medida afetará toda a previsão. 
 
 Tendo em vista o desempenho de modelos não-lineares para previsão de diversas séries temporais \cite{connor1994recurrent}, optamos por estudar a aplicabilidade de redes neurais artificiais à previsão de séries relacionadas a sistemas com dinâmica caótica. 
 
-Essa primeira parte do projeto de iniciação científica teve como objetivo estudar a base teórica das redes neurais artificiais e de outros regressores lineares clássicos, assim como estudar os fundamentos de sistemas dinâmicos e de dinâmica caótica. Os principais modelos estudados e a caracterização dos sistemas caóticos são brevemente apresentados na Seção 2.
+Essa primeira parte do projeto de iniciação científica teve como objetivo estudar a base teórica das redes neurais artificiais e de outros regressores lineares clássicos, assim como estudar os fundamentos de sistemas dinâmicos e de dinâmica caótica. Os principais modelos estudados, juntamente com uma breve exposição de modelos lineares básicos, são apresentados na Seção 2. Já na Seção 3, veremos alguns conceitos fundamentais e a caracterização de sistemas caóticos.
 
 O estudo dirigido começou abordando uma revisão de tópicos de probabilidade, teoria da informação e estimação. Em seguida, foi vista a teoria de regressores e classificadores clássicos \cite{hastie2009elements}. Depois disso, o estudo se dirigiu para as redes neurais artificiais MLP e recorrentes \cite{geron2019hands}, para, por fim, concluir o aprendizado de preditores com uma breve exposição dos modelos autorregressivos (AR) e autorregressivos de médias móveis (ARMA) \cite{box2015time}. Com a teoria de predição solidificada, o foco mudou para os fundamentos da teoria de sistemas com dinâmica caótica, utilizando como base as referências \cite{fiedler1994caos} e \cite{attux2001dinamica}.
 
-Paralelamente aos estudos realizados  durante o projeto de iniciação científica, o aluno também pôde fortalecer sua formação em aprendizado de máquina através da disciplina de pós-graduação \textbf{IA048 - Aprendizado de Máquina}, cursada como aluno especial. Com efeito, algumas atividades práticas desta disciplina foram importantes por estimularem o desenvolvimento de alguns ensaios de aplicações de redes neurais artificiais, que serão apresentados na Seção 3.
+Paralelamente aos estudos realizados  durante o projeto de iniciação científica, o aluno também pôde fortalecer sua formação em aprendizado de máquina através da disciplina de pós-graduação \textbf{IA048 - Aprendizado de Máquina}, cursada como aluno especial. Com efeito, algumas atividades práticas desta disciplina foram importantes por estimularem o desenvolvimento de alguns ensaios de aplicações de redes neurais artificiais, que serão apresentados na Seção 4.
 
-Por fim, na Seção 4 são indicados os próximos passos deste projeto de iniciação científica visando sua conclusão ao final deste primeiro semestre de 2021. 
+Por fim, na Seção 5 são indicados os próximos passos deste projeto de iniciação científica visando sua conclusão ao final deste primeiro semestre de 2021. 
 
-\section{Modelos de Preditores}
+\section{Modelos de Predição}
 
 \subsection{Modelos Lineares}
 
-Apesar desta pesquisa focar na aplicabilidade de modelos preditores não-lineares utilizando redes neurais artificais, é pertinente falarmos um pouco sobre modelos lineares de predição.
+Apesar desta pesquisa focar na aplicabilidade de modelos preditores não-lineares utilizando redes neurais artificais, é pertinente falarmos um pouco sobre modelos lineares para essa aplicação, já aproveitando o momento para introduzirmos alguns conceitos básicos de predição.
 
-O preditor linear mais básico é o autoregressivo (AR).
+\subsubsection{Modelo Autorregressivo (AR)}
+
+No modelo autorregressivo (AR, do inglês \textit{autoregressive}) o valor da série para um instante de tempo $n$, denotado por $x(n)$, é dado pela combinação linear dos valores passados a partir do instante $n - L - (K - 1)$ até o instante $n - L$, onde $L$ é o passo de predição (quantos instantes de tempo à frente pretende-se predizer o valor da série) e $K$ é a ordem do modelo. 
+
+Portanto, podemos dizer que, no modelo AR o valor da série temporal num instante $n$ é dado por \cite{haykin2008adaptive}:
+\begin{equation}
+x(n) = a_{1} \cdot x(n - L) + a_{2} \cdot x(n - L - 1) + ... + a_{K} \cdot x(n - L - (K - 1)) + \eta (n)
+\end{equation}
+onde $a_{k}$, $k = 1, 2, ..., K$ são os coeficientes que ponderam as amostras nos instantes passados e $\eta (n)$ é o erro instantâneo do modelo preditor. Esse erro instantâneo é um ruído branco (do inglês, \textit{white noise}), possuindo média nula e variância $\sigma_{n}^2$ constante \cite{box2015time}.
+
+É interessante mencionar que, se considerarmos $L = 1$, ou seja, se estivermos predizendo o valor da série num instante seguinte ao atual, podemos dizer que:
+\begin{equation}\label{ar-l-1}
+\sum_{k=0}^{K} w_{k} \cdot x(n - k) = \eta (n)
+\end{equation}
+sendo $w_{0} = 1$ e $w_{k} = -a_{k}$ para $1 \leq k \leq K$.
+
+Perceba que o lado esquerdo de (\ref{ar-l-1}) é uma soma de convolução em tempo discreto, portanto, podemos interpretar o modelo AR como um sistema linear e invariante com o tempo (LIT) \cite{oppenheim2014signals}.
+
+\subsubsection{Modelo Autorregressivo e de Médias Móveis (ARMA)}
+
+O modelo ARMA (do inglês, \textit{auto-regressive moving-average}) também leva em consideração o valor do ruído branco nos instantes de tempo anteriores ao atual \cite{box2015time}:
+\begin{equation}
+x(n) = \sum_{k = 1}^{K} a_{k} \cdot x(n - L - (k-1)) + \sum_{k=1}^{M} b_{k} \cdot \eta(n - L - (k-1))
+\end{equation} 
+
 
 \subsection{Modelos Não-lineares}
 
@@ -386,6 +414,6 @@ Por fim, compilaremos os resultados no relatório final, de forma a conter uma d
 
 \bibliographystyle{ieeetr}
 
-{\footnotesize \bibliography{bib}}
+\bibliography{bib}
 
 \end{document}
