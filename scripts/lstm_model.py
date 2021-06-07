@@ -55,7 +55,7 @@ class ModeloLSTM():
         pass
 
     
-    def gridsearch(self, activation='selu', init_mode='lecun_normal',
+    def gridsearch(self, activation='tanh', init_mode='glorot_uniform',
                    n_neurons=30, optimizer='Nadam',
                    learning_rate=0.001, loss="mean_squared_error"):
         """
