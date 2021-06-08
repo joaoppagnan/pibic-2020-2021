@@ -36,7 +36,7 @@ class ModeloLSTM():
         self.modelo = None
         pass
         
-    def criar_modelo(self):
+    def criar_modelo(self, n_units=30, init_mode='glorot_uniform'):
         """
         Descrição:
         ----------
@@ -52,11 +52,28 @@ class ModeloLSTM():
         Nada
         """
 
-        print("Esta função ainda não foi implementada para o modelo LSTM")
+        if not (type(n_units) is int):
+            raise TypeError("O número de unidades LSTM deve ser um int!")
+
+        if not (type(init_mode) is str):
+            raise TypeError("A inicialização deve ser uma string!")              
+        
+        # dimensoes de entrada
+        input_shape = self._input_shape
+        
+        # nome da rede
+        name = self._name
+    
+        model = keras.Sequential(name=name)
+        model.add(keras.Input(shape=input_shape))
+        model.add(keras.layers.LSTM(n_units, activation='tanh', kernel_initializer=init_mode, name="camada_lstm"))
+        model.add(keras.layers.Dense(1, activation='linear', name="camada_de_saida"))
+        
+        self._modelo = model
         pass
 
     
-    def gridsearch(self, init_mode='glorot_uniform', n_neurons=30, 
+    def gridsearch(self, init_mode='glorot_uniform', n_units=30, 
                    optimizer='Nadam', learning_rate=0.001, loss="mean_squared_error"):
         """
         Descrição:
@@ -68,8 +85,8 @@ class ModeloLSTM():
         -----------
         init_mode: str
             Inicialização a ser utilizada para o ajuste dos pesos dos neurônios
-        n_neurons: int
-            Número de neurônios a ser utilizado na camada das células recorrentes  
+        n_units: int
+            Número de unidades LSTM a ser utilizado na camada das células recorrentes  
         optimizer: str
             Otimizador a ser utilizado
         learning_rate: float
@@ -85,8 +102,8 @@ class ModeloLSTM():
         if not (type(init_mode) is str):
             raise TypeError("A inicialização deve ser uma string!")              
         
-        if not (type(n_neurons) is int):
-            raise TypeError("O número de neurônios deve ser um int!")
+        if not (type(n_units) is int):
+            raise TypeError("O número de unidades LSTM deve ser um int!")
             
         if not(type(optimizer) is str):
             raise TypeError("O otimizador deve ser uma string!")
@@ -105,7 +122,7 @@ class ModeloLSTM():
     
         model = keras.Sequential(name=name)
         model.add(keras.Input(shape=input_shape))
-        model.add(keras.layers.LSTM(n_neurons, activation='tanh', kernel_initializer=init_mode, name="camada_lstm"))
+        model.add(keras.layers.LSTM(n_units, activation='tanh', kernel_initializer=init_mode, name="camada_lstm"))
         model.add(keras.layers.Dense(1, activation='linear', name="camada_de_saida"))
     
         # define o otimizador e learning rate
