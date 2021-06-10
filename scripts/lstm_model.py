@@ -1,6 +1,7 @@
 import numpy as np
 import statistics
 import tensorflow as tf
+import sklearn
 
 from tensorflow import keras
 from sklearn.metrics import mean_squared_error
@@ -203,7 +204,7 @@ class ModeloLSTM():
         
         return self._modelo.summary()
     
-    def treinar(self, X_treino, X_val, y_treino, y_val, batch_size=10, early_stopping="ON", epochs=100):
+    def treinar(self, X_treino, X_val, y_treino, y_val, batch_size=10, early_stopping="ON", epochs=100, scaler=None):
         """
         Descrição:
         ----------
@@ -227,7 +228,7 @@ class ModeloLSTM():
             Se deve "ON" ou não deve "OFF" utilizar early stopping
         epochs: int
             Número de épocas para o treinamento
-            
+
         Retorna:
         --------
         Nada
@@ -280,27 +281,36 @@ class ModeloLSTM():
         self._modelo = modelo
         pass
     
-    def predicao(self, X_teste):
+    def predicao(self, X_teste, scaler=None):
         """
         Descrição:
         ----------
         Função para predizer os próximos valores utilizando o conjunto de teste
 
         Por padrão, essa função formata os dados em Many-to-One
+
+        Se os dados passaram por um scaler, passar ele como entrada
         
         Parâmetros:
         -----------
         X_teste: np.ndarray
             Conjunto de entradas para os dados de teste
-        
+        scaler: sklearn.preprocessing._data.MinMaxScaler ou sklearn.preprocessing._data.StandardScaler
+            Objeto de scalling do sklearn, já ajustado para todos os dados
+
         Retorna:
         --------
-        As saídas previstas
+        As saídas previstas já com a escala ajustada
         """
         
         if not (type(X_teste) is np.ndarray):
             raise TypeError("Os dados de entrada de teste devem ser um array do numpy!")
-            
+
+        if not ((type(scaler) is not None) and
+                ((type(scaler) is sklearn.preprocessing._data.MinMaxScaler) or
+                (type(scaler) is sklearn.preprocessing._data.StandardScaler))):
+            raise TypeError("O scaler deve ser um MinMaxScaler ou StandardScaler!")
+
         modelo = self._modelo
 
         # formatando os dados de entrada para o many-to-one
@@ -309,11 +319,17 @@ class ModeloLSTM():
         X_teste = np.reshape(X_teste,(len_teste, n_samples, 1))
 
         y_pred = modelo.predict(X_teste)
+
+        # caso a escala dos dados tiver sido alterada, desfaz ela
+        if (scaler != None):
+            y_pred = scaler.inverse_transform(y_pred)
+
         return y_pred
     
     def avaliar(self, X_treino, X_val, X_teste, y_treino,
                 y_val, y_teste, n_repeticoes = 5, batch_size=10,
-                early_stopping="ON", epochs=100):
+                early_stopping="ON", epochs=100,
+                scaler=None):
         """
         Definição:
         ----------
@@ -323,6 +339,8 @@ class ModeloLSTM():
         Ela deve ser executada antes do fit! Ou seja, executar após o construir_mlp() e o compilar()
 
         Por padrão, ela formata os dados em Many-to-One
+
+        Se os dados foram ajustados por um scaler, passar ele como uma entrada
         
         Parâmetros:
         -----------
@@ -346,6 +364,8 @@ class ModeloLSTM():
             Se deve "ON" ou não deve "OFF" utilizar early stopping
         epochs: int
             Número de épocas para o treinamento
+        scaler: sklearn.preprocessing._data.MinMaxScaler ou sklearn.preprocessing._data.StandardScaler
+            Objeto de scalling do sklearn, já ajustado para todos os dados
 
         Retorna:
         --------
@@ -386,6 +406,11 @@ class ModeloLSTM():
         if not (type(epochs) is int):
             raise TypeError("O número de épocas deve ser um int!")        
         
+        if not ((type(scaler) is not None) and
+                ((type(scaler) is sklearn.preprocessing._data.MinMaxScaler) or
+                (type(scaler) is sklearn.preprocessing._data.StandardScaler))):
+            raise TypeError("O scaler deve ser um MinMaxScaler ou StandardScaler!")
+
         # formatando os dados de entrada para o many-to-one
         len_treino = X_treino.shape[0]
         len_val = X_val.shape[0]
@@ -412,6 +437,12 @@ class ModeloLSTM():
                    verbose=0)
             
             y_pred = modelo.predict(X_teste)
+
+            # caso a escala dos dados tiver sido alterada, desfaz ela para medirmos o mse correto
+            if (scaler != None):
+                y_teste = scaler.inverse_transform(y_teste)
+                y_pred = scaler.inverse_transform(y_pred)
+
             mse = mean_squared_error(y_teste, y_pred)
             conjunto_mse.append(mse)
         
