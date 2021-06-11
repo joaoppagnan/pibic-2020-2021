@@ -8,7 +8,7 @@ from sklearn.metrics import mean_squared_error
 
 class ModeloLSTM():
     
-    def __init__(self, input_shape, name="LSTM"):
+    def __init__(self, input_shape, name="LSTM", shape='many-to-one', step=None):
         """
         Descrição:
         ----------
@@ -18,6 +18,10 @@ class ModeloLSTM():
         -----------
         input_dim: tuple
             Formato de entrada do preditor
+        step: int
+            Passo de predição. Somente utilizado caso o formato de entrada for 'many-to-many'
+        shape: str
+            Forma do vetor de entrada ('many-to-many', 'one-to-one' ou 'many-to-one')    
         name: str
             Nome a ser dado para o modelo
 
@@ -31,9 +35,20 @@ class ModeloLSTM():
             
         if not (type(name) is str):
             raise TypeError("O nome do modelo deve ser uma string!")
+
+        if not (type(shape) is str):
+            raise TypeError("O formato do vetor de entrada deve ser uma string!")
         
+        if not ((shape == 'many-to-one') or (shape == 'one-to-one') or (shape == 'many-to-many')):
+            raise ValueError("Formato de vetor de entrada não reconhecido")
+
+        if not ((type(step) is int) or (type(step) is None)):
+            raise TypeError("Formato do passo de predição inválido!")
+
         self._input_shape = input_shape
         self._name = name
+        self._shape = shape
+        self._step = step
         self.modelo = None
         pass
         
@@ -61,14 +76,26 @@ class ModeloLSTM():
         
         # dimensoes de entrada
         input_shape = self._input_shape
+        shape = self._shape
         
+        if (shape == 'many-to-many'):
+            return_sequences = True
+            step = self._step
+        else:
+            return_sequences = False
+
         # nome da rede
         name = self._name
     
         model = keras.Sequential(name=name)
         model.add(keras.Input(shape=input_shape))
-        model.add(keras.layers.LSTM(n_units, activation='tanh', kernel_initializer=init_mode, name="camada_lstm"))
-        model.add(keras.layers.Dense(1, activation='linear', name="camada_de_saida"))
+        model.add(keras.layers.LSTM(n_units, activation='tanh',
+                                    kernel_initializer=init_mode, return_sequences=return_sequences,
+                                    name="camada_lstm"))
+        if (shape == 'many-to-many'):
+            model.add(keras.layers.Dense(step, activation='linear', name="camada_de_saida"))
+        else:
+            model.add(keras.layers.Dense(1, activation='linear', name="camada_de_saida"))
         
         self._modelo = model
         pass
@@ -204,7 +231,7 @@ class ModeloLSTM():
         
         return self._modelo.summary()
     
-    def treinar(self, X_treino, X_val, y_treino, y_val, batch_size=10, early_stopping="ON", epochs=100, scaler=None):
+    def treinar(self, X_treino, X_val, y_treino, y_val, batch_size=10, early_stopping="ON", epochs=100):
         """
         Descrição:
         ----------
@@ -259,14 +286,22 @@ class ModeloLSTM():
             raise TypeError("O número de épocas deve ser um int!")
             
         modelo = self._modelo
+        shape = self._shape
 
-        # formatando os dados de entrada para o many-to-one
+        # formatando os dados de entrada
         len_treino = X_treino.shape[0]
         len_val = X_val.shape[0]
         n_samples = X_treino.shape[1]
 
-        X_treino = np.reshape(X_treino,(len_treino, n_samples, 1))
-        X_val = np.reshape(X_val,(len_val, n_samples, 1))
+        # formatando os dados de entrada para o many-to-one
+        if (shape == 'many-to-one'):
+            X_treino = np.reshape(X_treino,(len_treino, n_samples, 1))
+            X_val = np.reshape(X_val,(len_val, n_samples, 1))
+
+        # formatando os dados de entrada para o one-to-one
+        elif (shape == 'one-to-one'):
+            X_treino = np.reshape(X_treino,(len_treino, 1, n_samples))
+            X_val = np.reshape(X_val,(len_val, 1, n_samples))
         
         if (early_stopping == 'ON'):
             early_stopping_fit = keras.callbacks.EarlyStopping(patience=10, restore_best_weights=True, monitor='val_loss')
@@ -312,11 +347,19 @@ class ModeloLSTM():
             raise TypeError("O scaler deve ser um MinMaxScaler ou StandardScaler!")
 
         modelo = self._modelo
+        shape = self._shape
 
-        # formatando os dados de entrada para o many-to-one
+        # formatando os dados de entrada
         len_teste = X_teste.shape[0]
         n_samples = X_teste.shape[1]
-        X_teste = np.reshape(X_teste,(len_teste, n_samples, 1))
+
+        # formatando os dados de entrada para o many-to-one
+        if (shape == 'many-to-one'):
+            X_teste = np.reshape(X_teste,(len_teste, n_samples, 1))
+
+        # formatando os dados de entrada para o one-to-one
+        elif (shape == 'one-to-one'):
+            X_teste = np.reshape(X_teste,(len_teste, 1, n_samples))
 
         y_pred = modelo.predict(X_teste)
 
@@ -411,15 +454,27 @@ class ModeloLSTM():
                 (type(scaler) is sklearn.preprocessing._data.StandardScaler))):
             raise TypeError("O scaler deve ser um MinMaxScaler ou StandardScaler!")
 
-        # formatando os dados de entrada para o many-to-one
+        shape = self._shape
+
         len_treino = X_treino.shape[0]
         len_val = X_val.shape[0]
         len_teste = X_teste.shape[0]
         n_samples = X_treino.shape[1]
 
-        X_treino = np.reshape(X_treino,(len_treino, n_samples, 1))
-        X_val = np.reshape(X_val,(len_val, n_samples, 1))
-        X_teste = np.reshape(X_teste,(len_teste, n_samples, 1))
+        # formatando os dados de entrada para o many-to-one
+        if (shape == 'many-to-one'):
+            X_treino = np.reshape(X_treino,(len_treino, n_samples, 1))
+            X_val = np.reshape(X_val,(len_val, n_samples, 1))
+            X_teste = np.reshape(X_teste,(len_teste, n_samples, 1))
+
+        # formatando os dados de entrada para o one-to-one
+        elif (shape == 'one-to-one'):
+            X_treino = np.reshape(X_treino,(len_treino, 1, n_samples))
+            X_val = np.reshape(X_val,(len_val, 1, n_samples))
+            X_teste = np.reshape(X_teste,(len_teste, 1, n_samples))
+
+        if (scaler != None):
+            y_teste = scaler.inverse_transform(y_teste)
 
         conjunto_mse = []
         
@@ -429,6 +484,7 @@ class ModeloLSTM():
             early_stopping_fit = None
         
         for n in range(0, n_repeticoes):
+            print("Testando para a repetição de número " + str(n+1))
             modelo = self._modelo
             
             modelo.fit(X_treino, y_treino, 
@@ -440,16 +496,16 @@ class ModeloLSTM():
 
             # caso a escala dos dados tiver sido alterada, desfaz ela para medirmos o mse correto
             if (scaler != None):
-                y_teste = scaler.inverse_transform(y_teste)
                 y_pred = scaler.inverse_transform(y_pred)
 
             mse = mean_squared_error(y_teste, y_pred)
+            print("MSE para essa repetição: " + str(mse))
             conjunto_mse.append(mse)
         
         mse_med = statistics.mean(conjunto_mse)
         mse_dev = statistics.stdev(conjunto_mse)
         
-        print("Média do erro quadrático médio: " + str(mse_med) + "\n")
+        print("Média do erro quadrático médio: " + str(mse_med))
         print("Desvio padrão do erro quadrático médio: " + str(mse_dev) + "\n")
         
         return (mse_med, mse_dev)

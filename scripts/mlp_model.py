@@ -443,6 +443,7 @@ class ModeloMLP():
             early_stopping_fit = None
         
         for n in range(0, n_repeticoes):
+            print("Testando para a repetição de número " + str(n+1))
             modelo = self._modelo
             
             modelo.fit(X_treino, y_treino, 
@@ -452,12 +453,13 @@ class ModeloMLP():
             
             y_pred = modelo.predict(X_teste)
             mse = mean_squared_error(y_teste, y_pred)
+            print("MSE para essa repetição: " + str(mse))
             conjunto_mse.append(mse)
         
         mse_med = statistics.mean(conjunto_mse)
         mse_dev = statistics.stdev(conjunto_mse)
         
-        print("Média do erro quadrático médio: " + str(mse_med) + "\n")
+        print("Média do erro quadrático médio: " + str(mse_med))
         print("Desvio padrão do erro quadrático médio: " + str(mse_dev) + "\n")
         
         return (mse_med, mse_dev)
