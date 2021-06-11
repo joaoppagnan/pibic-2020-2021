@@ -455,6 +455,7 @@ class ModeloLSTM():
             raise TypeError("O scaler deve ser um MinMaxScaler ou StandardScaler!")
 
         shape = self._shape
+        step = self._step
 
         len_treino = X_treino.shape[0]
         len_val = X_val.shape[0]
@@ -462,7 +463,7 @@ class ModeloLSTM():
         n_samples = X_treino.shape[1]
 
         # formatando os dados de entrada para o many-to-one
-        if (shape == 'many-to-one'):
+        if ((shape == 'many-to-one') or (shape == 'many-to-many')):
             X_treino = np.reshape(X_treino,(len_treino, n_samples, 1))
             X_val = np.reshape(X_val,(len_val, n_samples, 1))
             X_teste = np.reshape(X_teste,(len_teste, n_samples, 1))
@@ -474,7 +475,11 @@ class ModeloLSTM():
             X_teste = np.reshape(X_teste,(len_teste, 1, n_samples))
 
         if (scaler != None):
-            y_teste = scaler.inverse_transform(y_teste)
+            if (shape == 'many-to-many'):
+                for L in range(0, step):
+                    y_teste[:, L] = np.squeeze(scaler.inverse_transform(y_teste[:, L].reshape(-1, 1)))
+            else:    
+                y_teste = scaler.inverse_transform(y_teste)
 
         conjunto_mse = []
         
@@ -496,7 +501,11 @@ class ModeloLSTM():
 
             # caso a escala dos dados tiver sido alterada, desfaz ela para medirmos o mse correto
             if (scaler != None):
-                y_pred = scaler.inverse_transform(y_pred)
+                if (shape == 'many-to-many'):
+                    for L in range(0, step):
+                        y_pred[:, L] = np.squeeze(scaler.inverse_transform(y_pred[:, L].reshape(-1, 1)))
+                else:    
+                    y_pred = scaler.inverse_transform(y_pred)
 
             mse = mean_squared_error(y_teste, y_pred)
             print("MSE para essa repetição: " + str(mse))
