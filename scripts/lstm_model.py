@@ -42,7 +42,7 @@ class ModeloLSTM():
         if not ((shape == 'many-to-one') or (shape == 'one-to-one') or (shape == 'many-to-many')):
             raise ValueError("Formato de vetor de entrada não reconhecido")
 
-        if not ((type(step) is int) or (type(step) is None)):
+        if ((step is not None) and (type(step) is not int)):
             raise TypeError("Formato do passo de predição inválido!")
 
         self._input_shape = input_shape
@@ -341,9 +341,9 @@ class ModeloLSTM():
         if not (type(X_teste) is np.ndarray):
             raise TypeError("Os dados de entrada de teste devem ser um array do numpy!")
 
-        if not ((type(scaler) is not None) and
-                ((type(scaler) is sklearn.preprocessing._data.MinMaxScaler) or
-                (type(scaler) is sklearn.preprocessing._data.StandardScaler))):
+        if ((scaler is not None) and
+                ((type(scaler) is not sklearn.preprocessing._data.MinMaxScaler) or
+                (type(scaler) is not sklearn.preprocessing._data.StandardScaler))):
             raise TypeError("O scaler deve ser um MinMaxScaler ou StandardScaler!")
 
         modelo = self._modelo
@@ -449,9 +449,9 @@ class ModeloLSTM():
         if not (type(epochs) is int):
             raise TypeError("O número de épocas deve ser um int!")        
         
-        if not ((type(scaler) is not None) and
-                ((type(scaler) is sklearn.preprocessing._data.MinMaxScaler) or
-                (type(scaler) is sklearn.preprocessing._data.StandardScaler))):
+        if not ((scaler is not None) and
+                ((type(scaler) is not sklearn.preprocessing._data.MinMaxScaler) or
+                (type(scaler) is not sklearn.preprocessing._data.StandardScaler))):
             raise TypeError("O scaler deve ser um MinMaxScaler ou StandardScaler!")
 
         shape = self._shape
