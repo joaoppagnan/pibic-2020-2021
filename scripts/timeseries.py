@@ -38,6 +38,7 @@ class SerieTemporal:
         self.__L = L
         self._matriz_entrada = np.array([])
         self._matriz_saida = np.array([])
+        self._criar_matrizes()
         pass
 
     def _criar_vetores(self, indice):
@@ -71,6 +72,38 @@ class SerieTemporal:
         vetor_saida = np.array(dados[indice+L])
 
         return vetor_entrada, vetor_saida    
+
+    def _criar_matrizes(self):
+        """
+        Descrição:
+        ----------
+        Função para criar as matrizes com os vetores de entrada e saída para as etapas de treinamento e teste
+    
+        Parâmetros:
+        -----------
+        Nenhum
+        
+        Retorna:
+        --------
+        Nada
+        """
+    
+        K, L = self.__K, self.__L
+        num_dados = len(self.__dados)
+    
+        for indice in range((K-1), (num_dados-L)):
+            vetor_entrada, vetor_saida = self._criar_vetores(indice)
+        
+            if (len(self._matriz_entrada) == 0):
+                self._matriz_entrada = vetor_entrada
+            else:
+                self._matriz_entrada = np.vstack((self._matriz_entrada, vetor_entrada))
+                
+            if (len(self._matriz_saida) == 0):
+                self._matriz_saida = np.array([vetor_saida])
+            else:
+                self._matriz_saida = np.vstack((self._matriz_saida, vetor_saida))
+        pass
 
     def dividir_treino_teste(self, tam_teste):
         """
@@ -125,7 +158,7 @@ class SerieTemporal:
         O conjunto de teste, treinamento e validação para as proporções solicitadas no formato np.ndarray
         A ordem das saídas é: X_treino, X_val, X_teste, y_treino, y_val, y_teste
         """        
-        
+
         if ((tam_teste < 0.0) | (tam_teste > 1.0)):
             raise ValueError("A proporção dos dados de teste deve ser entre 0.0 e 1.0!")
 
@@ -154,34 +187,3 @@ class SerieTemporal:
         return (X_treino, X_teste, X_val,
                 y_treino, y_teste, y_val)        
     
-    def criar_matrizes(self):
-        """
-        Descrição:
-        ----------
-        Função para criar as matrizes com os vetores de entrada e saída para as etapas de treinamento e teste
-    
-        Parâmetros:
-        -----------
-        Nenhum
-        
-        Retorna:
-        --------
-        Nada
-        """
-    
-        K, L = self.__K, self.__L
-        num_dados = len(self.__dados)
-    
-        for indice in range((K-1), (num_dados-L)):
-            vetor_entrada, vetor_saida = self._criar_vetores(indice)
-        
-            if (len(self._matriz_entrada) == 0):
-                self._matriz_entrada = vetor_entrada
-            else:
-                self._matriz_entrada = np.vstack((self._matriz_entrada, vetor_entrada))
-                
-            if (len(self._matriz_saida) == 0):
-                self._matriz_saida = np.array([vetor_saida])
-            else:
-                self._matriz_saida = np.vstack((self._matriz_saida, vetor_saida))
-        pass
