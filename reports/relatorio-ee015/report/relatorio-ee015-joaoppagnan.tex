@@ -68,7 +68,7 @@ Campinas, \today
 \section{Introdução}
 A predição de séries temporais é uma das aplicações mais interessantes do tratamento de informação. O desafio de antecipar padrões de comportamento e construir modelos que sejam apropriados para explicar determinados fenômenos da natureza tem importância para a biologia, economia, automação industrial, meteorologia e diversas outras áreas da ciência \cite{box2015time}.
 
-É possível definir uma série temporal como sendo um conjunto de medidas feitas ao decorrer de um intervalo de tempo, podendo este ser contínuo ou discreto, sobre um fenômeno de interesse. Os sistemas cujas medições formam uma série temporal podem ser originários de processos determinísticos ou estocásticos \cite{box2015time}.
+É possível definir uma série temporal como sendo um conjunto de medidas feitas ao decorrer de um intervalo de tempo, podendo este ser contínuo ou discreto, sobre um fenômeno de interesse. Os sistemas cujas medições formam uma série temporal podem ser originados por processos determinísticos ou estocásticos \cite{box2015time}.
 
 Através da análise e interpretação de uma série temporal, podemos estimar os seus valores futuros, aumentando a informação que podemos obter das observações que já foram realizadas em um sistema.
 
@@ -117,6 +117,11 @@ O modelo ARMA (do inglês, \textit{auto-regressive moving-average}) também leva
 x(n) = \sum_{k = 1}^{K} a_{k} \cdot x(n - L - (k-1)) + \sum_{k=1}^{M} b_{k} \cdot \eta(n - L - (k-1))
 \end{equation} 
 
+Para ser parametrizado, o modelo ARMA necessita de métodos iterativos e/ou heurísticos. Isso é devido ao fato de que não há soluções em forma fechada para obter os coeficientes $b_k$. Além disso, é válido mencionar que durante a otimização desses parâmetros, devemos nos atentar a estabilidade desse sistema, afinal, os erros podem se acumularem, levando a uma divergência na saída do preditor \cite{box2015time}.
+
+Apesar dos modelos lineares terem e ainda serem bastante utilizados para a predição de séries temporais, para determinadas situações a regra linear aplicada pelos modelos AR e ARMA não é suficiente para realizar uma predição com um erro aceitável em sistemas mais complexos. 
+
+Devido a isso, optamos por direcionar a análise para modelos não-lineares, nesse caso, utilizando redes neurais artificais para a predição. Veremos então como são esses tipos de preditores.
 
 \subsection{Modelos Não-lineares}
 
