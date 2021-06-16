@@ -341,9 +341,9 @@ class ModeloLSTM():
         if not (type(X_teste) is np.ndarray):
             raise TypeError("Os dados de entrada de teste devem ser um array do numpy!")
 
-        if ((scaler is not None) and
-                ((type(scaler) is not sklearn.preprocessing._data.MinMaxScaler) or
-                (type(scaler) is not sklearn.preprocessing._data.StandardScaler))):
+        if ((scaler is not None) and 
+            (type(scaler) is not sklearn.preprocessing._data.MinMaxScaler) and
+            (type(scaler) is not sklearn.preprocessing._data.StandardScaler)):
             raise TypeError("O scaler deve ser um MinMaxScaler ou StandardScaler!")
 
         modelo = self._modelo
@@ -449,9 +449,9 @@ class ModeloLSTM():
         if not (type(epochs) is int):
             raise TypeError("O número de épocas deve ser um int!")        
         
-        if not ((scaler is not None) and
-                ((type(scaler) is not sklearn.preprocessing._data.MinMaxScaler) or
-                (type(scaler) is not sklearn.preprocessing._data.StandardScaler))):
+        if ((scaler is not None) and 
+            (type(scaler) is not sklearn.preprocessing._data.MinMaxScaler) and
+            (type(scaler) is not sklearn.preprocessing._data.StandardScaler)):
             raise TypeError("O scaler deve ser um MinMaxScaler ou StandardScaler!")
 
         shape = self._shape

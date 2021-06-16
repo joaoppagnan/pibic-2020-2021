@@ -329,7 +329,7 @@ class ModeloGRU():
         -----------
         X_teste: np.ndarray
             Conjunto de entradas para os dados de teste
-        scaler: sklearn.preprocessing._data.MinMaxScaler ou sklearn.preprocessing._data.StandardScaler
+        scaler: sklearn.preprocessing.MinMaxScaler ou sklearn.preprocessing.StandardScaler
             Objeto de scalling do sklearn, já ajustado para todos os dados
 
         Retorna:
@@ -340,9 +340,9 @@ class ModeloGRU():
         if not (type(X_teste) is np.ndarray):
             raise TypeError("Os dados de entrada de teste devem ser um array do numpy!")
 
-        if ((scaler is not None) and
-                ((type(scaler) is not sklearn.preprocessing._data.MinMaxScaler) or
-                (type(scaler) is not sklearn.preprocessing._data.StandardScaler))):
+        if ((scaler is not None) and 
+            (type(scaler) is not sklearn.preprocessing._data.MinMaxScaler) and
+            (type(scaler) is not sklearn.preprocessing._data.StandardScaler)):
             raise TypeError("O scaler deve ser um MinMaxScaler ou StandardScaler!")
 
         modelo = self._modelo
@@ -406,7 +406,7 @@ class ModeloGRU():
             Se deve "ON" ou não deve "OFF" utilizar early stopping
         epochs: int
             Número de épocas para o treinamento
-        scaler: sklearn.preprocessing._data.MinMaxScaler ou sklearn.preprocessing._data.StandardScaler
+        scaler: sklearn.preprocessing.MinMaxScaler ou sklearn.preprocessing.StandardScaler
             Objeto de scalling do sklearn, já ajustado para todos os dados
 
         Retorna:
@@ -448,9 +448,9 @@ class ModeloGRU():
         if not (type(epochs) is int):
             raise TypeError("O número de épocas deve ser um int!")        
         
-        if not ((scaler is not None) and
-                ((type(scaler) is not sklearn.preprocessing._data.MinMaxScaler) or
-                (type(scaler) is not sklearn.preprocessing._data.StandardScaler))):
+        if ((scaler is not None) and 
+            (type(scaler) is not sklearn.preprocessing._data.MinMaxScaler) and
+            (type(scaler) is not sklearn.preprocessing._data.StandardScaler)):
             raise TypeError("O scaler deve ser um MinMaxScaler ou StandardScaler!")
 
         shape = self._shape
