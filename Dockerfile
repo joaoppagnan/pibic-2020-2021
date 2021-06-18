@@ -21,6 +21,9 @@ RUN apt install build-essential libssl-dev libffi-dev python3.8-dev -y
 # para poder utilizar o latex no matplotlib
 RUN apt install texlive dvipng texlive-latex-extra texlive-fonts-recommended ghostscript cm-super -y
 
+# instala o pacote do python que eu fiz
+RUN python3.8 setup.py install 
+
 # libera a porta pro jupyter
 EXPOSE 8888
 # MD ["jupyter", "lab", "--ip='0.0.0.0'", "--port=8888", "--no-browser", "--allow-root"]
