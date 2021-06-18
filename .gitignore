@@ -5,6 +5,9 @@ pibic2020-env/
 **/.ipynb_checkpoints/
 *__pycache__*
 .vscode/
+build/
+dist/
+pibic2020.egg-info/
 
 # ignorar esses arquivos
 *.pyc
