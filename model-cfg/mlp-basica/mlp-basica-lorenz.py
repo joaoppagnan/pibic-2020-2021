@@ -5,3 +5,4 @@ learning_rate=0.001
 activation='selu'
 init_mode='lecun_normal'
 n_neurons=50
+n_hidden_layers=1

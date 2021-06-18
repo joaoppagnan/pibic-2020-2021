@@ -371,7 +371,7 @@ class ModeloMLP():
         Função para treinar a rede e prever os dados n_repeticoes de vezes de forma a obter 
         uma média e um desvio padrão para o erro quadrático médio
         
-        Ela deve ser executada antes do fit! Ou seja, executar após o construir_mlp() e o compilar()
+        Ela deve ser executada antes do fit! Ou seja, executar após o construir_mlp() e o montar()
         
         Parâmetros:
         -----------

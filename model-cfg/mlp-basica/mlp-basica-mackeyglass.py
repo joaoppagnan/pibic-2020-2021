@@ -5,3 +5,4 @@ learning_rate=0.001
 activation='tanh'
 init_mode='glorot_normal'
 n_neurons=5
+n_hidden_layers=1
