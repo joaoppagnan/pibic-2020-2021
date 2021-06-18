@@ -577,4 +577,4 @@ class ModeloGRU():
         modelo = keras.models.load_model(nome_do_arquivo)
         self._modelo = modelo
         
-        return print("O modelo foi carregado!")    
+        return print("O modelo foi carregado!")
