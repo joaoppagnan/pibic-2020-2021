@@ -516,7 +516,7 @@ class ModeloGRU():
         print("Média do erro quadrático médio: " + str(mse_med))
         print("Desvio padrão do erro quadrático médio: " + str(mse_dev) + "\n")
         
-        return (mse_med, mse_dev)
+        return mse_med, mse_dev
     
     def salvar(self, nome_do_arquivo, h5="OFF"):
         """
