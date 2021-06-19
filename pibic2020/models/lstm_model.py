@@ -1,22 +1,27 @@
 import numpy as np
 import statistics
 import tensorflow as tf
+import sklearn
 
 from tensorflow import keras
 from sklearn.metrics import mean_squared_error
 
-class ModeloMLP():
+class ModeloLSTM():
     
-    def __init__(self, input_size, name="MLP"):
+    def __init__(self, input_shape, name="LSTM", shape='many-to-one', step=None):
         """
         Descrição:
         ----------
-        Construtor da classe 'ModeloMLP'
+        Construtor da classe 'ModeloLSTM'
 
         Parâmetros:
         -----------
-        input_size: int
-            Número de amostras de entrada do preditor
+        input_dim: tuple
+            Formato de entrada do preditor
+        step: int
+            Passo de predição. Somente utilizado caso o formato de entrada for 'many-to-many'
+        shape: str
+            Forma do vetor de entrada ('many-to-many', 'one-to-one' ou 'many-to-one')    
         name: str
             Nome a ser dado para o modelo
 
@@ -25,109 +30,91 @@ class ModeloMLP():
         Nada
         """
         
-        if not (type(input_size) is int):
-            raise TypeError("O número de amostras de entrada deve ser um int!")
+        if not (type(input_shape) is tuple):
+            raise TypeError("O formato de entrada deve ser uma tupla!")
             
         if not (type(name) is str):
             raise TypeError("O nome do modelo deve ser uma string!")
+
+        if not (type(shape) is str):
+            raise TypeError("O formato do vetor de entrada deve ser uma string!")
         
-        self._input_size = input_size
+        if not ((shape == 'many-to-one') or (shape == 'one-to-one') or (shape == 'many-to-many')):
+            raise ValueError("Formato de vetor de entrada não reconhecido")
+
+        if ((step is not None) and (type(step) is not int)):
+            raise TypeError("Formato do passo de predição inválido!")
+
+        self._input_shape = input_shape
         self._name = name
+        self._shape = shape
+        self._step = step
         self.modelo = None
         pass
         
-    def criar_modelo(self, batch_normalization='OFF', activation='selu',
-                      init_mode='lecun_normal', n_neurons=30,
-                      n_hidden_layers=1):
+    def criar_modelo(self, n_units=30, init_mode='glorot_uniform'):
         """
         Descrição:
         ----------
-        Função para gerar a rede neural MLP com os parâmetros especificados
+        Função para gerar a rede neural LSTM com os parâmetros especificados.
+        A função de ativação é a tangente hiperbólica.
+        Ainda não foi implementada.
         
         Parâmetros:
         -----------
-        batch_normalization: str
-            Informa se deve "ON" ou se não deve "OFF" utiizar uma camada de
-            batch normalization após a camada de entrada
-        activation: str
-            Função de ativação a ser utilizada nas camadas intermediárias
-        init_mode: str
-            Inicialização a ser utilizada para o ajuste dos pesos dos neurônios
-        n_neurons: int
-            Número de neurônios a ser utilizado na camada intermediária
-        n_hidden_layers: int
-            Número de camadas intermediárias
         
         Retorna:
         --------
         Nada
         """
-        
-        if not (type(batch_normalization) is str):
-            raise TypeError("A escolha do batch normalization deve ser uma string!")
-            
-        if not ((batch_normalization == 'ON') | (batch_normalization == 'OFF')):
-            raise ValueError("A string do batch normalization deve ser um ON ou OFF")
-            
-        if not (type(activation) is str):
-            raise TypeError("A função de ativação deve ser uma string!")  
+
+        if not (type(n_units) is int):
+            raise TypeError("O número de unidades LSTM deve ser um int!")
 
         if not (type(init_mode) is str):
             raise TypeError("A inicialização deve ser uma string!")              
         
-        if not (type(n_neurons) is int):
-            raise TypeError("O número de neurônios deve ser um int!")
-            
-        if not (type(n_neurons) is int):
-            raise TypeError("O número de camadas intermediárias deve ser um int!")     
+        # dimensoes de entrada
+        input_shape = self._input_shape
+        shape = self._shape
         
-        
+        if (shape == 'many-to-many'):
+            return_sequences = True
+            step = self._step
+        else:
+            return_sequences = False
+
+        # nome da rede
         name = self._name
-        input_size = self._input_size
-        
-        # definindo o modelo
-        modelo = keras.Sequential(name = name)
-        
-        # camada de entrada
-        modelo.add(keras.layers.Dense(input_size, input_dim=input_size, name="camada_de_entrada", activation='linear'))
-        
-        # camada de batch normalization
-        if (batch_normalization == 'ON'):
-            modelo.add(keras.layers.BatchNormalization(name="camada_de_batch_normalization"))
-        
-        # adiciona n_hidden_layers camadas intermediárias
-        for i in range(0, n_hidden_layers):
-            modelo.add(keras.layers.Dense(n_neurons, activation=activation,
-                                          kernel_initializer=init_mode, name="camada_intermediaria_"+str(i+1)))
-        
-        # camada de saida
-        modelo.add(keras.layers.Dense(1, activation='linear', name="camada_de_saida"))       
     
-        self._modelo = modelo
+        model = keras.Sequential(name=name)
+        model.add(keras.Input(shape=input_shape))
+        model.add(keras.layers.LSTM(n_units, activation='tanh',
+                                    kernel_initializer=init_mode, return_sequences=return_sequences,
+                                    name="camada_lstm"))
+        if (shape == 'many-to-many'):
+            model.add(keras.layers.Dense(step, activation='linear', name="camada_de_saida"))
+        else:
+            model.add(keras.layers.Dense(1, activation='linear', name="camada_de_saida"))
+        
+        self._modelo = model
         pass
+
     
-    def gridsearch(self, batch_normalization='OFF', activation='selu',
-                   init_mode='lecun_normal', n_neurons=30, n_hidden_layers=1,
+    def gridsearch(self, init_mode='glorot_uniform', n_units=30, 
                    optimizer='Nadam', learning_rate=0.001, loss="mean_squared_error"):
         """
         Descrição:
         ----------
-        Método utilizado para o gridsearch da MLP
+        Método utilizado para o gridsearch da LSTM
         Essa função não altera o modelo do objeto, é apenas para o Gridsearch!
         
         Parâmetros:
         -----------
-        batch_normalization: str
-            Informa se deve "ON" ou se não deve "OFF" utiizar uma camada de
-            batch normalization após a camada de entrada
-        activation: str
-            Função de ativação a ser utilizada nas camadas intermediárias
         init_mode: str
             Inicialização a ser utilizada para o ajuste dos pesos dos neurônios
-        n_neurons: int
-            Número de neurônios a ser utilizado na camada intermediária
-        n_hidden_layers: int
-            Número de camadas intermediárias       
+        n_units: int
+            Número de unidades LSTM a ser utilizado na camada das células recorrentes  
         optimizer: str
             Otimizador a ser utilizado
         learning_rate: float
@@ -140,23 +127,11 @@ class ModeloMLP():
         Um modelo já compilado para ser fornecido ao KerasRegressor
         """
 
-        if not (type(batch_normalization) is str):
-            raise TypeError("A escolha do batch normalization deve ser uma string!")
-            
-        if not ((batch_normalization == 'ON') | (batch_normalization == 'OFF')):
-            raise ValueError("A string do batch normalization deve ser um ON ou OFF")
-            
-        if not (type(activation) is str):
-            raise TypeError("A função de ativação deve ser uma string!")  
-
         if not (type(init_mode) is str):
             raise TypeError("A inicialização deve ser uma string!")              
         
-        if not (type(n_neurons) is int):
-            raise TypeError("O número de neurônios deve ser um int!")
-            
-        if not (type(n_hidden_layers) is int):
-            raise TypeError("O número de camadas intermediárias deve ser um int!")         
+        if not (type(n_units) is int):
+            raise TypeError("O número de unidades LSTM deve ser um int!")
             
         if not(type(optimizer) is str):
             raise TypeError("O otimizador deve ser uma string!")
@@ -168,43 +143,28 @@ class ModeloMLP():
             raise TypeError("A função custo deve ser uma string!")     
             
         # dimensoes de entrada
-        input_size = self._input_size
+        input_shape = self._input_shape
         
         # nome da rede
         name = self._name
     
-        # define o otimizador
+        model = keras.Sequential(name=name)
+        model.add(keras.Input(shape=input_shape))
+        model.add(keras.layers.LSTM(n_units, activation='tanh', kernel_initializer=init_mode, name="camada_lstm"))
+        model.add(keras.layers.Dense(1, activation='linear', name="camada_de_saida"))
+    
+        # define o otimizador e learning rate
         if (optimizer=='Nadam'):
             model_optimizer = keras.optimizers.Nadam()
         else:
             model_optimizer = optimizer    
-        
-        # learning_rate
         model_optimizer.learning_rate.assign(learning_rate)
     
-        # define o modelo e adiciona a camada de entrada
-        model = keras.Sequential(name=name)
-        model.add(keras.layers.Dense(input_size, input_dim=input_size,
-                                     name="camada_de_entrada", activation = 'linear'))
-        
-        # batch nomralization
-        if (batch_normalization == 'ON'):
-            model.add(keras.layers.BatchNormalization(name="camada_de_batch_normalization"))
-            
-        # camadas intermediarias
-        for i in range(0, n_hidden_layers):
-            model.add(keras.layers.Dense(n_neurons, activation=activation,
-                                         kernel_initializer=init_mode, name="camada_intermediaria_"+str(i+1)))
-        
-        # camada de saida
-        model.add(keras.layers.Dense(1, activation='linear', name="camada_de_saida"))
-    
-        # compila e monta o modelo
         model.compile(
             optimizer = model_optimizer,
-            loss = loss)
+            loss = 'mse')
+    
         model.build()
-        
         return model
     
     def montar(self, optimizer='Nadam', learning_rate=0.001, loss="mean_squared_error"):
@@ -212,7 +172,7 @@ class ModeloMLP():
         Descrição:
         ----------
         Função para compilar e montar o modelo com o otimizador selecionado com o learning rate escolhido
-        e adotando a função custo
+        e adotando a função custo parametrizada
         
         Parâmetros:
         -----------
@@ -276,6 +236,8 @@ class ModeloMLP():
         Descrição:
         ----------
         Função para realizar o treinamento da rede
+
+        Por padrão, essa função formata os dados em Many-to-One
         
         Parâmetros:
         -----------
@@ -293,7 +255,7 @@ class ModeloMLP():
             Se deve "ON" ou não deve "OFF" utilizar early stopping
         epochs: int
             Número de épocas para o treinamento
-            
+
         Retorna:
         --------
         Nada
@@ -324,6 +286,22 @@ class ModeloMLP():
             raise TypeError("O número de épocas deve ser um int!")
             
         modelo = self._modelo
+        shape = self._shape
+
+        # formatando os dados de entrada
+        len_treino = X_treino.shape[0]
+        len_val = X_val.shape[0]
+        n_samples = X_treino.shape[1]
+
+        # formatando os dados de entrada para o many-to-one
+        if (shape == 'many-to-one'):
+            X_treino = np.reshape(X_treino,(len_treino, n_samples, 1))
+            X_val = np.reshape(X_val,(len_val, n_samples, 1))
+
+        # formatando os dados de entrada para o one-to-one
+        elif (shape == 'one-to-one'):
+            X_treino = np.reshape(X_treino,(len_treino, 1, n_samples))
+            X_val = np.reshape(X_val,(len_val, 1, n_samples))
         
         if (early_stopping == 'ON'):
             early_stopping_fit = keras.callbacks.EarlyStopping(patience=10, restore_best_weights=True, monitor='val_loss')
@@ -338,33 +316,63 @@ class ModeloMLP():
         self._modelo = modelo
         pass
     
-    def predicao(self, X_teste):
+    def predicao(self, X_teste, scaler=None):
         """
         Descrição:
         ----------
         Função para predizer os próximos valores utilizando o conjunto de teste
+
+        Por padrão, essa função formata os dados em Many-to-One
+
+        Se os dados passaram por um scaler, passar ele como entrada
         
         Parâmetros:
         -----------
         X_teste: np.ndarray
             Conjunto de entradas para os dados de teste
-        
+        scaler: sklearn.preprocessing._data.MinMaxScaler ou sklearn.preprocessing._data.StandardScaler
+            Objeto de scalling do sklearn, já ajustado para todos os dados
+
         Retorna:
         --------
-        As saídas previstas
+        As saídas previstas já com a escala ajustada
         """
         
         if not (type(X_teste) is np.ndarray):
             raise TypeError("Os dados de entrada de teste devem ser um array do numpy!")
-            
+
+        if ((scaler is not None) and 
+            (type(scaler) is not sklearn.preprocessing._data.MinMaxScaler) and
+            (type(scaler) is not sklearn.preprocessing._data.StandardScaler)):
+            raise TypeError("O scaler deve ser um MinMaxScaler ou StandardScaler!")
+
         modelo = self._modelo
-        
+        shape = self._shape
+
+        # formatando os dados de entrada
+        len_teste = X_teste.shape[0]
+        n_samples = X_teste.shape[1]
+
+        # formatando os dados de entrada para o many-to-one
+        if (shape == 'many-to-one'):
+            X_teste = np.reshape(X_teste,(len_teste, n_samples, 1))
+
+        # formatando os dados de entrada para o one-to-one
+        elif (shape == 'one-to-one'):
+            X_teste = np.reshape(X_teste,(len_teste, 1, n_samples))
+
         y_pred = modelo.predict(X_teste)
+
+        # caso a escala dos dados tiver sido alterada, desfaz ela
+        if (scaler != None):
+            y_pred = scaler.inverse_transform(y_pred)
+
         return y_pred
     
     def avaliar(self, X_treino, X_val, X_teste, y_treino,
                 y_val, y_teste, n_repeticoes = 5, batch_size=10,
-                early_stopping="ON", epochs=100):
+                early_stopping="ON", epochs=100,
+                scaler=None, verbose = 0):
         """
         Definição:
         ----------
@@ -372,6 +380,10 @@ class ModeloMLP():
         uma média e um desvio padrão para o erro quadrático médio
         
         Ela deve ser executada antes do fit! Ou seja, executar após o construir_mlp() e o compilar()
+
+        Por padrão, ela formata os dados em Many-to-One
+
+        Se os dados foram ajustados por um scaler, passar ele como uma entrada
         
         Parâmetros:
         -----------
@@ -395,6 +407,10 @@ class ModeloMLP():
             Se deve "ON" ou não deve "OFF" utilizar early stopping
         epochs: int
             Número de épocas para o treinamento
+        scaler: sklearn.preprocessing._data.MinMaxScaler ou sklearn.preprocessing._data.StandardScaler
+            Objeto de scalling do sklearn, já ajustado para todos os dados
+        verbose: int
+            Se vai retornar mensagens ao longo do processo (0 ou 1)
 
         Retorna:
         --------
@@ -435,6 +451,44 @@ class ModeloMLP():
         if not (type(epochs) is int):
             raise TypeError("O número de épocas deve ser um int!")        
         
+        if ((scaler is not None) and 
+            (type(scaler) is not sklearn.preprocessing._data.MinMaxScaler) and
+            (type(scaler) is not sklearn.preprocessing._data.StandardScaler)):
+            raise TypeError("O scaler deve ser um MinMaxScaler ou StandardScaler!")
+
+        if not ((type(verbose) is int) and
+                ((verbose == 0) or
+                 (verbose == 1)
+                 (verbose == 2))):
+            raise ValueError("O valor de verbose deve ser um int igual a 0, 1 ou 2!")  
+
+        shape = self._shape
+        step = self._step
+
+        len_treino = X_treino.shape[0]
+        len_val = X_val.shape[0]
+        len_teste = X_teste.shape[0]
+        n_samples = X_treino.shape[1]
+
+        # formatando os dados de entrada para o many-to-one
+        if ((shape == 'many-to-one') or (shape == 'many-to-many')):
+            X_treino = np.reshape(X_treino,(len_treino, n_samples, 1))
+            X_val = np.reshape(X_val,(len_val, n_samples, 1))
+            X_teste = np.reshape(X_teste,(len_teste, n_samples, 1))
+
+        # formatando os dados de entrada para o one-to-one
+        elif (shape == 'one-to-one'):
+            X_treino = np.reshape(X_treino,(len_treino, 1, n_samples))
+            X_val = np.reshape(X_val,(len_val, 1, n_samples))
+            X_teste = np.reshape(X_teste,(len_teste, 1, n_samples))
+
+        if (scaler != None):
+            if (shape == 'many-to-many'):
+                for L in range(0, step):
+                    y_teste[:, L] = np.squeeze(scaler.inverse_transform(y_teste[:, L].reshape(-1, 1)))
+            else:    
+                y_teste = scaler.inverse_transform(y_teste)
+
         conjunto_mse = []
         
         if (early_stopping == 'ON'):
@@ -443,7 +497,9 @@ class ModeloMLP():
             early_stopping_fit = None
         
         for n in range(0, n_repeticoes):
-            print("Testando para a repetição de número " + str(n+1))
+
+            if (verbose == 2):
+                print("Testando para a repetição de número " + str(n+1))
             modelo = self._modelo
             
             modelo.fit(X_treino, y_treino, 
@@ -452,17 +508,28 @@ class ModeloMLP():
                    verbose=0)
             
             y_pred = modelo.predict(X_teste)
+
+            # caso a escala dos dados tiver sido alterada, desfaz ela para medirmos o mse correto
+            if (scaler != None):
+                if (shape == 'many-to-many'):
+                    for L in range(0, step):
+                        y_pred[:, L] = np.squeeze(scaler.inverse_transform(y_pred[:, L].reshape(-1, 1)))
+                else:    
+                    y_pred = scaler.inverse_transform(y_pred)
+
             mse = mean_squared_error(y_teste, y_pred)
-            print("MSE para essa repetição: " + str(mse))
+            if (verbose == 2):
+                print("MSE para essa repetição: " + str(mse))
             conjunto_mse.append(mse)
         
         mse_med = statistics.mean(conjunto_mse)
         mse_dev = statistics.stdev(conjunto_mse)
         
-        print("Média do erro quadrático médio: " + str(mse_med))
-        print("Desvio padrão do erro quadrático médio: " + str(mse_dev) + "\n")
+        if (verbose == 1):
+            print("Média do erro quadrático médio: " + str(mse_med))
+            print("Desvio padrão do erro quadrático médio: " + str(mse_dev) + "\n")
         
-        return (mse_med, mse_dev)
+        return mse_med, mse_dev
     
     def salvar(self, nome_do_arquivo, h5="OFF"):
         """

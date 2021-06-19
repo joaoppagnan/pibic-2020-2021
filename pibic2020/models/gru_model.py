@@ -6,13 +6,13 @@ import sklearn
 from tensorflow import keras
 from sklearn.metrics import mean_squared_error
 
-class ModeloLSTM():
+class ModeloGRU():
     
-    def __init__(self, input_shape, name="LSTM", shape='many-to-one', step=None):
+    def __init__(self, input_shape, name="GRU", shape='many-to-one', step=None):
         """
         Descrição:
         ----------
-        Construtor da classe 'ModeloLSTM'
+        Construtor da classe 'ModeloGRU'
 
         Parâmetros:
         -----------
@@ -56,7 +56,7 @@ class ModeloLSTM():
         """
         Descrição:
         ----------
-        Função para gerar a rede neural LSTM com os parâmetros especificados.
+        Função para gerar a rede GRU com os parâmetros especificados.
         A função de ativação é a tangente hiperbólica.
         Ainda não foi implementada.
         
@@ -69,7 +69,7 @@ class ModeloLSTM():
         """
 
         if not (type(n_units) is int):
-            raise TypeError("O número de unidades LSTM deve ser um int!")
+            raise TypeError("O número de unidades GRU deve ser um int!")
 
         if not (type(init_mode) is str):
             raise TypeError("A inicialização deve ser uma string!")              
@@ -89,9 +89,9 @@ class ModeloLSTM():
     
         model = keras.Sequential(name=name)
         model.add(keras.Input(shape=input_shape))
-        model.add(keras.layers.LSTM(n_units, activation='tanh',
+        model.add(keras.layers.GRU(n_units, activation='tanh',
                                     kernel_initializer=init_mode, return_sequences=return_sequences,
-                                    name="camada_lstm"))
+                                    name="camada_gru", reset_after=True))
         if (shape == 'many-to-many'):
             model.add(keras.layers.Dense(step, activation='linear', name="camada_de_saida"))
         else:
@@ -100,13 +100,12 @@ class ModeloLSTM():
         self._modelo = model
         pass
 
-    
     def gridsearch(self, init_mode='glorot_uniform', n_units=30, 
                    optimizer='Nadam', learning_rate=0.001, loss="mean_squared_error"):
         """
         Descrição:
         ----------
-        Método utilizado para o gridsearch da LSTM
+        Método utilizado para o gridsearch da GRU
         Essa função não altera o modelo do objeto, é apenas para o Gridsearch!
         
         Parâmetros:
@@ -114,7 +113,7 @@ class ModeloLSTM():
         init_mode: str
             Inicialização a ser utilizada para o ajuste dos pesos dos neurônios
         n_units: int
-            Número de unidades LSTM a ser utilizado na camada das células recorrentes  
+            Número de unidades GRU a ser utilizado na camada das células recorrentes  
         optimizer: str
             Otimizador a ser utilizado
         learning_rate: float
@@ -131,7 +130,7 @@ class ModeloLSTM():
             raise TypeError("A inicialização deve ser uma string!")              
         
         if not (type(n_units) is int):
-            raise TypeError("O número de unidades LSTM deve ser um int!")
+            raise TypeError("O número de unidades GRU deve ser um int!")
             
         if not(type(optimizer) is str):
             raise TypeError("O otimizador deve ser uma string!")
@@ -150,7 +149,7 @@ class ModeloLSTM():
     
         model = keras.Sequential(name=name)
         model.add(keras.Input(shape=input_shape))
-        model.add(keras.layers.LSTM(n_units, activation='tanh', kernel_initializer=init_mode, name="camada_lstm"))
+        model.add(keras.layers.GRU(n_units, activation='tanh', kernel_initializer=init_mode, name="camada_gru", reset_after=True))
         model.add(keras.layers.Dense(1, activation='linear', name="camada_de_saida"))
     
         # define o otimizador e learning rate
@@ -330,7 +329,7 @@ class ModeloLSTM():
         -----------
         X_teste: np.ndarray
             Conjunto de entradas para os dados de teste
-        scaler: sklearn.preprocessing._data.MinMaxScaler ou sklearn.preprocessing._data.StandardScaler
+        scaler: sklearn.preprocessing.MinMaxScaler ou sklearn.preprocessing.StandardScaler
             Objeto de scalling do sklearn, já ajustado para todos os dados
 
         Retorna:
@@ -341,9 +340,9 @@ class ModeloLSTM():
         if not (type(X_teste) is np.ndarray):
             raise TypeError("Os dados de entrada de teste devem ser um array do numpy!")
 
-        if ((scaler is not None) and
-                ((type(scaler) is not sklearn.preprocessing._data.MinMaxScaler) or
-                (type(scaler) is not sklearn.preprocessing._data.StandardScaler))):
+        if ((scaler is not None) and 
+            (type(scaler) is not sklearn.preprocessing._data.MinMaxScaler) and
+            (type(scaler) is not sklearn.preprocessing._data.StandardScaler)):
             raise TypeError("O scaler deve ser um MinMaxScaler ou StandardScaler!")
 
         modelo = self._modelo
@@ -372,14 +371,14 @@ class ModeloLSTM():
     def avaliar(self, X_treino, X_val, X_teste, y_treino,
                 y_val, y_teste, n_repeticoes = 5, batch_size=10,
                 early_stopping="ON", epochs=100,
-                scaler=None):
+                scaler=None, verbose=0):
         """
         Definição:
         ----------
         Função para treinar a rede e prever os dados n_repeticoes de vezes de forma a obter 
         uma média e um desvio padrão para o erro quadrático médio
         
-        Ela deve ser executada antes do fit! Ou seja, executar após o construir_mlp() e o compilar()
+        Ela deve ser executada antes do fit! Ou seja, executar após o criar_modelo() e o compilar()
 
         Por padrão, ela formata os dados em Many-to-One
 
@@ -407,8 +406,10 @@ class ModeloLSTM():
             Se deve "ON" ou não deve "OFF" utilizar early stopping
         epochs: int
             Número de épocas para o treinamento
-        scaler: sklearn.preprocessing._data.MinMaxScaler ou sklearn.preprocessing._data.StandardScaler
+        scaler: sklearn.preprocessing.MinMaxScaler ou sklearn.preprocessing.StandardScaler
             Objeto de scalling do sklearn, já ajustado para todos os dados
+        verbose: int
+            Se vai retornar mensagens ao longo do processo (0 ou 1)
 
         Retorna:
         --------
@@ -449,10 +450,16 @@ class ModeloLSTM():
         if not (type(epochs) is int):
             raise TypeError("O número de épocas deve ser um int!")        
         
-        if not ((scaler is not None) and
-                ((type(scaler) is not sklearn.preprocessing._data.MinMaxScaler) or
-                (type(scaler) is not sklearn.preprocessing._data.StandardScaler))):
+        if ((scaler is not None) and 
+            (type(scaler) is not sklearn.preprocessing._data.MinMaxScaler) and
+            (type(scaler) is not sklearn.preprocessing._data.StandardScaler)):
             raise TypeError("O scaler deve ser um MinMaxScaler ou StandardScaler!")
+
+        if not ((type(verbose) is int) and
+                ((verbose == 0) or
+                 (verbose == 1)
+                 (verbose == 2))):
+            raise ValueError("O valor de verbose deve ser um int igual a 0, 1 ou 2!")  
 
         shape = self._shape
         step = self._step
@@ -489,7 +496,8 @@ class ModeloLSTM():
             early_stopping_fit = None
         
         for n in range(0, n_repeticoes):
-            print("Testando para a repetição de número " + str(n+1))
+            if (verbose == 2):
+                print("Testando para a repetição de número " + str(n+1))
             modelo = self._modelo
             
             modelo.fit(X_treino, y_treino, 
@@ -508,16 +516,18 @@ class ModeloLSTM():
                     y_pred = scaler.inverse_transform(y_pred)
 
             mse = mean_squared_error(y_teste, y_pred)
-            print("MSE para essa repetição: " + str(mse))
+            if (verbose == 2):
+                print("MSE para essa repetição: " + str(mse))
             conjunto_mse.append(mse)
         
         mse_med = statistics.mean(conjunto_mse)
         mse_dev = statistics.stdev(conjunto_mse)
         
-        print("Média do erro quadrático médio: " + str(mse_med))
-        print("Desvio padrão do erro quadrático médio: " + str(mse_dev) + "\n")
+        if (verbose == 1):
+            print("Média do erro quadrático médio: " + str(mse_med))
+            print("Desvio padrão do erro quadrático médio: " + str(mse_dev) + "\n")
         
-        return (mse_med, mse_dev)
+        return mse_med, mse_dev
     
     def salvar(self, nome_do_arquivo, h5="OFF"):
         """
@@ -578,4 +588,4 @@ class ModeloLSTM():
         modelo = keras.models.load_model(nome_do_arquivo)
         self._modelo = modelo
         
-        return print("O modelo foi carregado!")    
+        return print("O modelo foi carregado!")

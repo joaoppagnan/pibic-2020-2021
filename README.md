@@ -46,6 +46,14 @@ jupyter lab --ip='0.0.0.0' --port=8888 --no-browser --allow-root
 ```
 Em seguida, copie e cole o último *link* fornecido no seu navegador. O *Jupyter Lab* deve abrir.
 
+### Instalação do pacote
+
+Para simplificar a sintaxe, é recomendado instalar o pacote feito por mim para realizar essa pesquisa. É possível fazer isso rodando os seguintes comandos na pasta raiz desse projeto:
+```
+python3 setup.py sdist bdist_wheel
+python3 setup.py install
+```
+
 ## Estruturação do Repositório
 A organização dos diretórios foi baseada na realizada no repositório [eht_imaging](https://github.com/achael/eht-imaging) e na apresentada em [Cookiecutter Data Science](http://drivendata.github.io/cookiecutter-data-science/). 
 
