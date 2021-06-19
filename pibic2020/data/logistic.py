@@ -4,7 +4,7 @@ import numpy as np
 
 class MapaLogistico:
 
-    def __init__(self, estado_inicial, r=3.86):
+    def __init__(self, estado_inicial=np.array([0.5, 0]), r=3.86):
         """
         Descrição:
         ----------
@@ -37,9 +37,38 @@ class MapaLogistico:
         self._r = r
         self._x_atual = estado_inicial[0]
         self._n_atual = estado_inicial[1]
+        self._vetor_estados = estado_inicial
         pass
 
-    def iterar(self):
+    def simular(self, n_iteracoes=5000):
+        """
+        Descrição:
+        ----------
+        Função para simular o Mapa Logístico para n_iteracoes
+
+        Parâmetros:
+        -----------
+        n_iteracoes: int
+            Número de iterações da simulação, deve ser maior que 0
+
+        Retorna: 
+        --------
+        Vetor com os estados para cada n
+        """
+
+        if not ((type(n_iteracoes) is int) and (n_iteracoes > 0)):
+            raise ValueError("O número de iterações é um inteiro positivo!")
+
+        vetor_estados = self._vetor_estados
+
+        for n in range(0, n_iteracoes):
+            self._iterar()
+            vetor_estados = np.vstack((vetor_estados, self._ler_estado()))
+
+        self._vetor_estados = vetor_estados
+        return vetor_estados
+
+    def _iterar(self):
         """
         Descrição:
         ----------
@@ -111,7 +140,7 @@ class MapaLogistico:
         self._n_atual = estado[1]
         pass    
 
-    def ler_estado(self):
+    def _ler_estado(self):
         """
         Descrição:
         ----------
