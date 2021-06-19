@@ -11,7 +11,7 @@ from pibic2020.models import mlp_model
 from pibic2020.models import lstm_model
 from pibic2020.models import gru_model
 
-def evaluate(modelo, dados, config, k_set, scaler=None, L=3, tam_teste=0.15, tam_val=0.1):
+def evaluate(modelo, dados, config, k_set, scaler=None, L=3, tam_teste=0.15, tam_val=0.1, verbose=1):
     """
     Descrição:
     ----------
@@ -29,7 +29,7 @@ def evaluate(modelo, dados, config, k_set, scaler=None, L=3, tam_teste=0.15, tam
         Dicionário com as configurações da rede
     L: int
         Passo de predição a ser utilizado
-    k_set: np.ndarray
+    k_set: list
         Conjunto de valores de K para testarr
     tam_teste: float
         Tamanho do conjunto de teste a ser utilizado no treino e teste
@@ -37,6 +37,8 @@ def evaluate(modelo, dados, config, k_set, scaler=None, L=3, tam_teste=0.15, tam
         Tamanho do conjunto de validação a ser utilizado no treino
     scaler: sklearn.preprocessing._data.MinMaxScaler ou sklearn.preprocessing._data.StandardScaler
         Objeto de scalling do sklearn, sem estar ajustado para os dados
+    verbose: int
+        Se vai retornar mensagens ao longo do processo (0 ou 1)
 
     Retorna:
     --------
@@ -58,8 +60,8 @@ def evaluate(modelo, dados, config, k_set, scaler=None, L=3, tam_teste=0.15, tam
     if not (type(config) is dict):
         raise TypeError("As configurações devem estar num formato de dicionário!")
     
-    if not (type(k_set) is np.ndarray):
-        raise TypeError("O conjunto de valores de K deve ser um array do numpy!")
+    if not (type(k_set) is list):
+        raise TypeError("O conjunto de valores de K deve ser uma lista!")
 
     if ((scaler is not None) and 
         (type(scaler) is not sklearn.preprocessing._data.MinMaxScaler) and
@@ -72,11 +74,16 @@ def evaluate(modelo, dados, config, k_set, scaler=None, L=3, tam_teste=0.15, tam
     if not (type(tam_val) is float):
         raise TypeError("O tamanho do conjunto de validação deve ser um float!")        
 
+    if not ((type(verbose) is int) and
+            ((verbose == 0) or
+             (verbose == 1))):
+        raise ValueError("O valor de verbose deve ser um int igual a 0 ou 1!")
+
     # pega os dados
     x = dados
 
     # matriz para salvar os resultados
-    results = np.zeros((len(k_set), 2))
+    results = np.zeros((len(k_set), 3))
 
     # se tiver recebido um scaler, aplica a transformacao nos dados
     if (scaler != None):
@@ -84,6 +91,9 @@ def evaluate(modelo, dados, config, k_set, scaler=None, L=3, tam_teste=0.15, tam
 
     # para varrer os K's
     for K in k_set:
+
+        if (verbose == 1):
+            print("Testando para K = " + str(K) + "...")
 
         # inicializa o objeto de serie temporal para o K e L dados
         serie_temporal = timeseries.SerieTemporal(x, K+1, L)
@@ -124,6 +134,10 @@ def evaluate(modelo, dados, config, k_set, scaler=None, L=3, tam_teste=0.15, tam
                                                   batch_size=config["batch_size"],
                                                   scaler=scaler)
 
-        results[K, :] = np.array([mse_mean, mse_stddev])
+        results[K, :] = np.array([K, mse_mean, mse_stddev])
+
+        if (verbose == 1):
+            print("Valor Médio do MSE para esse K: " + str(mse_mean))
+            print("Desvio Padrão do MSE para esse K: " + str(mse_stddev) + "\n")
 
     return results

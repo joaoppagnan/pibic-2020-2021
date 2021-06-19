@@ -371,7 +371,7 @@ class ModeloGRU():
     def avaliar(self, X_treino, X_val, X_teste, y_treino,
                 y_val, y_teste, n_repeticoes = 5, batch_size=10,
                 early_stopping="ON", epochs=100,
-                scaler=None):
+                scaler=None, verbose=0):
         """
         Definição:
         ----------
@@ -408,6 +408,8 @@ class ModeloGRU():
             Número de épocas para o treinamento
         scaler: sklearn.preprocessing.MinMaxScaler ou sklearn.preprocessing.StandardScaler
             Objeto de scalling do sklearn, já ajustado para todos os dados
+        verbose: int
+            Se vai retornar mensagens ao longo do processo (0 ou 1)
 
         Retorna:
         --------
@@ -453,6 +455,12 @@ class ModeloGRU():
             (type(scaler) is not sklearn.preprocessing._data.StandardScaler)):
             raise TypeError("O scaler deve ser um MinMaxScaler ou StandardScaler!")
 
+        if not ((type(verbose) is int) and
+                ((verbose == 0) or
+                 (verbose == 1)
+                 (verbose == 2))):
+            raise ValueError("O valor de verbose deve ser um int igual a 0, 1 ou 2!")  
+
         shape = self._shape
         step = self._step
 
@@ -488,7 +496,8 @@ class ModeloGRU():
             early_stopping_fit = None
         
         for n in range(0, n_repeticoes):
-            print("Testando para a repetição de número " + str(n+1))
+            if (verbose == 2):
+                print("Testando para a repetição de número " + str(n+1))
             modelo = self._modelo
             
             modelo.fit(X_treino, y_treino, 
@@ -507,14 +516,16 @@ class ModeloGRU():
                     y_pred = scaler.inverse_transform(y_pred)
 
             mse = mean_squared_error(y_teste, y_pred)
-            print("MSE para essa repetição: " + str(mse))
+            if (verbose == 2):
+                print("MSE para essa repetição: " + str(mse))
             conjunto_mse.append(mse)
         
         mse_med = statistics.mean(conjunto_mse)
         mse_dev = statistics.stdev(conjunto_mse)
         
-        print("Média do erro quadrático médio: " + str(mse_med))
-        print("Desvio padrão do erro quadrático médio: " + str(mse_dev) + "\n")
+        if (verbose == 1):
+            print("Média do erro quadrático médio: " + str(mse_med))
+            print("Desvio padrão do erro quadrático médio: " + str(mse_dev) + "\n")
         
         return mse_med, mse_dev
     

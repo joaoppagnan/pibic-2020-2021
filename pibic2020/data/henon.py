@@ -4,7 +4,7 @@ import numpy as np
 
 class MapaHenon:
 
-    def __init__(self, estado_inicial, a=1.4, b=0.3):
+    def __init__(self, estado_inicial=np.array([1, 0, 0]), a=1.4, b=0.3):
         """
         Descrição:
         ----------
@@ -38,9 +38,37 @@ class MapaHenon:
         self._x_atual = estado_inicial[0]
         self._y_atual = estado_inicial[1]
         self._n_atual = estado_inicial[2]
+        self._vetor_estados = estado_inicial
         pass
 
-    def iterar(self):
+    def simular(self, n_iteracoes=5000):
+        """
+        Descrição:
+        ----------
+        Função para simular o Mapa de Hénon para n_iteracoes
+
+        Parâmetros:
+        -----------
+        n_iteracoes: int
+            Número de iterações da simulação, deve ser maior que 0
+
+        Retorna: 
+        --------
+        Vetor com os estados para cada n
+        """
+
+        if not ((type(n_iteracoes) is int) and (n_iteracoes > 0)):
+            raise ValueError("O número de iterações é um inteiro positivo!")
+
+        vetor_estados = self._vetor_estados
+
+        for n in range(0, n_iteracoes):
+            self._iterar()
+            vetor_estados = np.vstack((vetor_estados, self._ler_estado()))
+
+        return vetor_estados
+
+    def _iterar(self):
         """
         Descrição:
         ----------
@@ -68,7 +96,7 @@ class MapaHenon:
         self._n_atual = n + 1
         pass
 
-    def ler_estado(self):
+    def _ler_estado(self):
         """
         Descrição:
         ----------
