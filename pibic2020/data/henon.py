@@ -66,6 +66,7 @@ class MapaHenon:
             self._iterar()
             vetor_estados = np.vstack((vetor_estados, self._ler_estado()))
 
+        self._vetor_estados = vetor_estados
         return vetor_estados
 
     def _iterar(self):

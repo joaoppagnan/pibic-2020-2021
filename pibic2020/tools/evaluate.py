@@ -93,7 +93,7 @@ def evaluate(modelo, dados, config, k_set, scaler=None, L=3, tam_teste=0.15, tam
     for K in k_set:
 
         if (verbose == 1):
-            print("Testando para K = " + str(K) + "...")
+            print("Testando para K = " + str(K+1) + "...")
 
         # inicializa o objeto de serie temporal para o K e L dados
         serie_temporal = timeseries.SerieTemporal(x, K+1, L)
@@ -134,7 +134,7 @@ def evaluate(modelo, dados, config, k_set, scaler=None, L=3, tam_teste=0.15, tam
                                                   batch_size=config["batch_size"],
                                                   scaler=scaler)
 
-        results[K, :] = np.array([K, mse_mean, mse_stddev])
+        results[K, :] = np.array([K+1, mse_mean, mse_stddev])
 
         if (verbose == 1):
             print("Valor Médio do MSE para esse K: " + str(mse_mean))
