@@ -5,7 +5,7 @@ from jitcdde import jitcdde, y, t
 
 class MackeyGlass:
     
-    def __init__(self, inicializacao='padrao', tau=6, gamma=0.1, beta=0.2, theta=1, n=10, dt=1.0):
+    def __init__(self, inicializacao='padrao', tau=22, gamma=0.1, beta=0.2, theta=1, n=10, dt=1.0):
         """
         Descrição:
         ----------
@@ -147,4 +147,8 @@ class MackeyGlass:
         for t in t_integracao:
             solucoes.append(DDE.integrate(t))
         
+        solucoes = np.array(solucoes)
+        solucoes = np.reshape(solucoes, (1, len(solucoes)))
+        solucoes = solucoes[0]
+
         return solucoes, instantes_temporais
