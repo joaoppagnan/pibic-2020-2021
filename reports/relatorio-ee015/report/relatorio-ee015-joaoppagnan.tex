@@ -131,7 +131,7 @@ Os modelos não-lineares estudados foram as famosas redes neurais artificiais.
 
 As redes neurais artificiais são ferramentas computacionais cujas estruturas são inspiradas no funcionamento das redes neurais biológicas presentes em cérebros de animais desenvolvidos, em especial do ser humano. Podemos interpretar um neurônio (tanto biológico, quanto artificial) como uma unidade de processamento de informação \cite{haykin2010neural}. 
 
-Analogamente, uma rede neural artificial é uma estrutura formada por vários neurô\-nios artificiais interconectados, a qual é capaz de processar estímulos (sinais) de entrada e de produzir respostas conforme a tarefa desejada. Existem alguns modelos matemáticos para o neurônio artificial, sendo o \textit{perceptron} um dos mais usuais (vide Seção 2.1.1). Além disso, os neurônios podem ser organizados de diferentes maneiras para construir a arquitetura (ou topologia) da rede neural, a qual é tipicamente estruturada em camadas. Por fim, os neurônios artificiais podem exibir uma estrutura interna que varia de acordo com a arquitetura desejada para a aplicação.
+Analogamente, uma rede neural artificial é uma estrutura formada por vários neurô\-nios artificiais interconectados, a qual é capaz de processar estímulos (sinais) de entrada e de produzir respostas conforme a tarefa desejada. Existem alguns modelos matemáticos para o neurônio artificial, sendo o \textit{perceptron} um dos mais usuais (vide Seção 2.1.1). Além disso, os neurônios podem ser organizados de diferentes maneiras para construir a arquitetura (ou topologia) da rede neural, a qual é tipicamente estruturada em camadas. Por fim, os neurônios artificiais podem exibir uma estrutura interna que varia de acordo com a arquitetura desejada para a aplicação, como observaremos na Seção 2.2.2 onde são discutidos alguns exemplos de redes recorrentes.
 
 Veremos então os dois principais modelos de redes que serão utilizados nessa pesquisa:
 
@@ -197,7 +197,7 @@ Um dos modelos mais utilizados para representar um neurônio artificial, o \text
 \end{figure}
 
 Em termos matemáticos, a saída do neurônio pode ser escrita como:
-\begin{equation}
+\begin{equation}\label{eq:mlp-out}
 y = \varphi(v) = \varphi  \Big(\sum_{i=1}^{m}w_i x_i + w_0 \Big) = \varphi \Big(\sum_{i=0}^{m}w_i x_i \Big) = \varphi (\mathbf{w}^T \cdot \mathbf{x}),
 \end{equation}
 onde $\mathbf{w}$ é o vetor que contém os coeficientes, denominados de pesos sinápticos, que ponderam as entradas do neurônio. 
@@ -213,7 +213,7 @@ A escolha da função de ativação $\varphi (\cdot)$ varia de acordo com a apli
 
 É interessante mencionar o fato de que, assim como podemos selecionar uma gama de funções não-lineares para a ativação do neurônio, de forma a realizar transformações não-lineares na entrada, também é possível utilizar funções de ativação lineares, ou seja, realizar transformações lineares assim como os modelos clássicos de predição (como o AR e o ARMA) fazem. Nesse caso, a falta da não-linearidade tornaria muito difícil ou até mesmo impossibilitaria que sistemas mais complexos fossem descritos de forma aceitável por redes neurais artificais desse tipo \cite{hornik1989multilayer}.
 
-Tipicamente, uma rede neural MLP é composta por um número arbitrário $k$ de  camadas com $n$ neurônios do tipo \textit{Perceptron}, com a característica de que as saídas dos neurônios da $l$-ésima camada são propagadas para a frente (esse processo também é conhecido como \textit{feedforward}), servindo como as entradas de todos os neurônios da camada seguinte ($l+1$). Por isso, este tipo de rede é conhecida como totalmente conectada (ou densa). A figura \ref{fig:mlp-architecture} apresenta a estrutura típica das redes MLP.
+Tipicamente, uma rede neural MLP é composta por um número arbitrário $N_L$ de  camadas com $n$ neurônios do tipo \textit{Perceptron}, com a característica de que as saídas dos neurônios da $l$-ésima camada são propagadas para a frente (esse processo também é conhecido como \textit{feedforward}), servindo como as entradas de todos os neurônios da camada seguinte ($l+1$). Por isso, este tipo de rede é conhecida como totalmente conectada (ou densa). A figura \ref{fig:mlp-architecture} apresenta a estrutura típica das redes MLP.
 
 \begin{figure}[!ht]
 \centering
@@ -222,7 +222,19 @@ Tipicamente, uma rede neural MLP é composta por um número arbitrário $k$ de  
 \label{fig:mlp-architecture}
 \end{figure}
 
-Os pesos sinápticos $\mathbf{w}$ são ajustados com um processo iterativo de forma a minimizar uma função custo $J(\mathbf{w})$ que representa uma medida do erro entre as saídas geradas pela rede e as saídas desejadas. Para isso, é frequente o uso de algoritmos de otimização baseados em derivadas da função custo $J(\mathbf{w})$, como o método do gradiente descendente estocástico (SGD, do inglês \textit{stochastic gradient descent}) e o algoritmo Adam (\textit{Adaptive Moment Estimation}) \cite{geron2019hands}. O famoso algoritmo de retropropagação (\textit{backpropagation}) do erro é empregado para viabilizar o cálculo das derivadas com relação aos pesos sinápticos dos neurônios situados nas camadas internas da rede. 
+Pela figura vemos que, além das $N_L$ camadas intermediárias com neurônios \textit{Perceptron}, a estrutura das redes MLP contém uma camada de entrada, que possui ativação linear e apenas passa o atributo de entrada relacionado ao neurônio em específico ($x_1$, $x_2$, ..., $x_k$) para a primeira camada intermediária, e uma camada de saída que gera as respostas da rede neural para um vetor de entrada. A função de ativação da camada de saída e o número de neurônios presente nela dependem da tarefa a ser realizada pela MLP. Por exemplo, em aplicações de regressão é comum o uso de um ou mais neurônios (dependendo se a saída do preditor será um vetor com um ou mais instantes de tempo) com função de ativação linear. Já em aplicações de classificação, a função de ativação pode variar entre a função logística (utilizada no caso binário em que queremos saber se uma entrada pertence ou não a uma classe) e entre a função \textit{softmax} (que gera uma saída para cada classe, indicando a probabilidade de uma entrada pertencer à classe em específico) e, novamente, o número de neurônios de saída também varia com o tipo da classificação.
+
+De forma similar a feita em (\ref{eq:mlp-out}), é possível representar a saída do $i$-ésimo neurônio da $l$-ésima camada intermediária, sendo que a anterior a esta possui $n_{l-1}$ neurônios, a $l$-ésima possui $n_l$ neurônios e a estrutura possui $N_L$ camadas intermediárias, da seguinte forma:
+\begin{equation}
+	y_{i}^{l} = \varphi^{l} \Big(\sum_{j=1}^{n_{l-1}} w_{ij}^{l} y_{j}^{l-1} + w_{i0}^{l} \Big)
+\end{equation}
+onde $w_{ij}^{l}$ representa o peso sináptico da conexão que liga o $j$-ésimo neurônio da camada $l-1$ ao $i$-ésimo neurônio da camada $l$, sendo que na primeira camada intermediária os sinais de entrada são os atributos do vetor de entrada, ou seja, $y_{j}^{0} = x_{j}$ com $j = 1, ..., k$ \cite{boccato2013novas}.
+
+Os pesos sinápticos $\mathbf{w}$ são ajustados com um processo iterativo de forma a minimizar uma função custo $J(\mathbf{w})$ que representa uma medida do erro entre as saídas geradas pela rede e as saídas desejadas (vale mencionar que $\mathbf{w}$ é um vetor com todos os parâmetros da rede). No caso de um problema de regressão ou predição, é comum que a função custo a ser minimizada seja o Erro Quadrático Médio (EQM), do inglês, \textit{Mean Squared Error} (MSE), assim, o problema envolve otimização não-linear irrestrita \cite{hastie2009elements}.
+
+Para isso, é frequente o uso de algoritmos de otimização baseados em derivadas da função custo $J(\mathbf{w})$, como o método do gradiente descendente estocástico (SGD, do inglês \textit{stochastic gradient descent}) e o algoritmo Adam (\textit{Adaptive Moment Estimation}) \cite{geron2019hands}. O famoso algoritmo de retropropagação (\textit{backpropagation}) do erro é empregado para viabilizar o cálculo das derivadas com relação aos pesos sinápticos dos neurônios situados nas camadas internas da rede. 
+
+
 
 O grande apelo das redes \textit{Multilayer Perceptron} é que elas tem a capacidade de aproximação universal, ou seja, são capazes de aproximar qualquer mapeamento contí\-nuo num domínio compacto com um nível de erro arbitrariamente pequeno. Até mesmo uma MLP com uma única camada intermediária e camada de saída linear já possui esta capacidade \cite{cybenko1989approximation}.
 
