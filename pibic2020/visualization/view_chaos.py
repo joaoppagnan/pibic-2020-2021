@@ -51,7 +51,7 @@ if (int(sis) == 1):
     ax.set_xlabel('$x$')
     ax.grid(False)
     sns.despine()
-    fig.savefig("images/caos/henon-map/mapa-de-henon.png")
+    fig.savefig("images/caos/henon-map/mapa-de-henon.pdf")
 
     fig, ax = plt.subplots(2)
     ax[0].plot(n, x, color='Crimson', linewidth=0.9)
@@ -67,7 +67,7 @@ if (int(sis) == 1):
     ax[1].grid(True)
     fig.tight_layout()
     sns.despine()
-    fig.savefig("images/caos/henon-map/series-temporais.png")
+    fig.savefig("images/caos/henon-map/series-temporais.pdf")
 
     fig, ax = plt.subplots()
     ax.plot(n, x, color='LimeGreen', linewidth=0.9)
@@ -78,7 +78,7 @@ if (int(sis) == 1):
     ax.grid(True)
     fig.tight_layout()
     sns.despine()
-    fig.savefig("images/caos/henon-map/series-temporal-x.png")
+    fig.savefig("images/caos/henon-map/series-temporal-x.pdf")
     print("Gráficos gerados!")
 
 # --------------- LOGISTICO --------------- #
@@ -100,7 +100,7 @@ elif (int(sis) == 2):
     ax.set_xlim(0, 100)
     ax.grid(True)
     sns.despine()
-    fig.savefig("images/caos/logistic-map/series-temporais.png")
+    fig.savefig("images/caos/logistic-map/series-temporais.pdf")
 
     conjunto_r = np.linspace(0.0, 4.0, 1000)
     n_iteracoes = 1000
@@ -128,7 +128,7 @@ elif (int(sis) == 2):
         r_unicos = conjunto_r[ri]*np.ones(len(x_unicos))
 
         ax.scatter(r_unicos, x_unicos, color='White', marker='.', s=0.5)
-    fig.savefig("images/caos/logistic-map/mapa-logistico.png")
+    fig.savefig("images/caos/logistic-map/mapa-logistico.pdf")
     print("Gráficos gerados!")
 
 # --------------- LORENZ --------------- #
@@ -156,7 +156,7 @@ elif (int(sis) == 3):
     ax.w_zaxis.set_pane_color((0, 0, 0, 0))
     ax.grid(False)
     sns.despine()
-    fig.savefig("images/caos/lorenz/diagrama-de-fases.png")
+    fig.savefig("images/caos/lorenz/diagrama-de-fases.pdf")
 
     fig, ax = plt.subplots(3)
     fig.suptitle("Séries temporais de 0 a 100 segundos das coordenadas $xyz$ do Sistema de Lorenz\n utilizando $\sigma = 10$, " + r"$\beta =\frac{8}{3}$, " + r"$\rho=28$, com " + "$x(0) =$ " + str(estado_inicial[0]) + ", $y(0) = $ " + str(estado_inicial[1]) + " e $z(0) =$ " + str(estado_inicial[2]))
@@ -177,7 +177,7 @@ elif (int(sis) == 3):
     ax[2].grid(True)
     sns.despine()
     plt.tight_layout()
-    fig.savefig("images/caos/lorenz/series-temporais.png")
+    fig.savefig("images/caos/lorenz/series-temporais.pdf")
 
     fig, ax = plt.subplots()
     fig.suptitle("Séries temporal em $\hat{x}$ de 0 a 100 segundos do Sistema de Lorenz\n utilizando $\sigma = 10$, " + r"$\beta =\frac{8}{3}$, " + r"$\rho=28$, com " + "$x(0) =$ " + str(estado_inicial[0]) + ", $y(0) = $ " + str(estado_inicial[1]) + " e $z(0) =$ " + str(estado_inicial[2]))
@@ -187,7 +187,7 @@ elif (int(sis) == 3):
     ax.set_xlim(0,)  
     ax.grid(True)
     sns.despine()
-    fig.savefig("images/caos/lorenz/series-temporal-x.png")    
+    fig.savefig("images/caos/lorenz/series-temporal-x.pdf")    
     print("Gráficos gerados!")
 
 # --------------- MACKEYGLASS --------------- #
@@ -211,7 +211,7 @@ elif (int(sis) == 4):
     ax.grid(True)
     sns.despine()
     plt.show()
-    fig.savefig("images/caos/mackeyglass/serie-temporal-1.png")
+    fig.savefig("images/caos/mackeyglass/serie-temporal-1.pdf")
     p_atual_2D = np.array([])
     p_tau_2D = np.array([])   
     for i in range(tau, len(dados)):
@@ -225,7 +225,7 @@ elif (int(sis) == 4):
     ax.grid(False)
     fig.tight_layout()
     sns.despine()
-    fig.savefig("images/caos/mackeyglass/atrator-1-2d.png")
+    fig.savefig("images/caos/mackeyglass/atrator-1-2d.pdf")
     p_atual_3D = np.array([])
     p_tau_3D = np.array([])   
     p_2tau_3D = np.array([])
@@ -246,7 +246,7 @@ elif (int(sis) == 4):
     ax.grid(False)
     fig.tight_layout()
     sns.despine()
-    fig.savefig("images/caos/mackeyglass/atrator-1-3d.png")
+    fig.savefig("images/caos/mackeyglass/atrator-1-3d.pdf")
 
     t_inicial = 0
     t_final = 800
@@ -266,7 +266,7 @@ elif (int(sis) == 4):
     ax.set_xlim(0,)
     ax.grid(True)
     sns.despine()
-    fig.savefig("images/caos/mackeyglass/serie-temporal-2.png")
+    fig.savefig("images/caos/mackeyglass/serie-temporal-2.pdf")
     p_atual_2D = np.array([])
     p_tau_2D = np.array([])   
     for i in range(tau, len(dados)):
@@ -280,7 +280,7 @@ elif (int(sis) == 4):
     ax.grid(False)
     fig.tight_layout()
     sns.despine()
-    fig.savefig("images/caos/mackeyglass/atrator-2-2d.png")
+    fig.savefig("images/caos/mackeyglass/atrator-2-2d.pdf")
     p_atual_3D = np.array([])
     p_tau_3D = np.array([])   
     p_2tau_3D = np.array([])
@@ -301,7 +301,7 @@ elif (int(sis) == 4):
     ax.grid(False)
     fig.tight_layout()
     sns.despine()
-    fig.savefig("images/caos/mackeyglass/atrator-2-3d.png")
+    fig.savefig("images/caos/mackeyglass/atrator-2-3d.pdf")
     print("Gráficos gerados!")
 
 else:
