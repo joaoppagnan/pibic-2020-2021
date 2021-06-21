@@ -84,9 +84,7 @@ Essa primeira parte do projeto de iniciação científica teve como objetivo est
 
 O estudo dirigido começou abordando uma revisão de tópicos de probabilidade, teoria da informação e estimação. Em seguida, foi vista a teoria de regressores e classificadores clássicos \cite{hastie2009elements}. Depois disso, o estudo se dirigiu para as redes neurais artificiais MLP e recorrentes \cite{geron2019hands}, para, por fim, concluir o aprendizado de preditores com uma breve exposição dos modelos autorregressivos (AR) e autorregressivos de médias móveis (ARMA) \cite{box2015time}. Com a teoria de predição solidificada, o foco mudou para os fundamentos da teoria de sistemas com dinâmica caótica, utilizando como base as referências \cite{fiedler1994caos} e \cite{attux2001dinamica}.
 
-Paralelamente aos estudos realizados  durante o projeto de iniciação científica, o aluno também pôde fortalecer sua formação em aprendizado de máquina através da disciplina de pós-graduação \textbf{IA048 - Aprendizado de Máquina}, cursada como aluno especial. Com efeito, algumas atividades práticas desta disciplina foram importantes por estimularem o desenvolvimento de alguns ensaios de aplicações de redes neurais artificiais, que serão apresentados na Seção 4.
-
-Por fim, na Seção 5 são indicados os próximos passos deste projeto de iniciação científica visando sua conclusão ao final deste primeiro semestre de 2021. 
+Por fim, na Seção 4 são indicados os próximos passos deste projeto de iniciação científica visando sua conclusão ao final deste primeiro semestre de 2021. 
 
 \section{Modelos de Predição}
 
@@ -440,22 +438,11 @@ De forma resumida, a dinâmica caótica é marcada pela presença dos seguintes 
 \item Dão origem a atratores estranhos (estruturas topológicas que ditam a evolução temporal do fluxo de um sistema caótico) \cite{ruelle1971nature}.
 \end{enumerate}
 
-\section{Ensaios de aplicações de Aprendizado de Máquina}
-Como já foi mencionado, para complementar os estudos da iniciação científica, o aluno cursou como estudante especial a disciplina de pós-graduação \textbf{IA048 - Aprendizado de Máquina} da FEEC. O objetivo foi formar uma base sólida para o uso não só de redes neurais MLP, LSTM e regressores, como também noções de probabilidade, teoria da informação, classificadores, árvores de decisão, clusterizadores e outras ferramentas de \textit{Machine Learning}.
-
-Nessa matéria foram estudados os tópicos de probabilidade, estimação e teoria da informação, conceitos gerais de aprendizado de máquina, regressão linear, classificação linear, redes neurais artificiais MLP, recorrentes e convolucionais, \textit{deep learning}, máqui\-nas de vetores-suporte, aprendizado não-supervisionado, clusterização, modelos de mistura e extração de variáveis latentes, comitês de máquinas, árvores de decisão e \textit{random forest} e aprendizado por reforço, utilizando materiais como \cite{geron2019hands, haykin2010neural, bishop2006pattern, hastie2009elements}.
-
-Algumas das atividades notórias desenvolvidas na disciplina foram o uso de modelos clássicos de regressores lineares e não-lineares para a predição de uma série temporal do número de manchas solares, testes com classificadores utilizando redes neurais MLP e redes convolucionais para cenários binários e multiclasse, e o desenvolvimento de um projeto final composto por um \textit{Autoencoder} utilizando redes convolucionais e profundas para a filtragem de sinais.
-
-O aluno concluiu a disciplina com uma média final de $9.6$, alcançando o conceito A (máximo). 
-
-Com isso, além de reforçar a base teórica necessária para essa pesquisa, foi obtida uma prática com a programação, análise, teste, otimização e implementação de algoritmos de redes neurais, a qual  será bastante útil para a sequência deste projeto de iniciação científica.
-
 \section{Próximos Passos}
 
 Como nessa primeira parte da iniciação o foco foi uma pesquisa bibliográfica dos temas a serem estudados nela, a segunda metade será voltada para a aplicação em si da predição das séries temporais de sistemas caóticos.
 
-Primeiramente, serão definidas as séries temporais que farão parte dos experimentos computacionais, buscando criar cenários diversificados para a análise do comportamento das redes neurais. Algumas possibilidades para o trabalho são os dados referentes ao mapa logístico \cite{may2004simple} e ao mapa de Hénon \cite{henon1976two}, a famosa série Mackey-Glass \cite{mackey1977oscillation} e dados de dinâmica populacional de uma espécie.
+Para os experimentos computacionais, optamos pelas séries temporais do Mapa Logístico, descrito pelo cientista Robert May \cite{may1976simple}, o Mapa de Hénon, apresentado pelo astronômo e matemático francês Michel Hénon \cite{henon1976two}, a famosa série Mackey-Glass, dos cientistas Michael Mackey e Leon Glass \cite{mackey1977oscillation}, e o clássico Sistema de Lorenz, um dos  mais incríveis e fundamentais trabalhos de sistemas caóticos, introduzido pelo matemático e meteorologista Edward Norton Lorenz \cite{lorenz1963deterministic}, de forma a criar cenários diversificados para a análise do comportamento das redes neurais.
 
 Em seguida, determinaremos aspectos mais fundamentais das redes neurais que serão utilizadas, como, por exemplo, a arquitetura empregada, assim como as métricas para o treinamento e análise.
 
