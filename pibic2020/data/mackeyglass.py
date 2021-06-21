@@ -1,4 +1,4 @@
-# mackeyglassequations.py
+# mackeyglass.py
 
 import numpy as np
 from jitcdde import jitcdde, y, t

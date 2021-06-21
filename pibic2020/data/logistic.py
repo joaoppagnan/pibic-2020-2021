@@ -1,4 +1,4 @@
-# logisticmap.py
+# logistic.py
 
 import numpy as np
 

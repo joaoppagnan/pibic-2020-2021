@@ -25,7 +25,8 @@ from pibic2020.data import lorenz
 from pibic2020.data import mackeyglass
 
 print("Escolha o sistema para gerar os gráficos")
-sis = input("1: Mapa de Hénon, 2: Mapa Logístico, 3: Sistema de Lorenz, 4: Equações de Mackey-Glass")
+print("1: Mapa de Hénon, 2: Mapa Logístico, 3: Sistema de Lorenz, 4: Equações de Mackey-Glass")
+sis = input()
 
 # --------------- HENON --------------- #
 if (int(sis) == 1):
