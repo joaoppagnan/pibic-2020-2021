@@ -32,6 +32,8 @@
 \usetikzlibrary{shapes,arrows,fit, positioning, arrows.meta}
 \usetikzlibrary{backgrounds}
 \usepgflibrary{shapes.multipart}
+\def\layersep{2.5cm}
+\def\layersepp{5cm}	
 
 \begin{document}
 \begin{titlepage}
@@ -72,11 +74,11 @@ A predição de séries temporais é uma das aplicações mais interessantes do 
 
 Através da análise e interpretação de uma série temporal, podemos estimar os seus valores futuros, aumentando a informação que podemos obter das observações que já foram realizadas em um sistema.
 
-Na literatura, encontramos diversos tipos de modelos para a  predição de séries temporais, desde métodos clássicos lineares, como o modelo autorregressivo (AR) \cite{box2015time} até métodos não-lineares utilizando, por exemplo, redes neurais artificiais, sendo que dessas se destacam as redes do tipo \textit{Multilayer Perceptron} (MLP) e as redes recorrentes, especialmente a \textit{Long Short-Term Memory} (LSTM)  \cite{connor1994recurrent}.
+Na literatura, encontramos diversos tipos de modelos para a  predição de séries temporais, desde métodos clássicos lineares, como o modelo autorregressivo (AR) \cite{box2015time} até métodos não-lineares utilizando, por exemplo, redes neurais artificiais, sendo que dessas se destacam as redes do tipo \textit{Multilayer Perceptron} (MLP) e as redes recorrentes, especialmente a \textit{Long Short-Term Memory} (LSTM)  \cite{connor1994recurrent} e a \textit{Echo State Network} (ESN) \cite{jaeger2007echo}.
 
 Uma classe de sistemas dinâmicos particularmente relevante dentro do contexto de modelagem e predição de séries temporais está ligada à ideia de dinâmica caótica. Diversos fenômenos naturais, como a dinâmica populacional de uma espécie, a dinâmica atmosférica de uma região, ou até mesmo as órbitas de um sistema com três ou mais corpos celestes podem exibir comportamento caótico. Apesar de serem determinísticos (e, portanto, previsíveis), esses sistemas são extremamente sensíveis às condições iniciais \cite{fiedler1994caos}. Isso causa um problema para a predição das séries temporais originadas por eles, pois uma pequena incerteza na medida afetará toda a previsão. 
 
-Tendo em vista o desempenho de modelos não-lineares para previsão de diversas séries temporais \cite{connor1994recurrent}, optamos por estudar a aplicabilidade de redes neurais artificiais à previsão de séries relacionadas a sistemas com dinâmica caótica. 
+Tendo em vista o desempenho de modelos não-lineares para previsão de diversas séries temporais \cite{connor1994recurrent}, optamos por estudar a aplicabilidade de redes neurais artificiais à previsão de séries relacionadas a sistemas com dinâmica caótica.
 
 Essa primeira parte do projeto de iniciação científica teve como objetivo estudar a base teórica das redes neurais artificiais e de outros regressores lineares clássicos, assim como estudar os fundamentos de sistemas dinâmicos e de dinâmica caótica. Os principais modelos estudados, juntamente com uma breve exposição de modelos lineares básicos, são apresentados na Seção 2. Já na Seção 3, veremos alguns conceitos fundamentais e a caracterização de sistemas caóticos.
 
@@ -90,7 +92,7 @@ Por fim, na Seção 5 são indicados os próximos passos deste projeto de inicia
 
 \subsection{Modelos Lineares}
 
-Apesar desta pesquisa focar na aplicabilidade de modelos preditores não-lineares utilizando redes neurais artificais, é pertinente falarmos um pouco sobre modelos lineares para essa aplicação, já aproveitando o momento para introduzirmos alguns conceitos básicos de predição.
+Apesar desta pesquisa focar na aplicabilidade de modelos preditores não-lineares utilizando redes neurais artificais, é pertinente darmos uma introdução ao assunto através de modelos lineares para essa aplicação, já aproveitando o momento para apresentarmos alguns conceitos básicos de predição.
 
 \subsubsection{Modelo Autorregressivo (AR)}
 
@@ -108,7 +110,7 @@ onde $a_{k}$, $k = 1, 2, ..., K$ são os coeficientes que ponderam as amostras n
 \end{equation}
 sendo $w_{0} = 1$ e $w_{k} = -a_{k}$ para $1 \leq k \leq K$.
 
-Perceba que o lado esquerdo de (\ref{ar-l-1}) é uma soma de convolução em tempo discreto, portanto, podemos interpretar o modelo AR como um sistema linear e invariante com o tempo (LIT) \cite{oppenheim2014signals}.
+Perceba que o lado esquerdo de (\ref{ar-l-1}) é uma soma de convolução em tempo discreto, portanto, podemos interpretar o modelo AR como um sistema linear e invariante com o tempo (LIT) \cite{haykin2008adaptive}.
 
 \subsubsection{Modelo Autorregressivo e de Médias Móveis (ARMA)}
 
@@ -200,9 +202,25 @@ y = \varphi(v) = \varphi  \Big(\sum_{i=1}^{m}w_i x_i + w_0 \Big) = \varphi \Big(
 \end{equation}
 onde $\mathbf{w}$ é o vetor que contém os coeficientes, denominados de pesos sinápticos, que ponderam as entradas do neurônio. 
 
-A escolha da função de ativação $\varphi (\cdot)$ varia de acordo com a aplicação desejada. Ela pode ser desde uma função de \textit{Heaviside}, a puramente linear $\varphi(x) = x$, ou até mesmo a tangente hiperbólica, a função logística ou outras funções não-lineares para mapeamentos mais complexos \cite{geron2019hands}. 
+A escolha da função de ativação $\varphi (\cdot)$ varia de acordo com a aplicação desejada. Ela pode ser desde uma função de \textit{Heaviside}, a puramente linear $\varphi(x) = x$, ou até mesmo a tangente hiperbólica, a função logística ou outras funções não-lineares para mapeamentos mais complexos \cite{geron2019hands}. Na figura \ref{fig:mlp-activations}, vemos alguns exemplos de funções de ativação comumente utilizadas nos neurônios \textit{Perceptron}, assim como as suas derivadas. 
 
-Tipicamente, uma rede neural MLP é composta por um número arbitrário $k$ de  camadas com $n$ neurônios do tipo \textit{Perceptron}, com a característica de que as saídas dos neurônios da $l$-ésima camada são propagadas para a frente, servindo como as entradas de todos os neurônios da camada seguinte ($l+1$). Por isso, este tipo de rede é conhecida como totalmente conectada (ou densa).
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale = 0.7]{mlp-activations.png}
+	\caption{À esquerda, algumas funções de ativação comuns para o neurônio \textit{Perceptron} e, à direita, suas derivadas}
+	\label{fig:mlp-activations}
+\end{figure}
+
+É interessante mencionar o fato de que, assim como podemos selecionar uma gama de funções não-lineares para a ativação do neurônio, de forma a realizar transformações não-lineares na entrada, também é possível utilizar funções de ativação lineares, ou seja, realizar transformações lineares assim como os modelos clássicos de predição (como o AR e o ARMA) fazem. Nesse caso, a falta da não-linearidade tornaria muito difícil ou até mesmo impossibilitaria que sistemas mais complexos fossem descritos de forma aceitável por redes neurais artificais desse tipo \cite{hornik1989multilayer}.
+
+Tipicamente, uma rede neural MLP é composta por um número arbitrário $k$ de  camadas com $n$ neurônios do tipo \textit{Perceptron}, com a característica de que as saídas dos neurônios da $l$-ésima camada são propagadas para a frente (esse processo também é conhecido como \textit{feedforward}), servindo como as entradas de todos os neurônios da camada seguinte ($l+1$). Por isso, este tipo de rede é conhecida como totalmente conectada (ou densa). A figura \ref{fig:mlp-architecture} apresenta a estrutura típica das redes MLP.
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[scale = 0.5]{mlp-network.png}
+\caption{Estrutura típica de uma rede MLP (figura extraída de \cite{boccato2013novas}) }
+\label{fig:mlp-architecture}
+\end{figure}
 
 Os pesos sinápticos $\mathbf{w}$ são ajustados com um processo iterativo de forma a minimizar uma função custo $J(\mathbf{w})$ que representa uma medida do erro entre as saídas geradas pela rede e as saídas desejadas. Para isso, é frequente o uso de algoritmos de otimização baseados em derivadas da função custo $J(\mathbf{w})$, como o método do gradiente descendente estocástico (SGD, do inglês \textit{stochastic gradient descent}) e o algoritmo Adam (\textit{Adaptive Moment Estimation}) \cite{geron2019hands}. O famoso algoritmo de retropropagação (\textit{backpropagation}) do erro é empregado para viabilizar o cálculo das derivadas com relação aos pesos sinápticos dos neurônios situados nas camadas internas da rede. 
 
