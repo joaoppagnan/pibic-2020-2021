@@ -230,11 +230,24 @@ De forma similar a feita em (\ref{eq:mlp-out}), é possível representar a saíd
 \end{equation}
 onde $w_{ij}^{l}$ representa o peso sináptico da conexão que liga o $j$-ésimo neurônio da camada $l-1$ ao $i$-ésimo neurônio da camada $l$, sendo que na primeira camada intermediária os sinais de entrada são os atributos do vetor de entrada, ou seja, $y_{j}^{0} = x_{j}$ com $j = 1, ..., k$ \cite{boccato2013novas}.
 
-Os pesos sinápticos $\mathbf{w}$ são ajustados com um processo iterativo de forma a minimizar uma função custo $J(\mathbf{w})$ que representa uma medida do erro entre as saídas geradas pela rede e as saídas desejadas (vale mencionar que $\mathbf{w}$ é um vetor com todos os parâmetros da rede). No caso de um problema de regressão ou predição, é comum que a função custo a ser minimizada seja o Erro Quadrático Médio (EQM), do inglês, \textit{Mean Squared Error} (MSE), assim, o problema envolve otimização não-linear irrestrita \cite{hastie2009elements}.
+Os pesos sinápticos $\mathbf{w}$ são ajustados com um processo iterativo de forma a minimizar uma função custo $J(\mathbf{w})$ que representa uma medida do erro entre as saídas geradas pela rede e as saídas desejadas (vale mencionar que $\mathbf{w}$ é um vetor com todos os parâmetros da rede). No caso de um problema de regressão ou predição, é comum que a função custo a ser minimizada seja o Erro Quadrático Médio (EQM), do inglês, \textit{Mean Squared Error} (MSE), assim, o problema envolve otimização não-linear irrestrita \cite{haykin2010neural}.
 
 Para isso, é frequente o uso de algoritmos de otimização baseados em derivadas da função custo $J(\mathbf{w})$, como o método do gradiente descendente estocástico (SGD, do inglês \textit{stochastic gradient descent}) e o algoritmo Adam (\textit{Adaptive Moment Estimation}) \cite{geron2019hands}. O famoso algoritmo de retropropagação (\textit{backpropagation}) do erro é empregado para viabilizar o cálculo das derivadas com relação aos pesos sinápticos dos neurônios situados nas camadas internas da rede. 
 
+Nesse caso, é comum dividirmos esses métodos de otimização entre métodos de primeira ordem e de segunda ordem. Os métodos de primeira ordem utilizam as derivadas de primeira ordem da função custo, geralmente representadas na forma vetorial com o vetor gradiente:
+\begin{equation}
+	\nabla J(\mathbf{w}) = \Big[\frac{\partial J(\mathbf{w})}{\partial w_1} \; ...\;  \frac{\partial J(\mathbf{w})}{\partial w_n} \Big]^T
+\end{equation}
+assim, ao caminhar na direção contrária à apontada pelo vetor $\nabla J(\mathbf{w})$ obtemos, de forma iterativa, a minimização desejada. Logo, a regra de atualização dos pesos pode ser dada pela forma básica:
+\begin{equation}\label{mlp-w-basic}
+	\mathbf{w}[k+1] \leftarrow \mathbf{w}[k] - \eta \nabla J \big[\mathbf{w}[k]\big]
+\end{equation} 
 
+Os algoritmos de otimização mencionados (SGD, Adam) utilizam variações da regra de atualização de $\mathbf{w}$ indicada em (\ref{mlp-w-basic}).
+
+É importante mencionar que os métodos de otimização aqui mencionados são métodos de busca local, ou seja, têm convergência esperada para um mínimo local, que não necessariamente é o mínimo global da função custo para a aplicação. Dizemos também que esses pontos mínimos possuem "bacias de atração" que, para valores adequados da taxa de aprendizado $\eta$, atrai o vetor de parâmetros $\mathbf{w}$ \cite{hastie2009elements}.
+
+Por fim, vale dizer que o processo de treinamento normalmente é realizado com sequências de vetores de entrada $\mathbf{x}$, chamadas de \textit{mini-batch}, e chamamos um período de treinamento de época (do inglês \textit{epoch}) \cite{geron2019hands}.
 
 O grande apelo das redes \textit{Multilayer Perceptron} é que elas tem a capacidade de aproximação universal, ou seja, são capazes de aproximar qualquer mapeamento contí\-nuo num domínio compacto com um nível de erro arbitrariamente pequeno. Até mesmo uma MLP com uma única camada intermediária e camada de saída linear já possui esta capacidade \cite{cybenko1989approximation}.
 
