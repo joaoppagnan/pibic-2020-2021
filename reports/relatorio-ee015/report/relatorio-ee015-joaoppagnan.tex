@@ -207,17 +207,17 @@ A escolha da função de ativação $\varphi (\cdot)$ varia de acordo com a apli
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[scale = 0.7]{mlp-activations.png}
-	\caption{À esquerda, algumas funções de ativação comuns para o neurônio \textit{Perceptron} e, à direita, suas derivadas}
+	\caption{À esquerda, algumas funções de ativação comuns em tarefas de predição e regressão para o neurônio \textit{Perceptron} e, à direita, suas derivadas}
 	\label{fig:mlp-activations}
 \end{figure}
 
 É interessante mencionar o fato de que, assim como podemos selecionar uma gama de funções não-lineares para a ativação do neurônio, de forma a realizar transformações não-lineares na entrada, também é possível utilizar funções de ativação lineares, ou seja, realizar transformações lineares assim como os modelos clássicos de predição (como o AR e o ARMA) fazem. Nesse caso, a falta da não-linearidade tornaria muito difícil ou até mesmo impossibilitaria que sistemas mais complexos fossem descritos de forma aceitável por redes neurais artificais desse tipo \cite{hornik1989multilayer}.
 
-Tipicamente, uma rede neural MLP é composta por um número arbitrário $N_L$ de  camadas com $n$ neurônios do tipo \textit{Perceptron}, com a característica de que as saídas dos neurônios da $l$-ésima camada são propagadas para a frente (esse processo também é conhecido como \textit{feedforward}), servindo como as entradas de todos os neurônios da camada seguinte ($l+1$). Por isso, este tipo de rede é conhecida como totalmente conectada (ou densa). A figura \ref{fig:mlp-architecture} apresenta a estrutura típica das redes MLP.
+Tipicamente, uma rede neural MLP é composta por um número arbitrário $N_L$ de  camadas com $n$ neurônios do tipo \textit{Perceptron}, com a característica de que as saídas dos neurônios da $l$-ésima camada são propagadas para a frente, servindo como as entradas de todos os neurônios da camada seguinte ($l+1$). Esse processo é chamado de \textit{feedforward}. Por isso, este tipo de rede é conhecida como totalmente conectada (ou densa). A figura \ref{fig:mlp-architecture} apresenta a estrutura típica das redes MLP.
 
 \begin{figure}[!ht]
 \centering
-\includegraphics[scale = 0.5]{mlp-network.png}
+\includegraphics[scale = 0.8]{mlp-network.pdf}
 \caption{Estrutura típica de uma rede MLP (figura extraída de \cite{boccato2013novas}) }
 \label{fig:mlp-architecture}
 \end{figure}
@@ -230,11 +230,11 @@ De forma similar a feita em (\ref{eq:mlp-out}), é possível representar a saíd
 \end{equation}
 onde $w_{ij}^{l}$ representa o peso sináptico da conexão que liga o $j$-ésimo neurônio da camada $l-1$ ao $i$-ésimo neurônio da camada $l$, sendo que na primeira camada intermediária os sinais de entrada são os atributos do vetor de entrada, ou seja, $y_{j}^{0} = x_{j}$ com $j = 1, ..., k$ \cite{boccato2013novas}.
 
-Os pesos sinápticos $\mathbf{w}$ são ajustados com um processo iterativo de forma a minimizar uma função custo $J(\mathbf{w})$ que representa uma medida do erro entre as saídas geradas pela rede e as saídas desejadas (vale mencionar que $\mathbf{w}$ é um vetor com todos os parâmetros da rede). No caso de um problema de regressão ou predição, é comum que a função custo a ser minimizada seja o Erro Quadrático Médio (EQM), do inglês, \textit{Mean Squared Error} (MSE), assim, o problema envolve otimização não-linear irrestrita \cite{haykin2010neural}.
+Os pesos sinápticos $\mathbf{w}$ são ajustados com um processo iterativo de forma a minimizar uma função custo $J(\mathbf{w})$ que representa uma medida do erro entre as saídas geradas pela rede e as saídas desejadas (vale mencionar que $\mathbf{w}$ é um vetor com todos os parâmetros da rede). No caso de um problema de regressão ou predição, é comum que a função custo a ser minimizada seja o Erro Quadrático Médio (MSE, do inglês \textit{Mean Squared Error}), assim, o problema envolve otimização não-linear irrestrita \cite{haykin2010neural}.
 
-Para isso, é frequente o uso de algoritmos de otimização baseados em derivadas da função custo $J(\mathbf{w})$, como o método do gradiente descendente estocástico (SGD, do inglês \textit{stochastic gradient descent}) e o algoritmo Adam (\textit{Adaptive Moment Estimation}) \cite{geron2019hands}. O famoso algoritmo de retropropagação (\textit{backpropagation}) do erro é empregado para viabilizar o cálculo das derivadas com relação aos pesos sinápticos dos neurônios situados nas camadas internas da rede. 
+Para isso, é frequente o uso de algoritmos de otimização baseados em derivadas da função custo $J(\mathbf{w})$, como o método do gradiente descendente estocástico (SGD, do inglês \textit{stochastic gradient descent}), o método de Nesterov (NAG, do inglês \textit{Nesterov Accelerated Gradient}) e o algoritmo Adam (\textit{Adaptive Moment Estimation}) \cite{geron2019hands}. O famoso algoritmo de retropropagação (\textit{backpropagation}) do erro é empregado para viabilizar o cálculo das derivadas com relação aos pesos sinápticos dos neurônios situados nas camadas internas da rede. 
 
-Nesse caso, é comum dividirmos esses métodos de otimização entre métodos de primeira ordem e de segunda ordem. Os métodos de primeira ordem utilizam as derivadas de primeira ordem da função custo, geralmente representadas na forma vetorial com o vetor gradiente:
+Nesse caso, é comum dividirmos os métodos de otimização entre métodos de primeira ordem e de segunda ordem. Os métodos de primeira ordem utilizam as derivadas de primeira ordem da função custo, geralmente representadas na forma vetorial com o vetor gradiente:
 \begin{equation}
 	\nabla J(\mathbf{w}) = \Big[\frac{\partial J(\mathbf{w})}{\partial w_1} \; ...\;  \frac{\partial J(\mathbf{w})}{\partial w_n} \Big]^T
 \end{equation}
@@ -243,7 +243,9 @@ assim, ao caminhar na direção contrária à apontada pelo vetor $\nabla J(\mat
 	\mathbf{w}[k+1] \leftarrow \mathbf{w}[k] - \eta \nabla J \big[\mathbf{w}[k]\big]
 \end{equation} 
 
-Os algoritmos de otimização mencionados (SGD, Adam) utilizam variações da regra de atualização de $\mathbf{w}$ indicada em (\ref{mlp-w-basic}).
+Os algoritmos de otimização mencionados (SGD, Adam, NAG) utilizam variações da regra de atualização de $\mathbf{w}$ indicada em (\ref{mlp-w-basic}).
+
+Para esta pesquisa, optamos por utilizar o algoritmo Nadam (\textit{Nesterov Adaptive Moment Estimation}) \cite{dozat2016incorporating}.
 
 É importante mencionar que os métodos de otimização aqui mencionados são métodos de busca local, ou seja, têm convergência esperada para um mínimo local, que não necessariamente é o mínimo global da função custo para a aplicação. Dizemos também que esses pontos mínimos possuem "bacias de atração" que, para valores adequados da taxa de aprendizado $\eta$, atrai o vetor de parâmetros $\mathbf{w}$ \cite{hastie2009elements}.
 
@@ -253,6 +255,7 @@ O grande apelo das redes \textit{Multilayer Perceptron} é que elas tem a capaci
 
 \subsubsection{Redes Recorrentes \textit{Long Short-term Memory} (LSTM)}
 Diferentemente das redes MLP que são \textit{feedforward}, ou seja, que não reutilizam a informação processada dos padrões anteriores para gerar a próxima saída, a ideia central das redes recorrentes é que elas têm estruturas computacionais que podem armazenar os estados anteriores dos neurônios, possuindo também portas não-lineares que regulam o fluxo de informação de entrada e de saída da célula computacional \cite{haykin2010neural}. Uma representação possível de uma célula de uma rede recorrente pode ser vista na Figura \ref{fig:recorrente}. Note que a saída é realimentada (com um atraso temporal) para a entrada do próprio neurônio.
+
 
 Em especial, as redes LSTM se mostram atraentes pela possibilidade de criar e explorar memórias de curto e de longo prazo. A estrutura da célula ou camada LSTM, assim como as equações presentes nela, são apresentadas na Figura \ref{fig:lstm}. 
 \noindent{
