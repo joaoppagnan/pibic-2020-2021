@@ -90,7 +90,7 @@ Por fim, na Seção 4 são indicados os próximos passos deste projeto de inicia
 
 \subsection{Modelos Lineares}
 
-Apesar desta pesquisa focar na aplicabilidade de modelos preditores não-lineares utilizando redes neurais artificais, é pertinente darmos uma introdução ao assunto através de modelos lineares para essa aplicação, já aproveitando o momento para apresentarmos alguns conceitos básicos de predição.
+Apesar desta pesquisa focar na aplicabilidade de modelos preditores não-lineares utilizando redes neurais artificiais, é pertinente darmos uma introdução ao assunto através de modelos lineares para essa aplicação, já aproveitando o momento para apresentarmos alguns conceitos básicos de predição.
 
 \subsubsection{Modelo Autorregressivo (AR)}
 
@@ -121,7 +121,7 @@ Para ser parametrizado, o modelo ARMA necessita de métodos iterativos e/ou heur
 
 Apesar dos modelos lineares terem e ainda serem bastante utilizados para a predição de séries temporais, para determinadas situações a regra linear aplicada pelos modelos AR e ARMA não é suficiente para realizar uma predição com um erro aceitável em sistemas mais complexos. 
 
-Devido a isso, optamos por direcionar a análise para modelos não-lineares, nesse caso, utilizando redes neurais artificais para a predição. Veremos então como são esses tipos de preditores.
+Devido a isso, optamos por direcionar a análise para modelos não-lineares, nesse caso, utilizando redes neurais artificiais para a predição. Veremos então como são esses tipos de preditores.
 
 \subsection{Modelos Não-lineares}
 
@@ -209,9 +209,9 @@ A escolha da função de ativação $\varphi (\cdot)$ varia de acordo com a apli
 	\label{fig:mlp-activations}
 \end{figure}
 
-É interessante mencionar o fato de que, assim como podemos selecionar uma gama de funções não-lineares para a ativação do neurônio, de forma a realizar transformações não-lineares na entrada, também é possível utilizar funções de ativação lineares, ou seja, realizar transformações lineares assim como os modelos clássicos de predição (como o AR e o ARMA) fazem. Nesse caso, a falta da não-linearidade tornaria muito difícil ou até mesmo impossibilitaria que sistemas mais complexos fossem descritos de forma aceitável por redes neurais artificais desse tipo \cite{hornik1989multilayer}.
+É interessante mencionar o fato de que, assim como podemos selecionar uma gama de funções não-lineares para a ativação do neurônio, de forma a realizar transformações não-lineares na entrada, também é possível utilizar funções de ativação lineares, ou seja, realizar transformações lineares assim como os modelos clássicos de predição (como o AR e o ARMA) fazem. Nesse caso, a falta da não-linearidade tornaria muito difícil ou até mesmo impossibilitaria que sistemas mais complexos fossem descritos de forma aceitável por redes neurais artificiais desse tipo \cite{hornik1989multilayer}.
 
-Tipicamente, uma rede neural MLP é composta por um número arbitrário $N_L$ de  camadas com $n$ neurônios do tipo \textit{Perceptron}, com a característica de que as saídas dos neurônios da $l$-ésima camada são propagadas para a frente, servindo como as entradas de todos os neurônios da camada seguinte ($l+1$). Esse processo é chamado de \textit{feedforward}. Por isso, este tipo de rede é conhecida como totalmente conectada (ou densa). A figura \ref{fig:mlp-architecture} apresenta a estrutura típica das redes MLP.
+Tipicamente, uma rede neural MLP é composta por um número arbitrário $N_L$ de  camadas com $n$ neurônios do tipo \textit{Perceptron}, com a característica de que as saídas dos neurônios da $l$-ésima camada são propagadas para a frente, servindo como as entradas de todos os neurônios da camada seguinte ($l+1$). Esse processo é conhecido como \textit{feedforward}. Por isso, este tipo de rede é conhecida como totalmente conectada (ou densa). A figura \ref{fig:mlp-architecture} apresenta a estrutura típica das redes MLP.
 
 \begin{figure}[!ht]
 \centering
@@ -232,18 +232,21 @@ Os pesos sinápticos $\mathbf{w}$ são ajustados com um processo iterativo de fo
 
 Para isso, é frequente o uso de algoritmos de otimização baseados em derivadas da função custo $J(\mathbf{w})$, como o método do gradiente descendente estocástico (SGD, do inglês \textit{stochastic gradient descent}), o método de Nesterov (NAG, do inglês \textit{Nesterov Accelerated Gradient}) e o algoritmo Adam (\textit{Adaptive Moment Estimation}) \cite{geron2019hands}. O famoso algoritmo de retropropagação (\textit{backpropagation}) do erro é empregado para viabilizar o cálculo das derivadas com relação aos pesos sinápticos dos neurônios situados nas camadas internas da rede. 
 
-Nesse caso, é comum dividirmos os métodos de otimização entre métodos de primeira ordem e de segunda ordem. Os métodos de primeira ordem utilizam as derivadas de primeira ordem da função custo, geralmente representadas na forma vetorial com o vetor gradiente:
+Nesse caso, é comum dividirmos os métodos de otimização entre métodos de primeira ordem e de segunda ordem. Os métodos de primeira ordem utilizam as derivadas de primeira ordem da função custo, geralmente representadas com o uso do vetor gradiente:
 \begin{equation}
 	\nabla J(\mathbf{w}) = \Big[\frac{\partial J(\mathbf{w})}{\partial w_1} \; ...\;  \frac{\partial J(\mathbf{w})}{\partial w_n} \Big]^T
 \end{equation}
-assim, ao caminhar na direção contrária à apontada pelo vetor $\nabla J(\mathbf{w})$ obtemos, de forma iterativa, a minimização desejada. Logo, a regra de atualização dos pesos pode ser dada pela forma básica:
+assim, ao caminharmos na direção contrária à apontada pelo vetor $\nabla J(\mathbf{w})$ obtemos, de forma iterativa, a minimização desejada. Logo, a regra de atualização dos pesos pode ser dada pela forma básica:
 \begin{equation}\label{mlp-w-basic}
 	\mathbf{w}[k+1] \leftarrow \mathbf{w}[k] - \eta \nabla J \big[\mathbf{w}[k]\big]
 \end{equation} 
 
 Os algoritmos de otimização mencionados (SGD, Adam, NAG) utilizam variações da regra de atualização de $\mathbf{w}$ indicada em (\ref{mlp-w-basic}).
 
-Para esta pesquisa, optamos por utilizar o algoritmo Nadam (\textit{Nesterov Adaptive Moment Estimation}) \cite{dozat2016incorporating}.
+Para esta pesquisa, optamos por utilizar o algoritmo Nadam (\textit{Nesterov Adaptive Moment Estimation}) \cite{dozat2016incorporating}. O Nadam, como o nome já sugere, incorpora elementos dos algoritmos NAG e Adam, de forma a ter um passo de atualização adaptativo e com acúmulo dos gradientes mais recentes (semelhante a ideia de momento linear de uma partícula), com a utilização do "truque de Nesterov", desenvolvido pelo matemático russo Yurii Nesterov \cite{nesterov27method}, onde o gradiente não é calculado sobre o ponto atual indicado pelo vetor $\mathbf{w}$, mas sim sobre um ponto levemente à frente, na mesma direção do momento. Assim, o conjunto de equações que descreve o algoritmo Nadam é dado por:
+\begin{equation}
+ a
+\end{equation}
 
 É importante mencionar que os métodos de otimização aqui mencionados são métodos de busca local, ou seja, têm convergência esperada para um mínimo local, que não necessariamente é o mínimo global da função custo para a aplicação. Dizemos também que esses pontos mínimos possuem "bacias de atração" que, para valores adequados da taxa de aprendizado $\eta$, atrai o vetor de parâmetros $\mathbf{w}$ \cite{hastie2009elements}.
 
