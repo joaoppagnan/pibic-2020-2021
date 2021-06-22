@@ -230,7 +230,7 @@ onde $w_{ij}^{l}$ representa o peso sináptico da conexão que liga o $j$-ésimo
 
 Os pesos sinápticos $\mathbf{w}$ são ajustados com um processo iterativo de forma a minimizar uma função custo $J(\mathbf{w})$ que representa uma medida do erro entre as saídas geradas pela rede e as saídas desejadas (vale mencionar que $\mathbf{w}$ é um vetor com todos os parâmetros da rede). No caso de um problema de regressão ou predição, é comum que a função custo a ser minimizada seja o Erro Quadrático Médio (MSE, do inglês \textit{Mean Squared Error}), assim, o problema envolve otimização não-linear irrestrita \cite{haykin2010neural}.
 
-Para isso, é frequente o uso de algoritmos de otimização baseados em derivadas da função custo $J(\mathbf{w})$, como o método do gradiente descendente estocástico (SGD, do inglês \textit{stochastic gradient descent}), o método de Nesterov (NAG, do inglês \textit{Nesterov Accelerated Gradient}) e o algoritmo Adam (\textit{Adaptive Moment Estimation}) \cite{geron2019hands}. O famoso algoritmo de retropropagação (\textit{backpropagation}) do erro é empregado para viabilizar o cálculo das derivadas com relação aos pesos sinápticos dos neurônios situados nas camadas internas da rede. 
+Para isso, é frequente o uso de algoritmos de otimização baseados em derivadas da função custo $J(\mathbf{w})$, como o método do gradiente descendente estocástico (SGD, do inglês \textit{stochastic gradient descent}), o método de Nesterov (NAG, do inglês \textit{Nesterov Accelerated Gradient}) e o algoritmo Adam (\textit{Adaptive Moment Estimation}) \cite{geron2019hands}. O famoso algoritmo de retropropagação (\textit{backpropagation}) do erro, cuja representação matemática também varia de acordo com o tipo de otimização, é empregado para viabilizar o cálculo das derivadas com relação aos pesos sinápticos dos neurônios situados nas camadas internas da rede, de forma que, para cada conjunto de vetores de entrada da época (do inglês \textit{epoch}) de treinamento sejam atualizados todos os pesos de todos os neurônios da rede. 
 
 Nesse caso, é comum dividirmos os métodos de otimização entre métodos de primeira ordem e de segunda ordem. Os métodos de primeira ordem utilizam as derivadas de primeira ordem da função custo, geralmente representadas com o uso do vetor gradiente:
 \begin{equation}
@@ -243,10 +243,35 @@ assim, ao caminharmos na direção contrária à apontada pelo vetor $\nabla J(\
 
 Os algoritmos de otimização mencionados (SGD, Adam, NAG) utilizam variações da regra de atualização de $\mathbf{w}$ indicada em (\ref{mlp-w-basic}).
 
-Para esta pesquisa, optamos por utilizar o algoritmo Nadam (\textit{Nesterov Adaptive Moment Estimation}) \cite{dozat2016incorporating}. O Nadam, como o nome já sugere, incorpora elementos dos algoritmos NAG e Adam, de forma a ter um passo de atualização adaptativo e com acúmulo dos gradientes mais recentes (semelhante a ideia de momento linear de uma partícula), com a utilização do "truque de Nesterov", desenvolvido pelo matemático russo Yurii Nesterov \cite{nesterov27method}, onde o gradiente não é calculado sobre o ponto atual indicado pelo vetor $\mathbf{w}$, mas sim sobre um ponto levemente à frente, na mesma direção do momento. Assim, o conjunto de equações que descreve o algoritmo Nadam é dado por:
-\begin{equation}
- a
+Para esta pesquisa, optamos por utilizar o algoritmo Nadam (\textit{Nesterov Adaptive Moment Estimation}) \cite{dozat2016incorporating}. O Nadam, como o nome já sugere, incorpora elementos dos algoritmos NAG e Adam, de forma a ter um passo de atualização adaptativo e com acúmulo dos gradientes mais recentes (semelhante a ideia de momento linear de uma partícula), com a utilização do "truque de Nesterov", desenvolvido pelo matemático russo Yurii Nesterov \cite{nesterov1983method}, onde o gradiente não é calculado sobre o ponto atual indicado pelo vetor $\mathbf{w}$, mas sim sobre um ponto levemente à frente, na mesma direção do momento. Assim, o conjunto de equações que descreve o algoritmo Nadam é dado por:
+\begin{subequations}
+\begin{equation}\label{eq:nadam-1}
+ \mathbf{w}' = \mathbf{w} + \beta_{3} \mathbf{m}
 \end{equation}
+\begin{equation}\label{eq:nadam-2}
+ \mathbf{m} \leftarrow \beta_{1}\mathbf{m} - (1 - \beta_{1}) \nabla_{\mathbf{w}}E(\mathbf{w}')
+\end{equation}
+\begin{equation}\label{eq:nadam-3}
+ \mathbf{s} \leftarrow \beta_{2}\mathbf{s} - (1 - \beta_{2}) \nabla_{\mathbf{w}}E(\mathbf{w}') \otimes \nabla_{\mathbf{w}}E(\mathbf{w}') 
+\end{equation}
+\begin{equation}\label{eq:nadam-4}
+\hat{\mathbf{m}} \leftarrow \frac{\mathbf{m}}{1 - \beta_{1}}
+\end{equation}
+\begin{equation}\label{eq:nadam-5}
+\hat{\mathbf{s}} \leftarrow \frac{\mathbf{s}}{1 - \beta_{2}}
+\end{equation}
+\begin{equation}\label{eq:nadam-6}
+ \mathbf{w} \leftarrow \mathbf{w} + \eta \hat{\mathbf{m}} \oslash \sqrt{\hat{\mathbf{s}} + \epsilon}
+\end{equation}
+\end{subequations}
+
+A incorporação dos gradiantes passados no cálculo do próximo vetor $\mathbf{w}$ é através da equação (\ref{eq:nadam-2}), que define o vetor de momento $\mathbf{m}$. Assim, utilizando a analogia com o momento linear de uma partícula, o gradiente passa ter a ideia de uma força de aceleração que aumenta o momento do vetor $\mathbf{w}$ caso este esteja indo para um ponto ótimo de mínimo local, escapando mais rapidamenete de regiões onde não há minimização significativa da função custo.
+
+O hiperparâmetro $\beta_1$ presente em (\ref{eq:nadam-2}) serve tanto para evitar que $\mathbf{m}$ aumente de forma descontrolada, como também para fazer com que, através do termo $(1 - \beta_1)$, uma média exponencialmente decrescente de valores anteriores. Normalmente, $\beta_1$ é inicializado em $0.9$.
+
+Já o vetor $\mathbf{s}$, definido em (\ref{eq:nadam-3}), serve para evitar que o algoritmo de otimização caminhe com uma direção que não aponte para o ponto ótimo mencionado anteriormente. Além disso, para evitar que esse ajuste na direção cause uma perda significativa na rapidez de convergência do algoritmo, utiliza-se os termos $\beta_2$ e $(1 - \beta_2)$, ou seja, um decaimento exponencial nos valores passados de $\mathbf{s}$. Nesse caso, o hiperparâmetro $\beta_2$ é inicializado em $0.999$ e $\epsilon$ em $1\times 10^{-7}$ (para evitar uma divisão por zero).
+
+Por fim, as equações (\ref{eq:nadam-4}) e (\ref{eq:nadam-5}) servem para inicializar os vetores $\mathbf{m}$ e $\mathbf{s}$ com valores próximos de $1$, impulsionando a atualização deles no começo do treinamento.
 
 É importante mencionar que os métodos de otimização aqui mencionados são métodos de busca local, ou seja, têm convergência esperada para um mínimo local, que não necessariamente é o mínimo global da função custo para a aplicação. Dizemos também que esses pontos mínimos possuem "bacias de atração" que, para valores adequados da taxa de aprendizado $\eta$, atrai o vetor de parâmetros $\mathbf{w}$ \cite{hastie2009elements}.
 
@@ -447,7 +472,7 @@ Como nessa primeira parte da iniciação o foco foi uma pesquisa bibliográfica 
 
 Para os experimentos computacionais, optamos pelas séries temporais do Mapa Logístico, descrito pelo cientista Robert May \cite{may1976simple}, o Mapa de Hénon, apresentado pelo astronômo e matemático francês Michel Hénon \cite{henon1976two}, a famosa série Mackey-Glass, dos cientistas Michael Mackey e Leon Glass \cite{mackey1977oscillation}, e o clássico Sistema de Lorenz, um dos  mais incríveis e fundamentais trabalhos de sistemas caóticos, introduzido pelo matemático e meteorologista Edward Norton Lorenz \cite{lorenz1963deterministic}, de forma a criar cenários diversificados para a análise do comportamento das redes neurais.
 
-Em seguida, determinaremos aspectos mais fundamentais das redes neurais que serão utilizadas, como, por exemplo, a arquitetura empregada, assim como as métricas para o treinamento e análise.
+Em seguida, determinaremos aspectos mais fundamentais das redes neurais que serão utilizadas, como, por exemplo, a arquitetura empregada, assim como as métricas para o treinamento e análise. Para essa etapa, também planejamos um estudo das redes GRU (do inglês \textit{Gated Recurrent Unit}) e ESN (do inglês \textit{Echo State Network}), sendo que esta última, em outros trabalhos de pesquisa, já indicou um bom desempenho preliminar no contexto de predição de séries temporais originadas por sistemas caóticos \cite{boccato2013novas}.
 
 Após isso, faremos a aplicação das redes neurais à predição das séries escolhidas, avaliando a sensibilidade paramétrica de cada estrutura na busca das melhores configurações, a fim de traçar um quadro comparativo entre as técnicas consideradas. 
 
