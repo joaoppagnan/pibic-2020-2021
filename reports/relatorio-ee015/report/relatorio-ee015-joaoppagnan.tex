@@ -284,7 +284,7 @@ O que a normalização faz, é centrar todas as instâncias de vetores de entrad
 \boldsymbol{\sigma}_{B}^{2} = \frac{1}{d} \sum_{i=1}^{d} (\mathbf{x}_{i} - \boldsymbol{\mu}_{B})^2 
 \end{equation}
 \begin{equation}\label{eq:bn-3}
-\hat{\mathbf{x}}_{i} = \frac{\mathbf{x}_{i} - \boldsymbol{\mu}_{B}}{\sqrt{\boldsymbol{\sigma}_{B} + \epsilon}}
+\hat{\mathbf{x}}_{i} = \frac{\mathbf{x}_{i} - \boldsymbol{\mu}_{B}}{\sqrt{\boldsymbol{\sigma}_{B}^2 + \epsilon}}
 \end{equation}
 \begin{equation}\label{eq:bn-4}
 \mathbf{z}_{i} = \boldsymbol{\gamma} \otimes \hat{\mathbf{x}}_{i} + \boldsymbol{\beta}
