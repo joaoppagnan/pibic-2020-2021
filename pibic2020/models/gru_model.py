@@ -1,3 +1,5 @@
+# pibic2020.models.gru_model.py
+
 import numpy as np
 import statistics
 import tensorflow as tf
