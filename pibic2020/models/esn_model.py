@@ -3,157 +3,214 @@
 import numpy as np
 from numpy.linalg import pinv, eigvals, inv
 
-class DeepESN:
+class ModeloESN:
     
-    """ Inicialização de um objeto da classe DeepESN 
-    
-    Parâmetros: num_neuronios = número de neurônios por reservatório
-                num_camadas =  número de camadas da rede (num_camadas >= 1)
-                leaky_values = lista com os coeficientes de vazamento de cada camada
-                spectral_radii = lista com os raios espectrais de cada camada
-                scale_in = valor absoluto máximo aceito para os pesos de entrada
-    """
-    def __init__(self,num_neuronios,num_camadas,leaky_values,spectral_radii,scale_in):
-        self.N = num_neuronios
-        self.Nl = num_camadas
-        self.a = leaky_values
-        self.rho = spectral_radii
-        self.win_max = scale_in
-        
-    """ Método fit: 
-          * constrói as matrizes aleatórias do reservatório
-          * computa a matriz com os estados da rede
-          * obtém a matriz de pesos de saída através da solução de quadrados mínimos (pseudo-inversa)
-
-          Parâmetros: u - matriz com os atributos de entrada de todos os padrões de treinamento (K x T + Tr)
-                      d - matriz com as saídas desejadas (L x T)
-                      Tr - número de amostras para o transitório (inicializar o vetor de estado)
-    """
-
-    def fit(self,u,d,Tr):
-
-        u=u.T
-        d=d.T
-
-        #extrai o número de atributos de entrada e o número de padrões do conjunto de treinamento (com transitório)
-        self.K,self.Tt = u.shape
-        
-        #número de padrões efetivos do conjunto de treinamento
-        self.T = self.Tt - Tr
-        
-        #extrai o número de saídas da rede
-        self.L = d.shape[0]
-        
-        """ Para cada camada l (de 1 a Nl), devemos determinar (1) a matriz de pesos de entrada (aleatória),
-        (2) a matriz de pesos recorrentes, respeitando a condição de estados de eco, e (3) o vetor de estados (para
-        todos os instantes de tempo) 
-        Por simplicidade, vamos guardar estas informações em filas de comprimento Nl 
+    def __init__(self, n_neurons, leaky_values, spectral_radius, scale):
         """
-        
-        #inicializa as listas que vão guardar as matrizes de pesos Win, W
-        self.Win = []
-        self.W = []
-        #inicializa a lista que vai guardar as matrizes com os estados de cada reservatório (para todos os instantes)
-        self.X = []
-        #inicializa a matriz que contém a concatenação dos estados dos reservatórios
-        self.Xvec = np.zeros((self.N*self.Nl,self.T))
-        
-        for l in range(0,self.Nl):
-            
-            #inicializa a matriz com os estados do l-ésimo reservatório
-            x_l = np.zeros((self.N,self.Tt+1))
-            
-            #número de entradas do reservatório l
-            if (l == 0):
-                Ne_l = self.K
-                U = u
-            else:
-                Ne_l = self.N
-                #a entrada da l-ésima camada é o vetor de saída da (l-1)-ésima camada (excluindo o estado inicial)
-                U = np.delete(self.X[l-1],0,1)
-            
-            #matriz de pesos de entrada (Win) do reservatório l: N x Ne
-            Win_l = 2*self.win_max*np.random.rand(self.N,Ne_l) - self.win_max
-            self.Win.append(Win_l)
-            
-            #matriz de pesos recorrentes do reservatório l
-        
-            W_l = 2*np.random.rand(self.N,self.N) - 1
-            Ws = (1-self.a[l])*np.eye(self.N) + self.a[l]*W_l
-            max_v = max(abs(eigvals(Ws)))
-            Ws = (self.rho[l]/max_v)*Ws
-            W_l = (1/self.a[l])*(Ws - (1-self.a[l])*np.eye(self.N))
-            self.W.append(W_l)
-            
-            #computa o estado do reservatório l para todos os instantes do conjunto de treinamento
-            for i in range(0,self.Tt):
-                
-                x_l[:,i+1] = (1-self.a[l])*x_l[:,i] + self.a[l]*np.tanh(np.matmul(self.Win[l],U[:,i]) + np.matmul(self.W[l],x_l[:,i]))
-                    
-            self.X.append(x_l)
-            
-        for l in range(0,self.Nl):
-            
-            aux = self.X[l]
-            """ elimina a primeira coluna (estado inicial com zeros) e os primeiros Tr estados (transitório)
-                concatena a matriz de estados do reservatório l ao repositório completo """
-            self.Xvec[l*self.N:(l+1)*self.N,:] = aux[:,Tr+1:]
-        
-        """ Agora, basta computar a pseudo-inversa da matriz Xvec para determinar os pesos da camada de saída """        
-        self.Wout = np.matmul(pinv(self.Xvec.T),d[0,Tr:].T)
-        self.Wout = self.Wout.T
+        Descrição:
+        ----------
+        Construtor da classe 'ModeloESN'
+
+        Parâmetros:
+        -----------
+        num_neuronios: int
+            Número de neurônios por reservatório
+        leaky_values: np.ndarray
+            Lista com os coeficientes de vazamento
+        spectral_radius: np.ndarray
+            Lista com os raios espectrais
+        scale: int ou float
+            Valor absoluto máximo aceito para os pesos de entrada
+
+        Retorna:
+        --------
+        Nada
+        """
+
+        if not (type(n_neurons) is int):
+            raise TypeError("O número de neurônios deve ser um inteiro!")
+
+        if not (type(leaky_values) is np.ndarray):
+            raise TypeError("A lista com os coeficientes de vazamento deve ser um array do numpy!")   
+
+        if not (type(spectral_radius) is np.ndarray):
+            raise TypeError("A lista com os raios espectrais deve ser um array do numpy!")                 
+
+        self._n_neurons = n_neurons
+        self._leaky_values = leaky_values
+        self._spectral_radius = spectral_radius
+        self._win_max = scale
+
+        # inicializa alguns parâmetros padrões da rede
+        self._n_reserv = 1
+        self._W_in = []
+        self._W_reserv = []
+        self._state_reserv = []
+        self._reserv_vector = []
+        self._W_out = []
         pass
 
+    def treinar(self, X_treino, y_treino, n_transitory_samples):
+        """
+        Descrição:
+        ----------
+        Constrói as matrizes aleatórias do reservatório, computa a matriz com os estados da rede
+        e obtém a matriz de pesos de saída através da solução de quadrados mínimos (pseudo-inversa)
 
-    """ Método predict 
-    
-        Obtém as saídas da DeepESN para o conjunto de teste; as matrizes de pesos já estão prontas
-    
-    """
-    def predict(self,ut,dt,Tr):
-        
-        ut=ut.T
-        dt=dt.T
+        Parâmetros:
+        -----------
+        X_treino: np.ndarray
+            Conjunto de entradas para o treinamento
+        y_treino: np.ndarray
+            Conjunto de saidas para o treinamento        
+        n_transitory_samples: int
+            Número de amostras para o transitório (inicializar o vetor de estado)
 
-        #extrai o número de padrões do conjunto de teste
-        self.nt = ut.shape[1]
+        Retorna:
+        --------
+        Nada
+        """
+
+        # ajusta o formato das entradas
+        X_treino = X_treino.T
+        y_treino = y_treino.T
+
+        # extrai o número de atributos de entrada e o número de padrões do conjunto de treinamento (com transitório)
+        K, n_samples = X_treino.shape
         
-        #inicializa a matriz com os estados concatenados (partimos do último estado observado no treinamento)
-        self.Xvec_teste = np.zeros((self.N*self.Nl,self.nt-Tr))
+        # número de padrões efetivos do conjunto de treinamento
+        n_effective_samples = n_samples - n_transitory_samples
         
-        #inicializa a lista que vai guardar as matrizes com os estados de cada reservatório (para todos os instantes de teste)
-        self.X_teste = []
+        # inicializa a matriz que contém a concatenação dos estados dos reservatórios
+        self._reserv_vector = np.zeros((self._n_neurons*self._n_reserv, n_effective_samples))
         
-        for l in range(0,self.Nl):
+        for l in range(0, self._n_reserv):
             
-            #inicializa a matriz com os estados do l-ésimo reservatório (o estado inicial equivale ao último do treinamento)
-            x_l = np.zeros((self.N,self.nt+1))
-            Xl_aux = self.X[l]
-            x_l[:,0] = Xl_aux[:,-1]
+            # inicializa a matriz com os estados do l-ésimo reservatório
+            layer_state = np.zeros((self._n_neurons, n_samples + 1))
+            
+            # número de entradas do reservatório l
+            if (l == 0):
+                n_layer_inputs = K
+                layer_input = X_treino
+            else:
+                n_layer_inputs = self._n_neurons
+                
+                # a entrada da l-ésima camada é o vetor de saída da (l-1)-ésima camada (excluindo o estado inicial)
+                layer_input = np.delete(self._state_reserv[l-1], 0, 1)
+            
+            # matriz de pesos de entrada (W_layer_in) do reservatório l: n_neurons x n_layer_inputs
+            W_layer_in = 2*self._win_max*np.random.rand(self._n_neurons, n_layer_inputs) - self._win_max
+            self._W_in.append(W_layer_in)
+            
+            # matriz de pesos recorrentes do reservatório l
+            W_layer = 2*np.random.rand(self._n_neurons, self._n_neurons) - 1
+            W_spectral = (1 - self._leaky_values[l])*np.eye(self._n_neurons) + self._leaky_values[l]*W_layer
+            max_eigenvalue = max(abs(eigvals(W_spectral)))
+            Ws = (self._spectral_radius[l]/max_eigenvalue)*W_spectral
+            W_layer = (1/self._leaky_values[l])*(Ws - (1 - self._leaky_values[l])*np.eye(self._n_neurons))
+            self._W_reserv.append(W_layer)
+            
+            # computa o estado do reservatório l para todos os instantes do conjunto de treinamento
+            for i in range(0, n_samples):
+                
+                layer_state[:, i + 1] = (1-self._leaky_values[l])*layer_state[:, i] + self._leaky_values[l]*np.tanh(np.matmul(self._W_in[l], layer_input[:, i]) + np.matmul(self._W_reserv[l], layer_state[:, i]))
+                    
+            self._state_reserv.append(layer_state)
+            
+        for l in range(0, self._n_reserv):           
+            # elimina a primeira coluna (estado inicial com zeros) e os primeiros n_transitory_samples estados (transitório)
+            # concatena a matriz de estados do reservatório l ao repositório completo
+            self._reserv_vector[l*self._n_neurons:(l + 1)*self._n_neurons, :] = self._state_reserv[l][:, n_transitory_samples + 1:]
+        
+        # Agora, basta computar a pseudo-inversa da matriz reserv_vector para determinar os pesos da camada de saída         
+        self._W_out = np.matmul(pinv(self._reserv_vector.T), y_treino[0, n_transitory_samples:].T)
+        self._W_out = self._W_out.T
+        pass
+
+    def predicao(self, X_teste, n_transitory_samples):
+        """
+        Descrição:
+        ----------
+        Obtém as saídas da ESN para o conjunto de teste
+
+        Parâmetros:
+        -----------
+        X_teste: np.ndarray
+            Conjunto de entradas para os dados de teste
+        n_transitory_samples: int
+            número de amostras para o transitório (inicializar o vetor de estado)
+
+        Retorna:
+        --------
+        As saídas previstas
+        """
+
+        if not (type(X_teste) is np.ndarray):
+            raise TypeError("Os dados de entrada de teste devem ser um array do numpy!")
+
+        if not (type(n_transitory_samples) is int):
+            raise TypeError("O número de amostras para o transitório deve ser um inteiro!") 
+        
+        # ajusta o formato da entrada
+        X_teste = X_teste.T
+
+        # extrai o número de padrões do conjunto de teste
+        n_test_samples = X_teste.shape[1]
+        
+        # inicializa a matriz com os estados concatenados (partimos do último estado observado no treinamento)
+        reserv_vector_test = np.zeros((self._n_neurons*self._n_reserv, n_test_samples - n_transitory_samples))
+        
+        # inicializa a lista que vai guardar as matrizes com os estados de cada reservatório (para todos os instantes de teste)
+        state_reserv_test = []
+        
+        for l in range(0, self._n_reserv):
+            
+            # inicializa a matriz com os estados do l-ésimo reservatório (o estado inicial equivale ao último do treinamento)
+            layer_state = np.zeros((self._n_neurons, n_test_samples + 1))
+            layer_state[:, 0] = self._state_reserv[l][:, -1]
             
             if (l == 0):
-                U = ut
+                layer_input = X_teste
             else:
-                #a entrada da l-ésima camada é o vetor de saída da (l-1)-ésima camada (excluindo o estado inicial)
-                U = self.X_teste[l-1]
+                # a entrada da l-ésima camada é o vetor de saída da (l-1)-ésima camada (excluindo o estado inicial)
+                layer_input = state_reserv_test[l - 1]
             
-            #computa o estado do reservatório l para todos os instantes do conjunto de teste
-            for i in range(0,self.nt):
-                
-                x_l[:,i+1] = (1-self.a[l])*x_l[:,i] + self.a[l]*np.tanh(np.matmul(self.Win[l],U[:,i]) + np.matmul(self.W[l],x_l[:,i]))
+            # computa o estado do reservatório l para todos os instantes do conjunto de teste
+            for i in range(0, n_test_samples):
+                layer_state[:, i + 1] = (1 - self._leaky_values[l])*layer_state[:, i] + self._leaky_values[l]*np.tanh(np.matmul(self._W_in[l], layer_input[:, i]) + np.matmul(self._W_reserv[l], layer_state[:, i]))
                     
-            #elimina a primeira coluna (estado inicial com zeros) 
-            xt = np.delete(x_l, 0,1)
-            self.X_teste.append(xt)
+            # elimina a primeira coluna (estado inicial com zeros)
+            state_reserv_test.append(np.delete(layer_state, 0, 1))
         
-        for l in range(0,self.Nl):
-            #elimina os primeiros Tr estados (transitório)
-            Xaux = self.X_teste[l]
-            xt = np.delete(Xaux,np.arange(Tr),1)
-            self.Xvec_teste[l*self.N:(l+1)*self.N,:] = xt
+        # elimina os primeiros n_transitory_samples estados de todas as camadas
+        for l in range(0, self._n_reserv):
+            reserv_vector_test[l*self._n_neurons:(l + 1)*self._n_neurons, :] = np.delete(state_reserv_test[l], np.arange(n_transitory_samples), 1)
             
-        #gera as saídas para o conjunto de teste
-        yteste = np.matmul(self.Wout,self.Xvec_teste)
-        yteste = yteste.T
+        # gera as saídas para o conjunto de teste
+        y_predicao = np.matmul(self._W_out, reserv_vector_test).T
 
-        return yteste
+        return y_predicao
+
+    def _resetar_rede(self):
+        """
+        Descrição:
+        ----------
+        Método interno para resetar os parâmetros da rede estimados com o treinar().
+        Utilizado no método avaliar()
+
+        Parâmetros:
+        -----------
+        Nenhum
+
+        Retorna:
+        --------
+        Nada
+        """
+
+        self._W_in = []
+        self._W_reserv = []
+        self._state_reserv = []
+        self._reserv_vector = []
+        self._W_out = []
+        pass
