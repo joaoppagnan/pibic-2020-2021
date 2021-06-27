@@ -302,50 +302,30 @@ Além disso, para o propósito deste trabalho de pesquisa, que envolve sistemas 
 
 Logo, incluímos na análise alguns modelos de redes neurais recorrentes. Discutiremos mais sobre a estrutura e o funcionamento delas na próxima seção.
 
-\subsubsection{Redes Recorrentes \textit{Long Short-term Memory} (LSTM)}
-Diferentemente das redes MLP que são \textit{feedforward}, ou seja, que não reutilizam a informação processada dos padrões anteriores para gerar a próxima saída, a ideia central das redes recorrentes é que elas têm estruturas computacionais que podem armazenar os estados anteriores dos neurônios, possuindo também portas não-lineares que regulam o fluxo de informação de entrada e de saída da célula computacional \cite{haykin2010neural}. Uma representação possível de uma célula de uma rede recorrente pode ser vista na Figura \ref{fig:recorrente}. Note que a saída é realimentada (com um atraso temporal) para a entrada do próprio neurônio.
+\subsubsection{Redes Neurais Recorrentes (RNN)} 
+Diferentemente das redes MLP que são \textit{feedforward}, ou seja, que não reutilizam a informação processada dos padrões anteriores para gerar a próxima saída, a ideia central das redes neurais recorrentes (RNN, do inglês \textit{Recurrent Neural Networks}) é que elas têm estruturas computacionais que podem armazenar os estados anteriores dos neurônios, podendo também possuir portas não-lineares que regulam o fluxo de informação de entrada e de saída da célula computacional \cite{haykin2010neural}. Uma representação possível de uma célula básica de uma rede recorrente pode ser vista na Figura \ref{fig:recorrente-cell} (esquerda).
+\begin{figure}[H]
+\centering
+\includegraphics[scale = 0.2]{rnn-cell.pdf}
+\caption{À esquerda, célula básica da rede recorrente e, à direita, sua representação através do tempo (figura extraída de \cite{geron2019hands})}
+\label{fig:recorrente-cell}
+\end{figure}
 
+Note que a saída é realimentada (com um atraso temporal) para a entrada do próprio neurônio, assim a célula recorrente recebe tanto o vetor de entradas $\mathbf{x}(t)$ assim como a saída no instante anterior $y(t-1)$ que, devido a relação de recorrência, traz as saídas em todos os instantes anteriores $y(t-k)$ com $1 < k \leq t$ (considerando $y(0)$). Dessa forma, como pode ser visto na Figura \ref{fig:recorrente-cell} (direita), é possível representar essa rede através do tempo, através de um processo chamado desenrolamento da rede no tempo (do inglês \textit{unrolling the network through time}) \cite{geron2019hands}.
+
+Uma camada recorrente é formada de maneira similar à célula, com a diferença que cada neurônio recebe, além do vetor de entradas $\mathbf{x}(t)$, um vetor de saídas $\mathbf{y}(t-1)$, que contém as saídas de todos as unidades recorrentes da camada em instantes anteriores, conforme a Figura \ref{fig:recorrente-camada} indica. 
+\begin{figure}[H]
+\centering
+\includegraphics[scale = 0.25]{rnn-layer.pdf}
+\caption{À esquerda, camada da rede recorrente e, à direita, sua representação através do tempo (figura extraída de \cite{geron2019hands})}
+\label{fig:recorrente-camada}
+\end{figure}
+
+\subsubsection{Redes \textit{Long Short-term Memory} (LSTM)}
 
 Em especial, as redes LSTM se mostram atraentes pela possibilidade de criar e explorar memórias de curto e de longo prazo. A estrutura da célula ou camada LSTM, assim como as equações presentes nela, são apresentadas na Figura \ref{fig:lstm}. 
 \noindent{
 \begin{figure}[H]
-\begin{minipage}{0.5\textwidth}
-\begin{center}   
-\begin{tikzpicture}[x=0.65pt,y=0.65pt,yscale=-1,xscale=1]
-%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
-
-%Straight Lines [id:da1554249944842837] 
-\draw    (320.58,202.18) -- (320.19,163.18) ;
-\draw [shift={(320.17,161.18)}, rotate = 449.42] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
-%Shape: Circle [id:dp7598463649301769] 
-\draw   (295.17,136.18) .. controls (295.17,122.38) and (306.36,111.18) .. (320.17,111.18) .. controls (333.97,111.18) and (345.17,122.38) .. (345.17,136.18) .. controls (345.17,149.99) and (333.97,161.18) .. (320.17,161.18) .. controls (306.36,161.18) and (295.17,149.99) .. (295.17,136.18) -- cycle ;
-%Straight Lines [id:da5775924503019426] 
-\draw    (320.17,111.18) -- (319.61,73.18) ;
-\draw [shift={(319.58,71.18)}, rotate = 449.16] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
-%Curve Lines [id:da6508772564279707] 
-\draw    (340.58,116.18) .. controls (404.93,98.36) and (405.58,137.39) .. (343.48,152.73) ;
-\draw [shift={(341.58,153.18)}, rotate = 346.81] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
-%Straight Lines [id:da12570537723123754] 
-\draw    (295.17,136.18) -- (345.17,136.18) ;
-%Straight Lines [id:da42455472986521403] 
-\draw    (304.58,129.68) -- (320.58,129.68) ;
-%Straight Lines [id:da862734419251405] 
-\draw    (320.58,129.68) -- (330.58,119.68) ;
-
-% Text Node
-\draw (392,116) node [anchor=north west][inner sep=0.75pt]   [align=left] {$y(t-1)$};
-% Text Node
-\draw (309,51) node [anchor=north west][inner sep=0.75pt]   [align=left] {$y(t)$};
-% Text Node
-\draw (309,206) node [anchor=north west][inner sep=0.75pt]   [align=left] {$x(t)$};
-% Text Node
-\draw (309,137.5) node [anchor=north west][inner sep=0.75pt]   [align=left] {$\sum$};
-\end{tikzpicture}
-\caption{Célula da rede recorrente}
-\label{fig:recorrente}
-\end{center}
-\end{minipage}
-\begin{minipage}{0.5\textwidth}
 \begin{center}
 \begin{tikzpicture}[
     % GLOBAL CFG
@@ -470,7 +450,6 @@ Em especial, as redes LSTM se mostram atraentes pela possibilidade de criar e ex
 \caption{Estrutura e equações de uma célula/camada LSTM}
 \label{fig:lstm}
 \end{center}
-\end{minipage}
 \end{figure}
 }
 As LSTMs manipulam o vetor $\mathbf{c}(t)$, aprendendo durante o treinamento o que deve ser guardado nele, o que deve ser descartado e o que deve ser aproveitado para gerar a saída $\mathbf{h}(t)$. Dessa forma, podemos dizer que a atualização do vetor de estados $\mathbf{c}(t)$ é feita com o descarte de informações e a incorporação de novidades vindas da entrada. 
