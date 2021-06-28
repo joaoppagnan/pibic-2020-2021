@@ -214,7 +214,7 @@ Tipicamente, uma rede neural MLP é composta por um número arbitrário $N_L$ de
 \begin{figure}[!ht]
 \centering
 \includegraphics[scale = 0.8]{mlp-network.pdf}
-\caption{Estrutura típica de uma rede MLP (figura extraída de \cite{boccato2013novas}) }
+\caption{Estrutura típica de uma rede MLP (figura adaptada de \cite{boccato2013novas}) }
 \label{fig:mlp-architecture}
 \end{figure}
 
@@ -307,7 +307,7 @@ Diferentemente das redes MLP que são \textit{feedforward}, ou seja, que não re
 \begin{figure}[H]
 \centering
 \includegraphics[scale = 0.2]{rnn-cell.pdf}
-\caption{À esquerda, célula básica da rede recorrente e, à direita, sua representação através do tempo (figura extraída de \cite{geron2019hands})}
+\caption{À esquerda, célula básica da rede recorrente e, à direita, sua representação através do tempo (figura adaptada de \cite{geron2019hands})}
 \label{fig:recorrente-cell}
 \end{figure}
 
@@ -317,9 +317,38 @@ Uma camada recorrente é formada de maneira similar à célula, com a diferença
 \begin{figure}[H]
 \centering
 \includegraphics[scale = 0.25]{rnn-layer.pdf}
-\caption{À esquerda, camada da rede recorrente e, à direita, sua representação através do tempo (figura extraída de \cite{geron2019hands})}
+\caption{À esquerda, camada da rede recorrente e, à direita, sua representação através do tempo (figura adaptada de \cite{geron2019hands})}
 \label{fig:recorrente-camada}
 \end{figure}
+
+Dessa forma, cada célula recorrente possui dois vetores de pesos, $\mathbf{w}_x$ e $\mathbf{w}_y$. O primeiro pondera o vetor de entradas $\mathbf{x}(t)$, de forma similar à apresentada anteriormente na MLP. Já o vetor $\mathbf{w}_y$ pondera o vetor das saídas dos estados passados $\mathbf{y}(t-1)$.
+
+Logo, pode-se formar uma camada recorrente agrupando os vetores de pesos de cada célula nas matrizes $\mathbf{W}_x$ e $\mathbf{W}_y$, sendo que a saída da camada, isto é, $\mathbf{y}(t)$, é dada por:
+\begin{equation}\label{eq:rnn-layer}
+\mathbf{y}(t) = \varphi \big(\mathbf{W}_x \mathbf{x}(t) + \mathbf{W}_y \mathbf{y}(t-1) + \mathbf{b} \big)
+\end{equation}
+
+Assim, como o vetor $\mathbf{y}(t-1)$ presente em (\ref{eq:rnn-layer}) contém, implicitamente, a saída da camada no instante $t$ acaba sendo influenciada por todas as entradas anteriores ($\mathbf{x}(0)$, $\mathbf{x}(1)$, ... $\mathbf{x}(t-1)$). Devido a isso, é dito que a rede recorrente possui uma memória dos estados anteriores \cite{geron2019hands}. 
+
+Em geral, o estado atual de uma célula é representado através de uma função $\mathbf{h}(t)$, de forma a termos a seguinte relação entre $\mathbf{h}(t)$ e $\mathbf{y}(t)$:
+\begin{equation}
+	\mathbf{h}(t) = f(\mathbf{x}(t), \mathbf{h}(t-1))
+\end{equation}
+\begin{equation}
+	\mathbf{y}(t) = g(\mathbf{x}(t), \mathbf{h}(t-1))
+\end{equation}
+
+Nas células mais básicas apresentadas anteriormente, temos que $f(\mathbf{x}(t), \mathbf{h}(t-1)) = g(\mathbf{x}(t), \mathbf{h}(t-1))$, mas esse nem sempre é o caso. Assim, uma representação mais geral de uma célula recorrente pode ser vista na Figura \ref{fig:recorrente-cell-geral}.
+\begin{figure}[!ht]
+\centering
+\includegraphics[scale = 0.25]{rnn-cell-general.pdf}
+\caption{À esquerda, representação geral da célula da rede recorrente e, à direita, sua representação através do tempo (figura adaptada de \cite{geron2019hands})}
+\label{fig:recorrente-cell-geral}
+\end{figure}
+
+A saída de uma RNN varia com a aplicação. Para a predição de séries temporais, utilizamos o arranjo sequência para sequência (do inglês \textit{sequence-to-sequence network}), que a rede recebe uma sequência de entradas e gera uma sequência de saídas. Por exemplo, sendo $x(t)$ o valor da série temporal, $y(t)$ é a estimação da rede para o instante $t + L$, sendo $L$ o passo de predição. Logo, fornecendo em $t=0$ vetores de entrada um a um, as saídas serão as estimações dos valores para os instantes $1$ a $N + L$, sendo $N$ o número de amostras da série. 
+
+A célula recorrente apresentada aqui é bem básica, aprendendo apenas padrões curtos. Assim, na seção seguinte apresentaremos a rede recorrente LSTM, que possui uma estrutura mais elaborada e é capaz de aprender padrões mais complexos.
 
 \subsubsection{Redes \textit{Long Short-term Memory} (LSTM)}
 

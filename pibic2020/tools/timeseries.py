@@ -4,7 +4,7 @@ import numpy as np
 
 class SerieTemporal:
 
-    def __init__(self, dados, K, L):
+    def __init__(self, dados, K, L=1):
         """
         Descrição:
         ----------

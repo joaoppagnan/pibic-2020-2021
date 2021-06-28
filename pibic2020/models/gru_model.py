@@ -60,10 +60,13 @@ class ModeloGRU():
         ----------
         Função para gerar a rede GRU com os parâmetros especificados.
         A função de ativação é a tangente hiperbólica.
-        Ainda não foi implementada.
         
         Parâmetros:
         -----------
+        n_units: int
+            Número de unidades na camada recorrente
+        init_mode: str
+            Inicialização para os neurônios recorrentes
         
         Retorna:
         --------
