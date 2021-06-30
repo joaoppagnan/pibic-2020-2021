@@ -360,6 +360,23 @@ Por fim, podemos combinar o esquema sequência-vetor seguido do vetor-sequência
 \label{fig:rnn-output-style}
 \end{figure}
 
+O treinamento de uma rede recorrente também utiliza a técnica de retropropagação do erro, citada anteriormente quando foi discutida a rede MLP. A diferença é que o erro também é retropropagado para $k$ instantes anteriores de tempo. Dessa forma, essa técnica é chamada de retropropagação do erro através do tempo (do inglês \textit{backpropagation through time}).
+
+Para compreender os pontos principais do funcionamente desse algoritmo, convém considerar a rede desdobrada no tempo (Figura \ref{fig:recorrente-camada}). Dessa forma, pode-se perceber que uma rede recorrente desdobrada no tempo é bem semelhante a uma rede \textit{feedforward} profunda, em que as várias camadas que representam a rede em instantes de tempo diferente compartilham os mesmos parâmetros.
+
+Nesse caso, a entrada de camada camada da rede desdobrada corresponde ao vetor de entrada para um determinado instante de tempo. Logo, a camada correspondente ao primeiro instante de tempo recebe a entrada $\mathbf{x}(t-k)$, a camada seguinte a ela recebe a entrada $\mathbf{x}(t-k+1)$, e isso ocorre até a camada mais recente no tempo da rede, que recebe a entrada $\mathbf{x}(t)$. Também é válido mencionar que as saídas de determinados instantes de tempo podem ser ignoradas ao calcular a função custo $J$ para a rede desdobrada, assim como indica a Figura \ref{fig:rnn-backpropagation}.
+\begin{figure}[!ht]
+\centering
+\includegraphics[scale = 0.3]{rnn-backpropagation.pdf}
+\caption{Retropropagação do erro através do tempo (figura adaptada de \cite{geron2019hands})}
+\label{fig:rnn-backpropagation}
+\end{figure}
+
+Logo, o algoritmo calcula a função custo $J$, considerando as saídas relevantes, e os gradientes dessa função para os pesos $\mathbf{W}$ e $\mathbf{b}$ são propagados em direção aos instantes de tempo anteriores (ignorando os instantes com saídas irrelevantes) e, como esses pesos são os mesmos em todas as camadas da rede desdobrada, eles são ajustados combinando a direção do gradiente calculado em cada instante de tempo. Essa é a essência da retropropagação do erro através do tempo.
+
+É importante mencionar que essa técnica também está sujeita a obstáculos semelhantes aos mencionados anteriormente sobre a retropropagação do erro tradicional, como gradientes explosivos e/ou desvanecimento dos mesmos. Além disso, como a rede recorrente é um sistema dinâmico, podem ocorrer problemas com relação à instabilidade do processo de treinamento. 
+
+Para mitigar esses problemas, são utilizadas técnicas de \textit{gradient clipping} e normalizações \cite{geron2019hands}, além do uso de funções de ativação baseadas nas funções tangente hiperbólica ($tanh$) e logística ($sigmoid$), devido às saturações das mesmas para entradas muito grandes, ou muito pequenas (Figura \ref{fig:mlp-activations}).
 
 A célula recorrente apresentada aqui é bem básica, aprendendo apenas padrões curtos. Assim, na seção seguinte apresentaremos a rede recorrente LSTM, que possui uma estrutura mais elaborada e é capaz de aprender padrões mais complexos.
 
