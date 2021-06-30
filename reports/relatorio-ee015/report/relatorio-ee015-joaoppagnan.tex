@@ -25,6 +25,7 @@
 \singlespacing
 
 \newcommand{\empt}[2]{$#1^{\langle #2 \rangle}$}
+\newcommand{\sigmoid}{\text{Sigmoid}}
 
 \usepackage{amsmath}
 
@@ -376,7 +377,7 @@ Logo, o algoritmo calcula a função custo $J$, considerando as saídas relevant
 
 É importante mencionar que essa técnica também está sujeita a obstáculos semelhantes aos mencionados anteriormente sobre a retropropagação do erro tradicional, como gradientes explosivos e/ou desvanecimento dos mesmos. Além disso, como a rede recorrente é um sistema dinâmico, podem ocorrer problemas com relação à instabilidade do processo de treinamento. 
 
-Para mitigar esses problemas, são utilizadas técnicas de \textit{gradient clipping} e normalizações \cite{geron2019hands}, além do uso de funções de ativação baseadas nas funções tangente hiperbólica ($tanh$) e logística ($sigmoid$), devido às saturações das mesmas para entradas muito grandes, ou muito pequenas (Figura \ref{fig:mlp-activations}).
+Para mitigar esses problemas, são utilizadas técnicas de \textit{gradient clipping} e normalizações \cite{geron2019hands}, além do uso de funções de ativação baseadas nas funções tangente hiperbólica ($\tanh$) e logística ($\sigmoid$), devido às saturações das mesmas para entradas muito grandes, ou muito pequenas (Figura \ref{fig:mlp-activations}).
 
 A célula recorrente apresentada aqui é bem básica, aprendendo apenas padrões curtos. Assim, na seção seguinte apresentaremos a rede recorrente LSTM, que possui uma estrutura mais elaborada e é capaz de aprender padrões mais complexos.
 
