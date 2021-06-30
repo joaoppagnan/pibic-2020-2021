@@ -348,6 +348,19 @@ Nas células mais básicas apresentadas anteriormente, temos que $f(\mathbf{x}(t
 
 A saída de uma RNN varia com a aplicação. Para a predição de séries temporais, utilizamos o arranjo sequência para sequência (do inglês \textit{sequence-to-sequence network}), que a rede recebe uma sequência de entradas e gera uma sequência de saídas. Por exemplo, sendo $x(t)$ o valor da série temporal, $y(t)$ é a estimação da rede para o instante $t + L$, sendo $L$ o passo de predição. Logo, fornecendo em $t=0$ vetores de entrada um a um, as saídas serão as estimações dos valores para os instantes $1$ a $N + L$, sendo $N$ o número de amostras da série. 
 
+Um outro tipo de saída possível para a predição de séries temporais é o arranjo sequência para vetor (do inglês \textit{sequence-to-vector network}), onde ignoramos todas as saídas com exceção da última. Assim, com esse arranjo é possível predizer os próximos $L$ valores desconhecidos da série. Essa configuração também é muito utilizada para gerar, com base em uma frase, um \textit{score} para o sentimento que foi transmitido pelo autor \cite{geron2019hands}.
+
+Além disso, também é possível termos um arranjo vetor para sequência (do inglês \textit{vector-to-sequence network}). Esse tipo não é tanto utilizada para a predição de séries temporais, sendo mais utilizada para gerar legendas para imagens. 
+
+Por fim, podemos combinar o esquema sequência-vetor seguido do vetor-sequência. Essa configuração é chamada de \textit{Encoder-Decoder}, utilizado para gerar traduções com base em uma frase. O \textit{Encoder} recebe uma sequência de palavras como entrada, gerando um vetor que é decodificado pelo \textit{Decoder} para formar o texto em outro idioma. A Figura \ref{fig:rnn-output-style} exibe as configurações possíveis.
+\begin{figure}[!ht]
+\centering
+\includegraphics[scale = 0.3]{rnn-output-style.pdf}
+\caption{Maneiras de se implementar uma RNN (figura adaptada de \cite{geron2019hands})}
+\label{fig:rnn-output-style}
+\end{figure}
+
+
 A célula recorrente apresentada aqui é bem básica, aprendendo apenas padrões curtos. Assim, na seção seguinte apresentaremos a rede recorrente LSTM, que possui uma estrutura mais elaborada e é capaz de aprender padrões mais complexos.
 
 \subsubsection{Redes \textit{Long Short-term Memory} (LSTM)}
