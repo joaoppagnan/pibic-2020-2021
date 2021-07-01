@@ -361,7 +361,7 @@ Por fim, podemos combinar o esquema sequência-vetor seguido do vetor-sequência
 \label{fig:rnn-output-style}
 \end{figure}
 
-O treinamento de uma rede recorrente também utiliza a técnica de retropropagação do erro, citada anteriormente quando foi discutida a rede MLP. A diferença é que o erro também é retropropagado para $k$ instantes anteriores de tempo. Dessa forma, essa técnica é chamada de retropropagação do erro através do tempo (do inglês \textit{backpropagation through time}).
+O treinamento de uma rede recorrente também utiliza a técnica de retropropagação do erro, citada anteriormente quando foi discutida a rede MLP. A diferença é que o erro também é retropropagado para $k$ instantes anteriores de tempo. Dessa forma, essa técnica é chamada de retropropagação do erro através do tempo (BPTT, do inglês \textit{backpropagation through time}).
 
 Para compreender os pontos principais do funcionamente desse algoritmo, convém considerar a rede desdobrada no tempo (Figura \ref{fig:recorrente-camada}). Dessa forma, pode-se perceber que uma rede recorrente desdobrada no tempo é bem semelhante a uma rede \textit{feedforward} profunda, em que as várias camadas que representam a rede em instantes de tempo diferente compartilham os mesmos parâmetros.
 
@@ -383,9 +383,14 @@ A célula recorrente apresentada aqui é bem básica, aprendendo apenas padrões
 
 \subsubsection{Redes \textit{Long Short-term Memory} (LSTM)}
 
-Em especial, as redes LSTM se mostram atraentes pela possibilidade de criar e explorar memórias de curto e de longo prazo. A estrutura da célula ou camada LSTM, assim como as equações presentes nela, são apresentadas na Figura \ref{fig:lstm}. 
+Devido às transformações que uma rede recorrente convencional aplica em uma entrada, parte da informação original transmitida é perdida e, depois de várias iterações, não sobra traços das primeiras entradas.
+
+As redes LSTM (do inglês, \textit{Long Short-term Memory}) contornam esse problema inserindo portas dentro da célula recorrente que controlam o fluxo de informação \cite{greff2016lstm}.
+
+O neurônio da rede LSTM é bem semelhante ao neurônio básico da rede recorrente mostrado anteriormente. A diferença é a presença de um vetor de longo prazo $\mathbf{c}$ e um vetor de curto prazo $\mathbf{h}$, conforme indicado na Figura \ref{fig:lstm}.
+
 \noindent{
-\begin{figure}[H]
+\begin{figure}[!ht]
 \begin{center}
 \begin{tikzpicture}[
     % GLOBAL CFG
@@ -462,21 +467,13 @@ Em especial, as redes LSTM se mostram atraentes pela possibilidade de criar e ex
     % Draw External outputs? named as basis c2,h2,x2
     \node[] (c2) at (4,1.5) {$\mathbf{c}(t)$};
     \node[] (h2) at (4,-1.5) {$\mathbf{h}(t)$};
-    \node[] (x2) at (2.5,3) {$\mathbf{h}(t)$};
+    \node[] (x2) at (2.5,3) {$\mathbf{y}(t)$};
     
     % Draw internals functions, named as basis fi,ii,ci,oi
     \node[] (fi) at (-2.35,-0.25) {$\mathbf{f}(t)$};
     \node[] (ii) at (-1.5,0.2) {$\mathbf{i}(t)$};
-    \node[] (ci) at (-0.1,-0.35) {$\mathbf{\tilde{c}}(t)$};
+    \node[] (ci) at (-0.1,-0.35) {$\tilde{\mathbf{c}}(t)$};
 	\node[] (oi) at (0.5,0.2) {$\mathbf{o}(t)$};      
-	
-    % Draw equations named as basis fe,ie,cie,ce,oe,he
-    \node[] (fe) at (0.5,-2.5) {$\mathbf{f}(t) = \sigma(\mathbf{W}_f [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_f)$};
-    \node[] (ie) at (0.5,-3) {$\mathbf{i}(t) = \sigma(\mathbf{W}_i [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_i)$};
-    \node[] (cie) at (0.5,-3.5) {$\mathbf{\tilde{c}}(t) = \sigma(\mathbf{W}_c [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_c)$};	      
-    \node[] (ce) at (0.5,-4) {$\mathbf{c}(t) = \mathbf{f}(t) \otimes \mathbf{c}(t-1) + \mathbf{i}(t) \otimes \mathbf{\tilde{c}}(t)$};
-    \node[] (oe) at (0.5,-4.5) {$\mathbf{o}(t) = \sigma(\mathbf{W}_o [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_o)$};
-    \node[] (he) at (0.5,-5) {$\mathbf{h}(t) = \mathbf{o}(t) \otimes \tanh (\mathbf{c}(t))$};	 
     
 % Start connecting all.
     %Intersections and displacements are used. 
@@ -507,14 +504,53 @@ Em especial, as redes LSTM se mostram atraentes pela possibilidade de criar e ex
     \draw [->, ArrowC2] (i1)++(0,0.2) -- (x2);
 
 \end{tikzpicture}
-\caption{Estrutura e equações de uma célula/camada LSTM}
+\caption{Estrutura interna de uma célula LSTM}
 \label{fig:lstm}
 \end{center}
 \end{figure}
 }
-As LSTMs manipulam o vetor $\mathbf{c}(t)$, aprendendo durante o treinamento o que deve ser guardado nele, o que deve ser descartado e o que deve ser aproveitado para gerar a saída $\mathbf{h}(t)$. Dessa forma, podemos dizer que a atualização do vetor de estados $\mathbf{c}(t)$ é feita com o descarte de informações e a incorporação de novidades vindas da entrada. 
 
-À semelhança das redes MLP, o treinamento de uma LSTM também é realizado através de algoritmos de otimização baseados em derivadas da função custo; a diferença é que agora é necessário propagar as derivadas ao longo da estrutura e, também, ao longo do tempo devido às realimentações. O algoritmo BPTT (\textit{backpropagation-through-time}) representa a extensão do \textit{backpropagation} para o cenário das redes recorrentes \cite{geron2019hands}. 
+Durante o processo de treinamento, a rede aprende o que deve ser armazenado no vetor $\mathbf{c}(t)$ e, do que foi guardado, o que deve ser descartado e o que deve ser levado em conta na hora de estimar a próxima saída.
+
+A primeira operação realizada nesse vetor é a multiplicação elemento a elemento ($\otimes$) com o vetor $\mathbf{f}(t)$. Essa operação também é chamada de porta do esquecimento (do inglês, \textit{forget gate}) pois ela determina quais elementos de $\mathbf{c}(t-1)$ serão descartados, ou seja, quais memórias de instantes passados no longo prazo serão esquecidas.
+
+Após a incorporação de novas informações na operação de soma elemento a elemento ($\oplus$), o vetor $\mathbf{c}(t-1)$ é mandado para a saída da célula e uma cópia sua passa pela função tangente hiperbólica e é filtrado pela porta de saída (do inglês, \textit{output gate}), formando o vetor de curto prazo $\mathbf{h}(t)$, que é também a saída $\mathbf{y}(t)$.
+
+A entrada do neurônio LSTM, além de incluir o vetor $\mathbf{c}(t)$, também inclui os vetores $\mathbf{h}(t-1)$ e $\mathbf{x}(t)$, e com eles são formados os vetores $\mathbf{f}(t)$, $\mathbf{i}(t)$, $\tilde{\mathbf{c}}(t)$ e $\mathbf{o}(t)$.
+
+Perceba que o vetor $\tilde{\mathbf{c}}(t)$ é a saída de uma célula recorrente básica, considerando a tangente hiperbólica como função de ativação. Ou seja, ela é composta pela ponderação entre os estados anteriores de curto prazo $\mathbf{h}(t)$ e a entrada atual $\mathbf{x}(t)$, além do vetor de \textit{bias} $\mathbf{b}(t)$. A LSTM guarda as partes mais relevantes do vetor $\tilde{\mathbf{c}}(t)$ no vetor $\mathbf{c}(t-1)$ através da soma elemento a elemento mencionada anteriormente.
+
+Os outros vetores restantes representam operações de controle do fluxo de informação dentro do neurônio, cada termo variando de $0$ a $1$ devido a função logística ($\sigma$). Assim, ao serem multiplicadas elemento a elemento, controlam quais informações serão eliminadas.
+
+No caso, $\mathbf{f}(t)$ controla quais partes de $\mathbf{c}(t-1)$ serão apagadas, $\mathbf{i}(t)$ controla quais informações de $\tilde{\mathbf{c}}(t)$ serão agregadas ao vetor $\mathbf{c}(t-1)$ e o vetor $\mathbf{o}(t)$ controla quais componentes de $\mathbf{c}(t-1)$ deverão formar a saída $\mathbf{y}(t)$ e o vetor de curto prazo $\mathbf{h}(t)$.
+
+O conjunto de equações abaixo mostra as operações presentes na estrutura interna da célula LSTM, assim como a saída para o instante $\mathbf{y}(t)$, presente no vetor $\mathbf{h}(t)$:
+\begin{subequations}
+\begin{equation}
+\mathbf{f}(t) = \sigma(\mathbf{W}_f [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_f)
+\end{equation}
+\begin{equation}
+\mathbf{i}(t) = \sigma(\mathbf{W}_i [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_i)
+\end{equation}
+\begin{equation}
+\tilde{\mathbf{c}}(t) = \tanh(\mathbf{W}_c [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_c)
+\end{equation}
+\begin{equation}
+\mathbf{c}(t) = \mathbf{f}(t) \otimes \mathbf{c}(t-1) + \mathbf{i}(t) \otimes \tilde{\mathbf{c}}(t)
+\end{equation}
+\begin{equation}
+\mathbf{o}(t) = \sigma(\mathbf{W}_o [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_o)
+\end{equation}
+\begin{equation}
+\mathbf{y}(t) = \mathbf{h}(t) = \mathbf{o}(t) \otimes \tanh (\mathbf{c}(t))
+\end{equation}
+\end{subequations}
+
+À semelhança das redes recorrentes convencionais, o treinamento de uma LSTM também é realizado através de algoritmos de otimização baseados em derivadas da função custo propagadas ao longo da estrutura e ao longo do tempo, utilizando o algoritmo BPTT.
+
+Resumidamente, as LSTMs manipulam o vetor de longo prazo $\mathbf{c}(t)$, aprendendo durante o treinamento o que deve ser guardado nele, o que deve ser descartado e o que deve ser aproveitado para gerar a saída $\mathbf{y}(t)$ e o vetor de curto prazo $\mathbf{h}(t)$. Dessa forma, podemos dizer que a atualização do vetor de estados $\mathbf{c}(t)$ é feita com o descarte de informações e a incorporação de novidades vindas da entrada.
+
+Depois de uma exposição sobre os modelos preditores que utilizaremos nessa pesquisa, falaremos a seguir sobre dinâmica caótica, explicando qual a grande dificuldade de prever-se valores de uma série temporal gerada por um sistema desse tipo.
 
 \section{Sistemas com Dinâmica Caótica}
 Como dito anteriormente, sistemas com dinâmica cáotica se destacam pois, apesar de serem determinísticos, apresentam dependência sensitiva em relação às condições iniciais (DSCI). Dessa forma, duas trajetórias que partem de posições relativamente próximas no espaço de estados podem evoluir de uma forma totalmente distinta devido às não-linearidades presentes que amplificam as diferenças entre essas condições iniciais \cite{fiedler1994caos}.
