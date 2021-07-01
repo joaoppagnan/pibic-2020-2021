@@ -555,11 +555,40 @@ Depois de uma exposição sobre os modelos preditores que utilizaremos nessa pes
 \section{Sistemas com Dinâmica Caótica}
 O estudo de sistemas dinâmicos se tornou fundamental para a ciência quando a humanidade começou a desenvolver modelos matemáticos para explicar o mundo em sua volta, utilizando os modelos criados para realizar predições e, de certa forma, saber o que nos espera no futuro.
 
-Os sistemas dinâmicos descrevem a evolução de, como o nome já diz, sistemas, que podem representar fenômenos físicos, biológicos, químicos, ou funções matemáticas, através do tempo. Nesse caso, o tempo pode ser tanto contínuo, quanto discreto \cite{kluever2020dynamic}.
+Os sistemas dinâmicos descrevem a evolução de, como o nome já diz, sistemas, que podem representar fenômenos físicos, biológicos, químicos, ou equações matemáticas, através do tempo. Nesse caso, o tempo pode ser tanto contínuo, quanto discreto \cite{kluever2020dynamic}.
 
-Os sistemas dinâmicos também podem ser lineares ou não-lineares.
+Os sistemas dinâmicos também podem ser lineares ou não-lineares. Um sistema linear, sendo este a tempo contínuo ou discreto, possui a propriedade da superposição, ou seja, se uma entrada consiste de uma soma ponderada de diversos sinais, então a saída é a superposição das respostas do sistema a cada um desses sinais \cite{oppenheim2014signals}. 
 
-Como dito anteriormente, sistemas com dinâmica cáotica se destacam pois, apesar de serem determinísticos, apresentam dependência sensitiva em relação às condições iniciais (DSCI). Dessa forma, duas trajetórias que partem de posições relativamente próximas no espaço de estados podem evoluir de uma forma totalmente distinta devido às não-linearidades presentes que amplificam as diferenças entre essas condições iniciais \cite{fiedler1994caos}.
+É possível representar essa propriedade através das seguintes relações matemáticas, sendo $y(t)$ a resposta de um sistema a tempo contínuo a uma entrada $x(t)$ e $y_i(t)$ a saída correspondente a $x_i(t)$:
+\begin{subequations}
+\begin{equation}\label{eq:linear-eq-1}
+\text{A resposta a } x_1(t) + x_2(t) \text{ é } y_1(t) + y_2(t)
+\end{equation}
+\begin{equation}\label{eq:linear-eq-2}
+\text{A resposta a } a\cdot x_1(t) \text{ é } a\cdot y_1(t)\text{, em que } a \text{ é qualquer constante complexa.}
+\end{equation}
+\end{subequations}
+
+A primeira equação (\ref{eq:linear-eq-1}) representa a propriedade da aditividade, enquanto a segunda (\ref{eq:linear-eq-2}) representa a propriedade da homogeneidade. Essa definição também é válida para sistemas a tempo discreto, e podem ser combinadas:
+\begin{subequations}
+\begin{equation}
+a \cdot x_1(t) + b \cdot x_2(t) \rightarrow a \cdot y_1(t) + b \cdot y_2(t)
+\end{equation}
+\begin{equation}
+a \cdot x_1[n] + b \cdot x_2[n] \rightarrow a \cdot y_1[n] + b \cdot y_2[n]
+\end{equation}
+\end{subequations}
+, sendo $a$ e $b$ constantes complexas quaisquer \cite{oppenheim2014signals}.
+
+Devido a todo arcabouço teórico de álgebra linear elaborado por matemáticos nos últimos séculos, trabalhar com modelos lineares de sistemas dinâmicos se tornou algo trivial. Logo, grande parte dos cursos de graduação lidam, em grande parte, com sistemas lineares por definição, ou aplicam métodos de linearização em sistemas não-lineares, chegando em soluções analíticas lineares aproximadas, com um bom grau de acurácia sob certas condições de contorno \cite{fiedler1994caos}. 
+
+Com essas aproximações, prever o valor futuro de uma série temporal originada por um sistema linear (ou um sistema não-linear linearizado) é algo bem simples, afinal, pode-se utilizar a solução analítica.
+
+Porém, a esmagadora maioria dos fenômenos que observamos na natureza são altamente não-lineares. Dessa forma, ou não conseguimos aplicar os métodos de linearização que tanto aprendemos ou, ao serem aplicados, o sistema se reduz a uma representação bem errônea da sua dinâmica original \cite{gleick2008chaos}.
+
+Uma classe de sistemas não-lineares bem importante para o estudo de diversos fenômenos é a classe de sistemas caóticos. Apesar de ter tido uma certa dificuldade para encontrar um meio dentro da academia e sendo bastante renegado por vários cientistas da época por, entre outros fatores, basear-se em simulações  computacionais de dinâmicas físicas, algo que não era comum nos meados do século XX, a teoria da dinâmica caótica foi adotada por cientistas da área da física, matemática, química, biologia, economia, astrofísica, e várias outras, trazendo explicações para diversos fenômenos que não eram bem explicados até então \cite{gleick2008chaos}. 
+
+Como dito na seção introdutória, sistemas com dinâmica cáotica se destacam pois, apesar de serem determinísticos, apresentam dependência sensitiva em relação às condições iniciais (DSCI). Dessa forma, duas trajetórias que partem de posições relativamente próximas no espaço de estados podem evoluir de uma forma totalmente distinta devido às não-linearidades presentes que amplificam as diferenças entre essas condições iniciais \cite{fiedler1994caos}.
 
 De forma resumida, a dinâmica caótica é marcada pela presença dos seguintes aspectos \cite{attux2001dinamica}:
 \begin{enumerate}
@@ -569,6 +598,10 @@ De forma resumida, a dinâmica caótica é marcada pela presença dos seguintes 
 \item Há uma produção de informação por parte do sistema;
 \item Dão origem a atratores estranhos (estruturas topológicas que ditam a evolução temporal do fluxo de um sistema caótico) \cite{ruelle1971nature}.
 \end{enumerate}
+
+Falaremos um pouco sobre as propriedades indicadas nas seções seguintes.
+
+\subsection{Dependência sensitiva em relação às condições iniciais (DSCI)}
 
 \section{Próximos Passos}
 
