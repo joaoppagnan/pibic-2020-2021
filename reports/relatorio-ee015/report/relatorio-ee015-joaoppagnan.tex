@@ -21,6 +21,7 @@
 \usepackage{cleveref}
 \usepackage{spverbatim}
 \usepackage{setspace}
+\usepackage{subcaption}
 \setlength{\parskip}{1em}
 \singlespacing
 
@@ -553,7 +554,7 @@ Resumidamente, as LSTMs manipulam o vetor de longo prazo $\mathbf{c}(t)$, aprend
 
 Depois de uma exposição sobre os modelos preditores que utilizaremos nessa pesquisa, falaremos a seguir sobre dinâmica caótica, explicando qual a grande dificuldade de prever-se valores de uma série temporal gerada por um sistema desse tipo.
 
-\section{Sistemas com Dinâmica Caótica}
+\section{Sistemas Dinâmicos}
 O estudo de sistemas dinâmicos se tornou fundamental para a ciência quando a humanidade começou a desenvolver modelos matemáticos para explicar o mundo em sua volta, utilizando os modelos criados para realizar predições e, de certa forma, saber o que nos espera no futuro.
 
 Os sistemas dinâmicos descrevem a evolução de, como o nome já diz, sistemas, que podem representar fenômenos físicos, biológicos, químicos, ou equações matemáticas, através do tempo. Nesse caso, o tempo pode ser tanto contínuo, quanto discreto \cite{kluever2020dynamic}.
@@ -587,9 +588,7 @@ Com essas aproximações, prever o valor futuro de uma série temporal originada
 
 Porém, a esmagadora maioria dos fenômenos que observamos na natureza são altamente não-lineares. Dessa forma, ou não conseguimos aplicar os métodos de linearização que tanto aprendemos ou, ao serem aplicados, o sistema se reduz a uma representação bem errônea da sua dinâmica original \cite{gleick2008chaos}.
 
-Uma classe de sistemas não-lineares bem importante para o estudo de diversos fenômenos é a classe de sistemas caóticos. Apesar de ter tido uma certa dificuldade para encontrar um meio dentro da academia e sendo bastante renegado por vários cientistas da época por, entre outros fatores, inicialmente basear-se em simulações  computacionais de dinâmicas físicas, algo que não era comum nos meados do século XX, a teoria da dinâmica caótica foi adotada por cientistas da área da física, matemática, química, biologia, economia, astrofísica, e várias outras, trazendo explicações para diversos fenômenos que não eram bem entendidos até então \cite{gleick2008chaos}. 
-
-Antes de falarmos sobre dinâmica caótica, veremos um pouco sobre alguns conceitos fundamentais no estudo de sistemas dinâmicos, aproveitando o momento para discutir algumas propriedades de sistemas caóticos.
+Antes de falarmos sobre a teoria da dinâmica caótica, que trouxe diversas explicações para sistemas não-lineares e aumentou o entendimento da ciência sobre esses fenômenos, veremos um pouco sobre alguns conceitos fundamentais no estudo de sistemas dinâmicos.
 
 \subsection{Espaço de Fase}
 Algo comum no estudo de sistemas dinâmicos é a representação em espaço de fase. O espaço de fase geralmente é composto pelas variáveis independentes de um sistema dinâmico. Assim, cada ponto no espaço de fase representa um estado possível para o sistema.
@@ -661,16 +660,81 @@ O tipo de atrator e o tipo de estabilidade é obtido analisando os autovalores $
 
 Por fim, quando há uma mudança no sistema dinâmico que faz com que ele seja atraído para a bacia de outro atrator, dizemos que o sistema sofreu uma bifurcação. Geralmente são os parâmetros do sistema que definem os pontos de bifurcação \cite{fiedler1994caos}.
 
-\subsubsection{Atratores Estranhos}
+\subsection{Expoentes de Lyapunov e a Entropia de Kolmogorov-Sinai}
+Também é possível analisar a dinâmica de um sistema através de uma abordagem via teoria da informação. Para tal, considere um sistema contínuo com $m$ equações diferenciais ordinárias, e imagine um pequeno hiper-volume esférico de teste de estados iniciais vizinhos $y_0$ (raio $\varepsilon_0 (x_0)$) em torno do ponto inicial $x_0$ de uma linha de fluxo, isto é \cite{fiedler1994caos}:
+\begin{equation}
+	|y_0 - x_0| \leq \varepsilon_0 (x_0)
+\end{equation}
 
-\subsection{Expoentes de Lyapunov}
+Com o passar do tempo, o fluxo das trajetórias deforma a hiper-esfera num objeto hiper-elipsoidal com eixos principais $\varepsilon_k (t)$, $k = 1, 2, ..., m$ (Figura \ref{fig:lyapunov}). Os expoentes de Lyapunov medem o crescimento exponencial dos eixos principais $\varepsilon_k (t)$ e são definidos por:
+\begin{equation}
+\lambda_i = \lim_{t \rightarrow \infty} \lim_{\varepsilon_0 (x_0) \rightarrow 0} \frac{1}{t} \ln \frac{\varepsilon_i (t)}{\varepsilon_0 (x_0)}, \; \; \; i = 1, ..., m.
+\end{equation}
+\begin{figure}[!ht]
+\centering
+\includegraphics[scale = 0.7]{lyapunov.pdf}
+\caption{Evolução de um elemento de volume esférico de raio $\varepsilon_0 (x_0)$ em torno de um ponto inicial $x_0$}
+\label{fig:lyapunov}
+\end{figure}
 
 \subsection{Espectro de Potências}
 
-\subsection{Dependência sensitiva em relação às condições iniciais (DSCI)}
+\subsection{Sistemas com Dinâmica Caótica}
+
+Uma classe de sistemas não-lineares importante para o estudo de diversos fenômenos, é a classe de sistemas caóticos. Apesar de ter tido uma certa dificuldade para encontrar um meio dentro da academia e sendo bastante renegado por vários cientistas da época por, entre outros fatores, inicialmente basear-se em simulações  computacionais de dinâmicas físicas, algo que não era comum nos meados do século XX \cite{gleick2008chaos}, a teoria da dinâmica caótica foi adotada por cientistas da área da física, matemática, química, biologia, economia, astrofísica, e várias outras, trazendo explicações para diversos fenômenos que não eram bem entendidos até então.
+
+Discutiremos agora algumas propriedades dos sistemas caóticos que os diferem de sistemas lineares e não-lineares convencionais.
+
+\subsubsection{Dimensões fractais no espaço de fase de uma dinâmica caótica}
+
+Como foi dito anteriormente, as trajetórias no espaço de fase de um pêndulo simples não se interseccionam. Isso é devido ao fato de que, como o sistema é determinístico, se ele estiver em um estado $(\theta(t), \dot{\theta}(t))$, só existe um próximo estado possível $(\theta(t + dt), \dot{\theta}(t + dt))$, considerando que é um sistema isolado, sem forças externas. Assim, caso houvesse a intersecção de trajetórias, o sistema teria dois ou mais próximos estados possíveis, o que não é coerente com um sistema determinístico \cite{fiedler1994caos}.
+
+Apesar de apresentar um comportamento errático e, de certa forma, imprevisível, sistemas caóticos são determinísticos. Ou seja, também não há intersecções em suas trajetórias no espaço de fase. Mas, como esses sistemas são capazes de produzir um comportamento tão variado, sem apresentar nenhum tipo de ordem aparente, sem haver intersecções nas trajetórias? Para explicar isso, precisaremos generalizar a noção de dimensão para englobar as dimensões fractais. 
+
+O estudo de estruturas topológicas com dimensão fractal tornou-se relevante na matemática nos anos 70 \cite{gleick2008chaos}. Utilizando esse conceito, temos que, além das dimensões inteiras que aprendemos a lidar durante nossa formação (quadrados, cubos, hipercubos etc.), as dimensões fractais representam valores fracionários para essa medida.
+
+Como a base matemática de álgebra linear não engloba essas figuras (pelo menos não no conteúdo que aprendemos durante a graduação), é necessário o uso de outras ferramentas para estimar a dimensão fracionária. Uma delas é a dimensão de Hausdorff, ou dimensão de Hausdorff-Besicovitch \cite{attux2001dinamica, fiedler1994caos}.
+
+Seja um conjunto de pontos $A$ num espaço de dimensão $N$ e, sejam estes pontos recobertos por hiper-cubos de aresta $\varepsilon$. A dimensão de Hausdorff é dada por:
+\begin{equation}
+D_0 = \lim_{\varepsilon \rightarrow 0} \frac{\log K (\varepsilon)}{\log (1/\varepsilon)}
+\end{equation}
+
+Essa definição é válida tanto para figuras de dimensão inteira, como quadrados e cubos, quanto para objetos de dimensão fractal.
+
+Aplicando essa definição numa trajetória no espaço de fase de uma dinâmica caótica, vê-se que, a dimensão obtida sempre será fracionária \cite{fiedler1994caos}, logo, pode-se dizer que a trajetória sofrerá sucessivas contraçoes em certas direções, e expansões em pelo menos uma, de forma a nunca se cruzar, por mais errático que seja o movimento \cite{fiedler1994caos}.
+
+Uma das propriedades importantes de objetos topológicos de dimensão fractal é que eles apresentam uma auto-similaridade \cite{gleick2008chaos}. Nesse caso, partes da trajetória no espaço de fase têm uma estrutura análoga à da figura como um todo \cite{attux2001dinamica}. Ou seja, ao ampliar-se um objeto fractal, suas características serão similares ao da figura como um todo, tendo uma auto-similaridade.
+
+A Figura \ref{fig:henon} evidencia essa propriedade para o Mapa de Hénon \cite{henon1976two}.
+\begin{flushleft}
+\begin{figure}[!ht]%
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[scale=0.4]{mapa-de-henon.png}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[scale=0.4]{mapa-de-henon-zoom.png}
+	\end{subfigure}
+	\\
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[scale=0.4]{mapa-de-henon-zoom-2.png}
+	\end{subfigure}
+	\caption{Auto-similaridade presente no Mapa de Hénon}
+	\label{fig:henon}
+\end{figure}
+\end{flushleft}
+
+\subsubsection{Atratores Estranhos}
+
+\subsubsection{Produção de informação em uma dinâmica caótica}
+
+Vale-se mencionar que, é possível conectar a teoria dos expoentes de Lyapunov de um sistema caótico à dimensão fractal de seu atrator estranho \cite{attux2001dinamica}.
+
+\subsubsection{Dependência sensitiva em relação às condições iniciais (DSCI)}
 Como dito na seção introdutória, sistemas com dinâmica cáotica se destacam pois, apesar de serem determinísticos, apresentam dependência sensitiva em relação às condições iniciais (DSCI). Dessa forma, duas trajetórias que partem de posições relativamente próximas no espaço de estados podem evoluir de uma forma totalmente distinta devido às não-linearidades presentes que amplificam as diferenças entre essas condições iniciais \cite{fiedler1994caos}.
 
-\subsection{Características gerais de um sistema com dinâmica caótica}
+\subsubsection{Características gerais de um sistema com dinâmica caótica}
 Depois de uma exposição de alguns conceitos fundamentais de sistemas dinâmicos, além de alguns pontos sobre dinâmica caótica, podemos sintetizá-las nas propriedades fundamentais do caos determinístico em sistemas dinâmicos \cite{attux2001dinamica}:
 \begin{enumerate}
 \item Forte sensibilidade com respeito às condições iniciais;

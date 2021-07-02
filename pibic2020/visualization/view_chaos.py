@@ -38,7 +38,7 @@ if (int(sis) == 1):
     estado_inicial = np.array([x_inicial, y_inicial, n_inicial])
 
     mapa_henon = henon.MapaHenon(estado_inicial=estado_inicial, a=a, b=b)
-    n_iteracoes = 100000
+    n_iteracoes = 500000
     vetor_estados = mapa_henon.simular(n_iteracoes)
     x = vetor_estados[:, 0]
     y = vetor_estados[:, 1]
@@ -55,6 +55,7 @@ if (int(sis) == 1):
     sns.despine()
     fig.tight_layout()
     fig.savefig("images/caos/henon-map/mapa-de-henon.pdf")
+    fig.savefig("reports/relatorio-ee015/figures/mapa-de-henon.png")
 
     fig, ax = plt.subplots()
     ax.scatter(x, y, s=0.01, marker=".", color='Black')
@@ -66,6 +67,19 @@ if (int(sis) == 1):
     sns.despine()
     fig.tight_layout()
     fig.savefig("images/caos/henon-map/mapa-de-henon-zoom.pdf")
+    fig.savefig("reports/relatorio-ee015/figures/mapa-de-henon-zoom.png")
+
+    fig, ax = plt.subplots()
+    ax.scatter(x, y, s=0.01, marker=".", color='Black')
+    ax.set_ylabel('$y$')
+    ax.set_xlabel('$x$')
+    ax.set_ylim([0.175, 0.225])
+    ax.set_xlim([0.3, 0.4])
+    ax.grid(False)
+    sns.despine()
+    fig.tight_layout()
+    fig.savefig("images/caos/henon-map/mapa-de-henon-zoom-2.pdf")  
+    fig.savefig("reports/relatorio-ee015/figures/mapa-de-henon-zoom-2.png")  
 
     fig, ax = plt.subplots(2)
     #fig.suptitle("100 primeiras iterações das séries temporais do Mapa de Hénon para\n $a =$ " + str(a) + " e $b =$ " + str(b) + " com $x[0] =$ " + str(x[0]) + " e $y[0] =$ " + str(y[0]))
