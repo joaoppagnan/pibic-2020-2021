@@ -587,12 +587,11 @@ Com essas aproximações, prever o valor futuro de uma série temporal originada
 
 Porém, a esmagadora maioria dos fenômenos que observamos na natureza são altamente não-lineares. Dessa forma, ou não conseguimos aplicar os métodos de linearização que tanto aprendemos ou, ao serem aplicados, o sistema se reduz a uma representação bem errônea da sua dinâmica original \cite{gleick2008chaos}.
 
-Uma classe de sistemas não-lineares bem importante para o estudo de diversos fenômenos é a classe de sistemas caóticos. Apesar de ter tido uma certa dificuldade para encontrar um meio dentro da academia e sendo bastante renegado por vários cientistas da época por, entre outros fatores, basear-se em simulações  computacionais de dinâmicas físicas, algo que não era comum nos meados do século XX, a teoria da dinâmica caótica foi adotada por cientistas da área da física, matemática, química, biologia, economia, astrofísica, e várias outras, trazendo explicações para diversos fenômenos que não eram bem explicados até então \cite{gleick2008chaos}. 
+Uma classe de sistemas não-lineares bem importante para o estudo de diversos fenômenos é a classe de sistemas caóticos. Apesar de ter tido uma certa dificuldade para encontrar um meio dentro da academia e sendo bastante renegado por vários cientistas da época por, entre outros fatores, inicialmente basear-se em simulações  computacionais de dinâmicas físicas, algo que não era comum nos meados do século XX, a teoria da dinâmica caótica foi adotada por cientistas da área da física, matemática, química, biologia, economia, astrofísica, e várias outras, trazendo explicações para diversos fenômenos que não eram bem entendidos até então \cite{gleick2008chaos}. 
 
-Antes de falarmos sobre dinâmica caótica, veremos um pouco sobre alguns conceitos fundamentais no estudo de sistemas dinâmicos.
+Antes de falarmos sobre dinâmica caótica, veremos um pouco sobre alguns conceitos fundamentais no estudo de sistemas dinâmicos, aproveitando o momento para discutir algumas propriedades de sistemas caóticos.
 
 \subsection{Espaço de Fase}
-
 Algo comum no estudo de sistemas dinâmicos é a representação em espaço de fase. O espaço de fase geralmente é composto pelas variáveis independentes de um sistema dinâmico. Assim, cada ponto no espaço de fase representa um estado possível para o sistema.
 
 Por exemplo, a equação de movimento de um pêndulo simples, sendo $\theta$ o ângulo entre o pêndulo e a vertical, $g$ a aceleração gravitacional, e $l$ o comprimento do pêndulo, é representado pela seguinte equação diferencial:
@@ -662,22 +661,26 @@ O tipo de atrator e o tipo de estabilidade é obtido analisando os autovalores $
 
 Por fim, quando há uma mudança no sistema dinâmico que faz com que ele seja atraído para a bacia de outro atrator, dizemos que o sistema sofreu uma bifurcação. Geralmente são os parâmetros do sistema que definem os pontos de bifurcação \cite{fiedler1994caos}.
 
+\subsubsection{Atratores Estranhos}
+
 \subsection{Expoentes de Lyapunov}
 
 \subsection{Espectro de Potências}
 
-\subsection{Características gerais de um sistema com dinâmica caótica}
-
+\subsection{Dependência sensitiva em relação às condições iniciais (DSCI)}
 Como dito na seção introdutória, sistemas com dinâmica cáotica se destacam pois, apesar de serem determinísticos, apresentam dependência sensitiva em relação às condições iniciais (DSCI). Dessa forma, duas trajetórias que partem de posições relativamente próximas no espaço de estados podem evoluir de uma forma totalmente distinta devido às não-linearidades presentes que amplificam as diferenças entre essas condições iniciais \cite{fiedler1994caos}.
 
-De forma resumida, a dinâmica caótica é marcada pela presença dos seguintes aspectos \cite{attux2001dinamica}:
+\subsection{Características gerais de um sistema com dinâmica caótica}
+Depois de uma exposição de alguns conceitos fundamentais de sistemas dinâmicos, além de alguns pontos sobre dinâmica caótica, podemos sintetizá-las nas propriedades fundamentais do caos determinístico em sistemas dinâmicos \cite{attux2001dinamica}:
 \begin{enumerate}
 \item Forte sensibilidade com respeito às condições iniciais;
-\item A evolução temporal das variáveis de estado (parâmetros de ordem do sistema) é rápida e tem uma aparência errática;
+\item A evolução temporal das variáveis de estado é rápida e tem uma aparência errática;
 \item Um sinal originado por um sistema caótico tem espectro de potências contínuo e de faixa larga;
 \item Há uma produção de informação por parte do sistema;
-\item Dão origem a atratores estranhos (estruturas topológicas que ditam a evolução temporal do fluxo de um sistema caótico) \cite{ruelle1971nature}.
+\item Dão origem a atratores estranhos \cite{ruelle1971nature}.
 \end{enumerate}
+
+Logo, um sistema dinâmico que possui essas propriedades é um sistema caótico.
 
 \section{Próximos Passos}
 
