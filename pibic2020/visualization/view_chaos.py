@@ -56,6 +56,17 @@ if (int(sis) == 1):
     fig.tight_layout()
     fig.savefig("images/caos/henon-map/mapa-de-henon.pdf")
 
+    fig, ax = plt.subplots()
+    ax.scatter(x, y, s=0.01, marker=".", color='Black')
+    ax.set_ylabel('$y$')
+    ax.set_xlabel('$x$')
+    ax.set_ylim([0.1, 0.3])
+    ax.set_xlim([0, 0.5])
+    ax.grid(False)
+    sns.despine()
+    fig.tight_layout()
+    fig.savefig("images/caos/henon-map/mapa-de-henon-zoom.pdf")
+
     fig, ax = plt.subplots(2)
     #fig.suptitle("100 primeiras iterações das séries temporais do Mapa de Hénon para\n $a =$ " + str(a) + " e $b =$ " + str(b) + " com $x[0] =$ " + str(x[0]) + " e $y[0] =$ " + str(y[0]))
     ax[0].plot(n, x, color='Crimson', linewidth=0.9)
