@@ -646,13 +646,25 @@ Em termos matemáticos \cite{fiedler1994caos}: Uma região compacta $A$ é um at
 	\item o fluxo não pode ser decomposto, isto é, $A$ não poode ser dividido em duas partes invariantes não triviais.
 \end{enumerate}
 
-O formato do atrator varia bastante de acordo com o sistema em análise. Por exemplo, um circuito RC (resistor conectado em série com um capacitor) tem um atrator chamado de ponto-fixo. Isso é devido ao fato de que, dada uma tensão inicial no capacitor (ou seja, uma energia inicial presente no sistema), o resistor dissipará a energia armazenada em forma de potência ativa (calor). Considerando as variáveis do espaço de estado como sendo a tensão $V$, e a corrente $I$ do circuito, é fácil perceber que a trajetória vai convergir para o ponto $(0, 0)$, pois a energia será toda dissipada e não haverá mais dinâmica nesse sistema.
+O formato do atrator varia bastante de acordo com o sistema em análise. Por exemplo, um circuito RLC autonômo tem um atrator chamado de ponto-fixo \cite{attux2001dinamica}. Isso é devido ao fato de que, dada uma energia incial presente no sistema, seja esta em forma de campo elétrico no capacitor, ou campo magnético no indutor, o resistor dissipará a energia armazenada em forma de potência ativa (calor). Considerando as variáveis do espaço de estado como sendo a tensão no capacitor, e a corrente do indutor, é fácil perceber que a trajetória vai convergir para o ponto $(0, 0)$, pois a energia será toda dissipada e não haverá mais dinâmica nesse sistema.
 
-A Figura mostra a evolução de um circuito RC em série para $V_{C}(0) = \SI{1}{\volt}$, com $R = \SI{1}{\ohm}$ e $C = \SI{1}{F}$:
+A Figura mostra a evolução de um circuito RLC em série para $V_{C}(0) = 1$, $I_{L}(0) = 1$ com $R = 1$, $L = 1000$ e $C = 500$:
+\begin{figure}[!ht]
+\centering
+\includegraphics[scale = 0.7]{rlc-phase-space.png}
+\caption{Representação do atrator ponto-fixo presente no circuito RLC série}
+\label{fig:rlc-phase-space}
+\end{figure}
 
-Diferentemente dos sistemas dinâmicos lineares que, através de uma análise dos autovalores da matriz que descreve as equações do sistema, pode-se concluir que eles apresentam algum tipo de atrator de trajetórias facilmente determinável, sendo este uma divergência de trajetórias para o infinito, um ponto fixo ao qual todas as trajetórias convergem, um ponto de sela que uma trajetória movendo-se em uma direção e uma outra tra, entre outros, os sistemas caóticos apresentam um comportamento errático, sem pontos fixos, ciclos-limite, pontos de sela, ou outras estruturas topológicas comumente estudadas em cursos de análise de sistemas \cite{fiedler1994caos}.
+Os atratores podem ser pontos-fixos, ciclo-limites (que é o caso do oscilador harmônico e do pêndulo simples para certos valores iniciais de $\theta$), pontos de nó, pontos de sela, entre alguns outros. Os atratores também podem indicar trajetórias instáveis, estáveis e assintoticamente estáveis. Também é válido mencionar que, chamamos a região do espaço de estados para a qual todas as trajetórias presentes seguem um atrator de bacia do atrator.
 
-\subsection{Expoente de Lyapunov}
+O tipo de atrator e o tipo de estabilidade é obtido analisando os autovalores $\lambda_i$ da representação matricial do sistema dinâmico.
+
+Por fim, quando há uma mudança no sistema dinâmico que faz com que ele seja atraído para a bacia de outro atrator, dizemos que o sistema sofreu uma bifurcação. Geralmente são os parâmetros do sistema que definem os pontos de bifurcação \cite{fiedler1994caos}.
+
+\subsection{Expoentes de Lyapunov}
+
+\subsection{Espectro de Potências}
 
 \subsection{Características gerais de um sistema com dinâmica caótica}
 
