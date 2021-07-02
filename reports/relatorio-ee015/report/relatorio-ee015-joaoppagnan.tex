@@ -26,9 +26,10 @@
 
 \newcommand{\empt}[2]{$#1^{\langle #2 \rangle}$}
 \newcommand{\sigmoid}{\text{Sigmoid}}
+\newcommand{\sen}{\text{sen}}
 
 \usepackage{amsmath}
-
+\usepackage{enumitem}
 \usepackage{tikz}
 \usetikzlibrary{shapes,arrows,fit, positioning, arrows.meta}
 \usetikzlibrary{backgrounds}
@@ -588,6 +589,73 @@ Porém, a esmagadora maioria dos fenômenos que observamos na natureza são alta
 
 Uma classe de sistemas não-lineares bem importante para o estudo de diversos fenômenos é a classe de sistemas caóticos. Apesar de ter tido uma certa dificuldade para encontrar um meio dentro da academia e sendo bastante renegado por vários cientistas da época por, entre outros fatores, basear-se em simulações  computacionais de dinâmicas físicas, algo que não era comum nos meados do século XX, a teoria da dinâmica caótica foi adotada por cientistas da área da física, matemática, química, biologia, economia, astrofísica, e várias outras, trazendo explicações para diversos fenômenos que não eram bem explicados até então \cite{gleick2008chaos}. 
 
+Antes de falarmos sobre dinâmica caótica, veremos um pouco sobre alguns conceitos fundamentais no estudo de sistemas dinâmicos.
+
+\subsection{Espaço de Fase}
+
+Algo comum no estudo de sistemas dinâmicos é a representação em espaço de fase. O espaço de fase geralmente é composto pelas variáveis independentes de um sistema dinâmico. Assim, cada ponto no espaço de fase representa um estado possível para o sistema.
+
+Por exemplo, a equação de movimento de um pêndulo simples, sendo $\theta$ o ângulo entre o pêndulo e a vertical, $g$ a aceleração gravitacional, e $l$ o comprimento do pêndulo, é representado pela seguinte equação diferencial:
+\begin{equation}\label{eq:pendulum}
+m l^2 \cdot \ddot{\theta}(t) + mgl\cdot  \sen(\theta(t)) = 0
+\end{equation}
+
+Apesar de não ser possível obter uma solução analítica sem antes realizar algum tipo de linearização, é possível estudar a evolução temporal desse sistema através do seu espaço de fases \cite{fiedler1994caos}.
+
+Para tal, escreveremos (\ref{eq:pendulum}) da seguinte forma:
+\begin{subequations}
+\begin{equation}\label{eq:pendulum-2}
+\dot{\theta} = \varphi = f(\theta, \varphi)
+\end{equation}
+\begin{equation}\label{eq:pendulum-3}
+\dot{\varphi} = -\frac{g}{l} \cdot \sen(\theta) = g(\theta, \varphi)
+\end{equation}
+\end{subequations}
+
+Derivando a equação (\ref{eq:pendulum-3}) em $\theta$ e isolando os termos $\theta$ e $\varphi$ em lados opostos, obtém-se que:
+\begin{equation}\label{eq:pendulum-4}
+\varphi \, d\varphi = -\frac{g}{l} \cdot \sen(\theta) \, d\theta
+\end{equation}
+
+Agora, integrando (\ref{eq:pendulum-4}) em ambos os lados, chega-se que:
+\begin{equation}
+\varphi^2 - \frac{2g}{l} \cdot \cos(\theta) = C
+\end{equation}
+sendo $C$ uma constante arbitrária. A Figura \ref{fig:pendulum-phase-space} mostra a trajetória no espaço de fases para diversos valores de $C$ (lembrando que $\varphi = \dot{\theta}$).
+\begin{figure}[!ht]
+\centering
+\includegraphics[scale = 0.7]{pendulum-phase-space.pdf}
+\caption{Trajetória no espaço de fase do pêndulo simples para vários valores de $C$}
+\label{fig:pendulum-phase-space}
+\end{figure}
+
+Perceba que um ponto $(\theta, \dot{\theta})$ no espaço de fases representa um estado possível para o sistema. Nesse caso, como não há nenhum elemento estocástico na evolução do pêndulo simples (considerando apenas a mecânica clássica), não há intersecções nas trajetórias no espaço de fases. 
+
+Por fim, vale-se dizer que, o espaço de fases podem ter quantas dimensões forem necessárias para representar a dinâmica de um sistema. 
+
+\subsection{Atratores}
+Uma estrutura topológica utilizada para estudar a evolução de um sistema dinâmico, que é capaz de capturar a essência de sua evolução temporal, é o atrator.
+
+De acordo com a definição dada em \cite{fiedler1994caos}, um atrator é um conjunto invariante para o qual órbitas próximas no espaço de fase convergem depois de um tempo suficientemente grande.
+
+Em termos matemáticos \cite{fiedler1994caos}: Uma região compacta $A$ é um atrator de um fluxo $\varphi(t, x)$ se as quatros hipóteses a seguir valem:
+\begin{enumerate}[label=\alph*)]
+	\item $A$ é invariante segundo $\varphi$;
+	\item $A$ tem uma vizinhança contraente;
+	\item o fluxo é recorrente, isto é, trajetórias começando em qualquer subconjunto aberto de $A$ voltam a esse subconjunto para valores de $t$ suficientemente longos;
+	\item o fluxo não pode ser decomposto, isto é, $A$ não poode ser dividido em duas partes invariantes não triviais.
+\end{enumerate}
+
+O formato do atrator varia bastante de acordo com o sistema em análise. Por exemplo, um circuito RC (resistor conectado em série com um capacitor) tem um atrator chamado de ponto-fixo. Isso é devido ao fato de que, dada uma tensão inicial no capacitor (ou seja, uma energia inicial presente no sistema), o resistor dissipará a energia armazenada em forma de potência ativa (calor). Considerando as variáveis do espaço de estado como sendo a tensão $V$, e a corrente $I$ do circuito, é fácil perceber que a trajetória vai convergir para o ponto $(0, 0)$, pois a energia será toda dissipada e não haverá mais dinâmica nesse sistema.
+
+A Figura mostra a evolução de um circuito RC em série para $V_{C}(0) = \SI{1}{\volt}$, com $R = \SI{1}{\ohm}$ e $C = \SI{1}{F}$:
+
+Diferentemente dos sistemas dinâmicos lineares que, através de uma análise dos autovalores da matriz que descreve as equações do sistema, pode-se concluir que eles apresentam algum tipo de atrator de trajetórias facilmente determinável, sendo este uma divergência de trajetórias para o infinito, um ponto fixo ao qual todas as trajetórias convergem, um ponto de sela que uma trajetória movendo-se em uma direção e uma outra tra, entre outros, os sistemas caóticos apresentam um comportamento errático, sem pontos fixos, ciclos-limite, pontos de sela, ou outras estruturas topológicas comumente estudadas em cursos de análise de sistemas \cite{fiedler1994caos}.
+
+\subsection{Expoente de Lyapunov}
+
+\subsection{Características gerais de um sistema com dinâmica caótica}
+
 Como dito na seção introdutória, sistemas com dinâmica cáotica se destacam pois, apesar de serem determinísticos, apresentam dependência sensitiva em relação às condições iniciais (DSCI). Dessa forma, duas trajetórias que partem de posições relativamente próximas no espaço de estados podem evoluir de uma forma totalmente distinta devido às não-linearidades presentes que amplificam as diferenças entre essas condições iniciais \cite{fiedler1994caos}.
 
 De forma resumida, a dinâmica caótica é marcada pela presença dos seguintes aspectos \cite{attux2001dinamica}:
@@ -598,10 +666,6 @@ De forma resumida, a dinâmica caótica é marcada pela presença dos seguintes 
 \item Há uma produção de informação por parte do sistema;
 \item Dão origem a atratores estranhos (estruturas topológicas que ditam a evolução temporal do fluxo de um sistema caótico) \cite{ruelle1971nature}.
 \end{enumerate}
-
-Falaremos um pouco sobre as propriedades indicadas nas seções seguintes.
-
-\subsection{Dependência sensitiva em relação às condições iniciais (DSCI)}
 
 \section{Próximos Passos}
 

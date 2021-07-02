@@ -159,10 +159,10 @@ elif (int(sis) == 3):
     ax.w_xaxis.set_pane_color((0, 0, 0, 0))
     ax.w_yaxis.set_pane_color((0, 0, 0, 0))
     ax.w_zaxis.set_pane_color((0, 0, 0, 0))
-    ax.grid(False)
+    ax.grid(True)
     sns.despine()
     fig.tight_layout()
-    plt.subplots_adjust(top=1.15)
+    plt.subplots_adjust(top=1.05)
     fig.savefig("images/caos/lorenz/diagrama-de-fases.pdf")
 
     fig, ax = plt.subplots(3)
@@ -251,10 +251,10 @@ elif (int(sis) == 4):
     ax.w_xaxis.set_pane_color((0, 0, 0, 0))
     ax.w_yaxis.set_pane_color((0, 0, 0, 0))
     ax.w_zaxis.set_pane_color((0, 0, 0, 0))
-    ax.grid(False)
+    ax.grid(True)
     sns.despine()
     fig.tight_layout()
-    plt.subplots_adjust(top=1.15)
+    plt.subplots_adjust(top=1.05)
     fig.savefig("images/caos/mackeyglass/atrator-1-3d.pdf")
 
     t_inicial = 0
@@ -308,10 +308,10 @@ elif (int(sis) == 4):
     ax.w_xaxis.set_pane_color((0, 0, 0, 0))
     ax.w_yaxis.set_pane_color((0, 0, 0, 0))
     ax.w_zaxis.set_pane_color((0, 0, 0, 0))
-    ax.grid(False)
+    ax.grid(True)
     sns.despine()
     fig.tight_layout()
-    plt.subplots_adjust(top=1.15)
+    plt.subplots_adjust(top=1.05)
     fig.savefig("images/caos/mackeyglass/atrator-2-3d.pdf")
     print("Gráficos gerados!")
 
