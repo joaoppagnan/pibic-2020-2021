@@ -22,6 +22,7 @@
 \usepackage{spverbatim}
 \usepackage{setspace}
 \usepackage{subcaption}
+\usepackage{csquotes}
 \setlength{\parskip}{1em}
 \singlespacing
 
@@ -586,7 +587,7 @@ Devido a todo arcabouço teórico de álgebra linear elaborado por matemáticos 
 
 Com essas aproximações, prever o valor futuro de uma série temporal originada por um sistema linear (ou um sistema não-linear linearizado) é algo bem simples, afinal, pode-se utilizar a solução analítica.
 
-Porém, a esmagadora maioria dos fenômenos que observamos na natureza são altamente não-lineares. Dessa forma, ou não conseguimos aplicar os métodos de linearização que tanto aprendemos ou, ao serem aplicados, o sistema se reduz a uma representação bem errônea da sua dinâmica original \cite{gleick2008chaos}.
+Porém, a esmagadora maioria dos fenômenos que observamos na natureza são altamente não-lineares. Dessa forma, ou não conseguimos aplicar os métodos de linearização que tanto aprendemos ou, ao serem aplicados, o sistema se reduz a uma representação bem errônea da sua dinâmica original \cite{gleick1998chaos}.
 
 Antes de falarmos sobre a teoria da dinâmica caótica, que trouxe diversas explicações para sistemas não-lineares e aumentou o entendimento da ciência sobre esses fenômenos, veremos um pouco sobre alguns conceitos fundamentais no estudo de sistemas dinâmicos.
 
@@ -755,7 +756,7 @@ Agora, sistemas com dinâmica caótica, apesar de terem uma produção ininterru
 Portanto, para vermos mais detalhes do porquê isso ocorre, na seção a seguir iniciaremos nossa discussão sobre sistemas caóticos.
 
 \subsection{Sistemas com Dinâmica Caótica}
-Uma classe de sistemas não-lineares importante para o estudo de diversos fenômenos, é a classe de sistemas caóticos. Apesar de ter tido uma certa dificuldade para encontrar um meio dentro da academia e sendo bastante renegado por vários cientistas da época por, entre outros fatores, inicialmente basear-se em simulações  computacionais de dinâmicas físicas, algo que não era comum nos meados do século XX \cite{gleick2008chaos}, a teoria da dinâmica caótica foi adotada por cientistas da área da física, matemática, química, biologia, economia, astrofísica, e várias outras, trazendo explicações para diversos fenômenos que não eram bem entendidos até então.
+Uma classe de sistemas não-lineares importante para o estudo de diversos fenômenos, é a classe de sistemas caóticos. Apesar de ter tido uma certa dificuldade para encontrar um meio dentro da academia e sendo bastante renegado por vários cientistas da época por, entre outros fatores, inicialmente basear-se em simulações  computacionais de dinâmicas físicas, algo que não era comum nos meados do século XX \cite{gleick1998chaos}, a teoria da dinâmica caótica foi adotada por cientistas da área da física, matemática, química, biologia, economia, astrofísica, e várias outras, trazendo explicações para diversos fenômenos que não eram bem entendidos até então.
 
 Discutiremos agora algumas propriedades dos sistemas caóticos que os diferem de sistemas lineares e não-lineares convencionais.
 
@@ -765,7 +766,7 @@ Como foi dito anteriormente, as trajetórias no espaço de fase de um pêndulo s
 
 Apesar de apresentar um comportamento errático e, de certa forma, imprevisível, sistemas caóticos são determinísticos. Ou seja, também não há intersecções em suas trajetórias no espaço de fase. Mas, como esses sistemas são capazes de produzir um comportamento tão variado, sem apresentar nenhum tipo de ordem aparente, sem haver intersecções nas trajetórias? Para explicar isso, precisaremos generalizar a noção de dimensão para englobar as dimensões fractais \cite{mandelbrot1967long}. 
 
-O estudo de estruturas topológicas com dimensão fractal tornou-se relevante na matemática nos anos 70 \cite{gleick2008chaos}. Utilizando esse conceito, temos que, além das dimensões inteiras que aprendemos a lidar durante nossa formação (quadrados, cubos, hipercubos etc.), as dimensões fractais representam valores fracionários para essa medida.
+O estudo de estruturas topológicas com dimensão fractal tornou-se relevante na matemática nos anos 70 \cite{gleick1998chaos}. Utilizando esse conceito, temos que, além das dimensões inteiras que aprendemos a lidar durante nossa formação (quadrados, cubos, hipercubos etc.), as dimensões fractais representam valores fracionários para essa medida.
 
 Como a base matemática de álgebra linear não engloba essas figuras (pelo menos não no conteúdo que geralmente aprendemos durante a graduação), é necessário o uso de outras ferramentas para estimar a dimensão fracionária. Uma delas é a dimensão de Hausdorff, ou dimensão de Hausdorff-Besicovitch \cite{attux2001dinamica, fiedler1994caos}.
 
@@ -778,7 +779,7 @@ Essa definição é válida tanto para figuras de dimensão inteira, como quadra
 
 Aplicando essa definição numa trajetória no espaço de fase de uma dinâmica caótica, vê-se que, a dimensão obtida sempre será fracionária \cite{fiedler1994caos}, logo, pode-se dizer que a trajetória sofrerá sucessivas contrações em certas direções, e expansões em pelo menos uma, de forma a nunca se cruzar, por mais errático que seja o movimento \cite{fiedler1994caos}.
 
-Uma das propriedades importantes de objetos topológicos de dimensão fractal é que eles apresentam uma auto-similaridade \cite{gleick2008chaos}. Nesse caso, partes da trajetória no espaço de fase têm uma estrutura análoga à da figura como um todo \cite{attux2001dinamica}. Ou seja, ao ampliar-se um objeto fractal, suas características serão similares ao da figura como um todo, tendo uma auto-similaridade.
+Uma das propriedades importantes de objetos topológicos de dimensão fractal é que eles apresentam uma auto-similaridade \cite{gleick1998chaos}. Nesse caso, partes da trajetória no espaço de fase têm uma estrutura análoga à da figura como um todo \cite{attux2001dinamica}. Ou seja, ao ampliar-se um objeto fractal, suas características serão similares ao da figura como um todo, tendo uma auto-similaridade.
 
 A Figura \ref{fig:henon} evidencia essa propriedade para o Mapa de Hénon \cite{henon1976two}.
 \begin{figure}[!ht]
@@ -801,7 +802,7 @@ Devido à dimensão fractal e a outros fatores, denominamos os atratores de sist
 
 \subsubsection{Atratores Estranhos}
 
-O termo atrator estranho foi inicialmente cunhado pelos matemáticos David Ruelle e Floris Takens no artigo \cite{ruelle1971nature}, para descrever o fluxo em um fluído turbulento. Esse nome foi dado devido às estranhas propriedades e características dessas estruturas topológicas que a diferenciavam dos atratores convencionais que foram citados na Seção 3.2 \cite{gleick2008chaos}.
+O termo atrator estranho foi inicialmente cunhado pelos matemáticos David Ruelle e Floris Takens no artigo \cite{ruelle1971nature}, para descrever o fluxo em um fluído turbulento. Esse nome foi dado devido às estranhas propriedades e características dessas estruturas topológicas que a diferenciavam dos atratores convencionais que foram citados na Seção 3.2 \cite{gleick1998chaos}.
 
 De acordo com \cite{attux2001dinamica}, sendo $A$ um conjunto limitado num espaço de $N$ dimensões, dizemos que $A$ é um atrator estranho se for um atrator (utilizando as definições da Seção 3.2) e se, estando a condição inicial $x_0$ num subconjunto de pontos próximos, as evoluções temporais desses pontos apresentarem dependência sensitiva em relação às condições iniciais (DSCI) \cite{fiedler1994caos}.
 
@@ -818,6 +819,9 @@ Vale-se mencionar que, para os atratores usuais, a diferença entre as trajetór
 A característica que torna possível que um atrator estranho apresente comportamentos distintos para condições iniciais próximas, sem divergirem para o infinito, é a dimensão fractal nas trajetórias do espaço de estado apresentada na Seção 3.5.1. Assim, as sucessivas contrações e expansões do espaço de fase, o que forma uma estrutura fractal, fará com que, por menor que seja a diferença entre as condições iniciais, como há uma infinidade de estados possíveis para a evolução do mesmos, após algumas iterações do sistema, observaremos que as trajetórias seguiram caminhos distintos entre os estados 'amaranhados' na dimensão fractal.
 
 Além disso, perceba também que as dimensões fractais permitem que haja uma divergência que aumenta exponencialmente, sem divergir para o infinito (o que não ocorre em certos atratores de sistemas que também apresentam divergência). Esse fenômeno é devido ao fato de que as sucessivas expansões e contrações (também chamadas de processo de dobra \cite{fiedler1994caos, attux2001dinamica}) estão contidas em um espaço limitado, devido às dimensões fracionárias (a Seção 3.5.4 apresenta essas características de um ponto de vista da teoria da informação).
+
+Interessantemente, a não interseccionalidade de trajetórias implica que sistemas caóticos em tempo contínuo sejam compostos por $3$ ou mais dimensões, como é mostrado em \cite{guckenheimer2013nonlinear}. Esse não é o caso para sistemas caóticos discretos, como é o caso do Mapa de Hénon visto na seção anterior.
+
 
 A Figura mostra a evolução temporal de três condições iniciais próximas, para o clássico Sistema de Lorenz \cite{lorenz1963deterministic} no espaço de fase $xyz$, definido pelas equações diferenciais abaixo:
 \begin{subequations}
@@ -838,11 +842,16 @@ A Figura mostra a evolução temporal de três condições iniciais próximas, p
 \label{fig:atrator-lorenz}
 \end{figure}
 
-Interessantemente, a não interseccionalidade de trajetórias implica que sistemas caóticos em tempo contínuo sejam compostos por $3$ ou mais dimensões, como é mostrado em \cite{guckenheimer2013nonlinear}. Esse não é o caso para sistemas caóticos discretos, como é o caso do Mapa de Hénon visto na seção anterior.
-
-A seção a seguir evidencia algumas propriedades interessantes nas séries temporais dos sistemas caóticos e seus espectros em potência. 
+A dependência sensitiva em relação às condições iniciais é de tamanha importância para o estudo de sistemas caóticos, que Edward Lorenz, o responsável pelo atrator de Lorenz visto acima, enunciasse a seguinte frase na palestra em que pela primeira vez foi apresentado o termo 'efeito borboleta' \cite{gleick1998chaos}:
+\begin{displayquote}
+Uma borboleta batendo as asas no Brasil pode causar um tornado no Texas?
+\end{displayquote}
 
 \subsubsection{Série temporal e espectro de potências de um sistema caótico}
+
+Uma outra abordagem possível para o estudo de sistemas dinâmicos caóticos, é através de suas séries temporais.
+
+Para isso, uma ferramenta que permite obter conclusões interessantes, que evidenciam 
 
 \subsubsection{Produção de informação em uma dinâmica caótica}
 
@@ -851,7 +860,7 @@ Vale-se mencionar que, é possível conectar a teoria dos expoentes de Lyapunov 
 \subsubsection{Características gerais de um sistema com dinâmica caótica}
 Depois de uma exposição de alguns conceitos fundamentais de sistemas dinâmicos, além de alguns pontos sobre dinâmica caótica, podemos sintetizá-las nas propriedades fundamentais do caos determinístico em sistemas dinâmicos \cite{attux2001dinamica}:
 \begin{enumerate}
-\item Forte sensibilidade com respeito às condições iniciais;
+\item Forte sensibilidade com respeito às condições iniciais (DSCI);
 \item A evolução temporal das variáveis de estado é rápida e tem uma aparência errática;
 \item Um sinal originado por um sistema caótico tem espectro de potências contínuo e de faixa larga;
 \item Há uma produção de informação por parte do sistema;
@@ -862,7 +871,7 @@ Logo, um sistema dinâmico que possui essas propriedades é um sistema caótico.
 
 Nossa análise será sobre a predição das séries temporais originadas por esses sistemas. Por tudo que foi dito até aqui, é esperado que não seja uma tarefa fácil estimar seus valores.
 
-Por causa disso, nossa análise se direcionará a aplicabilidade das redes neurais à predição, ou seja, utilizando ferramentas que também são não-lineares, assim como os sistemas em estudo.
+Por causa disso, o estudo se direcionará à aplicabilidade das redes neurais à predição, ou seja, utilizando ferramentas que também são não-lineares, assim como os sistemas em estudo.
 
 A próxima e última seção ditam os próximos passos dessa pesquisa.
 
