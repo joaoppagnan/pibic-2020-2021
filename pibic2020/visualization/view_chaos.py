@@ -166,17 +166,31 @@ elif (int(sis) == 3):
     t_inicial = 0
     t_final = 50
     dt = 0.001
-    estado_inicial = np.array([0.1, 0, 0])
 
-    sis_lorenz = lorenz.SistemaLorenz(estado_inicial=estado_inicial, dt=dt)
-    vetor_posicao, instantes_temporais = sis_lorenz.calcular(t_inicial=t_inicial, t_final=t_final)
-    x = vetor_posicao[:, 0]
-    y = vetor_posicao[:, 1]
-    z = vetor_posicao[:, 2]
+    estado_inicial_1 = np.array([0.1, 0, 0])
+    sis_lorenz = lorenz.SistemaLorenz(estado_inicial=estado_inicial_1, dt=dt)
+    vetor_posicao, instantes_temporais_1 = sis_lorenz.calcular(t_inicial=t_inicial, t_final=t_final)
+    x_1 = vetor_posicao[:, 0]
+    y_1 = vetor_posicao[:, 1]
+    z_1 = vetor_posicao[:, 2]
+
+    estado_inicial_2 = np.array([0, 0.1, 0])
+    sis_lorenz = lorenz.SistemaLorenz(estado_inicial=estado_inicial_2, dt=dt)
+    vetor_posicao, instantes_temporais_2 = sis_lorenz.calcular(t_inicial=t_inicial, t_final=t_final)
+    x_2 = vetor_posicao[:, 0]
+    y_2 = vetor_posicao[:, 1]
+    z_2 = vetor_posicao[:, 2]    
+
+    estado_inicial_3 = np.array([0, 0, 0.1])
+    sis_lorenz = lorenz.SistemaLorenz(estado_inicial=estado_inicial_3, dt=dt)
+    vetor_posicao, instantes_temporais_3 = sis_lorenz.calcular(t_inicial=t_inicial, t_final=t_final)
+    x_3 = vetor_posicao[:, 0]
+    y_3 = vetor_posicao[:, 1]
+    z_3 = vetor_posicao[:, 2]       
 
     fig, ax = plt.subplots()
     ax = plt.axes(projection='3d')
-    ax.plot(x, y, z, alpha=1, linewidth=0.6, color='Black')
+    ax.plot(x_1, y_1, z_1, alpha=1, linewidth=0.6, color='Black')
     #ax.set_title("Diagrama de fases do Atrator de Lorenz\n utilizando $\sigma = 10$, " + r"$\beta =\frac{8}{3}$, " + r"$\rho=28$, com " + "$x(0) =$ " + str(estado_inicial[0]) + ", $y(0) = $ " + str(estado_inicial[1]) + " e $z(0) =$ " + str(estado_inicial[2]))
     ax.set_xlabel('$x$')
     ax.set_ylabel('$y$')
@@ -190,19 +204,38 @@ elif (int(sis) == 3):
     plt.subplots_adjust(top=1.05)
     fig.savefig("images/caos/lorenz/diagrama-de-fases.pdf")
 
+    fig, ax = plt.subplots()
+    ax = plt.axes(projection='3d')
+    ax.plot(x_1, y_1, z_1, alpha=1, linewidth=0.6, color='Crimson', label=r"Condição Inicial: $(0.1, 0, 0)$")
+    ax.plot(x_2, y_2, z_2, alpha=1, linewidth=0.6, color='DarkGreen', label=r"Condição Inicial: $(0, 0.1, 0)$")
+    ax.plot(x_3, y_3, z_3, alpha=1, linewidth=0.6, color='DarkBlue', label=r"Condição Inicial: $(0, 0, 0.1)$")
+    ax.set_xlabel('$x$')
+    ax.set_ylabel('$y$')
+    ax.set_zlabel('$z$')
+    ax.w_xaxis.set_pane_color((0, 0, 0, 0))
+    ax.w_yaxis.set_pane_color((0, 0, 0, 0))
+    ax.w_zaxis.set_pane_color((0, 0, 0, 0))
+    ax.grid(True)
+    ax.legend()
+    sns.despine()
+    fig.tight_layout()
+    plt.subplots_adjust(top=1.01)
+    fig.savefig("images/caos/lorenz/diagrama-de-fases-alt.pdf")   
+    fig.savefig("reports/relatorio-ee015/figures/diagrama-de-fases-alt.png") 
+
     fig, ax = plt.subplots(3)
     #fig.suptitle("Séries temporais de 0 a 100 segundos das coordenadas $xyz$ do Sistema de Lorenz\n utilizando $\sigma = 10$, " + r"$\beta =\frac{8}{3}$, " + r"$\rho=28$, com " + "$x(0) =$ " + str(estado_inicial[0]) + ", $y(0) = $ " + str(estado_inicial[1]) + " e $z(0) =$ " + str(estado_inicial[2]))
-    ax[0].plot(instantes_temporais, x, color='Crimson', linewidth=0.9)
+    ax[0].plot(instantes_temporais_1, x_1, color='Crimson', linewidth=0.9)
     ax[0].set_ylabel('$x(t)$')
     ax[0].set_xlabel('$t$')
     ax[0].set_xlim(0,50)  
     ax[0].grid(True)
-    ax[1].plot(instantes_temporais, y, color='DarkGreen', linewidth=0.9)
+    ax[1].plot(instantes_temporais_1, y_1, color='DarkGreen', linewidth=0.9)
     ax[1].set_ylabel('$y(t)$')
     ax[1].set_xlabel('$t$')
     ax[1].set_xlim(0,50)
     ax[1].grid(True)
-    ax[2].plot(instantes_temporais, z, color='DarkBlue', linewidth=0.9)
+    ax[2].plot(instantes_temporais_1, z_1, color='DarkBlue', linewidth=0.9)
     ax[2].set_ylabel('$z(t)$')
     ax[2].set_xlabel('$t$')
     ax[2].set_xlim(0,50)
@@ -213,7 +246,7 @@ elif (int(sis) == 3):
 
     fig, ax = plt.subplots()
     #fig.suptitle("Série temporal em $\hat{x}$ de 0 a 100 segundos do Sistema de Lorenz\n utilizando $\sigma = 10$, " + r"$\beta =\frac{8}{3}$, " + r"$\rho=28$, com " + "$x(0) =$ " + str(estado_inicial[0]) + ", $y(0) = $ " + str(estado_inicial[1]) + " e $z(0) =$ " + str(estado_inicial[2]))
-    ax.plot(instantes_temporais, x, color='DarkBlue', linewidth=0.9)
+    ax.plot(instantes_temporais_1, x_1, color='DarkBlue', linewidth=0.9)
     ax.set_ylabel('$x(t)$')
     ax.set_xlabel('$t$')
     ax.set_xlim(0,50)  

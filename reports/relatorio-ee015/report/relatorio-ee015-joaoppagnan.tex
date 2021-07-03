@@ -801,14 +801,52 @@ Devido à dimensão fractal e a outros fatores, denominamos os atratores de sist
 
 \subsubsection{Atratores Estranhos}
 
-\subsubsection{Evolução temporal e espectro de potências de um sistema caótico}
+O termo atrator estranho foi inicialmente cunhado pelos matemáticos David Ruelle e Floris Takens no artigo \cite{ruelle1971nature}, para descrever o fluxo em um fluído turbulento. Esse nome foi dado devido às estranhas propriedades e características dessas estruturas topológicas que a diferenciavam dos atratores convencionais que foram citados na Seção 3.2 \cite{gleick2008chaos}.
+
+De acordo com \cite{attux2001dinamica}, sendo $A$ um conjunto limitado num espaço de $N$ dimensões, dizemos que $A$ é um atrator estranho se for um atrator (utilizando as definições da Seção 3.2) e se, estando a condição inicial $x_0$ num subconjunto de pontos próximos, as evoluções temporais desses pontos apresentarem dependência sensitiva em relação às condições iniciais (DSCI) \cite{fiedler1994caos}.
+
+O ponto que torna esses atratores tão distintos dos usuais é que, no caso linear, espera-se que quando as condições iniciais são próximas, a evolução temporal do sistema no espaço de fase será bem semelhante. A Figura \ref{fig:atrator-rlc-comp} evidencia esse fato para o caso estudado na Seção 3.2, do circuito RLC, onde a diferença entre os estados $(i(t), v(t))$ para as condições iniciais testadas é reduzida com o avanço da simulação.
+\begin{figure}[!ht]
+\centering
+\includegraphics[scale = 0.7]{rlc-phase-space-alt.png}
+\caption{Comparação da evolução temporal no espaço de fase de duas condições iniciais próximas no atrator do circuito RLC}
+\label{fig:atrator-rlc-comp}
+\end{figure}
+
+Vale-se mencionar que, para os atratores usuais, a diferença entre as trajetórias diminuirá progressivamente (no caso do ponto-fixo), se manterá constante (no caso do ciclo-limite), ou aumentará exponencialmente para o infinito, apresentando uma divergência total.
+
+A característica que torna possível que um atrator estranho apresente comportamentos distintos para condições iniciais próximas, sem divergirem para o infinito, é a dimensão fractal nas trajetórias do espaço de estado apresentada na Seção 3.5.1. Assim, as sucessivas contrações e expansões do espaço de fase, o que forma uma estrutura fractal, fará com que, por menor que seja a diferença entre as condições iniciais, como há uma infinidade de estados possíveis para a evolução do mesmos, após algumas iterações do sistema, observaremos que as trajetórias seguiram caminhos distintos entre os estados 'amaranhados' na dimensão fractal.
+
+Além disso, perceba também que as dimensões fractais permitem que haja uma divergência que aumenta exponencialmente, sem divergir para o infinito (o que não ocorre em certos atratores de sistemas que também apresentam divergência). Esse fenômeno é devido ao fato de que as sucessivas expansões e contrações (também chamadas de processo de dobra \cite{fiedler1994caos, attux2001dinamica}) estão contidas em um espaço limitado, devido às dimensões fracionárias (a Seção 3.5.4 apresenta essas características de um ponto de vista da teoria da informação).
+
+A Figura mostra a evolução temporal de três condições iniciais próximas, para o clássico Sistema de Lorenz \cite{lorenz1963deterministic} no espaço de fase $xyz$, definido pelas equações diferenciais abaixo:
+\begin{subequations}
+\begin{equation}
+\frac{dx}{dt} = -\sigma \cdot (x(t) - y(t))
+\end{equation}
+\begin{equation}
+\frac{dy}{dt} = x(t) \cdot (\rho - z(t)) - y(t)
+\end{equation}
+\begin{equation}
+\frac{dz}{dt} = x(t) \cdot y(t) - \beta \cdot z(t)
+\end{equation}
+\end{subequations}
+\begin{figure}[!ht]
+\centering
+\includegraphics[scale = 0.7]{diagrama-de-fases-alt.png}
+\caption{Comparação da evolução temporal no espaço de fase de três condições iniciais próximas para o Sistema de Lorenz}
+\label{fig:atrator-lorenz}
+\end{figure}
+
+Interessantemente, a não interseccionalidade de trajetórias implica que sistemas caóticos em tempo contínuo sejam compostos por $3$ ou mais dimensões, como é mostrado em \cite{guckenheimer2013nonlinear}. Esse não é o caso para sistemas caóticos discretos, como é o caso do Mapa de Hénon visto na seção anterior.
+
+A seção a seguir evidencia algumas propriedades interessantes nas séries temporais dos sistemas caóticos e seus espectros em potência. 
+
+\subsubsection{Série temporal e espectro de potências de um sistema caótico}
 
 \subsubsection{Produção de informação em uma dinâmica caótica}
 
 Vale-se mencionar que, é possível conectar a teoria dos expoentes de Lyapunov de um sistema caótico à dimensão fractal de seu atrator estranho \cite{attux2001dinamica}.
-
-\subsubsection{Dependência sensitiva em relação às condições iniciais (DSCI)}
-Como dito na seção introdutória, sistemas com dinâmica caótica se destacam pois, apesar de serem determinísticos, apresentam dependência sensitiva em relação às condições iniciais (DSCI). Dessa forma, duas trajetórias que partem de posições relativamente próximas no espaço de estados podem evoluir de uma forma totalmente distinta devido às não-linearidades presentes que amplificam as diferenças entre essas condições iniciais \cite{fiedler1994caos}.
 
 \subsubsection{Características gerais de um sistema com dinâmica caótica}
 Depois de uma exposição de alguns conceitos fundamentais de sistemas dinâmicos, além de alguns pontos sobre dinâmica caótica, podemos sintetizá-las nas propriedades fundamentais do caos determinístico em sistemas dinâmicos \cite{attux2001dinamica}:
