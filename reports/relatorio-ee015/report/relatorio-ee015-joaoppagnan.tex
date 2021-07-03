@@ -266,7 +266,7 @@ Para esta pesquisa, optamos por utilizar o algoritmo Nadam (\textit{Nesterov Ada
 \end{equation}
 \end{subequations}
 
-A incorporação dos gradiantes passados no cálculo do próximo vetor $\mathbf{w}$ é através da equação (\ref{eq:nadam-2}), que define o vetor de momento $\mathbf{m}$. Assim, utilizando a analogia com o momento linear de uma partícula, o gradiente passa ter a ideia de uma força de aceleração que aumenta o valor do momento do vetor $\mathbf{w}$ caso este esteja indo para um ponto ótimo de mínimo local, escapando mais rapidamenete de regiões onde não há minimização significativa da função custo.
+A incorporação dos gradientes passados no cálculo do próximo vetor $\mathbf{w}$ é através da equação (\ref{eq:nadam-2}), que define o vetor de momento $\mathbf{m}$. Assim, utilizando a analogia com o momento linear de uma partícula, o gradiente passa ter a ideia de uma força de aceleração que aumenta o valor do momento do vetor $\mathbf{w}$ caso este esteja indo para um ponto ótimo de mínimo local, escapando mais rapidamente de regiões onde não há minimização significativa da função custo.
 
 O hiperparâmetro $\beta_1$ presente em (\ref{eq:nadam-2}) serve tanto para evitar que $\mathbf{m}$ aumente de forma descontrolada, como também para fazer com que, através do termo $(1 - \beta_1)$, uma média exponencialmente decrescente de valores anteriores. Normalmente, $\beta_1$ é inicializado em $0.9$.
 
@@ -299,7 +299,7 @@ Os hiperparâmetros $\boldsymbol{\beta}$ e $\boldsymbol{\gamma}$ controlam o des
 
 Também vale mencionar que, para o conjunto de dados de validação, ou seja, o conjunto de dados que, após o ajuste dos pesos $\mathbf{w}$ no conjunto de treinamento, é verificado se a rede neural está generalizando os resultados, evitando o sobreajuste (do inglês \textit{overfitting}), são calculados outros vetores de valores de média ($\boldsymbol{\mu}_{B}'$) e desvio-padrão ($\boldsymbol{\sigma}_{B}'$). Assim, o processo descrito anteriormente também é realizado sobre esses dados.
 
-Por fim, o grande apelo das redes \textit{Multilayer Perceptron} é que elas tem a capacidade de aproximação universal, ou seja, são capazes de aproximar qualquer mapeamento contí\-nuo num domínio compacto com um nível de erro arbitrariamente pequeno. Até mesmo uma MLP com uma única camada intermediária e camada de saída linear já possui esta capacidade \cite{cybenko1989approximation, hornik1989multilayer}. Infelizmente, esse teorema não indica a quantidade de neurônios necessária na(s) camada(s) intermediária(s), muito menos um método para ajustar o vetor $\mathbf{w}$ da rede para garantir a solução ótima.
+Por fim, o grande apelo das redes \textit{Multilayer Perceptron} é que elas tem a capacidade de aproximação universal, ou seja, são capazes de aproximar qualquer mapeamento contínuo num domínio compacto com um nível de erro arbitrariamente pequeno. Até mesmo uma MLP com uma única camada intermediária e camada de saída linear já possui esta capacidade \cite{cybenko1989approximation, hornik1989multilayer}. Infelizmente, esse teorema não indica a quantidade de neurônios necessária na(s) camada(s) intermediária(s), muito menos um método para ajustar o vetor $\mathbf{w}$ da rede para garantir a solução ótima.
 
 Além disso, para o propósito deste trabalho de pesquisa, que envolve sistemas dinâmicos, ter acesso a um histórico e a uma memorização dos padrões anteriores de entrada, na teoria, aumentaria a precisão da predição das séries temporais. Mesmo que as redes MLP tenham capacidade de aproximação universal, é possível aumentar a eficiência desse processo caso fossem utilizadas estruturas recorrentes \cite{connor1994recurrent, boccato2013novas}.
 
@@ -365,7 +365,7 @@ Por fim, podemos combinar o esquema sequência-vetor seguido do vetor-sequência
 
 O treinamento de uma rede recorrente também utiliza a técnica de retropropagação do erro, citada anteriormente quando foi discutida a rede MLP. A diferença é que o erro também é retropropagado para $k$ instantes anteriores de tempo. Dessa forma, essa técnica é chamada de retropropagação do erro através do tempo (BPTT, do inglês \textit{backpropagation through time}).
 
-Para compreender os pontos principais do funcionamente desse algoritmo, convém considerar a rede desdobrada no tempo (Figura \ref{fig:recorrente-camada}). Dessa forma, pode-se perceber que uma rede recorrente desdobrada no tempo é bem semelhante a uma rede \textit{feedforward} profunda, em que as várias camadas que representam a rede em instantes de tempo diferente compartilham os mesmos parâmetros.
+Para compreender os pontos principais do funcionamento desse algoritmo, convém considerar a rede desdobrada no tempo (Figura \ref{fig:recorrente-camada}). Dessa forma, pode-se perceber que uma rede recorrente desdobrada no tempo é bem semelhante a uma rede \textit{feedforward} profunda, em que as várias camadas que representam a rede em instantes de tempo diferente compartilham os mesmos parâmetros.
 
 Nesse caso, a entrada de camada camada da rede desdobrada corresponde ao vetor de entrada para um determinado instante de tempo. Logo, a camada correspondente ao primeiro instante de tempo recebe a entrada $\mathbf{x}(t-k)$, a camada seguinte a ela recebe a entrada $\mathbf{x}(t-k+1)$, e isso ocorre até a camada mais recente no tempo da rede, que recebe a entrada $\mathbf{x}(t)$. Também é válido mencionar que as saídas de determinados instantes de tempo podem ser ignoradas ao calcular a função custo $J$ para a rede desdobrada, assim como indica a Figura \ref{fig:rnn-backpropagation}.
 \begin{figure}[!ht]
@@ -644,7 +644,7 @@ Em termos matemáticos \cite{fiedler1994caos}: Uma região compacta $A$ é um at
 	\item o fluxo não pode ser decomposto, isto é, $A$ não poode ser dividido em duas partes invariantes não triviais.
 \end{enumerate}
 
-O formato do atrator varia bastante de acordo com o sistema em análise. Por exemplo, um circuito RLC autonômo tem um atrator chamado de ponto-fixo. Para evidenciarmos isso, considere que as seguintes equações diferenciais descrevem a dinâmica de um circuito RLC, sendo $i$ a corrente no indutor e $v$ a tensão no capacitor \cite{attux2001dinamica}:
+O formato do atrator varia bastante de acordo com o sistema em análise. Por exemplo, um circuito RLC autônomo tem um atrator chamado de ponto-fixo. Para evidenciarmos isso, considere que as seguintes equações diferenciais descrevem a dinâmica de um circuito RLC, sendo $i$ a corrente no indutor e $v$ a tensão no capacitor \cite{attux2001dinamica}:
 \begin{subequations}
 \begin{equation}
 \frac{di}{dt} = - \frac{1}{L} \cdot (R\cdot i(t) + v(t))
@@ -654,7 +654,7 @@ O formato do atrator varia bastante de acordo com o sistema em análise. Por exe
 \end{equation}
 \end{subequations}
 
-Assim, dada uma energia incial presente no sistema, seja esta em forma de campo elétrico no capacitor, ou campo magnético no indutor, o resistor dissipará a energia armazenada em forma de potência ativa (calor). Considerando as variáveis do espaço de estado como sendo a tensão no capacitor, e a corrente do indutor, é fácil perceber que a trajetória vai convergir para o ponto $(0, 0)$, pois a energia será toda dissipada e não haverá mais dinâmica nesse sistema.
+Assim, dada uma energia inicial presente no sistema, seja esta em forma de campo elétrico no capacitor, ou campo magnético no indutor, o resistor dissipará a energia armazenada em forma de potência ativa (calor). Considerando as variáveis do espaço de estado como sendo a tensão no capacitor, e a corrente do indutor, é fácil perceber que a trajetória vai convergir para o ponto $(0, 0)$, pois a energia será toda dissipada e não haverá mais dinâmica nesse sistema.
 
 A Figura \ref{fig:rlc-phase-space} mostra a evolução de um circuito RLC em série para $v(0) = 1$, $i(0) = 1$ com $R = 1$, $L = 1000$ e $C = 500$:
 \begin{figure}[!ht]
@@ -709,7 +709,7 @@ tem-se que, substituindo (\ref{eq:lyapunov-volume-1}) em (\ref{eq:lyapunov-appro
 \delta V(t) = \delta V(0) \cdot \exp \big(\sum_{i=1}^{m} \lambda_i t\big)
 \end{equation}
 
-A partir dessa definição, é possível concluir que o hiper-volume no espaço de fase nao diverge : a) quando $\sum_{i=1}^{m} \lambda_i = 0$, ou seja, quando $\delta V(t) = \delta V(0)$, o que determina um sistema conservativo; b) quando $\sum_{i=1}^{m} \lambda_i < 0$, ou seja, quando $\delta V(t) < \delta V(0)$, o que determina um sistema dissipativo \cite{fiedler1994caos}.
+A partir dessa definição, é possível concluir que o hiper-volume no espaço de fase não diverge : a) quando $\sum_{i=1}^{m} \lambda_i = 0$, ou seja, quando $\delta V(t) = \delta V(0)$, o que determina um sistema conservativo; b) quando $\sum_{i=1}^{m} \lambda_i < 0$, ou seja, quando $\delta V(t) < \delta V(0)$, o que determina um sistema dissipativo \cite{fiedler1994caos}.
 
 Por fim, é possível identificar o atrator do sistema dinâmico em análise através do sinal dos expoentes de Lyapunov. Por exemplo, no caso tridimensional ($m=3$), caso todos os expoentes $\lambda_i$ forem negativos, o atrator será um ponto fixo. Já para dois expoentes negativos e um nulo, têm-se um atrator do tipo ciclo-limite.
 
@@ -750,7 +750,7 @@ De acordo com a relações em (\ref{eq:lyapunov-ksinai}), concluise-que, num sis
 
 Interessantemente, é visto que, para sistemas estocásticos, a evolução da trajetória no espaço de estado não seguirá nenhum tipo de continuidade, havendo uma perda abrupta de informação por parte do observador. Logo, $K \rightarrow \infty$ \cite{attux2001dinamica}.
 
-Agora, sistemas com dinâmica caótica, apesar de terem uma produção initerrupta de informação (Seção 3.5.4), suas entropias obedecem a relação em (\ref{eq:lyapunov-ksinai-entropy}). 
+Agora, sistemas com dinâmica caótica, apesar de terem uma produção ininterrupta de informação (Seção 3.5.4), suas entropias obedecem a relação em (\ref{eq:lyapunov-ksinai-entropy}). 
 
 Portanto, para vermos mais detalhes do porquê isso ocorre, na seção a seguir iniciaremos nossa discussão sobre sistemas caóticos.
 
@@ -776,7 +776,7 @@ D_0 = \lim_{\varepsilon \rightarrow 0} \frac{\log K (\varepsilon)}{\log (1/\vare
 
 Essa definição é válida tanto para figuras de dimensão inteira, como quadrados e cubos, quanto para objetos de dimensão fractal.
 
-Aplicando essa definição numa trajetória no espaço de fase de uma dinâmica caótica, vê-se que, a dimensão obtida sempre será fracionária \cite{fiedler1994caos}, logo, pode-se dizer que a trajetória sofrerá sucessivas contraçoes em certas direções, e expansões em pelo menos uma, de forma a nunca se cruzar, por mais errático que seja o movimento \cite{fiedler1994caos}.
+Aplicando essa definição numa trajetória no espaço de fase de uma dinâmica caótica, vê-se que, a dimensão obtida sempre será fracionária \cite{fiedler1994caos}, logo, pode-se dizer que a trajetória sofrerá sucessivas contrações em certas direções, e expansões em pelo menos uma, de forma a nunca se cruzar, por mais errático que seja o movimento \cite{fiedler1994caos}.
 
 Uma das propriedades importantes de objetos topológicos de dimensão fractal é que eles apresentam uma auto-similaridade \cite{gleick2008chaos}. Nesse caso, partes da trajetória no espaço de fase têm uma estrutura análoga à da figura como um todo \cite{attux2001dinamica}. Ou seja, ao ampliar-se um objeto fractal, suas características serão similares ao da figura como um todo, tendo uma auto-similaridade.
 
@@ -808,7 +808,7 @@ Devido à dimensão fractal e a outros fatores, denominamos os atratores de sist
 Vale-se mencionar que, é possível conectar a teoria dos expoentes de Lyapunov de um sistema caótico à dimensão fractal de seu atrator estranho \cite{attux2001dinamica}.
 
 \subsubsection{Dependência sensitiva em relação às condições iniciais (DSCI)}
-Como dito na seção introdutória, sistemas com dinâmica cáotica se destacam pois, apesar de serem determinísticos, apresentam dependência sensitiva em relação às condições iniciais (DSCI). Dessa forma, duas trajetórias que partem de posições relativamente próximas no espaço de estados podem evoluir de uma forma totalmente distinta devido às não-linearidades presentes que amplificam as diferenças entre essas condições iniciais \cite{fiedler1994caos}.
+Como dito na seção introdutória, sistemas com dinâmica caótica se destacam pois, apesar de serem determinísticos, apresentam dependência sensitiva em relação às condições iniciais (DSCI). Dessa forma, duas trajetórias que partem de posições relativamente próximas no espaço de estados podem evoluir de uma forma totalmente distinta devido às não-linearidades presentes que amplificam as diferenças entre essas condições iniciais \cite{fiedler1994caos}.
 
 \subsubsection{Características gerais de um sistema com dinâmica caótica}
 Depois de uma exposição de alguns conceitos fundamentais de sistemas dinâmicos, além de alguns pontos sobre dinâmica caótica, podemos sintetizá-las nas propriedades fundamentais do caos determinístico em sistemas dinâmicos \cite{attux2001dinamica}:
@@ -832,7 +832,7 @@ A próxima e última seção ditam os próximos passos dessa pesquisa.
 
 Como nessa primeira parte da iniciação o foco foi uma pesquisa bibliográfica dos temas a serem estudados nela, a segunda metade será voltada para a aplicação em si da predição das séries temporais de sistemas caóticos.
 
-Para os experimentos computacionais, optamos pelas séries temporais do Mapa Logístico, descrito pelo cientista Robert May \cite{may1976simple}, o Mapa de Hénon, apresentado pelo astronômo e matemático francês Michel Hénon \cite{henon1976two}, a famosa série Mackey-Glass, dos cientistas Michael Mackey e Leon Glass \cite{mackey1977oscillation}, e o clássico Sistema de Lorenz, um dos  mais incríveis e fundamentais trabalhos de sistemas caóticos, introduzido pelo matemático e meteorologista Edward Norton Lorenz \cite{lorenz1963deterministic}, de forma a criar cenários diversificados para a análise do comportamento das redes neurais, com sistemas a tempo contínuo (Sistema de Lorenz e Equações de Mackey-Glass) e sistemas a tempo discreto (Mapa de Hénon e Mapa Logístico).
+Para os experimentos computacionais, optamos pelas séries temporais do Mapa Logístico, descrito pelo cientista Robert May \cite{may1976simple}, o Mapa de Hénon, apresentado pelo astrônomo e matemático francês Michel Hénon \cite{henon1976two}, a famosa série Mackey-Glass, dos cientistas Michael Mackey e Leon Glass \cite{mackey1977oscillation}, e o clássico Sistema de Lorenz, um dos  mais incríveis e fundamentais trabalhos de sistemas caóticos, introduzido pelo matemático e meteorologista Edward Norton Lorenz \cite{lorenz1963deterministic}, de forma a criar cenários diversificados para a análise do comportamento das redes neurais, com sistemas a tempo contínuo (Sistema de Lorenz e Equações de Mackey-Glass) e sistemas a tempo discreto (Mapa de Hénon e Mapa Logístico).
 
 Em seguida, determinaremos aspectos mais fundamentais das redes neurais que serão utilizadas, como, por exemplo, a arquitetura empregada, assim como as métricas para o treinamento e análise. Para essa etapa, também planejamos um estudo das redes GRU (do inglês \textit{Gated Recurrent Unit}) \cite{cho2014learning} e ESN (do inglês \textit{Echo State Network}) \cite{jaeger2007echo}, sendo que a última, em outros trabalhos de pesquisa, já indicou um bom desempenho preliminar no contexto de predição de séries temporais originadas por sistemas caóticos \cite{boccato2013novas}.
 
