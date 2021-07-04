@@ -23,6 +23,8 @@
 \usepackage{setspace}
 \usepackage{subcaption}
 \usepackage{csquotes}
+\usepackage{booktabs}
+\usepackage{pbox}
 \setlength{\parskip}{1em}
 \singlespacing
 
@@ -84,11 +86,364 @@ Uma classe de sistemas dinâmicos particularmente relevante dentro do contexto d
 
 Tendo em vista o desempenho de modelos não-lineares para previsão de diversas séries temporais \cite{connor1994recurrent}, optamos por estudar a aplicabilidade de redes neurais artificiais à previsão de séries relacionadas a sistemas com dinâmica caótica.
 
-Essa primeira parte do projeto de iniciação científica teve como objetivo estudar a base teórica das redes neurais artificiais e de outros regressores lineares clássicos, assim como estudar os fundamentos de sistemas dinâmicos e de dinâmica caótica. Os principais modelos estudados, juntamente com uma breve exposição de modelos lineares básicos, são apresentados na Seção 2. Já na Seção 3, veremos alguns conceitos fundamentais e a caracterização de sistemas caóticos.
+Essa primeira parte do projeto de iniciação científica teve como objetivo estudar a base teórica das redes neurais artificiais e de outros regressores lineares clássicos, assim como estudar os fundamentos de sistemas dinâmicos e de dinâmica caótica. 
 
 O estudo dirigido começou abordando uma revisão de tópicos de probabilidade, teoria da informação e estimação. Em seguida, foi vista a teoria de regressores e classificadores clássicos \cite{hastie2009elements}. Depois disso, o estudo se dirigiu para as redes neurais artificiais MLP e recorrentes \cite{geron2019hands}, para, por fim, concluir o aprendizado de preditores com uma breve exposição dos modelos autorregressivos (AR) e autorregressivos de médias móveis (ARMA) \cite{box2015time}. Com a teoria de predição solidificada, o foco mudou para os fundamentos da teoria de sistemas com dinâmica caótica, utilizando como base as referências \cite{fiedler1994caos} e \cite{attux2001dinamica}.
 
+Iniciamos nossa discussão pela Seção 2, onde discutiremos alguns conceitos básicos de sistemas dinâmicos, seguidos de uma apresentação sobre sistemas caóticos, evidenciando as particularidades que eles têm em relação aos sistemas dinâmicos convencionais.
+
+Em seguida, na Seção 3, veremos os principais modelos estudados, juntamente com uma breve exposição de modelos lineares básicos.
+
 Por fim, na Seção 4 são indicados os próximos passos deste projeto de iniciação científica visando sua conclusão ao final deste primeiro semestre de 2021. 
+
+\section{Sistemas Dinâmicos}
+O estudo de sistemas dinâmicos se tornou fundamental para a ciência quando a humanidade começou a desenvolver modelos matemáticos para explicar o mundo em sua volta, utilizando os modelos criados para realizar predições e, de certa forma, saber o que nos espera no futuro.
+
+Os sistemas dinâmicos descrevem a evolução de, como o nome já diz, sistemas, que podem representar fenômenos físicos, biológicos, químicos, ou equações matemáticas, através do tempo. Nesse caso, o tempo pode ser tanto contínuo, quanto discreto \cite{kluever2020dynamic}.
+
+Os sistemas dinâmicos também podem ser lineares ou não-lineares. Um sistema linear, sendo este a tempo contínuo ou discreto, possui a propriedade da superposição, ou seja, se uma entrada consiste de uma soma ponderada de diversos sinais, então a saída é a superposição das respostas do sistema a cada um desses sinais \cite{oppenheim2014signals}. 
+
+É possível representar essa propriedade através das seguintes relações matemáticas, sendo $y(t)$ a resposta de um sistema a tempo contínuo a uma entrada $x(t)$ e $y_i(t)$ a saída correspondente a $x_i(t)$:
+\begin{subequations}
+\begin{equation}\label{eq:linear-eq-1}
+\text{A resposta a } x_1(t) + x_2(t) \text{ é } y_1(t) + y_2(t)
+\end{equation}
+\begin{equation}\label{eq:linear-eq-2}
+\text{A resposta a } a\cdot x_1(t) \text{ é } a\cdot y_1(t)\text{, em que } a \text{ é qualquer constante complexa.}
+\end{equation}
+\end{subequations}
+
+A primeira equação (\ref{eq:linear-eq-1}) representa a propriedade da aditividade, enquanto a segunda (\ref{eq:linear-eq-2}) representa a propriedade da homogeneidade. Essa definição também é válida para sistemas a tempo discreto, e podem ser combinadas:
+\begin{subequations}
+\begin{equation}
+a \cdot x_1(t) + b \cdot x_2(t) \rightarrow a \cdot y_1(t) + b \cdot y_2(t)
+\end{equation}
+\begin{equation}
+a \cdot x_1[n] + b \cdot x_2[n] \rightarrow a \cdot y_1[n] + b \cdot y_2[n]
+\end{equation}
+\end{subequations}
+, sendo $a$ e $b$ constantes complexas quaisquer \cite{oppenheim2014signals}.
+
+Devido a todo arcabouço teórico de álgebra linear elaborado por matemáticos nos últimos séculos, trabalhar com modelos lineares de sistemas dinâmicos se tornou algo trivial. Logo, grande parte dos cursos de graduação lidam, em grande parte, com sistemas lineares por definição, ou aplicam métodos de linearização em sistemas não-lineares, chegando em soluções analíticas lineares aproximadas, com um bom grau de acurácia sob certas condições de contorno \cite{fiedler1994caos}. 
+
+Com essas aproximações, prever o valor futuro de uma série temporal originada por um sistema linear (ou um sistema não-linear linearizado) é algo bem simples, afinal, pode-se utilizar a solução analítica.
+
+Porém, a esmagadora maioria dos fenômenos que observamos na natureza são altamente não-lineares. Dessa forma, ou não conseguimos aplicar os métodos de linearização que tanto aprendemos ou, ao serem aplicados, o sistema se reduz a uma representação bem errônea da sua dinâmica original \cite{gleick1998chaos}.
+
+Antes de falarmos sobre a teoria da dinâmica caótica, que trouxe diversas explicações para sistemas não-lineares e aumentou o entendimento da ciência sobre esses fenômenos, veremos um pouco sobre alguns conceitos fundamentais no estudo de sistemas dinâmicos.
+
+\subsection{Espaço de Fase}
+Algo comum no estudo de sistemas dinâmicos é a representação em espaço de fase (também chamado de espaço de estado). O espaço de fase geralmente é composto pelas variáveis independentes de um sistema dinâmico. Assim, cada ponto no espaço de fase representa um estado possível para o sistema.
+
+Por exemplo, a equação de movimento de um pêndulo simples, sendo $\theta$ o ângulo entre o pêndulo e a vertical, $g$ a aceleração gravitacional, e $l$ o comprimento do pêndulo, é representado pela seguinte equação diferencial:
+\begin{equation}\label{eq:pendulum}
+m l^2 \cdot \ddot{\theta}(t) + mgl\cdot  \sen(\theta(t)) = 0
+\end{equation}
+
+Apesar de não ser possível obter uma solução analítica sem antes realizar algum tipo de linearização, é possível estudar a evolução temporal desse sistema através do seu espaço de fases \cite{fiedler1994caos}.
+
+Para tal, escreveremos (\ref{eq:pendulum}) da seguinte forma:
+\begin{subequations}
+\begin{equation}\label{eq:pendulum-2}
+\dot{\theta} = \varphi = f(\theta, \varphi)
+\end{equation}
+\begin{equation}\label{eq:pendulum-3}
+\dot{\varphi} = -\frac{g}{l} \cdot \sen(\theta) = g(\theta, \varphi)
+\end{equation}
+\end{subequations}
+
+Derivando a equação (\ref{eq:pendulum-3}) em $\theta$ e isolando os termos $\theta$ e $\varphi$ em lados opostos, obtém-se que:
+\begin{equation}\label{eq:pendulum-4}
+\varphi \, d\varphi = -\frac{g}{l} \cdot \sen(\theta) \, d\theta
+\end{equation}
+
+Agora, integrando (\ref{eq:pendulum-4}) em ambos os lados, chega-se que:
+\begin{equation}
+\varphi^2 - \frac{2g}{l} \cdot \cos(\theta) = C
+\end{equation}
+sendo $C$ uma constante arbitrária. A Figura \ref{fig:pendulum-phase-space} mostra a trajetória no espaço de fases para diversos valores de $C$ (lembrando que $\varphi = \dot{\theta}$).
+\begin{figure}[!ht]
+\centering
+\includegraphics[scale = 0.7]{pendulum-phase-space.pdf}
+\caption{Trajetória no espaço de fase do pêndulo simples para vários valores de $C$}
+\label{fig:pendulum-phase-space}
+\end{figure}
+
+Perceba que um ponto $(\theta, \dot{\theta})$ no espaço de fases representa um estado possível para o sistema. Nesse caso, como não há nenhum elemento estocástico na evolução do pêndulo simples (considerando apenas a mecânica clássica), não há intersecções nas trajetórias no espaço de fases. 
+
+Por fim, vale-se dizer que, o espaço de fases podem ter quantas dimensões forem necessárias para representar a dinâmica de um sistema. 
+
+\subsection{Atratores}
+Uma estrutura topológica utilizada para estudar a evolução de um sistema dinâmico, que é capaz de capturar a essência de sua evolução temporal, é o atrator.
+
+De acordo com a definição dada em \cite{fiedler1994caos}, um atrator é um conjunto invariante para o qual órbitas próximas no espaço de fase convergem depois de um tempo suficientemente grande.
+
+Em termos matemáticos \cite{fiedler1994caos}: Uma região compacta $A$ é um atrator de um fluxo $\varphi(t, x)$ se as quatros hipóteses a seguir valem:
+\begin{enumerate}[label=\alph*)]
+	\item $A$ é invariante segundo $\varphi$;
+	\item $A$ tem uma vizinhança contraente;
+	\item o fluxo é recorrente, isto é, trajetórias começando em qualquer subconjunto aberto de $A$ voltam a esse subconjunto para valores de $t$ suficientemente longos;
+	\item o fluxo não pode ser decomposto, isto é, $A$ não poode ser dividido em duas partes invariantes não triviais.
+\end{enumerate}
+
+O formato do atrator varia bastante de acordo com o sistema em análise. Por exemplo, um circuito RLC autônomo tem um atrator chamado de ponto-fixo. Para evidenciarmos isso, considere que as seguintes equações diferenciais descrevem a dinâmica de um circuito RLC, sendo $i$ a corrente no indutor e $v$ a tensão no capacitor \cite{attux2001dinamica}:
+\begin{subequations}
+\begin{equation}
+\frac{di}{dt} = - \frac{1}{L} \cdot (R\cdot i(t) + v(t))
+\end{equation}
+\begin{equation}
+\frac{dv}{dt} = \frac{i(t)}{C}
+\end{equation}
+\end{subequations}
+
+Assim, dada uma energia inicial presente no sistema, seja esta em forma de campo elétrico no capacitor, ou campo magnético no indutor, o resistor dissipará a energia armazenada em forma de potência ativa (calor). Considerando as variáveis do espaço de estado como sendo a tensão no capacitor, e a corrente do indutor, é fácil perceber que a trajetória vai convergir para o ponto $(0, 0)$, pois a energia será toda dissipada e não haverá mais dinâmica nesse sistema.
+
+A Figura \ref{fig:rlc-phase-space} mostra a evolução de um circuito RLC em série para $v(0) = 1$, $i(0) = 1$ com $R = 1$, $L = 1000$ e $C = 500$:
+\begin{figure}[!ht]
+\centering
+\includegraphics[scale = 0.7]{rlc-phase-space.png}
+\caption{Representação do atrator ponto-fixo presente no circuito RLC série}
+\label{fig:rlc-phase-space}
+\end{figure}
+
+Os atratores podem ser pontos-fixos, ciclo-limites (que é o caso do oscilador harmônico e do pêndulo simples para certos valores iniciais de $\theta$), pontos de nó, pontos de sela, entre alguns outros. Os atratores também podem indicar trajetórias instáveis, estáveis e assintoticamente estáveis. Também é válido mencionar que, chamamos a região do espaço de estados para a qual todas as trajetórias presentes seguem um atrator de bacia do atrator.
+
+O tipo de atrator e o tipo de estabilidade é obtido analisando os autovalores $\lambda_i$ da representação matricial do sistema dinâmico.
+
+Por fim, quando há uma mudança no sistema dinâmico que faz com que ele seja atraído para a bacia de outro atrator, dizemos que o sistema sofreu uma bifurcação. Geralmente são os parâmetros do sistema que definem os pontos de bifurcação \cite{fiedler1994caos}.
+
+\subsection{Expoentes de Lyapunov}
+Considere um sistema contínuo com $m$ equações diferenciais ordinárias, e imagine um pequeno hiper-volume esférico de teste de estados iniciais vizinhos $y_0$ (raio $\varepsilon_0 (x_0)$) em torno do ponto inicial $x_0$ de uma linha de fluxo, isto é \cite{fiedler1994caos}:
+\begin{equation}
+	|y_0 - x_0| \leq \varepsilon_0 (x_0)
+\end{equation}
+
+Com o passar do tempo, o fluxo das trajetórias deforma a hiper-esfera num objeto hiper-elipsoidal com eixos principais $\varepsilon_k (t)$, $k = 1, 2, ..., m$ (Figura \ref{fig:lyapunov}). Os expoentes de Lyapunov medem o crescimento exponencial dos eixos principais $\varepsilon_k (t)$ e são definidos por:
+\begin{equation}\label{eq:lyapunov}
+\lambda_i = \lim_{t \rightarrow \infty} \lim_{\varepsilon_0 (x_0) \rightarrow 0} \frac{1}{t} \ln \frac{\varepsilon_i (t)}{\varepsilon_0 (x_0)}, \; \; \; i = 1, ..., m.
+\end{equation}
+\begin{figure}[!ht]
+\centering
+\includegraphics[scale = 0.7]{lyapunov.pdf}
+\caption{Evolução de um elemento de volume esférico de raio $\varepsilon_0 (x_0)$ em torno de um ponto inicial $x_0$}
+\label{fig:lyapunov}
+\end{figure}
+
+A definição em (\ref{eq:lyapunov}) permite a seguinte aproximação:
+\begin{equation}\label{eq:lyapunov-approx}
+	\varepsilon_i (t) \approx \varepsilon_0 (x_0) \cdot e^{\lambda_i t}
+\end{equation}
+
+Da equação (\ref{eq:lyapunov-approx}), conclui-se que \cite{fiedler1994caos}:
+
+a) a existência de um ou mais expoentes de Lyapunov positivos define uma instabilidade orbital nas direções associadas;
+
+b) uma solução caótica tem pelo menos um expoente de Lyapunov positivo (falaremos mais sobre esse fato adiante);
+
+c) uma solução periódica ou quasi-periódica possui $\lambda_i < 0$ nas direções perpendiculares ao movimento no espaço de fase, e $\lambda_i = 0$ ao longo da trajetória.
+
+Agora, considerando que um elemento de hiper-volume $\delta V(t)$ em um instante $t$ é dado por
+\begin{equation}\label{eq:lyapunov-volume-1}
+\delta V(t) = \prod_{i=1}^{m} \varepsilon_i (t)\mathtt{,}
+\end{equation}
+tem-se que, substituindo (\ref{eq:lyapunov-volume-1}) em (\ref{eq:lyapunov-approx}), obtém-se:
+\begin{equation}
+\delta V(t) = \delta V(0) \cdot \exp \big(\sum_{i=1}^{m} \lambda_i t\big)
+\end{equation}
+
+A partir dessa definição, é possível concluir que o hiper-volume no espaço de fase não diverge : a) quando $\sum_{i=1}^{m} \lambda_i = 0$, ou seja, quando $\delta V(t) = \delta V(0)$, o que determina um sistema conservativo; b) quando $\sum_{i=1}^{m} \lambda_i < 0$, ou seja, quando $\delta V(t) < \delta V(0)$, o que determina um sistema dissipativo \cite{fiedler1994caos}.
+
+Por fim, é possível identificar o atrator do sistema dinâmico em análise através do sinal dos expoentes de Lyapunov. Por exemplo, no caso tridimensional ($m=3$), caso todos os expoentes $\lambda_i$ forem negativos, o atrator será um ponto fixo. Já para dois expoentes negativos e um nulo, têm-se um atrator do tipo ciclo-limite.
+
+Os atratores de um sistema caótico possuem uma propriedade especial com relação aos seus expoentes de Lyapunov. Esse fato será discutido na Seção 2.5.2.
+
+\subsection{Entropia de Kolmogorov-Sinai}
+Também é possível analisar a dinâmica de um sistema através de uma abordagem via teoria da informação.
+
+Para tal, considere um atrator no espaço de estado, recoberto por cubos de lado $\varepsilon$. Agora, seja uma sequência de $b$ cubos $i_1, i_2, ..., i_b$, e seja $p(i_1, i_2, ..., i_b)$ a probabilidade que o sistema se encontre sucessivamente nos cubos $i_1, i_2, ..., i_b$ em intervalos de tempo regulares $\tau$ \cite{fiedler1994caos, attux2001dinamica}. Segundo Shannon  \cite{shannon1948mathematical}, a informação associada à sequência $b$ é proporcional a:
+\begin{equation}
+I_{b}^{(1)} (\varepsilon) = \sum_{i_1, i_2, ..., i_b} p(i_1, i_2, ..., i_b) \cdot \ln p(i_1, i_2, ..., i_b)
+\end{equation}
+
+Perceba que a grandeza:
+\begin{equation}\label{eq:shannon-cube-2}
+I_{b+1}^{(1)} (\varepsilon) - I_{b}^{(1)} (\varepsilon)
+\end{equation}
+determina a informação necessária para se localizar o estado do sistema (determinar o cubo $i_{b+1}$ ) sabendo que ele percorreu a sequência de cubos $i_1, i_2, ..., i_b$. A grandeza expressa por (\ref{eq:shannon-cube-2}) quantifica a perda de informação do observador (e o ganho de informação do sistema, consequentemente) entre os instantes de tempo $b \tau$ e $(b+1)\tau$ \cite{attux2001dinamica}.
+
+Com isso, define-se a entropia de Kolmogorov-Sinai como a taxa média de criação de informação no sistema (ou perda de informação do observador) \cite{fiedler1994caos, attux2001dinamica}:
+\begin{equation}\label{eq:kolmogorov-sinai}
+K = \lim_{\tau \rightarrow 0} \lim_{\varepsilon \rightarrow 0} \lim_{b \rightarrow \infty} \frac{1}{b\tau} \sum_{i_1, i_2, ..., i_b} p(i_1, i_2, ..., i_b) \cdot \ln p(i_1, i_2, ..., i_b)
+\end{equation}
+
+Apesar de não ser comum, pelo menos na maior parte dos cursos de graduação, a análise da entropia de Kolmogorov-Sinai de um sistema dinâmico revela várias propriedades do comportamento de um sistema ao longo do tempo. Por exemplo, analisando um sistema cuja trajetória segue a bacia de atração de um ponto-fixo, necessitamos de pouca informação para predizer com precisão qual será o estado do sistema em um instante de tempo posterior. Ou seja, não há produção significativa de informação por parte do sistema. Isso também é válido para um sistema cujo atrator é um ciclo-limite.
+
+A entropia de Kolmogorov-Sinai possui uma conexão com os expoentes de Lyapunov. No caso, \cite{attux2001dinamica, fiedler1994caos} mostram que as seguintes equações são válidas, sendo $\lambda_i$ os expoentes de Lyapunov:
+\begin{subequations}\label{eq:lyapunov-ksinai}
+\begin{equation}
+\frac{dI_{i}^{(1)}}{dt} \propto \lambda_i
+\end{equation}
+\begin{equation}\label{eq:lyapunov-ksinai-entropy}
+K \leq \sum_{\lambda_i > 0} \lambda_i
+\end{equation}
+\end{subequations}
+
+De acordo com a relações em (\ref{eq:lyapunov-ksinai}), concluise-que, num sistema determinístico regular (linear e não-linear sem ser caótico ou estocástico), pontos próximos no espaço de fase evoluem sem divergências significativas. Logo, o sistema não produz informação. Assim, ou a entropia de Kolmogorov-Sinai será nula.
+
+Interessantemente, é visto que, para sistemas estocásticos, a evolução da trajetória no espaço de estado não seguirá nenhum tipo de continuidade, havendo uma perda abrupta de informação por parte do observador. Logo, $K \rightarrow \infty$ \cite{attux2001dinamica}.
+
+Agora, sistemas com dinâmica caótica, apesar de terem uma produção ininterrupta de informação (Seção 2.5.3), suas entropias obedecem a relação em (\ref{eq:lyapunov-ksinai-entropy}). 
+
+Portanto, para vermos mais detalhes do porquê isso ocorre, na seção a seguir iniciaremos nossa discussão sobre sistemas caóticos.
+
+\subsection{Sistemas com Dinâmica Caótica}
+Uma classe de sistemas não-lineares importante para o estudo de diversos fenômenos, é a classe de sistemas caóticos. Apesar de ter tido uma certa dificuldade para encontrar um meio dentro da academia e sendo bastante renegado por vários cientistas da época por, entre outros fatores, inicialmente basear-se em simulações  computacionais de dinâmicas físicas, algo que não era comum nos meados do século XX \cite{gleick1998chaos}, a teoria da dinâmica caótica foi adotada por cientistas da área da física, matemática, química, biologia, economia, astrofísica, e várias outras, trazendo explicações para diversos fenômenos que não eram bem entendidos até então.
+
+Discutiremos agora algumas propriedades dos sistemas caóticos que os diferem de sistemas lineares e não-lineares convencionais.
+
+\subsubsection{Dimensões fractais no espaço de fase de uma dinâmica caótica}
+
+Como foi dito anteriormente, as trajetórias no espaço de fase de um pêndulo simples não se interseccionam. Isso é devido ao fato de que, como o sistema é determinístico, se ele estiver em um estado $(\theta(t), \dot{\theta}(t))$, só existe um próximo estado possível $(\theta(t + dt), \dot{\theta}(t + dt))$, considerando que é um sistema isolado, sem forças externas. Assim, caso houvesse a intersecção de trajetórias, o sistema teria dois ou mais próximos estados possíveis, o que não é coerente com um sistema determinístico \cite{fiedler1994caos}.
+
+Apesar de apresentar um comportamento errático e, de certa forma, imprevisível, sistemas caóticos são determinísticos. Ou seja, também não há intersecções em suas trajetórias no espaço de fase. Mas, como esses sistemas são capazes de produzir um comportamento tão variado, sem apresentar nenhum tipo de ordem aparente, sem haver intersecções nas trajetórias? Para explicar isso, precisaremos generalizar a noção de dimensão para englobar as dimensões fractais \cite{mandelbrot1967long}. 
+
+O estudo de estruturas topológicas com dimensão fractal tornou-se relevante na matemática nos anos 70 \cite{gleick1998chaos}. Utilizando esse conceito, temos que, além das dimensões inteiras que aprendemos a lidar durante nossa formação (quadrados, cubos, hipercubos etc.), as dimensões fractais representam valores fracionários para essa medida.
+
+Como a base matemática de álgebra linear não engloba essas figuras (pelo menos não no conteúdo que geralmente aprendemos durante a graduação), é necessário o uso de outras ferramentas para estimar a dimensão fracionária. Uma delas é a dimensão de Hausdorff, ou dimensão de Hausdorff-Besicovitch \cite{attux2001dinamica, fiedler1994caos}.
+
+Seja um conjunto de pontos $A$ num espaço de dimensão $N$ e, sejam estes pontos recobertos por hiper-cubos de aresta $\varepsilon$. A dimensão de Hausdorff é dada por:
+\begin{equation}
+D_0 = \lim_{\varepsilon \rightarrow 0} \frac{\log K (\varepsilon)}{\log (1/\varepsilon)}
+\end{equation}
+
+Essa definição é válida tanto para figuras de dimensão inteira, como quadrados e cubos, quanto para objetos de dimensão fractal.
+
+Aplicando essa definição numa trajetória no espaço de fase de uma dinâmica caótica, vê-se que, a dimensão obtida sempre será fracionária \cite{fiedler1994caos}, logo, pode-se dizer que a trajetória sofrerá sucessivas contrações em certas direções, e expansões em pelo menos uma, de forma a nunca se cruzar, por mais errático que seja o movimento \cite{fiedler1994caos}.
+
+Uma das propriedades importantes de objetos topológicos de dimensão fractal é que eles apresentam uma auto-similaridade \cite{gleick1998chaos}. Nesse caso, partes da trajetória no espaço de fase têm uma estrutura análoga à da figura como um todo \cite{attux2001dinamica}. Ou seja, ao ampliar-se um objeto fractal, suas características serão similares ao da figura como um todo, tendo uma auto-similaridade.
+
+A Figura \ref{fig:henon} evidencia essa propriedade para o Mapa de Hénon \cite{henon1976two}.
+\begin{figure}[!ht]
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[scale=0.4]{mapa-de-henon.png}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[scale=0.4]{mapa-de-henon-zoom.png}
+	\end{subfigure}
+	\\
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[scale=0.4]{mapa-de-henon-zoom-2.png}
+	\end{subfigure}
+	\caption{Auto-similaridade presente no Mapa de Hénon}
+	\label{fig:henon}
+\end{figure}
+
+Devido à dimensão fractal e a outros fatores, denominamos os atratores de sistemas caóticos de atratores estranhos \cite{ruelle1971nature}, sendo a própria estrutura presente no Mapa de Hénon um atrator estranho. Veremos mais sobre eles na próxima seção.
+
+\subsubsection{Atratores Estranhos}
+
+O termo atrator estranho foi inicialmente cunhado pelos matemáticos David Ruelle e Floris Takens no artigo \cite{ruelle1971nature}, para descrever o fluxo em um fluído turbulento. Esse nome foi dado devido às estranhas propriedades e características dessas estruturas topológicas que a diferenciavam dos atratores convencionais que foram citados na Seção 2.2 \cite{gleick1998chaos}.
+
+De acordo com \cite{attux2001dinamica}, sendo $A$ um conjunto limitado num espaço de $N$ dimensões, dizemos que $A$ é um atrator estranho se for um atrator (utilizando as definições da Seção 2.2) e se, estando a condição inicial $x_0$ num subconjunto de pontos próximos, as evoluções temporais desses pontos apresentarem dependência sensitiva em relação às condições iniciais (DSCI) \cite{fiedler1994caos}.
+
+O ponto que torna esses atratores tão distintos dos usuais é que, no caso linear, espera-se que quando as condições iniciais são próximas, a evolução temporal do sistema no espaço de fase será bem semelhante. A Figura \ref{fig:atrator-rlc-comp} evidencia esse fato para o caso estudado na Seção 2.2, do circuito RLC, onde a diferença entre os estados $(i(t), v(t))$ para as condições iniciais testadas é reduzida com o avanço da simulação.
+\begin{figure}[!ht]
+\centering
+\includegraphics[scale = 0.7]{rlc-phase-space-alt.png}
+\caption{Comparação da evolução temporal no espaço de fase de duas condições iniciais próximas no atrator do circuito RLC}
+\label{fig:atrator-rlc-comp}
+\end{figure}
+
+Vale-se mencionar que, para os atratores usuais, a diferença entre as trajetórias diminuirá progressivamente (no caso do ponto-fixo), se manterá constante (no caso do ciclo-limite), ou aumentará exponencialmente para o infinito, apresentando uma divergência total.
+
+A característica que torna possível que um atrator estranho apresente comportamentos distintos para condições iniciais próximas, sem divergirem para o infinito, é a dimensão fractal nas trajetórias do espaço de estado apresentada na Seção 2.5.1. Assim, as sucessivas contrações e expansões do espaço de fase, o que forma uma estrutura fractal, fará com que, por menor que seja a diferença entre as condições iniciais, como há uma infinidade de estados possíveis para a evolução do mesmos, após algumas iterações do sistema, observaremos que as trajetórias seguiram caminhos distintos entre os estados 'amaranhados' na dimensão fractal.
+
+Além disso, perceba também que as dimensões fractais permitem que haja uma divergência que aumenta exponencialmente, sem divergir para o infinito (o que não ocorre em certos atratores de sistemas que também apresentam divergência). Esse fenômeno é devido ao fato de que as sucessivas expansões e contrações (também chamadas de processo de dobra \cite{fiedler1994caos, attux2001dinamica}) estão contidas em um espaço limitado, devido às dimensões fracionárias (a Seção 2.5.3 apresenta essas características de um ponto de vista da teoria da informação).
+
+Interessantemente, a não interseccionalidade de trajetórias implica que sistemas caóticos em tempo contínuo sejam compostos por $3$ ou mais dimensões, como é mostrado em \cite{guckenheimer2013nonlinear}. Esse não é o caso para sistemas caóticos discretos, como é o caso do Mapa de Hénon, visto na seção anterior.
+
+A Figura mostra a evolução temporal de três condições iniciais próximas, para o clássico Sistema de Lorenz \cite{lorenz1963deterministic} no espaço de fase $xyz$, definido pelas equações diferenciais abaixo:
+\begin{subequations}
+\begin{equation}
+\frac{dx}{dt} = -\sigma \cdot (x - y)
+\end{equation}
+\begin{equation}
+\frac{dy}{dt} = x \cdot (\rho - z) - y
+\end{equation}
+\begin{equation}
+\frac{dz}{dt} = x \cdot y - \beta \cdot z
+\end{equation}
+\end{subequations}
+\begin{figure}[!ht]
+\centering
+\includegraphics[scale = 0.7]{diagrama-de-fases-alt.png}
+\caption{Comparação da evolução temporal no espaço de fase de três condições iniciais próximas para o Sistema de Lorenz}
+\label{fig:atrator-lorenz}
+\end{figure}
+
+A dependência sensitiva em relação às condições iniciais é de tamanha importância para o estudo de sistemas caóticos, que Edward Lorenz, o responsável pelo atrator de Lorenz visto acima, enunciou a seguinte frase na palestra em que pela primeira vez foi apresentado o termo 'efeito borboleta' \cite{gleick1998chaos}:
+\begin{displayquote}
+Uma borboleta batendo as asas no Brasil pode causar um tornado no Texas?
+\end{displayquote}
+
+Por fim, como foi mencionado na Seção 2.3, os atratores estranhos possuem uma propriedade interessante com relação aos seus expoentes de Lyapunov. Como foi dito anteriormente na apresentação dos atratores estranhos, as trajetórias no espaço de fase de um sistema caótico possuem uma divergência que é contida em uma região do espaço, sem irem para o infinito (processo de dobra).
+
+Logo, deve haver pelo menos um expoente de Lyapunov positivo. Porém, sistemas caóticos também são dissipativos, ou seja, é válida a relação:
+\begin{equation}
+\sum_{i=1}^{m} \lambda_i < 0\mathtt{,}
+\end{equation}
+e, através dessa relação, pode-se provar o fato de que sistemas caóticos em tempo contínuo necessitam de pelo menos $3$ dimensões no espaço de fase. 
+
+Para entender porque essa condição é válida, imagina que seja possível se obter um atrator estranho em duas dimensões ($m=2$). Logo, para haver a DSCI, um dos expoentes de Lyapunov é positivo. Porém, uma condição que é válida para toda trajetória no espaço de fase é que, ao longo da direção paralela ao fluxo, o expoente associado é nulo. Então, teríamos um expoente de Lyapunov positivo e outro nulo, o que faria com que $\sum_{i=1}^{2} \lambda_i > 0$, indicando que o elemento de volume divergiria para o infinito, o que não é o caso dos atratores estranhos \cite{fiedler1994caos}. 
+
+Vale mencionar que, apesar dos sistemas caóticos discretos não seguirem essa condição, pode-se mostrar que os mapas (sejam estes uni ou bidimensionais) de seus espaços de estado são amostragens de uma trajetória em três ou mais dimensões, estas sim cumprindo a condição apresentada \cite{fiedler1994caos}.
+
+\subsubsection{Produção de informação em uma dinâmica caótica}
+
+Assim como foi apresentado na seção 2.4, sistemas dinâmicos podem ser estudados analisando a produção de informação por parte do sistema com a entropia de Kolmogorov-Sinai.
+
+Para tal, considere as relações em (\ref{eq:lyapunov-ksinai}), que interligam os expoentes de Lyapunov com a produção de informação de um sistema. Consequentemente, quando existem um (ou mais) expoente de Lyapunov positivo num sistema dinâmico (DSCI), há produção de informação por parte do sistema. Assim, um observador que em $t=0$ tinha uma certa informação sobre o sistema, à medida que o tempo passa sua informação diminui \cite{fiedler1994caos}. 
+
+Porém, como a relação em (\ref{eq:lyapunov-ksinai-entropy}) também é cumprida, a produção segue essa desigualdade. Ou seja, apesar do sistema produzir informação com o passar do tempo, esta não diverge exponencialmente para o infinito (o que caracterizaria um processo estocástico).
+
+Para facilitar a visualização da diferença entre os expoentes de Lyapunov, dimensionalidade e entropia de Kolmogorov-Sinai para os casos de sistemas dinâmicos regulares, sistemas caóticos e sistemas de processos estocásticos, a tabela abaixo sintetiza as informações apresentadas nas últimas seções \cite{fiedler1994caos}:
+\begin{table}[!ht]
+\begin{center}
+\begin{tabular}{c  c  c  c }
+  \textbf{Processo}  & \pbox{3cm}{\centering \textbf{Expoentes de\newline Lyapunov}} & \pbox{4cm}{\centering \textbf{\;\, Entropia de\newline Kolmogorov-Sinai}} & \pbox{5cm}{\centering \textbf{\;\, Dimensão da\newline dinâmica assintótica}\newline $(t\rightarrow \infty)$} \\
+ \hline
+ \textbf{Regular} & $\nexists\;  \lambda_i > 0$ & $K = 0$ & $D < m, \; D\in \mathbb{N}$ \\  
+  \addlinespace
+ \textbf{Caótico} & $\exists\; \lambda_i > 0$ & $0 < K \leq \sum_{\lambda_i \geq 0} \lambda_i$ & \pbox{5cm}{\centering $D < m, \; D\in \mathbb{R}$ \newline Sistemas contínuos: $m \geq 3$}\\   
+  \addlinespace
+ \textbf{Estocástico} & --- & $K \rightarrow \infty$ & $D=m$ 
+\end{tabular}
+\caption{Comparação dos Expoentes de Lyapunov, da Entropia de Kolmogorov-Sinai e da Dimensionalidade para sistemas dinâmicos regulares, caóticos e estocásticos}
+\end{center}
+\end{table}
+
+\subsubsection{Série temporal e espectro de potências de um sistema caótico}
+
+Uma outra abordagem possível para o estudo de sistemas dinâmicos caóticos, é através de suas séries temporais.
+
+Para isso, uma ferramenta que permite obter conclusões interessantes, que evidenciam a rápida perda de informação por parte do observador, mencionada na seção anterior, é a análise da autocorrelação e da autocorrelação parcial de uma série temporal.
+
+\subsubsection{Características gerais de um sistema com dinâmica caótica}
+Depois de uma exposição de alguns conceitos fundamentais de sistemas dinâmicos, além de alguns pontos sobre dinâmica caótica, podemos sintetizá-las nas propriedades fundamentais do caos determinístico em sistemas dinâmicos \cite{attux2001dinamica}:
+\begin{enumerate}
+\item Forte sensibilidade com respeito às condições iniciais (DSCI);
+\item A evolução temporal das variáveis de estado é rápida e tem uma aparência errática;
+\item Um sinal originado por um sistema caótico tem espectro de potências contínuo e de faixa larga;
+\item Há uma produção de informação por parte do sistema;
+\item Dão origem a atratores estranhos.
+\end{enumerate}
+
+Logo, um sistema dinâmico que possui essas propriedades é um sistema caótico.
+
+Nossa análise será sobre a predição das séries temporais originadas por esses sistemas. Por tudo que foi dito até aqui, é esperado que não seja uma tarefa fácil estimar seus valores.
+
+Por causa disso, o estudo se direcionará à aplicabilidade das redes neurais à predição, ou seja, utilizando ferramentas que também são não-lineares, assim como os sistemas em estudo. Logo, na seção a seguir serão discutidos modelos preditores com redes neurais, além de uma breve exposição sobre modelos clássicos lineares.
 
 \section{Modelos de Predição}
 
@@ -553,327 +908,7 @@ O conjunto de equações abaixo mostra as operações presentes na estrutura int
 
 Resumidamente, as LSTMs manipulam o vetor de longo prazo $\mathbf{c}(t)$, aprendendo durante o treinamento o que deve ser guardado nele, o que deve ser descartado e o que deve ser aproveitado para gerar a saída $\mathbf{y}(t)$ e o vetor de curto prazo $\mathbf{h}(t)$. Dessa forma, podemos dizer que a atualização do vetor de estados $\mathbf{c}(t)$ é feita com o descarte de informações e a incorporação de novidades vindas da entrada.
 
-Depois de uma exposição sobre os modelos preditores que utilizaremos nessa pesquisa, falaremos a seguir sobre dinâmica caótica, explicando qual a grande dificuldade de prever-se valores de uma série temporal gerada por um sistema desse tipo.
-
-\section{Sistemas Dinâmicos}
-O estudo de sistemas dinâmicos se tornou fundamental para a ciência quando a humanidade começou a desenvolver modelos matemáticos para explicar o mundo em sua volta, utilizando os modelos criados para realizar predições e, de certa forma, saber o que nos espera no futuro.
-
-Os sistemas dinâmicos descrevem a evolução de, como o nome já diz, sistemas, que podem representar fenômenos físicos, biológicos, químicos, ou equações matemáticas, através do tempo. Nesse caso, o tempo pode ser tanto contínuo, quanto discreto \cite{kluever2020dynamic}.
-
-Os sistemas dinâmicos também podem ser lineares ou não-lineares. Um sistema linear, sendo este a tempo contínuo ou discreto, possui a propriedade da superposição, ou seja, se uma entrada consiste de uma soma ponderada de diversos sinais, então a saída é a superposição das respostas do sistema a cada um desses sinais \cite{oppenheim2014signals}. 
-
-É possível representar essa propriedade através das seguintes relações matemáticas, sendo $y(t)$ a resposta de um sistema a tempo contínuo a uma entrada $x(t)$ e $y_i(t)$ a saída correspondente a $x_i(t)$:
-\begin{subequations}
-\begin{equation}\label{eq:linear-eq-1}
-\text{A resposta a } x_1(t) + x_2(t) \text{ é } y_1(t) + y_2(t)
-\end{equation}
-\begin{equation}\label{eq:linear-eq-2}
-\text{A resposta a } a\cdot x_1(t) \text{ é } a\cdot y_1(t)\text{, em que } a \text{ é qualquer constante complexa.}
-\end{equation}
-\end{subequations}
-
-A primeira equação (\ref{eq:linear-eq-1}) representa a propriedade da aditividade, enquanto a segunda (\ref{eq:linear-eq-2}) representa a propriedade da homogeneidade. Essa definição também é válida para sistemas a tempo discreto, e podem ser combinadas:
-\begin{subequations}
-\begin{equation}
-a \cdot x_1(t) + b \cdot x_2(t) \rightarrow a \cdot y_1(t) + b \cdot y_2(t)
-\end{equation}
-\begin{equation}
-a \cdot x_1[n] + b \cdot x_2[n] \rightarrow a \cdot y_1[n] + b \cdot y_2[n]
-\end{equation}
-\end{subequations}
-, sendo $a$ e $b$ constantes complexas quaisquer \cite{oppenheim2014signals}.
-
-Devido a todo arcabouço teórico de álgebra linear elaborado por matemáticos nos últimos séculos, trabalhar com modelos lineares de sistemas dinâmicos se tornou algo trivial. Logo, grande parte dos cursos de graduação lidam, em grande parte, com sistemas lineares por definição, ou aplicam métodos de linearização em sistemas não-lineares, chegando em soluções analíticas lineares aproximadas, com um bom grau de acurácia sob certas condições de contorno \cite{fiedler1994caos}. 
-
-Com essas aproximações, prever o valor futuro de uma série temporal originada por um sistema linear (ou um sistema não-linear linearizado) é algo bem simples, afinal, pode-se utilizar a solução analítica.
-
-Porém, a esmagadora maioria dos fenômenos que observamos na natureza são altamente não-lineares. Dessa forma, ou não conseguimos aplicar os métodos de linearização que tanto aprendemos ou, ao serem aplicados, o sistema se reduz a uma representação bem errônea da sua dinâmica original \cite{gleick1998chaos}.
-
-Antes de falarmos sobre a teoria da dinâmica caótica, que trouxe diversas explicações para sistemas não-lineares e aumentou o entendimento da ciência sobre esses fenômenos, veremos um pouco sobre alguns conceitos fundamentais no estudo de sistemas dinâmicos.
-
-\subsection{Espaço de Fase}
-Algo comum no estudo de sistemas dinâmicos é a representação em espaço de fase (também chamado de espaço de estado). O espaço de fase geralmente é composto pelas variáveis independentes de um sistema dinâmico. Assim, cada ponto no espaço de fase representa um estado possível para o sistema.
-
-Por exemplo, a equação de movimento de um pêndulo simples, sendo $\theta$ o ângulo entre o pêndulo e a vertical, $g$ a aceleração gravitacional, e $l$ o comprimento do pêndulo, é representado pela seguinte equação diferencial:
-\begin{equation}\label{eq:pendulum}
-m l^2 \cdot \ddot{\theta}(t) + mgl\cdot  \sen(\theta(t)) = 0
-\end{equation}
-
-Apesar de não ser possível obter uma solução analítica sem antes realizar algum tipo de linearização, é possível estudar a evolução temporal desse sistema através do seu espaço de fases \cite{fiedler1994caos}.
-
-Para tal, escreveremos (\ref{eq:pendulum}) da seguinte forma:
-\begin{subequations}
-\begin{equation}\label{eq:pendulum-2}
-\dot{\theta} = \varphi = f(\theta, \varphi)
-\end{equation}
-\begin{equation}\label{eq:pendulum-3}
-\dot{\varphi} = -\frac{g}{l} \cdot \sen(\theta) = g(\theta, \varphi)
-\end{equation}
-\end{subequations}
-
-Derivando a equação (\ref{eq:pendulum-3}) em $\theta$ e isolando os termos $\theta$ e $\varphi$ em lados opostos, obtém-se que:
-\begin{equation}\label{eq:pendulum-4}
-\varphi \, d\varphi = -\frac{g}{l} \cdot \sen(\theta) \, d\theta
-\end{equation}
-
-Agora, integrando (\ref{eq:pendulum-4}) em ambos os lados, chega-se que:
-\begin{equation}
-\varphi^2 - \frac{2g}{l} \cdot \cos(\theta) = C
-\end{equation}
-sendo $C$ uma constante arbitrária. A Figura \ref{fig:pendulum-phase-space} mostra a trajetória no espaço de fases para diversos valores de $C$ (lembrando que $\varphi = \dot{\theta}$).
-\begin{figure}[!ht]
-\centering
-\includegraphics[scale = 0.7]{pendulum-phase-space.pdf}
-\caption{Trajetória no espaço de fase do pêndulo simples para vários valores de $C$}
-\label{fig:pendulum-phase-space}
-\end{figure}
-
-Perceba que um ponto $(\theta, \dot{\theta})$ no espaço de fases representa um estado possível para o sistema. Nesse caso, como não há nenhum elemento estocástico na evolução do pêndulo simples (considerando apenas a mecânica clássica), não há intersecções nas trajetórias no espaço de fases. 
-
-Por fim, vale-se dizer que, o espaço de fases podem ter quantas dimensões forem necessárias para representar a dinâmica de um sistema. 
-
-\subsection{Atratores}
-Uma estrutura topológica utilizada para estudar a evolução de um sistema dinâmico, que é capaz de capturar a essência de sua evolução temporal, é o atrator.
-
-De acordo com a definição dada em \cite{fiedler1994caos}, um atrator é um conjunto invariante para o qual órbitas próximas no espaço de fase convergem depois de um tempo suficientemente grande.
-
-Em termos matemáticos \cite{fiedler1994caos}: Uma região compacta $A$ é um atrator de um fluxo $\varphi(t, x)$ se as quatros hipóteses a seguir valem:
-\begin{enumerate}[label=\alph*)]
-	\item $A$ é invariante segundo $\varphi$;
-	\item $A$ tem uma vizinhança contraente;
-	\item o fluxo é recorrente, isto é, trajetórias começando em qualquer subconjunto aberto de $A$ voltam a esse subconjunto para valores de $t$ suficientemente longos;
-	\item o fluxo não pode ser decomposto, isto é, $A$ não poode ser dividido em duas partes invariantes não triviais.
-\end{enumerate}
-
-O formato do atrator varia bastante de acordo com o sistema em análise. Por exemplo, um circuito RLC autônomo tem um atrator chamado de ponto-fixo. Para evidenciarmos isso, considere que as seguintes equações diferenciais descrevem a dinâmica de um circuito RLC, sendo $i$ a corrente no indutor e $v$ a tensão no capacitor \cite{attux2001dinamica}:
-\begin{subequations}
-\begin{equation}
-\frac{di}{dt} = - \frac{1}{L} \cdot (R\cdot i(t) + v(t))
-\end{equation}
-\begin{equation}
-\frac{dv}{dt} = \frac{i(t)}{C}
-\end{equation}
-\end{subequations}
-
-Assim, dada uma energia inicial presente no sistema, seja esta em forma de campo elétrico no capacitor, ou campo magnético no indutor, o resistor dissipará a energia armazenada em forma de potência ativa (calor). Considerando as variáveis do espaço de estado como sendo a tensão no capacitor, e a corrente do indutor, é fácil perceber que a trajetória vai convergir para o ponto $(0, 0)$, pois a energia será toda dissipada e não haverá mais dinâmica nesse sistema.
-
-A Figura \ref{fig:rlc-phase-space} mostra a evolução de um circuito RLC em série para $v(0) = 1$, $i(0) = 1$ com $R = 1$, $L = 1000$ e $C = 500$:
-\begin{figure}[!ht]
-\centering
-\includegraphics[scale = 0.7]{rlc-phase-space.png}
-\caption{Representação do atrator ponto-fixo presente no circuito RLC série}
-\label{fig:rlc-phase-space}
-\end{figure}
-
-Os atratores podem ser pontos-fixos, ciclo-limites (que é o caso do oscilador harmônico e do pêndulo simples para certos valores iniciais de $\theta$), pontos de nó, pontos de sela, entre alguns outros. Os atratores também podem indicar trajetórias instáveis, estáveis e assintoticamente estáveis. Também é válido mencionar que, chamamos a região do espaço de estados para a qual todas as trajetórias presentes seguem um atrator de bacia do atrator.
-
-O tipo de atrator e o tipo de estabilidade é obtido analisando os autovalores $\lambda_i$ da representação matricial do sistema dinâmico.
-
-Por fim, quando há uma mudança no sistema dinâmico que faz com que ele seja atraído para a bacia de outro atrator, dizemos que o sistema sofreu uma bifurcação. Geralmente são os parâmetros do sistema que definem os pontos de bifurcação \cite{fiedler1994caos}.
-
-\subsection{Expoentes de Lyapunov}
-Considere um sistema contínuo com $m$ equações diferenciais ordinárias, e imagine um pequeno hiper-volume esférico de teste de estados iniciais vizinhos $y_0$ (raio $\varepsilon_0 (x_0)$) em torno do ponto inicial $x_0$ de uma linha de fluxo, isto é \cite{fiedler1994caos}:
-\begin{equation}
-	|y_0 - x_0| \leq \varepsilon_0 (x_0)
-\end{equation}
-
-Com o passar do tempo, o fluxo das trajetórias deforma a hiper-esfera num objeto hiper-elipsoidal com eixos principais $\varepsilon_k (t)$, $k = 1, 2, ..., m$ (Figura \ref{fig:lyapunov}). Os expoentes de Lyapunov medem o crescimento exponencial dos eixos principais $\varepsilon_k (t)$ e são definidos por:
-\begin{equation}\label{eq:lyapunov}
-\lambda_i = \lim_{t \rightarrow \infty} \lim_{\varepsilon_0 (x_0) \rightarrow 0} \frac{1}{t} \ln \frac{\varepsilon_i (t)}{\varepsilon_0 (x_0)}, \; \; \; i = 1, ..., m.
-\end{equation}
-\begin{figure}[!ht]
-\centering
-\includegraphics[scale = 0.7]{lyapunov.pdf}
-\caption{Evolução de um elemento de volume esférico de raio $\varepsilon_0 (x_0)$ em torno de um ponto inicial $x_0$}
-\label{fig:lyapunov}
-\end{figure}
-
-A definição em (\ref{eq:lyapunov}) permite a seguinte aproximação:
-\begin{equation}\label{eq:lyapunov-approx}
-	\varepsilon_i (t) \approx \varepsilon_0 (x_0) \cdot e^{\lambda_i t}
-\end{equation}
-
-Da equação (\ref{eq:lyapunov-approx}), conclui-se que \cite{fiedler1994caos}:
-
-a) a existência de um ou mais expoentes de Lyapunov positivos define uma instabilidade orbital nas direções associadas;
-
-b) uma solução caótica tem pelo menos um expoente de Lyapunov positivo (falaremos mais sobre esse fato adiante);
-
-c) uma solução periódica ou quasi-periódica possui $\lambda_i < 0$ nas direções perpendiculares ao movimento no espaço de fase, e $\lambda_i = 0$ ao longo da trajetória.
-
-Agora, considerando que um elemento de hiper-volume $\delta V(t)$ em um instante $t$ é dado por
-\begin{equation}\label{eq:lyapunov-volume-1}
-\delta V(t) = \prod_{i=1}^{m} \varepsilon_i (t)\mathtt{,}
-\end{equation}
-tem-se que, substituindo (\ref{eq:lyapunov-volume-1}) em (\ref{eq:lyapunov-approx}), obtém-se:
-\begin{equation}
-\delta V(t) = \delta V(0) \cdot \exp \big(\sum_{i=1}^{m} \lambda_i t\big)
-\end{equation}
-
-A partir dessa definição, é possível concluir que o hiper-volume no espaço de fase não diverge : a) quando $\sum_{i=1}^{m} \lambda_i = 0$, ou seja, quando $\delta V(t) = \delta V(0)$, o que determina um sistema conservativo; b) quando $\sum_{i=1}^{m} \lambda_i < 0$, ou seja, quando $\delta V(t) < \delta V(0)$, o que determina um sistema dissipativo \cite{fiedler1994caos}.
-
-Por fim, é possível identificar o atrator do sistema dinâmico em análise através do sinal dos expoentes de Lyapunov. Por exemplo, no caso tridimensional ($m=3$), caso todos os expoentes $\lambda_i$ forem negativos, o atrator será um ponto fixo. Já para dois expoentes negativos e um nulo, têm-se um atrator do tipo ciclo-limite.
-
-Os atratores de um sistema caótico possuem uma propriedade especial com relação aos seus expoentes de Lyapunov. Esse fato será discutido na Seção 3.5.2.
-
-\subsection{Entropia de Kolmogorov-Sinai}
-Também é possível analisar a dinâmica de um sistema através de uma abordagem via teoria da informação.
-
-Para tal, considere um atrator no espaço de estado, recoberto por cubos de lado $\varepsilon$. Agora, seja uma sequência de $b$ cubos $i_1, i_2, ..., i_b$, e seja $p(i_1, i_2, ..., i_b)$ a probabilidade que o sistema se encontre sucessivamente nos cubos $i_1, i_2, ..., i_b$ em intervalos de tempo regulares $\tau$ \cite{fiedler1994caos, attux2001dinamica}. Segundo Shannon  \cite{shannon1948mathematical}, a informação associada à sequência $b$ é proporcional a:
-\begin{equation}
-I_{b}^{(1)} (\varepsilon) = \sum_{i_1, i_2, ..., i_b} p(i_1, i_2, ..., i_b) \cdot \ln p(i_1, i_2, ..., i_b)
-\end{equation}
-
-Perceba que a grandeza:
-\begin{equation}\label{eq:shannon-cube-2}
-I_{b+1}^{(1)} (\varepsilon) - I_{b}^{(1)} (\varepsilon)
-\end{equation}
-determina a informação necessária para se localizar o estado do sistema (determinar o cubo $i_{b+1}$ ) sabendo que ele percorreu a sequência de cubos $i_1, i_2, ..., i_b$. A grandeza expressa por (\ref{eq:shannon-cube-2}) quantifica a perda de informação do observador (e o ganho de informação do sistema, consequentemente) entre os instantes de tempo $b \tau$ e $(b+1)\tau$ \cite{attux2001dinamica}.
-
-Com isso, define-se a entropia de Kolmogorov-Sinai como a taxa média de criação de informação no sistema (ou perda de informação do observador) \cite{fiedler1994caos, attux2001dinamica}:
-\begin{equation}\label{eq:kolmogorov-sinai}
-K = \lim_{\tau \rightarrow 0} \lim_{\varepsilon \rightarrow 0} \lim_{b \rightarrow \infty} \frac{1}{b\tau} \sum_{i_1, i_2, ..., i_b} p(i_1, i_2, ..., i_b) \cdot \ln p(i_1, i_2, ..., i_b)
-\end{equation}
-
-Apesar de não ser comum, pelo menos na maior parte dos cursos de graduação, a análise da entropia de Kolmogorov-Sinai de um sistema dinâmico revela várias propriedades do comportamento de um sistema ao longo do tempo. Por exemplo, analisando um sistema cuja trajetória segue a bacia de atração de um ponto-fixo, necessitamos de pouca informação para predizer com precisão qual será o estado do sistema em um instante de tempo posterior. Ou seja, não há produção significativa de informação por parte do sistema. Isso também é válido para um sistema cujo atrator é um ciclo-limite.
-
-A entropia de Kolmogorov-Sinai possui uma conexão com os expoentes de Lyapunov. No caso, \cite{attux2001dinamica, fiedler1994caos} mostram que as seguintes equações são válidas, sendo $\lambda_i$ os expoentes de Lyapunov:
-\begin{subequations}\label{eq:lyapunov-ksinai}
-\begin{equation}
-\frac{dI_{i}^{(1)}}{dt} \propto \lambda_i
-\end{equation}
-\begin{equation}\label{eq:lyapunov-ksinai-entropy}
-K \leq \sum_{\lambda_i > 0} \lambda_i
-\end{equation}
-\end{subequations}
-
-De acordo com a relações em (\ref{eq:lyapunov-ksinai}), concluise-que, num sistema determinístico regular (linear e não-linear sem ser caótico ou estocástico), pontos próximos no espaço de fase evoluem sem divergências significativas. Logo, o sistema não produz informação. Assim, ou a entropia de Kolmogorov-Sinai será nula.
-
-Interessantemente, é visto que, para sistemas estocásticos, a evolução da trajetória no espaço de estado não seguirá nenhum tipo de continuidade, havendo uma perda abrupta de informação por parte do observador. Logo, $K \rightarrow \infty$ \cite{attux2001dinamica}.
-
-Agora, sistemas com dinâmica caótica, apesar de terem uma produção ininterrupta de informação (Seção 3.5.4), suas entropias obedecem a relação em (\ref{eq:lyapunov-ksinai-entropy}). 
-
-Portanto, para vermos mais detalhes do porquê isso ocorre, na seção a seguir iniciaremos nossa discussão sobre sistemas caóticos.
-
-\subsection{Sistemas com Dinâmica Caótica}
-Uma classe de sistemas não-lineares importante para o estudo de diversos fenômenos, é a classe de sistemas caóticos. Apesar de ter tido uma certa dificuldade para encontrar um meio dentro da academia e sendo bastante renegado por vários cientistas da época por, entre outros fatores, inicialmente basear-se em simulações  computacionais de dinâmicas físicas, algo que não era comum nos meados do século XX \cite{gleick1998chaos}, a teoria da dinâmica caótica foi adotada por cientistas da área da física, matemática, química, biologia, economia, astrofísica, e várias outras, trazendo explicações para diversos fenômenos que não eram bem entendidos até então.
-
-Discutiremos agora algumas propriedades dos sistemas caóticos que os diferem de sistemas lineares e não-lineares convencionais.
-
-\subsubsection{Dimensões fractais no espaço de fase de uma dinâmica caótica}
-
-Como foi dito anteriormente, as trajetórias no espaço de fase de um pêndulo simples não se interseccionam. Isso é devido ao fato de que, como o sistema é determinístico, se ele estiver em um estado $(\theta(t), \dot{\theta}(t))$, só existe um próximo estado possível $(\theta(t + dt), \dot{\theta}(t + dt))$, considerando que é um sistema isolado, sem forças externas. Assim, caso houvesse a intersecção de trajetórias, o sistema teria dois ou mais próximos estados possíveis, o que não é coerente com um sistema determinístico \cite{fiedler1994caos}.
-
-Apesar de apresentar um comportamento errático e, de certa forma, imprevisível, sistemas caóticos são determinísticos. Ou seja, também não há intersecções em suas trajetórias no espaço de fase. Mas, como esses sistemas são capazes de produzir um comportamento tão variado, sem apresentar nenhum tipo de ordem aparente, sem haver intersecções nas trajetórias? Para explicar isso, precisaremos generalizar a noção de dimensão para englobar as dimensões fractais \cite{mandelbrot1967long}. 
-
-O estudo de estruturas topológicas com dimensão fractal tornou-se relevante na matemática nos anos 70 \cite{gleick1998chaos}. Utilizando esse conceito, temos que, além das dimensões inteiras que aprendemos a lidar durante nossa formação (quadrados, cubos, hipercubos etc.), as dimensões fractais representam valores fracionários para essa medida.
-
-Como a base matemática de álgebra linear não engloba essas figuras (pelo menos não no conteúdo que geralmente aprendemos durante a graduação), é necessário o uso de outras ferramentas para estimar a dimensão fracionária. Uma delas é a dimensão de Hausdorff, ou dimensão de Hausdorff-Besicovitch \cite{attux2001dinamica, fiedler1994caos}.
-
-Seja um conjunto de pontos $A$ num espaço de dimensão $N$ e, sejam estes pontos recobertos por hiper-cubos de aresta $\varepsilon$. A dimensão de Hausdorff é dada por:
-\begin{equation}
-D_0 = \lim_{\varepsilon \rightarrow 0} \frac{\log K (\varepsilon)}{\log (1/\varepsilon)}
-\end{equation}
-
-Essa definição é válida tanto para figuras de dimensão inteira, como quadrados e cubos, quanto para objetos de dimensão fractal.
-
-Aplicando essa definição numa trajetória no espaço de fase de uma dinâmica caótica, vê-se que, a dimensão obtida sempre será fracionária \cite{fiedler1994caos}, logo, pode-se dizer que a trajetória sofrerá sucessivas contrações em certas direções, e expansões em pelo menos uma, de forma a nunca se cruzar, por mais errático que seja o movimento \cite{fiedler1994caos}.
-
-Uma das propriedades importantes de objetos topológicos de dimensão fractal é que eles apresentam uma auto-similaridade \cite{gleick1998chaos}. Nesse caso, partes da trajetória no espaço de fase têm uma estrutura análoga à da figura como um todo \cite{attux2001dinamica}. Ou seja, ao ampliar-se um objeto fractal, suas características serão similares ao da figura como um todo, tendo uma auto-similaridade.
-
-A Figura \ref{fig:henon} evidencia essa propriedade para o Mapa de Hénon \cite{henon1976two}.
-\begin{figure}[!ht]
-	\centering
-	\begin{subfigure}[b]{0.45\textwidth}
-		\includegraphics[scale=0.4]{mapa-de-henon.png}
-	\end{subfigure}
-	\begin{subfigure}[b]{0.45\textwidth}
-		\includegraphics[scale=0.4]{mapa-de-henon-zoom.png}
-	\end{subfigure}
-	\\
-	\begin{subfigure}[b]{0.45\textwidth}
-		\includegraphics[scale=0.4]{mapa-de-henon-zoom-2.png}
-	\end{subfigure}
-	\caption{Auto-similaridade presente no Mapa de Hénon}
-	\label{fig:henon}
-\end{figure}
-
-Devido à dimensão fractal e a outros fatores, denominamos os atratores de sistemas caóticos de atratores estranhos \cite{ruelle1971nature}, sendo a própria estrutura presente no Mapa de Hénon um atrator estranho. Veremos mais sobre eles na próxima seção.
-
-\subsubsection{Atratores Estranhos}
-
-O termo atrator estranho foi inicialmente cunhado pelos matemáticos David Ruelle e Floris Takens no artigo \cite{ruelle1971nature}, para descrever o fluxo em um fluído turbulento. Esse nome foi dado devido às estranhas propriedades e características dessas estruturas topológicas que a diferenciavam dos atratores convencionais que foram citados na Seção 3.2 \cite{gleick1998chaos}.
-
-De acordo com \cite{attux2001dinamica}, sendo $A$ um conjunto limitado num espaço de $N$ dimensões, dizemos que $A$ é um atrator estranho se for um atrator (utilizando as definições da Seção 3.2) e se, estando a condição inicial $x_0$ num subconjunto de pontos próximos, as evoluções temporais desses pontos apresentarem dependência sensitiva em relação às condições iniciais (DSCI) \cite{fiedler1994caos}.
-
-O ponto que torna esses atratores tão distintos dos usuais é que, no caso linear, espera-se que quando as condições iniciais são próximas, a evolução temporal do sistema no espaço de fase será bem semelhante. A Figura \ref{fig:atrator-rlc-comp} evidencia esse fato para o caso estudado na Seção 3.2, do circuito RLC, onde a diferença entre os estados $(i(t), v(t))$ para as condições iniciais testadas é reduzida com o avanço da simulação.
-\begin{figure}[!ht]
-\centering
-\includegraphics[scale = 0.7]{rlc-phase-space-alt.png}
-\caption{Comparação da evolução temporal no espaço de fase de duas condições iniciais próximas no atrator do circuito RLC}
-\label{fig:atrator-rlc-comp}
-\end{figure}
-
-Vale-se mencionar que, para os atratores usuais, a diferença entre as trajetórias diminuirá progressivamente (no caso do ponto-fixo), se manterá constante (no caso do ciclo-limite), ou aumentará exponencialmente para o infinito, apresentando uma divergência total.
-
-A característica que torna possível que um atrator estranho apresente comportamentos distintos para condições iniciais próximas, sem divergirem para o infinito, é a dimensão fractal nas trajetórias do espaço de estado apresentada na Seção 3.5.1. Assim, as sucessivas contrações e expansões do espaço de fase, o que forma uma estrutura fractal, fará com que, por menor que seja a diferença entre as condições iniciais, como há uma infinidade de estados possíveis para a evolução do mesmos, após algumas iterações do sistema, observaremos que as trajetórias seguiram caminhos distintos entre os estados 'amaranhados' na dimensão fractal.
-
-Além disso, perceba também que as dimensões fractais permitem que haja uma divergência que aumenta exponencialmente, sem divergir para o infinito (o que não ocorre em certos atratores de sistemas que também apresentam divergência). Esse fenômeno é devido ao fato de que as sucessivas expansões e contrações (também chamadas de processo de dobra \cite{fiedler1994caos, attux2001dinamica}) estão contidas em um espaço limitado, devido às dimensões fracionárias (a Seção 3.5.4 apresenta essas características de um ponto de vista da teoria da informação).
-
-Interessantemente, a não interseccionalidade de trajetórias implica que sistemas caóticos em tempo contínuo sejam compostos por $3$ ou mais dimensões, como é mostrado em \cite{guckenheimer2013nonlinear}. Esse não é o caso para sistemas caóticos discretos, como é o caso do Mapa de Hénon visto na seção anterior.
-
-
-A Figura mostra a evolução temporal de três condições iniciais próximas, para o clássico Sistema de Lorenz \cite{lorenz1963deterministic} no espaço de fase $xyz$, definido pelas equações diferenciais abaixo:
-\begin{subequations}
-\begin{equation}
-\frac{dx}{dt} = -\sigma \cdot (x(t) - y(t))
-\end{equation}
-\begin{equation}
-\frac{dy}{dt} = x(t) \cdot (\rho - z(t)) - y(t)
-\end{equation}
-\begin{equation}
-\frac{dz}{dt} = x(t) \cdot y(t) - \beta \cdot z(t)
-\end{equation}
-\end{subequations}
-\begin{figure}[!ht]
-\centering
-\includegraphics[scale = 0.7]{diagrama-de-fases-alt.png}
-\caption{Comparação da evolução temporal no espaço de fase de três condições iniciais próximas para o Sistema de Lorenz}
-\label{fig:atrator-lorenz}
-\end{figure}
-
-A dependência sensitiva em relação às condições iniciais é de tamanha importância para o estudo de sistemas caóticos, que Edward Lorenz, o responsável pelo atrator de Lorenz visto acima, enunciasse a seguinte frase na palestra em que pela primeira vez foi apresentado o termo 'efeito borboleta' \cite{gleick1998chaos}:
-\begin{displayquote}
-Uma borboleta batendo as asas no Brasil pode causar um tornado no Texas?
-\end{displayquote}
-
-\subsubsection{Série temporal e espectro de potências de um sistema caótico}
-
-Uma outra abordagem possível para o estudo de sistemas dinâmicos caóticos, é através de suas séries temporais.
-
-Para isso, uma ferramenta que permite obter conclusões interessantes, que evidenciam 
-
-\subsubsection{Produção de informação em uma dinâmica caótica}
-
-Vale-se mencionar que, é possível conectar a teoria dos expoentes de Lyapunov de um sistema caótico à dimensão fractal de seu atrator estranho \cite{attux2001dinamica}.
-
-\subsubsection{Características gerais de um sistema com dinâmica caótica}
-Depois de uma exposição de alguns conceitos fundamentais de sistemas dinâmicos, além de alguns pontos sobre dinâmica caótica, podemos sintetizá-las nas propriedades fundamentais do caos determinístico em sistemas dinâmicos \cite{attux2001dinamica}:
-\begin{enumerate}
-\item Forte sensibilidade com respeito às condições iniciais (DSCI);
-\item A evolução temporal das variáveis de estado é rápida e tem uma aparência errática;
-\item Um sinal originado por um sistema caótico tem espectro de potências contínuo e de faixa larga;
-\item Há uma produção de informação por parte do sistema;
-\item Dão origem a atratores estranhos.
-\end{enumerate}
-
-Logo, um sistema dinâmico que possui essas propriedades é um sistema caótico.
-
-Nossa análise será sobre a predição das séries temporais originadas por esses sistemas. Por tudo que foi dito até aqui, é esperado que não seja uma tarefa fácil estimar seus valores.
-
-Por causa disso, o estudo se direcionará à aplicabilidade das redes neurais à predição, ou seja, utilizando ferramentas que também são não-lineares, assim como os sistemas em estudo.
-
-A próxima e última seção ditam os próximos passos dessa pesquisa.
+Depois de uma exposição sobre os modelos preditores que utilizaremos nessa pesquisa, concluiremos com os próximos passos do estudo, já definindo quais são os sistemas caóticos que analisaremos com as redes neurais artificiais citadas.
 
 \section{Próximos Passos}
 
