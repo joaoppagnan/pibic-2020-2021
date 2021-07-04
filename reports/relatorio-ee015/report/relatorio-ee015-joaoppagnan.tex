@@ -322,7 +322,15 @@ Aplicando essa definição numa trajetória no espaço de fase de uma dinâmica 
 
 Uma das propriedades importantes de objetos topológicos de dimensão fractal é que eles apresentam uma auto-similaridade \cite{gleick1998chaos}. Nesse caso, partes da trajetória no espaço de fase têm uma estrutura análoga à da figura como um todo \cite{attux2001dinamica}. Ou seja, ao ampliar-se um objeto fractal, suas características serão similares ao da figura como um todo, tendo uma auto-similaridade.
 
-A Figura \ref{fig:henon} evidencia essa propriedade para o Mapa de Hénon \cite{henon1976two}.
+A Figura \ref{fig:henon} evidencia essa propriedade para o Mapa de Hénon \cite{henon1976two}, que é definido pelas seguintes equações a diferenças:
+\begin{subequations}
+\begin{equation}
+x[n+1] = y[n] + 1 - a\cdot (x[n])^2
+\end{equation}
+\begin{equation}
+y[n+1] = b \cdot x[n]
+\end{equation}
+\end{subequations}
 \begin{figure}[!ht]
 	\centering
 	\begin{subfigure}[b]{0.45\textwidth}
@@ -423,14 +431,49 @@ Para facilitar a visualização da diferença entre os expoentes de Lyapunov, di
 \end{center}
 \end{table}
 
-\subsubsection{Série temporal e espectro de potências de um sistema caótico}
-
+\subsubsection{A série temporal e o espectro de potências de um sistema caótico}
 Uma outra abordagem possível para o estudo de sistemas dinâmicos caóticos, é através de suas séries temporais.
 
 Para isso, uma ferramenta que permite obter conclusões interessantes, que evidenciam a rápida perda de informação por parte do observador, mencionada na seção anterior, é a análise da autocorrelação e da autocorrelação parcial de uma série temporal.
 
+Através de \cite{fiedler1994caos}, pode-se definir a função de autocorrelação $\phi_m$ como a média do produto dos valores de um sinal $x(t)$ nos instantes $t + m\cdot \Delta t$ e indica por quanto tempo o valor do sinal no instante $t$ depende de seus valores prévios, medindo o grau de semelhança existente no sinal à medida que o tempo passa:
+\begin{equation}
+\phi_m = \frac{1}{N} \sum_{j=1}^{N} x_j x_{j-m}
+\end{equation}
+
+Similarmente, a autocorrelação parcial encontra a correlação dos valores da série $x_j$ e $x_{j-m}$ após o ajuste para remover o efeito da presença dos termos intermediários $x_{j-1}$, $x_{j-2}$, ..., $x_{j-m+1}$.
+
+A Figura \ref{fig:henon-time-series} exibe a série temporal, a autocorrelação e a autocorrelação parcial para um atraso $K$ na série temporal discreta do Mapa de Hénon, mencionado anteriormente, em $x$:
+\begin{figure}[!ht]
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[scale=0.4]{series-temporal-x.pdf}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[scale=0.4]{autocorrelacao-henon.pdf}
+	\end{subfigure}
+	\\
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[scale=0.4]{autocorrelacao-parcial-henon.pdf}
+	\end{subfigure}
+	\caption{Série temporal, autocorrelação, e autocorrelação parcial para o Mapa de Hénon em $x$}
+	\label{fig:henon-time-series}
+\end{figure}
+
+Além do fato que a série temporal é extremamente errática, perceba também que a autocorrelação parcial decai rapidamente, sendo que, a partir de $K = 8$, não há mais uma presença significativa (evidenciado pela faixa verde na figura). Esse fato é importante pois utilizaremos esses valores para considerar quantas amostras estarão presentes no vetor de entrada fornecidos aos nossos preditores (falaremos mais sobre isso a partir da Seção 3).
+
+Por fim, o espectro de potências $P(w)$ do sinal de uma série temporal originada por um sistema caótico também possui propriedades interessantes. A Figura \ref{fig:henon-power-spectrum} mostra esse espectro para a série temporal do Mapa de Hénon exibida acima:
+\begin{figure}[!ht]
+\centering
+\includegraphics[scale = 0.5]{power-spectrum-henon.pdf}
+\caption{Espectro de potências para a série temporal do Mapa de Hénon em $x$}
+\label{fig:henon-power-spectrum}
+\end{figure}
+
+Analisando o espectro, é possível perceber que ele é bem similar a um espectro de uma série temporal de um processo estocástico, sendo contínuo e de faixa larga. Para  descobrir se uma série temporal tem origem em um processo caótico ou estocástico, normalmente são utilizadas técnicas de reconstrução dos atratores desses sistemas \cite{packard1980geometry}, inclusive, algumas mais recentes utilizando ferramentas de \textit{machine learning} \cite{lu2018attractor}.
+
 \subsubsection{Características gerais de um sistema com dinâmica caótica}
-Depois de uma exposição de alguns conceitos fundamentais de sistemas dinâmicos, além de alguns pontos sobre dinâmica caótica, podemos sintetizá-las nas propriedades fundamentais do caos determinístico em sistemas dinâmicos \cite{attux2001dinamica}:
+Depois de uma exposição de alguns conceitos fundamentais de sistemas dinâmicos, além de alguns pontos sobre dinâmica caótica, podemos sintetizar o que foi apresentado nas propriedades fundamentais do caos determinístico em sistemas dinâmicos \cite{attux2001dinamica}:
 \begin{enumerate}
 \item Forte sensibilidade com respeito às condições iniciais (DSCI);
 \item A evolução temporal das variáveis de estado é rápida e tem uma aparência errática;
@@ -568,7 +611,7 @@ A escolha da função de ativação $\varphi (\cdot)$ varia de acordo com a apli
 
 É interessante mencionar o fato de que, assim como podemos selecionar uma gama de funções não-lineares para a ativação do neurônio, de forma a realizar transformações não-lineares na entrada, também é possível utilizar funções de ativação lineares, ou seja, realizar transformações lineares assim como os modelos clássicos de predição (como o AR e o ARMA) fazem. Nesse caso, a falta da não-linearidade tornaria muito difícil ou até mesmo impossibilitaria que sistemas mais complexos fossem descritos de forma aceitável por redes neurais artificiais desse tipo \cite{hornik1989multilayer}.
 
-Tipicamente, uma rede neural MLP é composta por um número arbitrário $N_L$ de  camadas com $n$ neurônios do tipo \textit{Perceptron}, com a característica de que as saídas dos neurônios da $l$-ésima camada são propagadas para a frente, servindo como as entradas de todos os neurônios da camada seguinte ($l+1$). Esse processo é conhecido como \textit{feedforward}. Por isso, este tipo de rede é conhecida como totalmente conectada (ou densa). A figura \ref{fig:mlp-architecture} apresenta a estrutura típica das redes MLP.
+Tipicamente, uma rede neural MLP é composta por um número arbitrário $N_L$ de  camadas com $n$ neurônios do tipo \textit{Perceptron}, com a característica de que as saídas dos neurônios da $l$-ésima camada são propagadas para a frente, servindo como as entradas de todos os neurônios da camada seguinte ($l+1$). Esse processo é conhecido como \textit{feedforward}. Por isso, este tipo de rede é conhecida como totalmente conectada (ou densa). A Figura \ref{fig:mlp-architecture} apresenta a estrutura típica das redes MLP.
 
 \begin{figure}[!ht]
 \centering
