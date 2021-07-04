@@ -196,7 +196,7 @@ O formato do atrator varia bastante de acordo com o sistema em análise. Por exe
 \end{equation}
 \end{subequations}
 
-Assim, dada uma energia inicial presente no sistema, seja esta em forma de campo elétrico no capacitor, ou campo magnético no indutor, o resistor dissipará a energia armazenada em forma de potência ativa (calor). Considerando as variáveis do espaço de estado como sendo a tensão no capacitor, e a corrente do indutor, é fácil perceber que a trajetória vai convergir para o ponto $(0, 0)$, pois a energia será toda dissipada e não haverá mais dinâmica nesse sistema.
+Assim, dada uma energia inicial presente no sistema, seja esta em forma de campo elétrico no capacitor, ou campo magnético no indutor, o resistor dissipará a energia armazenada em forma de potência ativa (calor). Considerando as variáveis do espaço de estado como sendo a tensão no capacitor e a corrente do indutor, é fácil perceber que a trajetória vai convergir para o ponto $(0, 0)$, pois a energia será toda dissipada e não haverá mais dinâmica nesse sistema.
 
 A Figura \ref{fig:rlc-phase-space} mostra a evolução de um circuito RLC em série para $v(0) = 1$, $i(0) = 1$ com $R = 1$, $L = 1000$ e $C = 500$:
 \begin{figure}[!ht]
@@ -392,7 +392,7 @@ A Figura mostra a evolução temporal de três condições iniciais próximas, p
 
 A dependência sensitiva em relação às condições iniciais é de tamanha importância para o estudo de sistemas caóticos, que Edward Lorenz, o responsável pelo atrator de Lorenz visto acima, enunciou a seguinte frase na palestra em que pela primeira vez foi apresentado o termo 'efeito borboleta' \cite{gleick1998chaos}:
 \begin{displayquote}
-Uma borboleta batendo as asas no Brasil pode causar um tornado no Texas?
+"Uma borboleta batendo as asas no Brasil pode causar um tornado no Texas?"
 \end{displayquote}
 
 Por fim, como foi mencionado na Seção 2.3, os atratores estranhos possuem uma propriedade interessante com relação aos seus expoentes de Lyapunov. Como foi dito anteriormente na apresentação dos atratores estranhos, as trajetórias no espaço de fase de um sistema caótico possuem uma divergência que é contida em uma região do espaço, sem irem para o infinito (processo de dobra).
@@ -462,7 +462,7 @@ A Figura \ref{fig:henon-time-series} exibe a série temporal, a autocorrelação
 
 Além do fato que a série temporal é extremamente errática, perceba também que a autocorrelação parcial decai rapidamente, sendo que, a partir de $K = 8$, não há mais uma presença significativa (evidenciado pela faixa verde na figura). Esse fato é importante pois utilizaremos esses valores para considerar quantas amostras estarão presentes no vetor de entrada fornecidos aos nossos preditores (falaremos mais sobre isso a partir da Seção 3).
 
-Por fim, o espectro de potências $P(w)$ do sinal de uma série temporal originada por um sistema caótico também possui propriedades interessantes. A Figura \ref{fig:henon-power-spectrum} mostra esse espectro para a série temporal do Mapa de Hénon exibida acima:
+Por fim, o espectro de potências $P(\Omega) = |X(e^{j\Omega})|^2$ do sinal de uma série temporal originada por um sistema caótico também possui propriedades interessantes. A Figura \ref{fig:henon-power-spectrum} mostra esse espectro para a série temporal do Mapa de Hénon exibida acima:
 \begin{figure}[!ht]
 \centering
 \includegraphics[scale = 0.5]{power-spectrum-henon.pdf}
@@ -470,7 +470,7 @@ Por fim, o espectro de potências $P(w)$ do sinal de uma série temporal origina
 \label{fig:henon-power-spectrum}
 \end{figure}
 
-Analisando o espectro, é possível perceber que ele é bem similar a um espectro de uma série temporal de um processo estocástico, sendo contínuo e de faixa larga. Para  descobrir se uma série temporal tem origem em um processo caótico ou estocástico, normalmente são utilizadas técnicas de reconstrução dos atratores desses sistemas \cite{packard1980geometry}, inclusive, algumas mais recentes utilizando ferramentas de \textit{machine learning} \cite{lu2018attractor}.
+Analisando o espectro, é possível perceber que ele é bem similar a um espectro de uma série temporal de um processo estocástico, sendo contínuo e de faixa larga. Para  descobrir se uma série temporal tem origem em um processo caótico ou estocástico, normalmente são utilizadas técnicas de reconstrução dos atratores desses sistemas \cite{packard1980geometry}, inclusive algumas mais recentes utilizando ferramentas de \textit{machine learning} \cite{lu2018attractor}.
 
 \subsubsection{Características gerais de um sistema com dinâmica caótica}
 Depois de uma exposição de alguns conceitos fundamentais de sistemas dinâmicos, além de alguns pontos sobre dinâmica caótica, podemos sintetizar o que foi apresentado nas propriedades fundamentais do caos determinístico em sistemas dinâmicos \cite{attux2001dinamica}:
