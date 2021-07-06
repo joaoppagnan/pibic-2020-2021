@@ -76,7 +76,7 @@ Campinas, \today
 \section{Introdução}
 A predição de séries temporais é uma das aplicações mais interessantes do tratamento de informação. O desafio de antecipar padrões de comportamento e construir modelos que sejam apropriados para explicar determinados fenômenos da natureza tem importância para a biologia, economia, automação industrial, meteorologia e diversas outras áreas da ciência \cite{box2015time}.
 
-É possível definir uma série temporal como sendo um conjunto de medidas feitas ao decorrer de um intervalo de tempo, podendo este ser contínuo ou discreto, sobre um fenômeno de interesse. Os sistemas cujas medições formam uma série temporal podem ser originados por processos determinísticos ou estocásticos \cite{box2015time}.
+É possível definir uma série temporal como sendo um conjunto de observações de uma grandeza ou fenômeno de interesse tomadas durante um intervalo de tempo. Os sistemas cujas medições formam uma série temporal podem ser originados por processos determinísticos ou estocásticos \cite{box2015time}.
 
 Através da análise e interpretação de uma série temporal, podemos estimar os seus valores futuros, aumentando a informação que podemos obter das observações que já foram realizadas em um sistema.
 
@@ -90,16 +90,16 @@ Essa primeira parte do projeto de iniciação científica teve como objetivo est
 
 O estudo dirigido começou abordando uma revisão de tópicos de probabilidade, teoria da informação e estimação. Em seguida, foi vista a teoria de regressores e classificadores clássicos \cite{hastie2009elements}. Depois disso, o estudo se dirigiu para as redes neurais artificiais MLP e recorrentes \cite{geron2019hands}, para, por fim, concluir o aprendizado de preditores com uma breve exposição dos modelos autorregressivos (AR) e autorregressivos de médias móveis (ARMA) \cite{box2015time}. Com a teoria de predição solidificada, o foco mudou para os fundamentos da teoria de sistemas com dinâmica caótica, utilizando como base as referências \cite{fiedler1994caos} e \cite{attux2001dinamica}.
 
-Iniciamos nossa discussão pela Seção 2, onde discutiremos alguns conceitos básicos de sistemas dinâmicos, seguidos de uma apresentação sobre sistemas caóticos, evidenciando as particularidades que eles têm em relação aos sistemas dinâmicos convencionais.
+Iniciamos nossa discussão pela Seção 2, na qual são apresentados alguns conceitos básicos de sistemas dinâmicos, seguidos de uma exposição  sobre sistemas caóticos, evidenciando as particularidades que eles têm em relação aos sistemas dinâmicos convencionais.
 
-Em seguida, na Seção 3, veremos os principais modelos estudados, juntamente com uma breve exposição de modelos lineares básicos.
+Em seguida, na Seção 3, veremos os modelos de predição baseados em redes neurais artificiais, juntamente com uma breve exposição de modelos lineares básicos.
 
-Por fim, na Seção 4 são indicados os próximos passos deste projeto de iniciação científica visando sua conclusão ao final deste primeiro semestre de 2021. 
+Por fim, na Seção 4 são indicados os próximos passos deste projeto de iniciação científica visando sua conclusão no final do segundo semestre de 2021. 
 
 \section{Sistemas Dinâmicos}
 O estudo de sistemas dinâmicos se tornou fundamental para a ciência quando a humanidade começou a desenvolver modelos matemáticos para explicar o mundo em sua volta, utilizando os modelos criados para realizar predições e, de certa forma, saber o que nos espera no futuro.
 
-Os sistemas dinâmicos descrevem a evolução de, como o nome já diz, sistemas, que podem representar fenômenos físicos, biológicos, químicos, ou equações matemáticas, através do tempo. Nesse caso, o tempo pode ser tanto contínuo, quanto discreto \cite{kluever2020dynamic}.
+A teoria de sistemas dinâmicos se mostra útil para a modelagem e análise de diversos  fenômenos físicos, biológicos, químicos, ou equações matemáticas, através do tempo. Nesse caso, o tempo pode ser tanto contínuo, quanto discreto \cite{kluever2020dynamic}.
 
 Os sistemas dinâmicos também podem ser lineares ou não-lineares. Um sistema linear, sendo este a tempo contínuo ou discreto, possui a propriedade da superposição, ou seja, se uma entrada consiste de uma soma ponderada de diversos sinais, então a saída é a superposição das respostas do sistema a cada um desses sinais \cite{oppenheim2014signals}. 
 
@@ -119,23 +119,23 @@ A primeira equação (\ref{eq:linear-eq-1}) representa a propriedade da aditivid
 a \cdot x_1(t) + b \cdot x_2(t) \rightarrow a \cdot y_1(t) + b \cdot y_2(t)
 \end{equation}
 \begin{equation}
-a \cdot x_1[n] + b \cdot x_2[n] \rightarrow a \cdot y_1[n] + b \cdot y_2[n]
+a \cdot x_1[n] + b \cdot x_2[n] \rightarrow a \cdot y_1[n] + b \cdot y_2[n]\mathtt{,}
 \end{equation}
 \end{subequations}
-, sendo $a$ e $b$ constantes complexas quaisquer \cite{oppenheim2014signals}.
+sendo $a$ e $b$ constantes complexas quaisquer \cite{oppenheim2014signals}.
 
-Devido a todo arcabouço teórico de álgebra linear elaborado por matemáticos nos últimos séculos, trabalhar com modelos lineares de sistemas dinâmicos se tornou algo trivial. Logo, grande parte dos cursos de graduação lidam, em grande parte, com sistemas lineares por definição, ou aplicam métodos de linearização em sistemas não-lineares, chegando em soluções analíticas lineares aproximadas, com um bom grau de acurácia sob certas condições de contorno \cite{fiedler1994caos}. 
+Devido a todo arcabouço teórico de álgebra linear elaborado por matemáticos nos últimos séculos, trabalhar com modelos lineares de sistemas dinâmicos se tornou algo bem estabelecido. Logo, grande parte dos cursos de graduação lidam,  predominantemente, com sistemas lineares por definição, ou aplicam métodos de linearização em sistemas não-lineares, chegando em soluções analíticas lineares aproximadas, com um bom grau de acurácia sob certas condições de contorno \cite{fiedler1994caos}. 
 
-Com essas aproximações, prever o valor futuro de uma série temporal originada por um sistema linear (ou um sistema não-linear linearizado) é algo bem simples, afinal, pode-se utilizar a solução analítica.
+Com essas aproximações, prever o valor futuro de uma série temporal originada por um sistema linear (ou um sistema não-linear linearizado) é algo relativamente simples, afinal, pode-se utilizar a solução analítica.
 
-Porém, a esmagadora maioria dos fenômenos que observamos na natureza são altamente não-lineares. Dessa forma, ou não conseguimos aplicar os métodos de linearização que tanto aprendemos ou, ao serem aplicados, o sistema se reduz a uma representação bem errônea da sua dinâmica original \cite{gleick1998chaos}.
+Porém, a esmagadora maioria dos fenômenos que observamos na natureza é altamente não-linear. Dessa forma, ou não conseguimos aplicar os métodos de linearização que tanto aprendemos ou, ao serem aplicados, o sistema se reduz a uma representação bem imprecisa da sua dinâmica original \cite{gleick1998chaos}.
 
 Antes de falarmos sobre a teoria da dinâmica caótica, que trouxe diversas explicações para sistemas não-lineares e aumentou o entendimento da ciência sobre esses fenômenos, veremos um pouco sobre alguns conceitos fundamentais no estudo de sistemas dinâmicos.
 
 \subsection{Espaço de Fase}
-Algo comum no estudo de sistemas dinâmicos é a representação em espaço de fase (também chamado de espaço de estado). O espaço de fase geralmente é composto pelas variáveis independentes de um sistema dinâmico. Assim, cada ponto no espaço de fase representa um estado possível para o sistema.
+Algo comum no estudo de sistemas dinâmicos é a representação em espaço de fase (também chamado de espaço de estado). Os eixos do espaço de fase representam os graus de liberdade de um sistema dinâmico. Assim, cada ponto no espaço de fase representa um estado possível para o sistema.
 
-Por exemplo, a equação de movimento de um pêndulo simples, sendo $\theta$ o ângulo entre o pêndulo e a vertical, $g$ a aceleração gravitacional, e $l$ o comprimento do pêndulo, é representado pela seguinte equação diferencial:
+Por exemplo, o movimento de um pêndulo simples, sendo $\theta$ o ângulo entre o pêndulo e o eixo vertical, $g$ a aceleração gravitacional, e $l$ o comprimento do pêndulo, é descrito pela seguinte equação diferencial:
 \begin{equation}\label{eq:pendulum}
 m l^2 \cdot \ddot{\theta}(t) + mgl\cdot  \sen(\theta(t)) = 0
 \end{equation}
@@ -152,12 +152,12 @@ Para tal, escreveremos (\ref{eq:pendulum}) da seguinte forma:
 \end{equation}
 \end{subequations}
 
-Derivando a equação (\ref{eq:pendulum-3}) em $\theta$ e isolando os termos $\theta$ e $\varphi$ em lados opostos, obtém-se que:
+Derivando a equação (\ref{eq:pendulum-3}) em $\theta$ e isolando os termos $\theta$ e $\varphi$ em lados opostos:
 \begin{equation}\label{eq:pendulum-4}
 \varphi \, d\varphi = -\frac{g}{l} \cdot \sen(\theta) \, d\theta
 \end{equation}
 
-Agora, integrando (\ref{eq:pendulum-4}) em ambos os lados, chega-se que:
+Agora, integrando (\ref{eq:pendulum-4}) em ambos os lados, chega-se a:
 \begin{equation}
 \varphi^2 - \frac{2g}{l} \cdot \cos(\theta) = C
 \end{equation}
@@ -171,10 +171,10 @@ sendo $C$ uma constante arbitrária. A Figura \ref{fig:pendulum-phase-space} mos
 
 Perceba que um ponto $(\theta, \dot{\theta})$ no espaço de fases representa um estado possível para o sistema. Nesse caso, como não há nenhum elemento estocástico na evolução do pêndulo simples (considerando apenas a mecânica clássica), não há intersecções nas trajetórias no espaço de fases. 
 
-Por fim, vale-se dizer que, o espaço de fases podem ter quantas dimensões forem necessárias para representar a dinâmica de um sistema. 
+Por fim, é pertinente dizer que o espaço de fases pode ter quantas dimensões forem necessárias para representar a dinâmica de um sistema. 
 
 \subsection{Atratores}
-Uma estrutura topológica utilizada para estudar a evolução de um sistema dinâmico, que é capaz de capturar a essência de sua evolução temporal, é o atrator.
+Uma estrutura topológica utilizada para estudar a evolução de um sistema dinâmico, a  qual é capaz de capturar a essência de sua evolução temporal, é o atrator.
 
 De acordo com a definição dada em \cite{fiedler1994caos}, um atrator é um conjunto invariante para o qual órbitas próximas no espaço de fase convergem depois de um tempo suficientemente grande.
 
@@ -183,7 +183,7 @@ Em termos matemáticos \cite{fiedler1994caos}: Uma região compacta $A$ é um at
 	\item $A$ é invariante segundo $\varphi$;
 	\item $A$ tem uma vizinhança contraente;
 	\item o fluxo é recorrente, isto é, trajetórias começando em qualquer subconjunto aberto de $A$ voltam a esse subconjunto para valores de $t$ suficientemente longos;
-	\item o fluxo não pode ser decomposto, isto é, $A$ não poode ser dividido em duas partes invariantes não triviais.
+	\item o fluxo não pode ser decomposto, isto é, $A$ não pode ser dividido em duas partes invariantes não triviais.
 \end{enumerate}
 
 O formato do atrator varia bastante de acordo com o sistema em análise. Por exemplo, um circuito RLC autônomo tem um atrator chamado de ponto-fixo. Para evidenciarmos isso, considere que as seguintes equações diferenciais descrevem a dinâmica de um circuito RLC, sendo $i$ a corrente no indutor e $v$ a tensão no capacitor \cite{attux2001dinamica}:
@@ -206,7 +206,7 @@ A Figura \ref{fig:rlc-phase-space} mostra a evolução de um circuito RLC em sé
 \label{fig:rlc-phase-space}
 \end{figure}
 
-Os atratores podem ser pontos-fixos, ciclo-limites (que é o caso do oscilador harmônico e do pêndulo simples para certos valores iniciais de $\theta$), pontos de nó, pontos de sela, entre alguns outros. Os atratores também podem indicar trajetórias instáveis, estáveis e assintoticamente estáveis. Também é válido mencionar que, chamamos a região do espaço de estados para a qual todas as trajetórias presentes seguem um atrator de bacia do atrator.
+Os atratores podem ser pontos-fixos, ciclo-limites (que é o caso do oscilador harmônico e do pêndulo simples para certos valores iniciais de $\theta$), pontos de nó, pontos de sela, entre outros. Os atratores também podem indicar trajetórias instáveis, estáveis e assintoticamente estáveis. Também é válido mencionar que a região do espaço de fase para a qual todas as trajetórias presentes seguem um determinado  atrator representa a bacia de atração daquele atrator. 
 
 O tipo de atrator e o tipo de estabilidade é obtido analisando os autovalores $\lambda_i$ da representação matricial do sistema dinâmico.
 
@@ -246,21 +246,21 @@ Agora, considerando que um elemento de hiper-volume $\delta V(t)$ em um instante
 \begin{equation}\label{eq:lyapunov-volume-1}
 \delta V(t) = \prod_{i=1}^{m} \varepsilon_i (t)\mathtt{,}
 \end{equation}
-tem-se que, substituindo (\ref{eq:lyapunov-volume-1}) em (\ref{eq:lyapunov-approx}), obtém-se:
+tem-se que, substituindo (\ref{eq:lyapunov-volume-1}) em (\ref{eq:lyapunov-approx}):
 \begin{equation}
 \delta V(t) = \delta V(0) \cdot \exp \big(\sum_{i=1}^{m} \lambda_i t\big)
 \end{equation}
 
 A partir dessa definição, é possível concluir que o hiper-volume no espaço de fase não diverge : a) quando $\sum_{i=1}^{m} \lambda_i = 0$, ou seja, quando $\delta V(t) = \delta V(0)$, o que determina um sistema conservativo; b) quando $\sum_{i=1}^{m} \lambda_i < 0$, ou seja, quando $\delta V(t) < \delta V(0)$, o que determina um sistema dissipativo \cite{fiedler1994caos}.
 
-Por fim, é possível identificar o atrator do sistema dinâmico em análise através do sinal dos expoentes de Lyapunov. Por exemplo, no caso tridimensional ($m=3$), caso todos os expoentes $\lambda_i$ forem negativos, o atrator será um ponto fixo. Já para dois expoentes negativos e um nulo, têm-se um atrator do tipo ciclo-limite.
+Por fim, é possível identificar o atrator do sistema dinâmico em análise através do sinal dos expoentes de Lyapunov. Por exemplo, no caso tridimensional ($m=3$), caso todos os expoentes $\lambda_i$ sejam negativos, o atrator será um ponto fixo. Já para dois expoentes negativos e um nulo, têm-se um atrator do tipo ciclo-limite.
 
-Os atratores de um sistema caótico possuem uma propriedade especial com relação aos seus expoentes de Lyapunov. Esse fato será discutido na Seção 2.5.2.
+Os atratores de um sistema caótico possuem uma propriedade especial com relação a seus expoentes de Lyapunov. Esse fato será discutido na Seção 2.5.2.
 
 \subsection{Entropia de Kolmogorov-Sinai}
 Também é possível analisar a dinâmica de um sistema através de uma abordagem via teoria da informação.
 
-Para tal, considere um atrator no espaço de estado, recoberto por cubos de lado $\varepsilon$. Agora, seja uma sequência de $b$ cubos $i_1, i_2, ..., i_b$, e seja $p(i_1, i_2, ..., i_b)$ a probabilidade que o sistema se encontre sucessivamente nos cubos $i_1, i_2, ..., i_b$ em intervalos de tempo regulares $\tau$ \cite{fiedler1994caos, attux2001dinamica}. Segundo Shannon  \cite{shannon1948mathematical}, a informação associada à sequência $b$ é proporcional a:
+Para tal, considere um atrator no espaço de estados, recoberto por cubos de lado $\varepsilon$. Agora, seja uma sequência de $b$ cubos $i_1, i_2, ..., i_b$, e seja $p(i_1, i_2, ..., i_b)$ a probabilidade que o sistema se encontre sucessivamente nos cubos $i_1, i_2, ..., i_b$ em intervalos de tempo regulares $\tau$ \cite{fiedler1994caos, attux2001dinamica}. Segundo Shannon  \cite{shannon1948mathematical}, a informação associada à sequência $b$ é proporcional a:
 \begin{equation}
 I_{b}^{(1)} (\varepsilon) = \sum_{i_1, i_2, ..., i_b} p(i_1, i_2, ..., i_b) \cdot \ln p(i_1, i_2, ..., i_b)
 \end{equation}
@@ -276,7 +276,7 @@ Com isso, define-se a entropia de Kolmogorov-Sinai como a taxa média de criaç�
 K = \lim_{\tau \rightarrow 0} \lim_{\varepsilon \rightarrow 0} \lim_{b \rightarrow \infty} \frac{1}{b\tau} \sum_{i_1, i_2, ..., i_b} p(i_1, i_2, ..., i_b) \cdot \ln p(i_1, i_2, ..., i_b)
 \end{equation}
 
-Apesar de não ser comum, pelo menos na maior parte dos cursos de graduação, a análise da entropia de Kolmogorov-Sinai de um sistema dinâmico revela várias propriedades do comportamento de um sistema ao longo do tempo. Por exemplo, analisando um sistema cuja trajetória segue a bacia de atração de um ponto-fixo, necessitamos de pouca informação para predizer com precisão qual será o estado do sistema em um instante de tempo posterior. Ou seja, não há produção significativa de informação por parte do sistema. Isso também é válido para um sistema cujo atrator é um ciclo-limite.
+A análise da entropia de Kolmogorov-Sinai de um sistema dinâmico revela várias propriedades do comportamento desse sistema ao longo do tempo. Por exemplo, analisando um sistema cuja trajetória segue a bacia de atração de um ponto-fixo, necessitamos de pouca informação para predizer com precisão qual será o estado do sistema em um instante de tempo posterior. Ou seja, não há produção significativa de informação por parte do sistema. Isso também é válido para um sistema cujo atrator é um ciclo-limite.
 
 A entropia de Kolmogorov-Sinai possui uma conexão com os expoentes de Lyapunov. No caso, \cite{attux2001dinamica, fiedler1994caos} mostram que as seguintes equações são válidas, sendo $\lambda_i$ os expoentes de Lyapunov:
 \begin{subequations}\label{eq:lyapunov-ksinai}
@@ -288,22 +288,22 @@ K \leq \sum_{\lambda_i > 0} \lambda_i
 \end{equation}
 \end{subequations}
 
-De acordo com a relações em (\ref{eq:lyapunov-ksinai}), concluise-que, num sistema determinístico regular (linear e não-linear sem ser caótico ou estocástico), pontos próximos no espaço de fase evoluem sem divergências significativas. Logo, o sistema não produz informação. Assim, ou a entropia de Kolmogorov-Sinai será nula.
+De acordo com a relações em (\ref{eq:lyapunov-ksinai}), podemos concluir que, num sistema determinístico regular (linear e não-linear sem ser caótico ou estocástico), pontos próximos no espaço de fase evoluem sem divergências significativas. Logo, o sistema não produz informação. Assim, a entropia de Kolmogorov-Sinai será nula.
 
 Interessantemente, é visto que, para sistemas estocásticos, a evolução da trajetória no espaço de estado não seguirá nenhum tipo de continuidade, havendo uma perda abrupta de informação por parte do observador. Logo, $K \rightarrow \infty$ \cite{attux2001dinamica}.
 
-Agora, sistemas com dinâmica caótica, apesar de terem uma produção ininterrupta de informação (Seção 2.5.3), suas entropias obedecem a relação em (\ref{eq:lyapunov-ksinai-entropy}). 
+Por outro lado, sistemas com dinâmica caótica, apesar de terem uma produção ininterrupta de informação (Seção 2.5.3), têm entropias que seguem a relação dada em  (\ref{eq:lyapunov-ksinai-entropy}). 
 
-Portanto, para vermos mais detalhes do porquê isso ocorre, na seção a seguir iniciaremos nossa discussão sobre sistemas caóticos.
+Portanto, para vermos mais detalhes do porquê disso ocorrer, na seção a seguir iniciaremos nossa discussão sobre sistemas caóticos.
 
 \subsection{Sistemas com Dinâmica Caótica}
-Uma classe de sistemas não-lineares importante para o estudo de diversos fenômenos, é a classe de sistemas caóticos. Apesar de ter tido uma certa dificuldade para encontrar um meio dentro da academia e sendo bastante renegado por vários cientistas da época por, entre outros fatores, inicialmente basear-se em simulações  computacionais de dinâmicas físicas, algo que não era comum nos meados do século XX \cite{gleick1998chaos}, a teoria da dinâmica caótica foi adotada por cientistas da área da física, matemática, química, biologia, economia, astrofísica, e várias outras, trazendo explicações para diversos fenômenos que não eram bem entendidos até então.
+Uma classe de sistemas não-lineares importante para o estudo de diversos fenômenos é a classe de sistemas caóticos. Apesar de ter tido certa dificuldade para encontrar um meio dentro da academia e ser bastante renegada por vários cientistas da época por, entre outros fatores, inicialmente basear-se em simulações  computacionais de dinâmicas físicas, algo que não era comum em meados do século XX \cite{gleick1998chaos}, a teoria da dinâmica caótica foi adotada por cientistas da área da física, matemática, química, biologia, economia, astrofísica, e várias outras, trazendo explicações para diversos fenômenos que não eram bem entendidos até então.
 
 Discutiremos agora algumas propriedades dos sistemas caóticos que os diferem de sistemas lineares e não-lineares convencionais.
 
 \subsubsection{Dimensões fractais no espaço de fase de uma dinâmica caótica}
 
-Como foi dito anteriormente, as trajetórias no espaço de fase de um pêndulo simples não se interseccionam. Isso é devido ao fato de que, como o sistema é determinístico, se ele estiver em um estado $(\theta(t), \dot{\theta}(t))$, só existe um próximo estado possível $(\theta(t + dt), \dot{\theta}(t + dt))$, considerando que é um sistema isolado, sem forças externas. Assim, caso houvesse a intersecção de trajetórias, o sistema teria dois ou mais próximos estados possíveis, o que não é coerente com um sistema determinístico \cite{fiedler1994caos}.
+Como foi dito anteriormente, as trajetórias no espaço de fase de um pêndulo simples não se interseccionam. Isso é devido ao fato de que, como o sistema é determinístico, se ele estiver em um estado $(\theta(t), \dot{\theta}(t))$, só existe um próximo estado possível $(\theta(t + dt), \dot{\theta}(t + dt))$, considerando que é um sistema isolado, sem forças externas. Caso houvesse a intersecção de trajetórias, o sistema teria dois ou mais próximos estados possíveis, o que não é coerente com um sistema determinístico \cite{fiedler1994caos}.
 
 Apesar de apresentar um comportamento errático e, de certa forma, imprevisível, sistemas caóticos são determinísticos. Ou seja, também não há intersecções em suas trajetórias no espaço de fase. Mas, como esses sistemas são capazes de produzir um comportamento tão variado, sem apresentar nenhum tipo de ordem aparente, sem haver intersecções nas trajetórias? Para explicar isso, precisaremos generalizar a noção de dimensão para englobar as dimensões fractais \cite{mandelbrot1967long}. 
 
@@ -311,18 +311,18 @@ O estudo de estruturas topológicas com dimensão fractal tornou-se relevante na
 
 Como a base matemática de álgebra linear não engloba essas figuras (pelo menos não no conteúdo que geralmente aprendemos durante a graduação), é necessário o uso de outras ferramentas para estimar a dimensão fracionária. Uma delas é a dimensão de Hausdorff, ou dimensão de Hausdorff-Besicovitch \cite{attux2001dinamica, fiedler1994caos}.
 
-Seja um conjunto de pontos $A$ num espaço de dimensão $N$ e, sejam estes pontos recobertos por hiper-cubos de aresta $\varepsilon$. A dimensão de Hausdorff é dada por:
+Seja um conjunto de pontos $A$ num espaço de dimensão $N$ e sejam estes pontos recobertos por hiper-cubos de aresta $\varepsilon$. A dimensão de Hausdorff é dada por:
 \begin{equation}
 D_0 = \lim_{\varepsilon \rightarrow 0} \frac{\log K (\varepsilon)}{\log (1/\varepsilon)}
 \end{equation}
 
 Essa definição é válida tanto para figuras de dimensão inteira, como quadrados e cubos, quanto para objetos de dimensão fractal.
 
-Aplicando essa definição numa trajetória no espaço de fase de uma dinâmica caótica, vê-se que, a dimensão obtida sempre será fracionária \cite{fiedler1994caos}, logo, pode-se dizer que a trajetória sofrerá sucessivas contrações em certas direções, e expansões em pelo menos uma, de forma a nunca se cruzar, por mais errático que seja o movimento \cite{fiedler1994caos}.
+Aplicando essa definição numa trajetória no espaço de fase de uma dinâmica caótica, vê-se que a dimensão obtida sempre será fracionária \cite{fiedler1994caos}. Logo, pode-se dizer que a trajetória sofrerá sucessivas contrações em certas direções, e expansões em pelo menos uma, de forma a nunca se cruzar, por mais errático que seja o movimento \cite{fiedler1994caos}.
 
-Uma das propriedades importantes de objetos topológicos de dimensão fractal é que eles apresentam uma auto-similaridade \cite{gleick1998chaos}. Nesse caso, partes da trajetória no espaço de fase têm uma estrutura análoga à da figura como um todo \cite{attux2001dinamica}. Ou seja, ao ampliar-se um objeto fractal, suas características serão similares ao da figura como um todo, tendo uma auto-similaridade.
+Uma das propriedades importantes de objetos topológicos de dimensão fractal é que eles apresentam uma auto-similaridade \cite{gleick1998chaos}. Nesse caso, partes da trajetória no espaço de fase têm uma estrutura análoga à da trajetória como um todo \cite{attux2001dinamica}. Ou seja, ao ampliar-se um objeto fractal, suas características serão similares ao do objeto como um todo, tendo uma auto-similaridade.
 
-A Figura \ref{fig:henon} evidencia essa propriedade para o Mapa de Hénon \cite{henon1976two}, que é definido pelas seguintes equações a diferenças:
+A Figura \ref{fig:henon} evidencia essa propriedade para o mapa de Hénon \cite{henon1976two}, que é definido pelas seguintes equações a diferenças:
 \begin{subequations}
 \begin{equation}
 x[n+1] = y[n] + 1 - a\cdot (x[n])^2
@@ -343,15 +343,15 @@ y[n+1] = b \cdot x[n]
 	\begin{subfigure}[b]{0.45\textwidth}
 		\includegraphics[scale=0.4]{mapa-de-henon-zoom-2.png}
 	\end{subfigure}
-	\caption{Auto-similaridade presente no Mapa de Hénon}
+	\caption{Auto-similaridade presente no mapa de Hénon. Observe o quão similares são as formas observadas nas três figuras, as quais foram obtidas após sucessivas ampliações de trechos específicos nas variáveis $x$ e $y$ no espaço de fase.}
 	\label{fig:henon}
 \end{figure}
 
-Devido à dimensão fractal e a outros fatores, denominamos os atratores de sistemas caóticos de atratores estranhos \cite{ruelle1971nature}, sendo a própria estrutura presente no Mapa de Hénon um atrator estranho. Veremos mais sobre eles na próxima seção.
+Devido à dimensão fractal e a outros fatores, denominamos os atratores de sistemas caóticos de atratores estranhos \cite{ruelle1971nature}, sendo a própria estrutura presente no mapa de Hénon um atrator estranho. Veremos mais sobre eles na próxima seção.
 
 \subsubsection{Atratores Estranhos}
 
-O termo atrator estranho foi inicialmente cunhado pelos matemáticos David Ruelle e Floris Takens no artigo \cite{ruelle1971nature}, para descrever o fluxo em um fluído turbulento. Esse nome foi dado devido às estranhas propriedades e características dessas estruturas topológicas que a diferenciavam dos atratores convencionais que foram citados na Seção 2.2 \cite{gleick1998chaos}.
+O termo atrator estranho foi inicialmente cunhado pelos matemáticos David Ruelle e Floris Takens no artigo \cite{ruelle1971nature}, para descrever o fluxo em um fluido turbulento. Esse nome foi dado devido às estranhas propriedades e características dessas estruturas topológicas que as diferenciavam dos atratores convencionais que foram citados na Seção 2.2 \cite{gleick1998chaos}.
 
 De acordo com \cite{attux2001dinamica}, sendo $A$ um conjunto limitado num espaço de $N$ dimensões, dizemos que $A$ é um atrator estranho se for um atrator (utilizando as definições da Seção 2.2) e se, estando a condição inicial $x_0$ num subconjunto de pontos próximos, as evoluções temporais desses pontos apresentarem dependência sensitiva em relação às condições iniciais (DSCI) \cite{fiedler1994caos}.
 
@@ -363,15 +363,15 @@ O ponto que torna esses atratores tão distintos dos usuais é que, no caso line
 \label{fig:atrator-rlc-comp}
 \end{figure}
 
-Vale-se mencionar que, para os atratores usuais, a diferença entre as trajetórias diminuirá progressivamente (no caso do ponto-fixo), se manterá constante (no caso do ciclo-limite), ou aumentará exponencialmente para o infinito, apresentando uma divergência total.
+Para atratores usuais, a diferença entre as trajetórias diminuirá progressivamente (no caso do ponto-fixo), se manterá constante (no caso do ciclo-limite), ou aumentará exponencialmente para o infinito, apresentando uma divergência total.
 
-A característica que torna possível que um atrator estranho apresente comportamentos distintos para condições iniciais próximas, sem divergirem para o infinito, é a dimensão fractal nas trajetórias do espaço de estado apresentada na Seção 2.5.1. Assim, as sucessivas contrações e expansões do espaço de fase, o que forma uma estrutura fractal, fará com que, por menor que seja a diferença entre as condições iniciais, como há uma infinidade de estados possíveis para a evolução do mesmos, após algumas iterações do sistema, observaremos que as trajetórias seguiram caminhos distintos entre os estados 'amaranhados' na dimensão fractal.
+A característica que torna possível que um atrator estranho apresente comportamentos distintos para condições iniciais próximas, sem divergirem para o infinito, é a dimensão fractal nas trajetórias do espaço de estado, conforme detalhado na Seção 2.5.1. Assim, as sucessivas contrações e expansões do espaço de fase, o que forma uma estrutura fractal, fará com que, por menor que seja a diferença entre as condições iniciais, como há uma infinidade de estados possíveis para a evolução dos mesmos, após algumas iterações do sistema, observaremos que as trajetórias seguiram caminhos distintos entre os estados emaranhados na dimensão fractal.
 
 Além disso, perceba também que as dimensões fractais permitem que haja uma divergência que aumenta exponencialmente, sem divergir para o infinito (o que não ocorre em certos atratores de sistemas que também apresentam divergência). Esse fenômeno é devido ao fato de que as sucessivas expansões e contrações (também chamadas de processo de dobra \cite{fiedler1994caos, attux2001dinamica}) estão contidas em um espaço limitado, devido às dimensões fracionárias (a Seção 2.5.3 apresenta essas características de um ponto de vista da teoria da informação).
 
-Interessantemente, a não interseccionalidade de trajetórias implica que sistemas caóticos em tempo contínuo sejam compostos por $3$ ou mais dimensões, como é mostrado em \cite{guckenheimer2013nonlinear}. Esse não é o caso para sistemas caóticos discretos, como é o caso do Mapa de Hénon, visto na seção anterior.
+Interessantemente, a obrigatoriedade de não haver interseções nas trajetórias no espaço de fases leva à seguinte restrição: sistemas dinâmicos a tempo contínuo devem ter, no mínimo, $3$ dimensões para poderem exibir comportamento caótico, como demonstrado em \cite{guckenheimer2013nonlinear}. Em contrapartida, sistemas dinâmicos discretos com menos dimensões, como o mapa de Hénon (de duas dimensões), já podem ser caóticos. 
 
-A Figura mostra a evolução temporal de três condições iniciais próximas, para o clássico Sistema de Lorenz \cite{lorenz1963deterministic} no espaço de fase $xyz$, definido pelas equações diferenciais abaixo:
+Considere o clássico sistema de Lorenz \cite{lorenz1963deterministic}, definido pelas equações diferenciais indicadas abaixo:
 \begin{subequations}
 \begin{equation}
 \frac{dx}{dt} = -\sigma \cdot (x - y)
@@ -383,10 +383,12 @@ A Figura mostra a evolução temporal de três condições iniciais próximas, p
 \frac{dz}{dt} = x \cdot y - \beta \cdot z
 \end{equation}
 \end{subequations}
+
+A Figura \ref{fig:atrator-lorenz} mostra a evolução temporal do sistema de Lorenz no espaço de fase $(xyz)$ a partir de três condições iniciais próximas.
 \begin{figure}[!ht]
 \centering
 \includegraphics[scale = 0.7]{diagrama-de-fases-alt.png}
-\caption{Comparação da evolução temporal no espaço de fase de três condições iniciais próximas para o Sistema de Lorenz}
+\caption{Comparação da evolução temporal no espaço de fase de três condições iniciais próximas para o sistema de Lorenz}
 \label{fig:atrator-lorenz}
 \end{figure}
 
@@ -403,15 +405,15 @@ Logo, deve haver pelo menos um expoente de Lyapunov positivo. Porém, sistemas c
 \end{equation}
 e, através dessa relação, pode-se provar o fato de que sistemas caóticos em tempo contínuo necessitam de pelo menos $3$ dimensões no espaço de fase. 
 
-Para entender porque essa condição é válida, imagina que seja possível se obter um atrator estranho em duas dimensões ($m=2$). Logo, para haver a DSCI, um dos expoentes de Lyapunov é positivo. Porém, uma condição que é válida para toda trajetória no espaço de fase é que, ao longo da direção paralela ao fluxo, o expoente associado é nulo. Então, teríamos um expoente de Lyapunov positivo e outro nulo, o que faria com que $\sum_{i=1}^{2} \lambda_i > 0$, indicando que o elemento de volume divergiria para o infinito, o que não é o caso dos atratores estranhos \cite{fiedler1994caos}. 
+Para entender por que essa condição é válida, imagine que seja possível obter um atrator estranho em duas dimensões ($m=2$). Logo, para haver a DSCI, um dos expoentes de Lyapunov é positivo. Porém, uma condição que é válida para toda trajetória no espaço de fase é que, ao longo da direção paralela ao fluxo, o expoente associado é nulo. Então, teríamos um expoente de Lyapunov positivo e outro nulo, o que faria com que $\sum_{i=1}^{2} \lambda_i > 0$, indicando que o elemento de volume divergiria para o infinito, o que não é o caso dos atratores estranhos \cite{fiedler1994caos}. 
 
 Vale mencionar que, apesar dos sistemas caóticos discretos não seguirem essa condição, pode-se mostrar que os mapas (sejam estes uni ou bidimensionais) de seus espaços de estado são amostragens de uma trajetória em três ou mais dimensões, estas sim cumprindo a condição apresentada \cite{fiedler1994caos}.
 
 \subsubsection{Produção de informação em uma dinâmica caótica}
 
-Assim como foi apresentado na seção 2.4, sistemas dinâmicos podem ser estudados analisando a produção de informação por parte do sistema com a entropia de Kolmogorov-Sinai.
+Assim como foi apresentado na seção 2.4, sistemas dinâmicos podem ser estudados analisando a produção de informação através da medida de entropia de Kolmogorov-Sinai.
 
-Para tal, considere as relações em (\ref{eq:lyapunov-ksinai}), que interligam os expoentes de Lyapunov com a produção de informação de um sistema. Consequentemente, quando existem um (ou mais) expoente de Lyapunov positivo num sistema dinâmico (DSCI), há produção de informação por parte do sistema. Assim, um observador que em $t=0$ tinha uma certa informação sobre o sistema, à medida que o tempo passa sua informação diminui \cite{fiedler1994caos}. 
+Para tal, considere as relações em (\ref{eq:lyapunov-ksinai}), que interligam os expoentes de Lyapunov com a produção de informação de um sistema. Consequentemente, quando há pelo menos um expoente de Lyapunov positivo num sistema dinâmico (DSCI), há produção de informação por parte do sistema. Assim, um observador que em $t=0$ tinha uma certa informação sobre o sistema, à medida que o tempo passa sua informação diminui \cite{fiedler1994caos}. 
 
 Porém, como a relação em (\ref{eq:lyapunov-ksinai-entropy}) também é cumprida, a produção segue essa desigualdade. Ou seja, apesar do sistema produzir informação com o passar do tempo, esta não diverge exponencialmente para o infinito (o que caracterizaria um processo estocástico).
 
@@ -432,18 +434,18 @@ Para facilitar a visualização da diferença entre os expoentes de Lyapunov, di
 \end{table}
 
 \subsubsection{A série temporal e o espectro de potências de um sistema caótico}
-Uma outra abordagem possível para o estudo de sistemas dinâmicos caóticos, é através de suas séries temporais.
+Outra abordagem possível para o estudo de sistemas dinâmicos caóticos envolve a análise de suas séries temporais. 
 
-Para isso, uma ferramenta que permite obter conclusões interessantes, que evidenciam a rápida perda de informação por parte do observador, mencionada na seção anterior, é a análise da autocorrelação e da autocorrelação parcial de uma série temporal.
+Para isso, uma ferramenta que permite obter conclusões interessantes, podendo indicar a rápida perda de informação por parte do observador, mencionada na seção anterior, é a análise da autocorrelação e da autocorrelação parcial de uma série temporal.
 
-Através de \cite{fiedler1994caos}, pode-se definir a função de autocorrelação $\phi_m$ como a média do produto dos valores de um sinal $x(t)$ nos instantes $t + m\cdot \Delta t$ e indica por quanto tempo o valor do sinal no instante $t$ depende de seus valores prévios, medindo o grau de semelhança existente no sinal à medida que o tempo passa:
+Através de \cite{fiedler1994caos}, pode-se definir a função de autocorrelação $\phi_m$ como a média do produto dos valores de um sinal $x(t)$ em instantes de tempo espaçados de $\Delta t$, indicando por quanto tempo o valor do sinal no instante $t$ depende de seus valores prévios e medindo o grau de semelhança existente no sinal à medida que o tempo passa:
 \begin{equation}
 \phi_m = \frac{1}{N} \sum_{j=1}^{N} x_j x_{j-m}
 \end{equation}
 
 Similarmente, a autocorrelação parcial encontra a correlação dos valores da série $x_j$ e $x_{j-m}$ após o ajuste para remover o efeito da presença dos termos intermediários $x_{j-1}$, $x_{j-2}$, ..., $x_{j-m+1}$.
 
-A Figura \ref{fig:henon-time-series} exibe a série temporal, a autocorrelação e a autocorrelação parcial para um atraso $K$ na série temporal discreta do Mapa de Hénon, mencionado anteriormente, em $x$:
+A Figura \ref{fig:henon-time-series} exibe a série temporal, a autocorrelação e a autocorrelação parcial para um atraso $K$ na série temporal discreta do mapa de Hénon, mencionado anteriormente, associada à variável $x$.
 \begin{figure}[!ht]
 	\centering
 	\begin{subfigure}[b]{0.45\textwidth}
@@ -456,17 +458,17 @@ A Figura \ref{fig:henon-time-series} exibe a série temporal, a autocorrelação
 	\begin{subfigure}[b]{0.45\textwidth}
 		\includegraphics[scale=0.4]{autocorrelacao-parcial-henon.pdf}
 	\end{subfigure}
-	\caption{Série temporal, autocorrelação, e autocorrelação parcial para o Mapa de Hénon em $x$}
+	\caption{Série temporal, autocorrelação, e autocorrelação parcial para o mapa de Hénon em $x$}
 	\label{fig:henon-time-series}
 \end{figure}
 
-Além do fato que a série temporal é extremamente errática, perceba também que a autocorrelação parcial decai rapidamente, sendo que, a partir de $K = 8$, não há mais uma presença significativa (evidenciado pela faixa verde na figura). Esse fato é importante pois utilizaremos esses valores para considerar quantas amostras estarão presentes no vetor de entrada fornecidos aos nossos preditores (falaremos mais sobre isso a partir da Seção 3).
+Além do fato que a série temporal é extremamente errática, perceba também que a autocorrelação parcial decai rapidamente, sendo que, a partir de $K = 8$, não há mais uma presença significativa (evidenciado pela faixa verde na figura). Esse fato é importante, pois nos basearemos nestes valores de correlação para estabelecer quantas amostras passadas devem ser fornecidas na entrada dos preditores (falaremos mais sobre isso a partir da Seção 3).
 
-Por fim, o espectro de potências $P(\Omega) = |X(e^{j\Omega})|^2$ do sinal de uma série temporal originada por um sistema caótico também possui propriedades interessantes. A Figura \ref{fig:henon-power-spectrum} mostra esse espectro para a série temporal do Mapa de Hénon exibida acima:
+Por fim, o espectro de potências $P(\Omega) = |X(e^{j\Omega})|^2$ do sinal de uma série temporal originada por um sistema caótico também possui propriedades interessantes. A Figura \ref{fig:henon-power-spectrum} mostra esse espectro para a série temporal do mapa de Hénon exibida acima:
 \begin{figure}[!ht]
 \centering
 \includegraphics[scale = 0.5]{power-spectrum-henon.pdf}
-\caption{Espectro de potências para a série temporal do Mapa de Hénon em $x$}
+\caption{Espectro de potências para a série temporal do mapa de Hénon em $x$}
 \label{fig:henon-power-spectrum}
 \end{figure}
 
@@ -479,20 +481,20 @@ Depois de uma exposição de alguns conceitos fundamentais de sistemas dinâmico
 \item A evolução temporal das variáveis de estado é rápida e tem uma aparência errática;
 \item Um sinal originado por um sistema caótico tem espectro de potências contínuo e de faixa larga;
 \item Há uma produção de informação por parte do sistema;
-\item Dão origem a atratores estranhos.
+\item Presença de atratores estranhos.
 \end{enumerate}
 
 Logo, um sistema dinâmico que possui essas propriedades é um sistema caótico.
 
-Nossa análise será sobre a predição das séries temporais originadas por esses sistemas. Por tudo que foi dito até aqui, é esperado que não seja uma tarefa fácil estimar seus valores.
+Nossa análise será sobre a predição das séries temporais originadas por esses sistemas. Por tudo que foi dito até aqui, é esperado que não seja uma tarefa fácil estimar seus valores futuros.
 
-Por causa disso, o estudo se direcionará à aplicabilidade das redes neurais à predição, ou seja, utilizando ferramentas que também são não-lineares, assim como os sistemas em estudo. Logo, na seção a seguir serão discutidos modelos preditores com redes neurais, além de uma breve exposição sobre modelos clássicos lineares.
+Por causa disso, o estudo se direcionará à aplicabilidade das redes neurais à predição, ou seja, utilizando ferramentas que também são não-lineares, assim como os sistemas em estudo. Logo, na seção a seguir serão discutidos algumas estruturas de redes neurais artificiais, além de uma breve exposição sobre modelos clássicos lineares.
 
 \section{Modelos de Predição}
 
 \subsection{Modelos Lineares}
 
-Apesar desta pesquisa focar na aplicabilidade de modelos preditores não-lineares utilizando redes neurais artificiais, é pertinente darmos uma introdução ao assunto através de modelos lineares para essa aplicação, já aproveitando o momento para apresentarmos alguns conceitos básicos de predição.
+Apesar desta pesquisa se dedicar à aplicação de modelos de predição não-lineares (mais especificamente, algumas opções de redes neurais artificiais), é pertinente darmos uma introdução ao assunto através de modelos lineares para essa aplicação, já aproveitando o momento para apresentarmos alguns conceitos básicos de predição.
 
 \subsubsection{Modelo Autorregressivo (AR)}
 
@@ -510,20 +512,20 @@ onde $a_{k}$, $k = 1, 2, ..., K$ são os coeficientes que ponderam as amostras n
 \end{equation}
 sendo $w_{0} = 1$ e $w_{k} = -a_{k}$ para $1 \leq k \leq K$.
 
-Perceba que o lado esquerdo de (\ref{ar-l-1}) é uma soma de convolução em tempo discreto, portanto, podemos interpretar o modelo AR como um sistema linear e invariante com o tempo (LIT) \cite{haykin2008adaptive}.
+Perceba que o lado esquerdo de (\ref{ar-l-1}) é uma soma de convolução em tempo  discreto. Portanto, podemos interpretar o modelo AR como um sistema linear e invariante com o tempo (LIT) \cite{haykin2008adaptive}.
 
 \subsubsection{Modelo Autorregressivo e de Médias Móveis (ARMA)}
 
-O modelo ARMA (do inglês, \textit{auto-regressive moving-average}) também leva em consideração o valor do ruído branco nos instantes de tempo anteriores ao atual \cite{box2015time}:
+O modelo ARMA (do inglês, \textit{auto-regressive moving-average}) incorpora à construção de $x(n)$ valores passados do ruído branco (ou do erro de predição), de forma que \cite{box2015time}:
 \begin{equation}
 x(n) = \sum_{k = 1}^{K} a_{k} \cdot x(n - L - (k-1)) + \sum_{k=1}^{M} b_{k} \cdot \eta(n - L - (k-1))
 \end{equation} 
 
-Para ser parametrizado, o modelo ARMA necessita de métodos iterativos e/ou heurísticos. Isso é devido ao fato de que não há soluções em forma fechada para obter os coeficientes $b_k$. Além disso, é válido mencionar que durante a otimização desses parâmetros, devemos nos atentar a estabilidade desse sistema, afinal, os erros podem se acumularem, levando a uma divergência na saída do preditor \cite{box2015time}.
+Dado um conjunto de observações temporais, a construção de um modelo ARMA que aproxime tal conjunto requer o uso de métodos iterativos e/ou heurísticos de otimização. Isso é devido ao fato de que não há soluções em forma fechada para obter os coeficientes $b_k$. Além disso, é válido mencionar que durante a otimização desses parâmetros, devemos nos atentar à estabilidade desse sistema, afinal, os erros podem se acumular, levando a uma divergência na saída do preditor \cite{box2015time}.
 
-Apesar dos modelos lineares terem e ainda serem bastante utilizados para a predição de séries temporais, para determinadas situações a regra linear aplicada pelos modelos AR e ARMA não é suficiente para realizar uma predição com um erro aceitável em sistemas mais complexos. 
+Apesar dos modelos lineares ainda serem bastante utilizados para a predição de séries temporais, para determinadas situações a regra linear aplicada pelos modelos AR e ARMA não é suficiente para realizar uma predição com um erro aceitável em sistemas mais complexos. 
 
-Devido a isso, optamos por direcionar a análise para modelos não-lineares, nesse caso, utilizando redes neurais artificiais para a predição. Veremos então como são esses tipos de preditores.
+Devido a isso, optamos por direcionar o estudo para modelos de predição não-lineares baseados em redes neurais artificiais. Vejamos, então, como são estes preditores. 
 
 \subsection{Modelos Não-lineares}
 
@@ -609,9 +611,9 @@ A escolha da função de ativação $\varphi (\cdot)$ varia de acordo com a apli
 	\label{fig:mlp-activations}
 \end{figure}
 
-É interessante mencionar o fato de que, assim como podemos selecionar uma gama de funções não-lineares para a ativação do neurônio, de forma a realizar transformações não-lineares na entrada, também é possível utilizar funções de ativação lineares, ou seja, realizar transformações lineares assim como os modelos clássicos de predição (como o AR e o ARMA) fazem. Nesse caso, a falta da não-linearidade tornaria muito difícil ou até mesmo impossibilitaria que sistemas mais complexos fossem descritos de forma aceitável por redes neurais artificiais desse tipo \cite{hornik1989multilayer}.
+É interessante mencionar o fato de que, assim como podemos selecionar uma gama de funções não-lineares para a ativação do neurônio, de forma a realizar transformações não-lineares na entrada, também é possível utilizar funções de ativação lineares, ou seja, realizar transformações lineares à semelhança dos modelos clássicos de predição. Nesse caso, a falta da não-linearidade tornaria muito difícil ou até mesmo impossibilitaria que sistemas mais complexos fossem descritos de forma aceitável por redes neurais artificiais desse tipo \cite{hornik1989multilayer}.
 
-Tipicamente, uma rede neural MLP é composta por um número arbitrário $N_L$ de  camadas com $n$ neurônios do tipo \textit{Perceptron}, com a característica de que as saídas dos neurônios da $l$-ésima camada são propagadas para a frente, servindo como as entradas de todos os neurônios da camada seguinte ($l+1$). Esse processo é conhecido como \textit{feedforward}. Por isso, este tipo de rede é conhecida como totalmente conectada (ou densa). A Figura \ref{fig:mlp-architecture} apresenta a estrutura típica das redes MLP.
+Tipicamente, uma rede neural MLP é composta por um número arbitrário $N_L$ de  camadas com $n$ neurônios do tipo \textit{Perceptron}, com a característica de que as saídas dos neurônios da $l$-ésima camada são propagadas para a frente, servindo como as entradas de todos os neurônios da camada seguinte ($l+1$). Esse processo é conhecido como \textit{feedforward}. Por isso, este tipo de rede é conhecida como totalmente conectada (ou densa) e pertence à categoria de modelos \textit{feedforward}. A Figura \ref{fig:mlp-architecture} apresenta a estrutura típica das redes MLP.
 
 \begin{figure}[!ht]
 \centering
@@ -620,30 +622,31 @@ Tipicamente, uma rede neural MLP é composta por um número arbitrário $N_L$ de
 \label{fig:mlp-architecture}
 \end{figure}
 
-Pela figura vemos que, além das $N_L$ camadas intermediárias com neurônios \textit{Perceptron}, a estrutura das redes MLP contém uma camada de entrada, que possui ativação linear e apenas passa o atributo de entrada relacionado ao neurônio em específico ($x_1$, $x_2$, ..., $x_k$) para a primeira camada intermediária, e uma camada de saída que gera as respostas da rede neural para um vetor de entrada. A função de ativação da camada de saída e o número de neurônios presente nela dependem da tarefa a ser realizada pela MLP. Por exemplo, em aplicações de regressão é comum o uso de um ou mais neurônios (dependendo se a saída do preditor será um vetor com um ou mais instantes de tempo) com função de ativação linear. Já em aplicações de classificação, a função de ativação pode variar entre a função logística (utilizada no caso binário em que queremos saber se uma entrada pertence ou não a uma classe) e entre a função \textit{softmax} (que gera uma saída para cada classe, indicando a probabilidade de uma entrada pertencer à classe em específico) e, novamente, o número de neurônios de saída também varia com o tipo da classificação.
+Pela figura vemos que, além das $N_L$ camadas intermediárias com neurônios \textit{Perceptron}, a estrutura das redes MLP contém uma camada de entrada, que possui ativação linear e apenas passa o atributo de entrada relacionado ao neurônio específico ($x_1$, $x_2$, ..., $x_k$) para a primeira camada intermediária, e uma camada de saída que gera as respostas da rede neural para um vetor de entrada. A função de ativação da camada de saída e o número de neurônios presentes nela dependem da tarefa a ser realizada pela MLP. Por exemplo, em aplicações de regressão é comum o uso de um ou mais neurônios (dependendo se a saída do preditor será um vetor com um ou mais instantes de tempo) com função de ativação linear. Já em aplicações de classificação, a função de ativação pode variar entre a função logística (utilizada no caso binário em que queremos saber se uma entrada pertence ou não a uma classe) e a função \textit{softmax} (que gera uma saída para cada classe, indicando a probabilidade de uma entrada pertencer à classe em específico) e, novamente, o número de neurônios de saída também varia com o tipo da classificação.
 
-De forma similar a feita em (\ref{eq:mlp-out}), é possível representar a saída do $i$-ésimo neurônio da $l$-ésima camada intermediária, sendo que a anterior a esta possui $n_{l-1}$ neurônios, a $l$-ésima possui $n_l$ neurônios e a estrutura possui $N_L$ camadas intermediárias, da seguinte forma:
+Com base em (\ref{eq:mlp-out}), é possível representar a saída do $i$-ésimo neurônio da $l$-ésima camada intermediária da seguinte forma: 
 \begin{equation}
-	y_{i}^{l} = \varphi^{l} \Big(\sum_{j=1}^{n_{l-1}} w_{ij}^{l} y_{j}^{l-1} + w_{i0}^{l} \Big)
+	y_{i}^{l} = \varphi^{l} \Big(\sum_{j=1}^{n_{l-1}} w_{ij}^{l} y_{j}^{l-1} + w_{i0}^{l} \Big)\mathtt{,}
 \end{equation}
-onde $w_{ij}^{l}$ representa o peso sináptico da conexão que liga o $j$-ésimo neurônio da camada $l-1$ ao $i$-ésimo neurônio da camada $l$, sendo que na primeira camada intermediária os sinais de entrada são os atributos do vetor de entrada, ou seja, $y_{j}^{0} = x_{j}$ com $j = 1, ..., k$ \cite{boccato2013novas}.
+onde $w_{ij}^{l}$ representa o peso sináptico da conexão que liga o $j$-ésimo neurônio da camada $l-1$ ao $i$-ésimo neurônio da camada $l$, sendo que na primeira camada intermediária os sinais de entrada são os atributos do vetor de entrada, ou seja, $y_{j}^{0} = x_{j}$ com $j = 1, ..., k$ \cite{boccato2013novas}. O parâmetro $n_{l-1}$ denota o número de neurônios na camada ($l-1$). 
 
-O processo de treinamento de uma rede neural artificial normalmente é realizado com sequências de vetores de entrada $\mathbf{x}$, chamadas de \textit{mini-batch}, e chamamos um período de treinamento de época (do inglês \textit{epoch}) \cite{geron2019hands}. No treinamento, os pesos sinápticos $\mathbf{w}$ são ajustados em um processo iterativo de forma a minimizar uma função custo $J(\mathbf{w})$ que representa uma medida do erro entre as saídas geradas pela rede e as saídas desejadas (vale mencionar que $\mathbf{w}$ é um vetor com todos os parâmetros da rede). No caso de um problema de regressão ou predição, é comum que a função custo a ser minimizada seja o Erro Quadrático Médio (MSE, do inglês \textit{Mean Squared Error}), assim, o problema envolve otimização não-linear irrestrita \cite{haykin2010neural}.
+O processo de treinamento de uma rede neural artificial normalmente é realizado com sequências de vetores de entrada $\mathbf{x}$, chamadas de \textit{mini-batch}, e chamamos um período de treinamento de época (do inglês \textit{epoch}) \cite{geron2019hands}. No treinamento, os pesos sinápticos $\mathbf{w}$ são ajustados em um processo iterativo de forma a minimizar uma função custo $J(\mathbf{w})$, a qual exprime uma medida do erro entre as saídas geradas pela rede e as saídas desejadas (vale mencionar que $\mathbf{w}$ é um vetor com todos os parâmetros da rede). No caso de um problema de regressão ou predição, é comum que a função custo a ser minimizada seja o Erro Quadrático Médio (MSE, do inglês \textit{Mean Squared Error}). De qualquer forma, o treinamento de uma rede neural dá origem a um problema de otimização não-linear irrestrita \cite{haykin2010neural}.
 
-Para isso, é frequente o uso de algoritmos de otimização baseados em derivadas da função custo $J(\mathbf{w})$, como o método do gradiente descendente estocástico (SGD, do inglês \textit{stochastic gradient descent}), o método de Nesterov (NAG, do inglês \textit{Nesterov Accelerated Gradient}) e o algoritmo Adam (\textit{Adaptive Moment Estimation}) \cite{geron2019hands}. O famoso algoritmo de retropropagação (\textit{backpropagation}) do erro, cuja representação matemática também varia de acordo com o tipo de otimização, é empregado para viabilizar o cálculo das derivadas com relação aos pesos sinápticos dos neurônios situados nas camadas internas da rede, de forma que, para cada \textit{mini-batch} sejam atualizados todos os pesos de todos os neurônios presentes em todas as camadas. 
+Para isso, é frequente o uso de algoritmos de otimização baseados em derivadas da função custo $J(\mathbf{w})$, como o método do gradiente descendente estocástico (SGD, do inglês \textit{stochastic gradient descent}), o método de Nesterov (NAG, do inglês \textit{Nesterov Accelerated Gradient}) e o algoritmo Adam (\textit{Adaptive Moment Estimation}) \cite{geron2019hands}. O famoso algoritmo de retropropagação (\textit{backpropagation}) do erro, cuja representação matemática também varia de acordo com o tipo de otimização, é empregado para viabilizar o cálculo das derivadas com relação aos pesos sinápticos dos neurônios situados nas camadas internas da rede, de forma que, para cada \textit{mini-batch}, seja possível atualizar todos os pesos de todos os neurônios presentes em todas as camadas. 
 
 Nesse caso, é comum dividirmos os métodos de otimização entre métodos de primeira ordem e de segunda ordem. Os métodos de primeira ordem utilizam as derivadas de primeira ordem da função custo, geralmente representadas com o uso do vetor gradiente:
 \begin{equation}
 	\nabla J(\mathbf{w}) = \Big[\frac{\partial J(\mathbf{w})}{\partial w_1} \; ...\;  \frac{\partial J(\mathbf{w})}{\partial w_n} \Big]^T
 \end{equation}
-assim, ao caminharmos na direção contrária à apontada pelo vetor $\nabla J(\mathbf{w})$ obtemos, de forma iterativa, a minimização desejada. Logo, a regra de atualização dos pesos pode ser dada pela forma básica:
+
+Assim, ao caminharmos na direção contrária à apontada pelo vetor $\nabla J(\mathbf{w})$ obtemos, de forma iterativa, a minimização desejada. Logo, a regra de atualização dos pesos pode ser dada pela forma básica:
 \begin{equation}\label{mlp-w-basic}
 	\mathbf{w}[k+1] \leftarrow \mathbf{w}[k] - \eta \nabla J \big[\mathbf{w}[k]\big]
 \end{equation} 
 
 Os algoritmos de otimização mencionados (SGD, Adam, NAG) utilizam variações da regra de atualização de $\mathbf{w}$ indicada em (\ref{mlp-w-basic}).
 
-Para esta pesquisa, optamos por utilizar o algoritmo Nadam (\textit{Nesterov Adaptive Moment Estimation}) \cite{dozat2016incorporating}. O Nadam, como o nome já sugere, incorpora elementos dos algoritmos NAG e Adam, de forma a ter um passo de atualização adaptativo e com acúmulo dos gradientes mais recentes (semelhante a ideia de momento linear de uma partícula), com a utilização do "truque de Nesterov", desenvolvido pelo matemático russo Yurii Nesterov \cite{nesterov1983method}, onde o gradiente não é calculado sobre o ponto atual indicado pelo vetor $\mathbf{w}$, mas sim sobre um ponto levemente à frente, na mesma direção do momento. O conjunto de equações que descreve o algoritmo Nadam é dado por:
+Para esta pesquisa, optamos por utilizar o algoritmo Nadam (\textit{Nesterov Adaptive Moment Estimation}) \cite{dozat2016incorporating}. O Nadam, como o nome já sugere, incorpora elementos dos algoritmos NAG e Adam, de forma a ter um passo de atualização adaptativo e com acúmulo dos gradientes mais recentes (semelhante à ideia de momento linear de uma partícula), com a utilização do "truque de Nesterov", desenvolvido pelo matemático russo Yurii Nesterov \cite{nesterov1983method}, onde o gradiente não é calculado sobre o ponto atual indicado pelo vetor $\mathbf{w}$, mas sim sobre um ponto levemente à frente, na mesma direção do momento. O conjunto de equações que descreve o algoritmo Nadam é dado por:
 \begin{subequations}
 \begin{equation}\label{eq:nadam-1}
  \mathbf{w}' = \mathbf{w} + \beta_{3} \mathbf{m}
@@ -665,19 +668,19 @@ Para esta pesquisa, optamos por utilizar o algoritmo Nadam (\textit{Nesterov Ada
 \end{equation}
 \end{subequations}
 
-A incorporação dos gradientes passados no cálculo do próximo vetor $\mathbf{w}$ é através da equação (\ref{eq:nadam-2}), que define o vetor de momento $\mathbf{m}$. Assim, utilizando a analogia com o momento linear de uma partícula, o gradiente passa ter a ideia de uma força de aceleração que aumenta o valor do momento do vetor $\mathbf{w}$ caso este esteja indo para um ponto ótimo de mínimo local, escapando mais rapidamente de regiões onde não há minimização significativa da função custo.
+A incorporação dos gradientes passados no cálculo do próximo vetor $\mathbf{w}$ ocorre através da equação (\ref{eq:nadam-2}), que define o vetor de momento $\mathbf{m}$. Assim, utilizando a analogia com o momento linear de uma partícula, o gradiente passa ter a ideia de uma força de aceleração que aumenta o valor do momento do vetor $\mathbf{w}$ caso este esteja indo para um ponto ótimo de mínimo local, escapando mais rapidamente de regiões onde não há minimização significativa da função custo.
 
-O hiperparâmetro $\beta_1$ presente em (\ref{eq:nadam-2}) serve tanto para evitar que $\mathbf{m}$ aumente de forma descontrolada, como também para fazer com que, através do termo $(1 - \beta_1)$, uma média exponencialmente decrescente de valores anteriores. Normalmente, $\beta_1$ é inicializado em $0.9$.
+O hiperparâmetro $\beta_1$ presente em (\ref{eq:nadam-2}) serve tanto para evitar que $\mathbf{m}$ aumente de forma descontrolada, como também para fazer com que, através do termo $(1 - \beta_1)$, surja uma média exponencialmente decrescente de valores anteriores. Normalmente, $\beta_1$ é inicializado em $0.9$.
 
 Já o vetor $\mathbf{s}$, definido em (\ref{eq:nadam-3}), serve para evitar que o algoritmo de otimização caminhe com uma direção que não aponte para o ponto ótimo mencionado anteriormente. Além disso, para evitar que esse ajuste na direção cause uma perda significativa na rapidez de convergência do algoritmo, utiliza-se os termos $\beta_2$ e $(1 - \beta_2)$, ou seja, um decaimento exponencial nos valores passados de $\mathbf{s}$. Nesse caso, o hiperparâmetro $\beta_2$ é inicializado em $0.999$ e $\epsilon$ em $10^{-7}$ (para evitar uma divisão por zero).
 
-Por fim, as equações (\ref{eq:nadam-4}) e (\ref{eq:nadam-5}) servem para inicializar os vetores $\mathbf{m}$ e $\mathbf{s}$ com valores próximos de $1$, impulsionando a atualização deles no começo do treinamento.
+Por fim, as equações (\ref{eq:nadam-4}) e (\ref{eq:nadam-5}) servem para corrigir um possível viés dos vetores $\mathbf{m}$ e $\mathbf{s}$ devido à estratégia típica de inicialização (a saber, para valores próximos a $0$). 
 
-É importante mencionar que os métodos de otimização aqui mencionados são métodos de busca local, ou seja, têm convergência esperada para um mínimo local, que não necessariamente é o mínimo global da função custo para a aplicação. Dizemos também que esses pontos mínimos possuem "bacias de atração" que, para valores adequados da taxa de aprendizado $\eta$, atrai o vetor de parâmetros $\mathbf{w}$ \cite{hastie2009elements}.
+É importante mencionar que os métodos de otimização aqui mencionados são métodos de busca local, ou seja, têm convergência esperada para um mínimo local, que não necessariamente é o mínimo global da função custo para a aplicação. Dizemos também que esses pontos mínimos possuem "bacias de atração" que, para valores adequados da taxa de aprendizado $\eta$, atraem o vetor de parâmetros $\mathbf{w}$ \cite{hastie2009elements}.
 
-Algo presente durante o treinamento da rede neural é, ou desaparecimento dos gradientes (do inglês \textit{vanishing gradients problem}) nas camadas inferiores da rede, ou o aumento desenfreado desses gradientes (do inglês \textit{exploding gradients problem}) nas camadas citadas, que é mais comum para redes recorrentes. Para evitar que isso ocorra, normalmente são utilizadas camadas que realizam uma normalização do \textit{batch} de vetores de entrada (BN, do inglês \textit{Batch Normalization}), sendo posicionadas antes ou depois das camadas intermediárias da rede \cite{geron2019hands}.
+Um fenômeno possivelmente presente durante o treinamento da rede neural é o desaparecimento dos gradientes (do inglês \textit{vanishing gradients problem}) nas camadas inferiores da rede, ou o aumento desenfreado desses gradientes (do inglês \textit{exploding gradients problem}) nas camadas citadas, que é mais comum para redes recorrentes. Para evitar que isso ocorra, normalmente são utilizadas camadas que realizam uma normalização do \textit{batch} de vetores de entrada (BN, do inglês \textit{Batch Normalization}), sendo posicionadas antes ou depois das camadas intermediárias da rede \cite{geron2019hands}.
 
-O que a normalização faz, é centrar todas as instâncias de vetores de entrada presentes no atual \textit{mini-batch} ao redor do zero e as normaliza. Logo, podemos representar a transformação aplicada com as seguintes equações:
+De forma resumida, o que a BN faz é remover a média e padronizar os desvios de todas as variáveis em sua presente, conforme a informação disponível no \textit{mini-batch} atual, para, depois, redefinir tais medidas com parâmetros que devem ser determinados pelo treinamento. Ou seja, a camada BN tenta identificar a forma de melhor remodelar as variáveis de entrada em termos de suas médias e desvios padrão. A transformação aplicada pela BN pode ser representada pelas seguintes equações: 
 \begin{subequations}
 \begin{equation}\label{eq:bn-1}
  \boldsymbol{\mu}_{B} = \frac{1}{d} \sum_{i=1}^{d} \mathbf{x}_{i} 
@@ -692,15 +695,15 @@ O que a normalização faz, é centrar todas as instâncias de vetores de entrad
 \mathbf{z}_{i} = \boldsymbol{\gamma} \otimes \hat{\mathbf{x}}_{i} + \boldsymbol{\beta}
 \end{equation}
 \end{subequations}
-sendo $\boldsymbol{\mu}_{B}$ e $\boldsymbol{\sigma}_{B}$ os vetores com as médias e desvio-padrão para cada atributo de entrada do atual \textit{mini-batch} (este contendo $d$ vetores $\mathbf{x}$), $\hat{\mathbf{x}}_{i}$ é o $i$-ésimo vetor de entrada centrado em zero e normalizado, $\boldsymbol{\gamma}$ é o vetor que pondera cada um dos atributos de $\hat{\mathbf{x}}_{i}$, $\boldsymbol{\beta}$ tem um termo de \textit{offset} para cada atributo normalizado, $\epsilon$ novamente é um termo pequeno (geralmente na ordem de $10^{-5}$) para evitar uma divisão por zero e, por fim, $\mathbf{z}_{i}$ é a saída da camada de \textit{batch normalization}.
+sendo $\boldsymbol{\mu}_{B}$ e $\boldsymbol{\sigma}_{B}$ os vetores com as médias e desvios-padrão para cada atributo de entrada do atual \textit{mini-batch} (este contendo $d$ vetores $\mathbf{x}$), $\hat{\mathbf{x}}_{i}$ é o $i$-ésimo vetor de entrada centrado em zero e normalizado, $\boldsymbol{\gamma}$ é o vetor que pondera cada um dos atributos de $\hat{\mathbf{x}}_{i}$, $\boldsymbol{\beta}$ tem um termo de \textit{offset} para cada atributo normalizado, $\epsilon$ novamente é um termo pequeno (geralmente na ordem de $10^{-5}$) para evitar uma divisão por zero e, por fim, $\mathbf{z}_{i}$ é a saída da camada de \textit{batch normalization}.
 
 Os hiperparâmetros $\boldsymbol{\beta}$ e $\boldsymbol{\gamma}$ controlam o deslocamento e o escalonamento, respectivamente, de cada atributo para um vetor de entrada. Essas variáveis são parametrizadas durante o treinamento da rede neural de forma bem eficiente dependendo da quantidade e do tamanho dos \textit{mini-batches}. 
 
-Também vale mencionar que, para o conjunto de dados de validação, ou seja, o conjunto de dados que, após o ajuste dos pesos $\mathbf{w}$ no conjunto de treinamento, é verificado se a rede neural está generalizando os resultados, evitando o sobreajuste (do inglês \textit{overfitting}), são calculados outros vetores de valores de média ($\boldsymbol{\mu}_{B}'$) e desvio-padrão ($\boldsymbol{\sigma}_{B}'$). Assim, o processo descrito anteriormente também é realizado sobre esses dados.
+Também vale mencionar que, para o conjunto de dados de validação, ou seja, o conjunto de dados que, após o ajuste dos pesos $\mathbf{w}$ no conjunto de treinamento, é verificado se a rede neural está generalizando os resultados, evitando o sobreajuste (do inglês \textit{overfitting}), são calculados outros vetores de valores de média ($\boldsymbol{\mu}_{B}'$) e desvios-padrão ($\boldsymbol{\sigma}_{B}'$), a partir de médias móveis com decaimento exponencial. Assim, o processo descrito anteriormente também é realizado sobre esses dados.
 
-Por fim, o grande apelo das redes \textit{Multilayer Perceptron} é que elas tem a capacidade de aproximação universal, ou seja, são capazes de aproximar qualquer mapeamento contínuo num domínio compacto com um nível de erro arbitrariamente pequeno. Até mesmo uma MLP com uma única camada intermediária e camada de saída linear já possui esta capacidade \cite{cybenko1989approximation, hornik1989multilayer}. Infelizmente, esse teorema não indica a quantidade de neurônios necessária na(s) camada(s) intermediária(s), muito menos um método para ajustar o vetor $\mathbf{w}$ da rede para garantir a solução ótima.
+Por fim, o grande apelo das redes \textit{Multilayer Perceptron} é que elas possuem capacidade de aproximação universal, ou seja, são capazes de aproximar qualquer mapeamento contínuo num domínio compacto com um nível de erro arbitrariamente pequeno. Até mesmo uma MLP com uma única camada intermediária e camada de saída linear já possui esta capacidade \cite{cybenko1989approximation, hornik1989multilayer}. Infelizmente, esse teorema não indica a quantidade de neurônios necessária na(s) camada(s) intermediária(s), muito menos um método para ajustar o vetor $\mathbf{w}$ da rede para garantir a solução ótima.
 
-Além disso, para o propósito deste trabalho de pesquisa, que envolve sistemas dinâmicos, ter acesso a um histórico e a uma memorização dos padrões anteriores de entrada, na teoria, aumentaria a precisão da predição das séries temporais. Mesmo que as redes MLP tenham capacidade de aproximação universal, é possível aumentar a eficiência desse processo caso fossem utilizadas estruturas recorrentes \cite{connor1994recurrent, boccato2013novas}.
+Além disso, para o propósito deste trabalho de pesquisa, que envolve sistemas dinâmicos, ter acesso a um histórico e a uma memorização dos padrões anteriores de entrada, na teoria, aumentaria a precisão da predição das séries temporais. Mesmo que as redes MLP tenham capacidade de aproximação universal, é possível aumentar a flexibilidade desse processo caso fossem utilizadas estruturas recorrentes \cite{connor1994recurrent, boccato2013novas}.
 
 Logo, incluímos na análise alguns modelos de redes neurais recorrentes. Discutiremos mais sobre a estrutura e o funcionamento delas na próxima seção.
 
@@ -713,7 +716,7 @@ Diferentemente das redes MLP que são \textit{feedforward}, ou seja, que não re
 \label{fig:recorrente-cell}
 \end{figure}
 
-Note que a saída é realimentada (com um atraso temporal) para a entrada do próprio neurônio, assim a célula recorrente recebe tanto o vetor de entradas $\mathbf{x}(t)$ assim como a saída no instante anterior $y(t-1)$ que, devido a relação de recorrência, traz as saídas em todos os instantes anteriores $y(t-k)$ com $1 < k \leq t$ (considerando $y(0)$). Dessa forma, como pode ser visto na Figura \ref{fig:recorrente-cell} (direita), é possível representar essa rede através do tempo, através de um processo chamado desenrolamento da rede no tempo (do inglês \textit{unrolling the network through time}) \cite{geron2019hands}.
+Note que a saída é realimentada (com um atraso temporal) para a entrada do próprio neurônio. Assim, a célula recorrente recebe tanto o vetor de entradas $\mathbf{x}(t)$ assim como a saída no instante anterior $y(t-1)$ que, devido à relação de recorrência, reflete implicitamente as saídas em todos os instantes anteriores $y(t-k)$ com $1 < k \leq t$ (considerando $y(0)$). Dessa forma, como pode ser visto na Figura \ref{fig:recorrente-cell} (direita), é possível representar essa rede ao longo do tempo, através de um processo chamado desenrolamento da rede no tempo (do inglês \textit{unrolling the network through time}) \cite{geron2019hands}.
 
 Uma camada recorrente é formada de maneira similar à célula, com a diferença que cada neurônio recebe, além do vetor de entradas $\mathbf{x}(t)$, um vetor de saídas $\mathbf{y}(t-1)$, que contém as saídas de todos as unidades recorrentes da camada em instantes anteriores, conforme a Figura \ref{fig:recorrente-camada} indica. 
 \begin{figure}[H]
@@ -723,14 +726,14 @@ Uma camada recorrente é formada de maneira similar à célula, com a diferença
 \label{fig:recorrente-camada}
 \end{figure}
 
-Dessa forma, cada célula recorrente possui dois vetores de pesos, $\mathbf{w}_x$ e $\mathbf{w}_y$. O primeiro pondera o vetor de entradas $\mathbf{x}(t)$, de forma similar à apresentada anteriormente na MLP. Já o vetor $\mathbf{w}_y$ pondera o vetor das saídas dos estados passados $\mathbf{y}(t-1)$.
+Dessa forma, cada célula recorrente possui dois vetores de pesos, $\mathbf{w}_x$ e $\mathbf{w}_y$. O primeiro pondera o vetor de entradas $\mathbf{x}(t)$, de forma similar à apresentada anteriormente na MLP, enquanto o vetor $\mathbf{w}_y$ pondera o vetor das saídas dos estados passados $\mathbf{y}(t-1)$.
 
 Logo, pode-se formar uma camada recorrente agrupando os vetores de pesos de cada célula nas matrizes $\mathbf{W}_x$ e $\mathbf{W}_y$, sendo que a saída da camada, isto é, $\mathbf{y}(t)$, é dada por:
 \begin{equation}\label{eq:rnn-layer}
 \mathbf{y}(t) = \varphi \big(\mathbf{W}_x \mathbf{x}(t) + \mathbf{W}_y \mathbf{y}(t-1) + \mathbf{b} \big)
 \end{equation}
 
-Assim, como o vetor $\mathbf{y}(t-1)$ presente em (\ref{eq:rnn-layer}) contém, implicitamente, a saída da camada no instante $t$ acaba sendo influenciada por todas as entradas anteriores ($\mathbf{x}(0)$, $\mathbf{x}(1)$, ... $\mathbf{x}(t-1)$). Devido a isso, é dito que a rede recorrente possui uma memória dos estados anteriores \cite{geron2019hands}. 
+Assim, devido à presença do vetor $\mathbf{y}(t-1)$ em (\ref{eq:rnn-layer}), a saída da camada recorrente no instante $t$ acaba sendo influenciada por todas as entradas anteriores ($\mathbf{x}(0)$, $\mathbf{x}(1)$, ... $\mathbf{x}(t-1)$). Devido a isso, é dito que a rede recorrente possui uma memória dos estados anteriores \cite{geron2019hands}. 
 
 Em geral, o estado atual de uma célula é representado através de uma função $\mathbf{h}(t)$, de forma a termos a seguinte relação entre $\mathbf{h}(t)$ e $\mathbf{y}(t)$:
 \begin{equation}
@@ -748,9 +751,9 @@ Nas células mais básicas apresentadas anteriormente, temos que $f(\mathbf{x}(t
 \label{fig:recorrente-cell-geral}
 \end{figure}
 
-A saída de uma RNN varia com a aplicação. Para a predição de séries temporais, utilizamos o arranjo sequência para sequência (do inglês \textit{sequence-to-sequence network}), que a rede recebe uma sequência de entradas e gera uma sequência de saídas. Por exemplo, sendo $x(t)$ o valor da série temporal, $y(t)$ é a estimação da rede para o instante $t + L$, sendo $L$ o passo de predição. Logo, fornecendo em $t=0$ vetores de entrada um a um, as saídas serão as estimações dos valores para os instantes $1$ a $N + L$, sendo $N$ o número de amostras da série. 
+A saída de uma RNN varia com a aplicação. Para a predição de séries temporais, utilizamos o arranjo sequência para sequência (do inglês \textit{sequence-to-sequence network}). Neste caso, a rede recebe uma sequência de entradas e gera uma sequência de saídas. Por exemplo, sendo $x(t)$ o valor da série temporal, $y(t)$ é a estimação da rede para o instante $t + L$, sendo $L$ o passo de predição. Logo, fornecendo em $t=0$ vetores de entrada um a um, as saídas serão as estimações dos valores para os instantes $1$ a $N + L$, sendo $N$ o número de amostras da série. 
 
-Um outro tipo de saída possível para a predição de séries temporais é o arranjo sequência para vetor (do inglês \textit{sequence-to-vector network}), onde ignoramos todas as saídas com exceção da última. Assim, com esse arranjo é possível predizer os próximos $L$ valores desconhecidos da série. Essa configuração também é muito utilizada para gerar, com base em uma frase, um \textit{score} para o sentimento que foi transmitido pelo autor \cite{geron2019hands}.
+Outro tipo de configuração possível para a predição de séries temporais é o arranjo sequência para vetor (do inglês \textit{sequence-to-vector network}), onde ignoramos todas as saídas com exceção da última. Assim, com esse arranjo é possível predizer os próximos $L$ valores desconhecidos da série. Essa configuração também é muito utilizada para gerar, com base em uma frase, um \textit{score} para o sentimento que foi transmitido pelo autor \cite{geron2019hands}.
 
 Além disso, também é possível termos um arranjo vetor para sequência (do inglês \textit{vector-to-sequence network}). Esse tipo não é tanto utilizada para a predição de séries temporais, sendo mais utilizada para gerar legendas para imagens. 
 
@@ -762,11 +765,11 @@ Por fim, podemos combinar o esquema sequência-vetor seguido do vetor-sequência
 \label{fig:rnn-output-style}
 \end{figure}
 
-O treinamento de uma rede recorrente também utiliza a técnica de retropropagação do erro, citada anteriormente quando foi discutida a rede MLP. A diferença é que o erro também é retropropagado para $k$ instantes anteriores de tempo. Dessa forma, essa técnica é chamada de retropropagação do erro através do tempo (BPTT, do inglês \textit{backpropagation through time}).
+O treinamento de uma rede recorrente também utiliza a técnica de retropropagação do erro, citada anteriormente quando foi discutida a rede MLP. A diferença é que o erro também deve ser retropropagado para $k$ instantes anteriores de tempo. Esta extensão da técnica é chamada de retropropagação do erro através do tempo (BPTT, do inglês \textit{backpropagation through time}).
 
 Para compreender os pontos principais do funcionamento desse algoritmo, convém considerar a rede desdobrada no tempo (Figura \ref{fig:recorrente-camada}). Dessa forma, pode-se perceber que uma rede recorrente desdobrada no tempo é bem semelhante a uma rede \textit{feedforward} profunda, em que as várias camadas que representam a rede em instantes de tempo diferente compartilham os mesmos parâmetros.
 
-Nesse caso, a entrada de camada camada da rede desdobrada corresponde ao vetor de entrada para um determinado instante de tempo. Logo, a camada correspondente ao primeiro instante de tempo recebe a entrada $\mathbf{x}(t-k)$, a camada seguinte a ela recebe a entrada $\mathbf{x}(t-k+1)$, e isso ocorre até a camada mais recente no tempo da rede, que recebe a entrada $\mathbf{x}(t)$. Também é válido mencionar que as saídas de determinados instantes de tempo podem ser ignoradas ao calcular a função custo $J$ para a rede desdobrada, assim como indica a Figura \ref{fig:rnn-backpropagation}.
+Nesse caso, a entrada de camada da rede desdobrada corresponde ao vetor de entrada para um determinado instante de tempo. Logo, a camada correspondente ao primeiro instante de tempo recebe a entrada $\mathbf{x}(t-k)$, a camada seguinte a ela recebe a entrada $\mathbf{x}(t-k+1)$, e isso ocorre até a camada mais recente no tempo da rede, que recebe a entrada $\mathbf{x}(t)$. Também é válido mencionar que as saídas de determinados instantes de tempo podem ser ignoradas ao calcular a função custo $J$ para a rede desdobrada, assim como indica a Figura \ref{fig:rnn-backpropagation}.
 \begin{figure}[!ht]
 \centering
 \includegraphics[scale = 0.3]{rnn-backpropagation.pdf}
@@ -774,13 +777,13 @@ Nesse caso, a entrada de camada camada da rede desdobrada corresponde ao vetor d
 \label{fig:rnn-backpropagation}
 \end{figure}
 
-Logo, o algoritmo calcula a função custo $J$, considerando as saídas relevantes, e os gradientes dessa função para os pesos $\mathbf{W}$ e $\mathbf{b}$ são propagados em direção aos instantes de tempo anteriores (ignorando os instantes com saídas irrelevantes) e, como esses pesos são os mesmos em todas as camadas da rede desdobrada, eles são ajustados combinando a direção do gradiente calculado em cada instante de tempo. Essa é a essência da retropropagação do erro através do tempo.
+Logo, o algoritmo calcula a função custo $J$, considerando as saídas relevantes, e os gradientes dessa função para os pesos $\mathbf{W}$ e $\mathbf{b}$ são propagados em direção aos instantes de tempo anteriores (ignorando os instantes com saídas irrelevantes) e, como esses pesos são os mesmos em todas as camadas da rede desdobrada, eles são ajustados combinando a direção do gradiente calculado em cada instante de tempo. Este processo sintetiza a essência da retropropagação do erro através do tempo.
 
 É importante mencionar que essa técnica também está sujeita a obstáculos semelhantes aos mencionados anteriormente sobre a retropropagação do erro tradicional, como gradientes explosivos e/ou desvanecimento dos mesmos. Além disso, como a rede recorrente é um sistema dinâmico, podem ocorrer problemas com relação à instabilidade do processo de treinamento. 
 
 Para mitigar esses problemas, são utilizadas técnicas de \textit{gradient clipping} e normalizações \cite{geron2019hands}, além do uso de funções de ativação baseadas nas funções tangente hiperbólica ($\tanh$) e logística ($\sigmoid$), devido às saturações das mesmas para entradas muito grandes, ou muito pequenas (Figura \ref{fig:mlp-activations}).
 
-A célula recorrente apresentada aqui é bem básica, aprendendo apenas padrões curtos. Assim, na seção seguinte apresentaremos a rede recorrente LSTM, que possui uma estrutura mais elaborada e é capaz de aprender padrões mais complexos.
+A célula recorrente apresentada aqui é bem básica, aprendendo apenas padrões curtos. Assim, na seção seguinte apresentaremos a rede recorrente LSTM, que possui uma estrutura mais elaborada e é capaz de aprender padrões temporais mais complexos.
 
 \subsubsection{Redes \textit{Long Short-term Memory} (LSTM)}
 
@@ -917,15 +920,15 @@ A primeira operação realizada nesse vetor é a multiplicação elemento a elem
 
 Após a incorporação de novas informações na operação de soma elemento a elemento ($\oplus$), o vetor $\mathbf{c}(t-1)$ é mandado para a saída da célula e uma cópia sua passa pela função tangente hiperbólica e é filtrado pela porta de saída (do inglês, \textit{output gate}), formando o vetor de curto prazo $\mathbf{h}(t)$, que é também a saída $\mathbf{y}(t)$.
 
-A entrada do neurônio LSTM, além de incluir o vetor $\mathbf{c}(t)$, também inclui os vetores $\mathbf{h}(t-1)$ e $\mathbf{x}(t)$, e com eles são formados os vetores $\mathbf{f}(t)$, $\mathbf{i}(t)$, $\tilde{\mathbf{c}}(t)$ e $\mathbf{o}(t)$.
+A entrada do neurônio LSTM, além de incluir o vetor $\mathbf{c}(t)$, também inclui os vetores $\mathbf{h}(t-1)$ e $\mathbf{x}(t)$. A partir destas informações, são gerados os vetores $\mathbf{f}(t)$, $\mathbf{i}(t)$, $\tilde{\mathbf{c}}(t)$ e $\mathbf{o}(t)$.
 
 Perceba que o vetor $\tilde{\mathbf{c}}(t)$ é a saída de uma célula recorrente básica, considerando a tangente hiperbólica como função de ativação. Ou seja, ela é composta pela ponderação entre os estados anteriores de curto prazo $\mathbf{h}(t)$ e a entrada atual $\mathbf{x}(t)$, além do vetor de \textit{bias} $\mathbf{b}(t)$. A LSTM guarda as partes mais relevantes do vetor $\tilde{\mathbf{c}}(t)$ no vetor $\mathbf{c}(t-1)$ através da soma elemento a elemento mencionada anteriormente.
 
-Os outros vetores restantes representam operações de controle do fluxo de informação dentro do neurônio, cada termo variando de $0$ a $1$ devido a função logística ($\sigma$). Assim, ao serem multiplicadas elemento a elemento, controlam quais informações serão eliminadas.
+Os outros vetores restantes representam operações de controle do fluxo de informação dentro do neurônio, cada termo variando de $0$ a $1$ devido à função logística ($\sigma$). Assim, ao serem multiplicadas elemento a elemento, controlam quais informações serão eliminadas.
 
 No caso, $\mathbf{f}(t)$ controla quais partes de $\mathbf{c}(t-1)$ serão apagadas, $\mathbf{i}(t)$ controla quais informações de $\tilde{\mathbf{c}}(t)$ serão agregadas ao vetor $\mathbf{c}(t-1)$ e o vetor $\mathbf{o}(t)$ controla quais componentes de $\mathbf{c}(t-1)$ deverão formar a saída $\mathbf{y}(t)$ e o vetor de curto prazo $\mathbf{h}(t)$.
 
-O conjunto de equações abaixo mostra as operações presentes na estrutura interna da célula LSTM, assim como a saída para o instante $\mathbf{y}(t)$, presente no vetor $\mathbf{h}(t)$:
+O conjunto de equações abaixo mostra as operações presentes na estrutura interna da célula LSTM, assim como a saída para o instante $t$, denotada por $\mathbf{y}(t)$:
 \begin{subequations}
 \begin{equation}
 \mathbf{f}(t) = \sigma(\mathbf{W}_f [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_f)
@@ -951,13 +954,13 @@ O conjunto de equações abaixo mostra as operações presentes na estrutura int
 
 Resumidamente, as LSTMs manipulam o vetor de longo prazo $\mathbf{c}(t)$, aprendendo durante o treinamento o que deve ser guardado nele, o que deve ser descartado e o que deve ser aproveitado para gerar a saída $\mathbf{y}(t)$ e o vetor de curto prazo $\mathbf{h}(t)$. Dessa forma, podemos dizer que a atualização do vetor de estados $\mathbf{c}(t)$ é feita com o descarte de informações e a incorporação de novidades vindas da entrada.
 
-Depois de uma exposição sobre os modelos preditores que utilizaremos nessa pesquisa, concluiremos com os próximos passos do estudo, já definindo quais são os sistemas caóticos que analisaremos com as redes neurais artificiais citadas.
+Depois de uma exposição sobre os modelos preditores que utilizaremos nessa pesquisa, concluiremos este relatório com a indicação dos próximos passos do estudo, já definindo quais são os sistemas caóticos que analisaremos com as redes neurais artificiais citadas.
 
 \section{Próximos Passos}
 
 Como nessa primeira parte da iniciação o foco foi uma pesquisa bibliográfica dos temas a serem estudados nela, a segunda metade será voltada para a aplicação em si da predição das séries temporais de sistemas caóticos.
 
-Para os experimentos computacionais, optamos pelas séries temporais do Mapa Logístico, descrito pelo cientista Robert May \cite{may1976simple}, o Mapa de Hénon, apresentado pelo astrônomo e matemático francês Michel Hénon \cite{henon1976two}, a famosa série Mackey-Glass, dos cientistas Michael Mackey e Leon Glass \cite{mackey1977oscillation}, e o clássico Sistema de Lorenz, um dos  mais incríveis e fundamentais trabalhos de sistemas caóticos, introduzido pelo matemático e meteorologista Edward Norton Lorenz \cite{lorenz1963deterministic}, de forma a criar cenários diversificados para a análise do comportamento das redes neurais, com sistemas a tempo contínuo (Sistema de Lorenz e Equações de Mackey-Glass) e sistemas a tempo discreto (Mapa de Hénon e Mapa Logístico).
+Para os experimentos computacionais, optamos pelas séries temporais associadas ao  mapa logístico, descrito pelo cientista Robert May \cite{may1976simple}, ao mapa de Hénon, apresentado pelo astrônomo e matemático francês Michel Hénon \cite{henon1976two}, ao sistema de Mackey-Glass, dos cientistas Michael Mackey e Leon Glass \cite{mackey1977oscillation}, e ao clássico sistema de Lorenz, um dos  mais incríveis e fundamentais trabalhos de sistemas caóticos, introduzido pelo matemático e meteorologista Edward Norton Lorenz \cite{lorenz1963deterministic}. Este grupo de séries foi selecionado com o intuito de criar cenários diversificados para a análise do comportamento das diferentes redes neurais, considerando sistemas a tempo contínuo (Lorenz e Mackey-Glass) e sistemas a tempo discreto (mapa de Hénon e mapa logístico). 
 
 Em seguida, determinaremos aspectos mais fundamentais das redes neurais que serão utilizadas, como, por exemplo, a arquitetura empregada, assim como as métricas para o treinamento e análise. Para essa etapa, também planejamos um estudo das redes GRU (do inglês \textit{Gated Recurrent Unit}) \cite{cho2014learning} e ESN (do inglês \textit{Echo State Network}) \cite{jaeger2007echo}, sendo que a última, em outros trabalhos de pesquisa, já indicou um bom desempenho preliminar no contexto de predição de séries temporais originadas por sistemas caóticos \cite{boccato2013novas}.
 
