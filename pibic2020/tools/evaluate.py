@@ -10,6 +10,7 @@ from pibic2020.tools import timeseries
 from pibic2020.models import mlp_model
 from pibic2020.models import lstm_model
 from pibic2020.models import gru_model
+from pibic2020.models import esn_model
 
 def evaluate(modelo, dados, config, k_set, scaler=None, L=3, tam_teste=0.15, tam_val=0.1, verbose=1):
     """
@@ -22,7 +23,7 @@ def evaluate(modelo, dados, config, k_set, scaler=None, L=3, tam_teste=0.15, tam
     Parâmetros:
     -----------
     modelo: str
-        String com o modelo, podendo ser "MLP", "LSTM", ou "GRU"
+        String com o modelo, podendo ser "MLP", "LSTM", "GRU", ou "ESN"
     dados: np.ndarray
         Array com a série temporal
     config: dict
@@ -48,7 +49,7 @@ def evaluate(modelo, dados, config, k_set, scaler=None, L=3, tam_teste=0.15, tam
     if not (type(modelo) is str):
         raise TypeError("O modelo deve ser uma string!")
 
-    if not ((modelo == "MLP") or (modelo == "LSTM") or (modelo == "GRU")):
+    if not ((modelo == "MLP") or (modelo == "LSTM") or (modelo == "GRU") or (modelo == "ESN")):
         raise ValueError("O nome do modelo deve ser um dos mencionados!")
     
     if not (type(dados) is np.ndarray):
@@ -98,8 +99,13 @@ def evaluate(modelo, dados, config, k_set, scaler=None, L=3, tam_teste=0.15, tam
         # inicializa o objeto de serie temporal para o K e L dados
         serie_temporal = timeseries.SerieTemporal(x, K+1, L)
 
-        # divide os dados em conjuntos de treino, teste e validação com os parâmetros dados
-        X_treino, X_teste, X_val, y_treino, y_teste, y_val = serie_temporal.dividir_treino_teste_validacao(tam_teste, tam_val)
+        # divide os dados em conjuntos de treino, teste e validação com os parâmetros dados se for pra MLP, LSTM ou GRU
+        if (modelo != "ESN"):
+            X_treino, X_teste, X_val, y_treino, y_teste, y_val = serie_temporal.dividir_treino_teste_validacao(tam_teste, tam_val)
+
+        else:
+            # ou apenas treino e teste se for a ESN
+            X_treino, X_teste, y_treino, y_teste = serie_temporal.dividir_treino_teste(tam_teste)
 
         # inicializa o modelo e configura ele para esse K
         if (modelo=='MLP'):
@@ -121,18 +127,25 @@ def evaluate(modelo, dados, config, k_set, scaler=None, L=3, tam_teste=0.15, tam
             model = gru_model.ModeloGRU((K+1, 1), name=config["name"])
             model.criar_modelo(n_units=config["n_units"],
                                init_mode=config["init_mode"])    
-            model.montar(learning_rate=config["learning_rate"])        
+            model.montar(learning_rate=config["learning_rate"])
+
+        elif (modelo=='ESN'):
+            model = esn_model.ModeloESN(n_neurons=config["n_neurons"], 
+                                        spectral_radius=config["spectral_radius"])        
 
         # avalia esse modelo e salva os resultados na matriz
         if (modelo=='MLP'):
             mse_mean, mse_stddev = model.avaliar(X_treino, X_teste, X_val,
                                                   y_treino, y_teste, y_val,
                                                   batch_size=config["batch_size"])
-        else:
+        elif ((modelo=='LSTM') or (modelo=='GRU')):
             mse_mean, mse_stddev = model.avaliar(X_treino, X_teste, X_val,
                                                   y_treino, y_teste, y_val,
                                                   batch_size=config["batch_size"],
                                                   scaler=scaler)
+        elif (modelo=='ESN'):
+            mse_mean, mse_stddev = model.avaliar(X_treino, X_teste,
+                                                 y_treino, y_teste)
 
         results[K, :] = np.array([K+1, mse_mean, mse_stddev])
 

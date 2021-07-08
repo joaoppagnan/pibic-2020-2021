@@ -2,8 +2,11 @@
 
 from typing import Type
 import numpy as np
-from numpy.linalg import pinv, eigvals, inv
+from numpy.linalg import pinv, eigvals
 from sklearn.base import BaseEstimator
+
+import statistics
+from sklearn.metrics import mean_squared_error
 
 class ModeloESN(BaseEstimator):
     
@@ -207,7 +210,85 @@ class ModeloESN(BaseEstimator):
 
         return y_predicao
 
-    def _resetar_rede(self):
+    def avaliar(self, X_treino, X_teste, y_treino, y_teste, 
+                n_repeticoes = 5, verbose=0):
+        """
+        Definição:
+        ----------
+        Função para treinar a rede e prever os dados n_repeticoes de vezes de forma a obter 
+        uma média e um desvio padrão para o erro quadrático médio
+        
+        Ela deve ser executada antes do fit!
+        
+        Parâmetros:
+        -----------
+        X_treino: np.ndarray
+            Conjunto de entradas para o treinamento
+        X_teste: np.ndarray
+            Conjunto de entradas para os dados de teste            
+        y_treino: np.ndarray
+            Conjunto de saidas para o treinamento
+        y_teste: np.ndarray
+            Conjunto de saídas para o teste      
+        n_repeticoes: int
+            Número de repetições a serem feitas
+        verbose: int
+            Se vai retornar mensagens ao longo do processo (0 ou 1)
+
+        Retorna:
+        --------
+        A média e desvio padrão do erro quadrático médio para essa rede neural,
+        além de uma mensagem com essas informações
+        """
+
+        if not (type(n_repeticoes) is int):
+            raise TypeError("O número de repetições deve ser um inteiro!")
+        
+        if not (type(X_treino) is np.ndarray):
+            raise TypeError("Os dados de entrada de treino devem ser um array do numpy!")  
+
+        if not (type(X_teste) is np.ndarray):
+            raise TypeError("Os dados de entrada de teste devem ser um array do numpy!")            
+            
+        if not (type(y_treino) is np.ndarray):
+            raise TypeError("Os dados de saída de treino devem ser um array do numpy!")  
+
+        if not (type(y_teste) is np.ndarray):
+            raise TypeError("Os dados de saída de teste devem ser um array do numpy!")
+
+        if not ((type(verbose) is int) and
+                ((verbose == 0) or
+                 (verbose == 1)
+                 (verbose == 2))):
+            raise ValueError("O valor de verbose deve ser um int igual a 0, 1 ou 2!")  
+
+        conjunto_mse = []
+        
+        for n in range(0, n_repeticoes):
+            if (verbose == 2):
+                print("Testando para a repetição de número " + str(n+1))
+            modelo = self
+            
+            modelo.fit(X_treino, y_treino)
+            
+            y_pred = modelo.predict(X_teste)
+
+            mse = mean_squared_error(y_teste, y_pred)
+            if (verbose == 2):
+                print("MSE para essa repetição: " + str(mse))
+            conjunto_mse.append(mse)
+            modelo._reset()
+        
+        mse_med = statistics.mean(conjunto_mse)
+        mse_dev = statistics.stdev(conjunto_mse)
+        
+        if (verbose == 1):
+            print("Média do erro quadrático médio: " + str(mse_med))
+            print("Desvio padrão do erro quadrático médio: " + str(mse_dev) + "\n")
+        
+        return mse_med, mse_dev        
+
+    def _reset(self):
         """
         Descrição:
         ----------
