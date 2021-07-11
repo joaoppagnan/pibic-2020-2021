@@ -1,4 +1,4 @@
-# henonmap.py
+# henon.py
 
 import numpy as np
 

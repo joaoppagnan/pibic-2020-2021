@@ -59,3 +59,6 @@ A organização dos diretórios foi baseada na realizada no repositório [eht_im
 
 ## Especificações
 O projeto está sendo desenvolvido em *Python* na versão **3.8.0**, mais precisamente, rodando num *docker*  cujo sistema operacional *Linux* é a distribuição *Ubuntu 18.04 LTS*. A ferramenta utilizada para o trabalho com as redes neurais foi o *Tensor Flow*, na versão **2.4.1**, utilizando uma *GTX 1070 Ti*, com os *drivers* da *NVIDIA* **460.39**, **Cuda 11.0**, **cuDNN 8.0.4** para auxiliar no treinamento.
+
+## Observação
+Como o intuito dos *notebooks* do **Jupyter** era de serem testes exploratórios para aí sim implementar as funções, o código presente neles provavelmente está desatualizado. Se baseie nos códigos presentes nos diretórios do pacote dessa pesquisa caso queira fazer alterações. 

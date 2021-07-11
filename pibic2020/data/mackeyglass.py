@@ -1,4 +1,4 @@
-# mackeyglassequations.py
+# mackeyglass.py
 
 import numpy as np
 from jitcdde import jitcdde, y, t
@@ -134,7 +134,7 @@ class MackeyGlass:
             condicoes_iniciais.append(condicao)
         
         equacao = self._equacao()
-        DDE = jitcdde(equacao)
+        DDE = jitcdde(equacao, verbose=False)
         
         DDE.add_past_points(condicoes_iniciais)
         DDE.step_on_discontinuities()
