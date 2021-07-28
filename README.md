@@ -50,7 +50,6 @@ Em seguida, copie e cole o último *link* fornecido no seu navegador. O *Jupyter
 
 Para simplificar a sintaxe, é recomendado instalar o pacote feito por mim para realizar essa pesquisa. É possível fazer isso rodando os seguintes comandos na pasta raiz desse projeto:
 ```
-python3 setup.py sdist bdist_wheel
 python3 setup.py install
 ```
 

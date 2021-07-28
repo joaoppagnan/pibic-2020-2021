@@ -268,16 +268,14 @@ class ModeloESN(BaseEstimator):
             if (verbose == 2):
                 print("Testando para a repetição de número " + str(n+1))
             modelo = self
-            
+            modelo._reset()
             modelo.fit(X_treino, y_treino)
-            
             y_pred = modelo.predict(X_teste)
 
             mse = mean_squared_error(y_teste, y_pred)
             if (verbose == 2):
                 print("MSE para essa repetição: " + str(mse))
             conjunto_mse.append(mse)
-            modelo._reset()
         
         mse_med = statistics.mean(conjunto_mse)
         mse_dev = statistics.stdev(conjunto_mse)

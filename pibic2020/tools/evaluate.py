@@ -90,7 +90,8 @@ def evaluate(modelo, dados, config, k_set, scaler=None, L=3, tam_teste=0.15, tam
     if (scaler != None):
         x = scaler.fit_transform(x.reshape(-1,1)).reshape(len(x), )
 
-    # para varrer os K's
+    i = 0
+    # para varrer os K'squ
     for K in k_set:
 
         if (verbose == 1):
@@ -147,7 +148,8 @@ def evaluate(modelo, dados, config, k_set, scaler=None, L=3, tam_teste=0.15, tam
             mse_mean, mse_stddev = model.avaliar(X_treino, X_teste,
                                                  y_treino, y_teste)
 
-        results[K, :] = np.array([K+1, mse_mean, mse_stddev])
+        results[i, :] = np.array([K+1, mse_mean, mse_stddev])
+        i += 1
 
         if (verbose == 1):
             print("Valor Médio do MSE para esse K: " + str(mse_mean))

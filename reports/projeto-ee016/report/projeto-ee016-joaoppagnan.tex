@@ -1,0 +1,176 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{newpxtext, newpxmath}
+\usepackage[breaklinks=true]{hyperref}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{enumerate}
+\usepackage{subcaption}
+\usepackage[left=3cm, right=2cm, top=3cm, bottom=2cm]{geometry}
+\geometry{a4paper}
+\usepackage{fancyhdr}
+\usepackage[brazilian]{babel}
+\usepackage{siunitx}
+\usepackage{float}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt} 
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+\graphicspath{{../figures/}}
+\sisetup{output-decimal-marker={.}}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{cleveref}
+\usepackage{spverbatim}
+\usepackage{setspace}
+\setlength{\parskip}{1em}
+\singlespacing
+
+\usepackage{multirow}
+
+\newcommand{\empt}[2]{$#1^{\langle #2 \rangle}$}
+
+\usepackage{amsmath}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,fit, positioning, arrows.meta}
+\usetikzlibrary{backgrounds}
+\usepgflibrary{shapes.multipart}
+
+\begin{document}
+\begin{titlepage}
+\newcommand{\HRule}{\rule{\linewidth}{1.5mm}}
+	
+\center
+
+\includegraphics[width=0.15\textwidth]{logo-unicamp.pdf}\\[1.0cm]
+
+\textsc{\Large Projeto de Pesquisa - Iniciação Científica}\\[0.5cm]
+
+\textsc{\large Estágio Científico e Tecnológico II - EE016}\\[1.5cm]
+
+{\Large \bfseries Predição de Séries Temporais Baseada em Redes Neurais Artificiais}\\[2.5cm]
+
+\begin{flushleft}
+Submetido à \\ Faculdade de Engenharia Elétrica e de Computação (FEEC)\\[1.5cm]
+
+Departamento de Engenharia de Computação e Automação Industrial (DCA)\\
+Faculdade de Engenharia Elétrica e de Computação (FEEC)\\
+Universidade Estadual de Campinas (UNICAMP)\\
+CEP 13083-852, Campinas - SP\\[1.0cm]
+
+Aluno: João Pedro de Oliveira Pagnan\\
+Orientador: Prof. Levy Boccato \\[4.5cm]
+\end{flushleft}	
+	
+Campinas, \today
+
+\end{titlepage}
+
+\newpage
+
+{\noindent \Large \textbf{Resumo}}
+
+{\noindent Neste trabalho, consideraremos o problema de predição de séries temporais baseada em redes neurais artificiais, que são estruturas bio-inspiradas de processamento dotadas de uma enorme capacidade de elaborar mapeamentos não-lineares. Serão consideradas a clássica rede MLP e algumas propostas de redes recorrentes, como as LSTM e as redes com estados de eco. Diferentes estratégias de aprendizado serão testadas em cenários de predição com características distintas, sendo o objetivo principal desse estudo o estabelecimento de bases para uma análise comparativa das metodologias, análise esta que tem um valor acadêmico e formativo significativo.}
+
+\section{Introdução e Justificativa}
+
+A tarefa de predizer valores futuros de uma série temporal a partir de valores presentes e passados é uma das aplicações mais instigantes em tratamento da informação \cite{principe2000neural}. Tal problema se reveste de uma importância decisiva numa gama de aplicações práticas que envolvem áreas tão distintas quanto econometria e automação industrial, ou meteorologia e biologia populacional. De certa forma, tal interesse prático se liga a dois anseios fundamentais: (1) o desejo de antecipar padrões de comportamento com a finalidade de estabelecer metodologias racionais de decisão, e (2) a busca por construir modelos adequados de fenômenos diversos, de modo a possibilitar uma maior compreensão acerca do comportamento dinâmico subjacente aos próprios dados, o que reveste a tarefa de uma importância teórica e prática ainda maior.
+
+Tipicamente, o problema de predição é abordado por meio de um receituário com três etapas fundamentais (que não precisam necessariamente seguir uma ordem rígida) \cite{romano2018unsupervised}: escolha de uma estrutura de filtragem que fará o papel de modelo de predição ou \textit{preditor}, adoção de um critério que expresse a qualidade da predição efetuada pelo dispositivo escolhido e emprego de um método de otimização que, tendo em vista o binômio estrutura/critério adotado, forneça um conjunto ótimo de parâmetros livres a serem usados pelo preditor. A segunda dessas etapas é, em geral \footnote{Devem ser mencionados, não obstante, esforços bastante meritórios e promissores no sentido de empregar grandezas derivadas da teoria
+de informação no processo de elaboração de critérios de filtragem \cite{erdogmus2006linear}.}, definida a partir do uso de um critério de erro quadrático médio (EQM) de predição, que origina a seguinte função custo \cite{haykin2008adaptive}:
+\begin{equation}
+J_{EQM} = E\{(x(n + P) - y(n))^{2}\},
+\end{equation}
+sendo $E\{ \cdot \}$ o operador \textit{esperança matemática}, $y(n)$ a saída do preditor no instante $n$ e $x(n + P)$ o valor da série analisada no instante $n + P$. Nesse caso, assume-se que a predição se dá $P$ passos à frente e que o mapeamento expresso por $y(n)$ depende de $x(n)$ e, possivelmente, de valores passados.
+
+Por outro lado, a definição da estrutura e do algoritmo de otimização adotados depende de uma reflexão maior acerca da natureza do problema em mãos. Embora seja comum (e, até certo ponto, bastante útil), inicialmente recorrer ao clássico ferramental linear, como é o caso do modelo autorregressivo (AR) \cite{haykin2008adaptive}, é preciso, em muitos casos práticos, adotar estruturas de filtragem de cunho \textit{fortemente não-linear}.
+
+Nesse caso, surgem como candidatas interessantes ao papel de estrutura de predição as \textit{redes neurais artificiais} \cite{haykin2008adaptive}, dispositivos bio-inspirados de processamento cujo \textit{modus operandi} se baseia em determinadas características do sistema nervoso. Consideramos particularmente relevantes as redes neurais do tipo MLP (do inglês \textit{multi-layer perceptron}) \cite{bishop2006pattern}. Em casos em que há a marca da necessidade de introdução de um caráter dinâmico, também devem ser levadas em conta as \textit{redes recorrentes} \cite{connor1994recurrent} (RNNs, do inglês \textit{recurrent neural networks}), que podem corresponder a versões das redes supracitadas em que há a presença de laços de realimentação.
+
+Neste contexto, um modelo recorrente de destacada importância na literatura é a chamada \textit{long short-term memory} (LSTM) \cite{greff2016lstm}, a qual apresenta um potencial de recordar valores dentro de sua estrutura relacionados a horizontes de tempo arbitrários. Em outras palavras, ela é capaz de memorizar informações tanto de curto quanto de longo prazo do histórico  de eventos relacionados ao problema. Por sua vez, a GRU (\textit{Gated Recurrent Unit}) também explora a noção de porta (\textit{gate}) na definição do comportamento da unidade de processamento, mas de uma forma simplificada em relação à LSTM, obtendo também resultados promissores em algumas aplicações \cite{cho2014learning}.
+
+Outra perspectiva promissora com RNNs refere-se às redes neurais com estados de eco (ESNs, do inglês \textit{echo state networks}). Estas estruturas combinam a capacidade de processamento dinâmico de RNNs com a simplicidade de treinamento típica de modelos lineares \cite{boccato2013novas}.
+
+Tendo em vista a diversidade de opções trazidas pela ideia de usar um \textit{framework} baseado em redes neurais para a predição de séries, parece-nos bastante interessante conduzir um estudo em que as duas opções expostas sejam comparadas no âmbito de um conjunto cenários relevantes: esse é o objetivo central deste trabalho. O estudo, além de ter um significativo valor acadêmico, também propiciará ao candidato a oportunidade de adquirir uma formação sólida na área de redes neurais, bem como na linha da pesquisa de séries temporais como um todo.
+
+\section{Objetivos}
+
+O primeiro objetivo deste trabalho é a realização de um estudo teórico envolvendo sinais e sistemas, elementos de processos estocásticos, filtragem adaptativa supervisionada, redes neurais, aprendizado de máquina e elementos de modelamento / predição de séries temporais. Em particular, pretendemos cobrir algumas arquiteturas de redes neurais, tais como as redes \textit{perceptron} de múltiplas camadas (MLP, do inglês \textit{multilayer perceptron}), e os modelos recorrentes das LSTMs, GRUs e ESNs. Esse estudo, além de ter um papel fundamental no esquema da investigação associada ao projeto, será de grande importância para a formação de um jovem pesquisador em temas como processamento adaptativo de sinais e inteligência computacional.
+
+Um segundo objetivo deste trabalho é a implementação e a análise sistemática das estruturas neurais no contexto da predição de diferentes tipos de séries - séries com características sazonais pronunciadas, séries caóticas e séries estocásticas (sinais de informação) – e, em cada caso, serão avaliados aspectos metodológicos desejáveis.
+
+Finalmente, um terceiro objetivo do projeto é a redação de um relatório final que apresente as diferentes estruturas, algoritmos de ajuste de pesos e metodologias de seleção de variáveis de maneira didática e que contenha uma discussão ampla e representativa dos diversos ensaios realizados e dos resultados deles decorrentes. Desejamos produzir um documento que sirva de referência a futuros interessados na área, particularmente no seio do grupo no qual o aluno está inserido.
+
+\section{Metodologia}
+
+Na primeira etapa do projeto, será realizada uma ampla revisão bibliográfica formada por duas etapas essenciais, a primeira voltada ao estudo de sinais e sistemas \cite{oppenheim1996signals}, processos estocásticos e filtragem adaptativa supervisionada \cite{haykin2008adaptive}, e a outra dedicada às redes neurais selecionadas \cite{haykin2010neural, geron2019hands}. Todas as etapas desse estudo serão acompanhadas de implementações práticas pertinentes.
+
+Na segunda etapa, efetuar-se-á um planejamento cuidadoso dos diversos cenários de teste, dos processos de configuração das estruturas de processamento, dos algoritmos de aprendizado adotados e das metodologias de seleção de variáveis \cite{guyon2003introduction}. Também serão avaliadas as métricas de análise a serem adotadas de modo a permitir uma adequada comparação dos diversos \textit{setups}. Após esse planejamento, o aluno estará apto a conduzir os testes e a compilar os resultados obtidos, os quais, a seguir, serão alvo de uma criteriosa análise. Ao longo da etapa, haverá sempre uma efetiva preocupação com a validade e a representatividade das análises realizadas, para que a empreitada como um todo conduza a conclusões de valor prático.
+
+Por fim, a terceira e final etapa será devotada ao processo de redação do relatório final, o qual deve apresentar de forma didática as diversas ferramentas empregadas e de maneira sistemática os resultados obtidos e análises empreendidas.
+
+\section{Material}
+
+Serão utilizados os recursos computacionais do DSPCom (Laboratório de Processamento de
+Sinais para Comunicações) e do Departamento de Engenharia de Computação e Automação Industrial da Faculdade de Engenharia Elétrica e de Computação da Unicamp. Estarão também disponíveis os recursos associados ao sistema de bibliotecas dessa universidade.
+
+\section{Plano de Trabalho}
+
+O desenvolvimento deste trabalho se dividirá entre as disciplinas EE015 e EE016. 
+
+Para a primeira (EE015), pretende-se realizar a revisão bibliográfica e os estudos teóricos necessários para o entendimento do problema de predição no contexto de séries temporais de sistemas com dinâmica caótica utilizando redes neurais artificiais, incluindo a realização de ensaios com essas ferramentas computacionais de forma a obter uma experiência prática de uso.
+
+Na segunda disciplina (EE016), concluir-se-á a implementação dos métodos de previsão e, então, seus desempenhos serão avaliados comparativamente considerando um conjunto de cenários. Além disso, teremos a elaboração do relatório final, o qual resumirá a trajetória do aluno durante o projeto de iniciação como um todo. 
+
+O cronograma a seguir apresenta a divisão e duração das etapas durante o desenvolvimento do trabalho para ambas as disciplinas.
+\vspace{1em}
+
+\begin{table}[!htb]
+    \begin{subtable}{.5\linewidth}
+      \centering
+		\begin{tabular}{|c|l|l|l|l|l|l|}
+		\hline
+		\multirow{2}{*}{Etapa} & \multicolumn{6}{c|}{Mês} \\ \cline{2-7} 
+		                       & 1  & 2  & 3  & 4 & 5 & 6 \\ \hline
+		I                      & X  & X  & X  & X & X & X \\ \hline
+		II                     &    &    &    &  & X & X \\ \hline
+		III                    &    &    &    &   &   &   \\ \hline
+		IV                    &    &    &    &   &   &   \\ \hline
+		V                    &    &    &    &   &   &   \\ \hline
+		VI                    &    &    &    &   &   &   \\ \hline
+		\end{tabular}
+		\caption{Cronograma de trabalho para EE015}
+    \end{subtable}%
+    \begin{subtable}{.5\linewidth}
+      \centering
+		\begin{tabular}{|c|l|l|l|l|l|l|}
+		\hline
+		\multirow{2}{*}{Etapa} & \multicolumn{6}{c|}{Mês} \\ \cline{2-7} 
+		                       & 7  & 8  & 9  & 10 & 11 & 12 \\ \hline
+		I                      &    &    &    &   &   &   \\ \hline
+		II                     & X &   &   &  &   &   \\ \hline
+		III                    & X  & X  & X &  &  & \\ \hline
+		IV                    &    &  X & X  & X &   &   \\ \hline
+		V                    &    &    &  X & X & X &   \\ \hline
+		VI                    &    &    &   &  & X & X \\ \hline		
+		\end{tabular}
+		\caption{Cronograma de trabalho para EE016}
+    \end{subtable} 
+\end{table}
+\begin{enumerate}[I.]
+\item Estudos dirigidos e revisão bibliográfica 
+\item Ensaios utilizando redes neurais artificiais para diferentes cenários
+\item Planejamento dos cenários de teste e dos processos computacionais
+\item Implementação dos modelos preditivos utilizando redes neurais
+\item Estudo comparativo dos diferentes modelos implementados
+\item Redação do relatório final
+\end{enumerate}
+
+A primeira parte do cronograma (etapa (a)) foi concluída e apresentada no relatório  da disciplina EE015. Logo, para esta matéria (EE016), serão realizadas e apresentadas no relatório final as atividades indicadas no cronograma (b).
+
+\nocite{*}
+\bibliographystyle{ieeetr}
+\bibliography{bib}
+
+\end{document}
