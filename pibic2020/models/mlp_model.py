@@ -483,7 +483,7 @@ class ModeloMLP():
         
         return mse_med, mse_dev
     
-    def salvar(self, nome_do_arquivo, h5="OFF"):
+    def salvar(self, nome_do_arquivo, h5="ON"):
         """
         Definição:
         ----------

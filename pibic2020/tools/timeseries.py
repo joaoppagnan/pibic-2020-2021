@@ -156,7 +156,7 @@ class SerieTemporal:
         Retorna:
         --------
         O conjunto de teste, treinamento e validação para as proporções solicitadas no formato np.ndarray
-        A ordem das saídas é: X_treino, X_val, X_teste, y_treino, y_val, y_teste
+        A ordem das saídas é: X_treino, X_teste, X_val, y_treino, y_teste, y_val
         """        
 
         if ((tam_teste < 0.0) | (tam_teste > 1.0)):
