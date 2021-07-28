@@ -14,6 +14,7 @@ class MapaHenon:
         -----------
         estado_inicial: np.ndarray
             Parâmetro das posições xy iniciais do mapa e do instante n inicial (deve ser 0)
+            O vetor está no formato (x, y, n)
         a: float
             Parâmetro do Mapa de Hénon
         b: float
