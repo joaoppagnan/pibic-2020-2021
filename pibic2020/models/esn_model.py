@@ -1,12 +1,13 @@
 # pibic2020.models.esn_model.py
 
-from typing import Type
 import numpy as np
 from numpy.linalg import pinv, eigvals
 from sklearn.base import BaseEstimator
 
 import statistics
 from sklearn.metrics import mean_squared_error
+
+import pickle
 
 class ModeloESN(BaseEstimator):
     
@@ -285,6 +286,57 @@ class ModeloESN(BaseEstimator):
             print("Desvio padrão do erro quadrático médio: " + str(mse_dev) + "\n")
         
         return mse_med, mse_dev        
+
+    def salvar(self, nome_do_arquivo):
+        """
+        Definição:
+        ----------
+        Função para salvar o modelo no formato .sav
+        É necessário colocar o '.sav' no final do nome do arquivo!
+        
+        Parâmetros:
+        -----------
+        nome_do_arquivo: str
+            Nome do arquivo a ser salvo, podendo incluir o caminho
+            
+        Retorna:
+        --------
+        Uma mensagem confirmando o salvamento
+        """
+        
+        if not (type(nome_do_arquivo) is str):
+            raise TypeError("O parâmetro de nome do arquivo deve ser uma string!")
+        
+        modelo = self
+        
+        pickle.dump(modelo, open(nome_do_arquivo, 'wb'))
+        return print("O modelo foi salvo!")
+    
+    def carregar(self, nome_do_arquivo):
+        """
+        Definição:
+        ----------
+        Função para carregar o modelo através de um arquivo .sav
+        
+        Parâmetros:
+        -----------
+        nome_do_arquivo: str
+            Nome do arquivo a ser salvo, podendo incluir o caminho
+            Deve incluir o formato .sav!
+            
+        Retorna:
+        --------
+        Uma mensagem confirmando o carregamento
+        """
+        
+        if not (type(nome_do_arquivo) is str):
+            raise TypeError("O parâmetro de nome do arquivo deve ser uma string!")        
+        
+        modelo = pickle.load(open(nome_do_arquivo, 'rb'))
+        self = modelo
+        
+        return print("O modelo foi carregado!")
+
 
     def _reset(self):
         """
