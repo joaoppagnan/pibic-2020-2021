@@ -9,8 +9,8 @@
 % margem inf 2.5 cm: há 1,5 cm para foot, + 1 cm para bottom
 % margem esq 2,5cm
 % margem dir 2 cm
-\RequirePackage[a4paper,twocolumn,top=3.5cm,left=2.5cm,right=2cm,bottom=2.5cm]{geometry}
-%\RequirePackage[a4paper,twocolumn,top=3.0cm,left=2.3cm,right=2.3cm,bottom=2.17cm]{geometry}
+%\RequirePackage[a4paper,twocolumn,top=3.5cm,left=2.5cm,right=2cm,bottom=2.5cm]{geometry}
+\RequirePackage[a4paper,twocolumn,top=2.5cm,left=2cm,right=2cm,bottom=2.5cm]{geometry}
 
 \parindent 1.27cm
 \parskip   6pt
@@ -84,16 +84,16 @@
                        {-6\p@ \@plus -4\p@ \@minus -4\p@}%
                        {0\p@ \@plus 4\p@ \@minus 4\p@}%
                        {\normalfont\XIIIPT\bfseries\boldmath
-                        \rightskip=\z@ \@plus 8em\pretolerance=10000 }}
+                        \centering \pretolerance=10000 }}
 
 \renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
                        {-6\p@ \@plus -4\p@ \@minus -4\p@}%
                        {0\p@ \@plus 4\p@ \@minus 4\p@}%
                        {\normalfont\XIIPT\bfseries\boldmath
-                        \rightskip=\z@ \@plus 8em\pretolerance=10000 }}
+                        \centering \pretolerance=10000 }}
 
-\renewcommand{\thesection}{\arabic{section}.}
-\renewcommand{\thesubsection}{\thesection\arabic{subsection}.}
+\renewcommand{\thesection}{\Roman{section}.}
+\renewcommand{\thesubsection}{\thesection\Roman{subsection}.}
 \renewcommand{\thesubsubsection}{\thesubsection\arabic{subsubsection}.}
 
 \RequirePackage{titlesec}
