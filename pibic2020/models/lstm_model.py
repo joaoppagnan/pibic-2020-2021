@@ -236,7 +236,7 @@ class ModeloLSTM():
         
         return self._modelo.summary()
     
-    def treinar(self, X_treino, X_val, y_treino, y_val, batch_size=10, early_stopping="ON", epochs=100):
+    def treinar(self, X_treino, X_val, y_treino, y_val, batch_size=10, early_stopping="ON", epochs=100, verbose=1):
         """
         Descrição:
         ----------
@@ -260,6 +260,8 @@ class ModeloLSTM():
             Se deve "ON" ou não deve "OFF" utilizar early stopping
         epochs: int
             Número de épocas para o treinamento
+        verbose: int
+            Se quer mensagens no treinamento
 
         Retorna:
         --------
@@ -289,6 +291,9 @@ class ModeloLSTM():
             
         if not (type(epochs) is int):
             raise TypeError("O número de épocas deve ser um int!")
+
+        if not (type(verbose) is int):
+            raise TypeError("O valor do parâmetro de verbose deve ser um int!")            
             
         modelo = self._modelo
         shape = self._shape
@@ -316,7 +321,7 @@ class ModeloLSTM():
         modelo.fit(X_treino, y_treino, 
                    epochs=epochs, callbacks=early_stopping_fit,
                    validation_data=(X_val, y_val), batch_size=batch_size,
-                   verbose=1)
+                   verbose=verbose)
         
         self._modelo = modelo
         pass

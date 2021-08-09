@@ -17,7 +17,6 @@ plt.rcParams.update({
 })
 #plt.style.use("dark_background")
 
-
 # bibliotecas dos sistemas caoticos
 from pibic2020.data import henon
 from pibic2020.data import logistic
@@ -25,11 +24,22 @@ from pibic2020.data import lorenz
 from pibic2020.data import mackeyglass
 
 print("Escolha o sistema para gerar os gráficos")
-print("1: Mapa de Hénon, 2: Mapa Logístico, 3: Sistema de Lorenz, 4: Equações de Mackey-Glass")
+print("1: Mapa de Hénon, 2: Mapa logístico, 3: Sistema de Lorenz, 4: Equações de Mackey-Glass")
 sis = input()
 
 # --------------- HENON --------------- #
 if (int(sis) == 1):
+    print("Gerando os gráficos para o mapa de Hénon...")
+    print("Gerar o mapa junto com a série temporal?")
+
+    while (1):
+        print("1: Sim, 2: Não")
+        sis = input()
+        if ((int(sis) == 1) or (int(sis) == 2)):
+            break
+        else:
+            print("Digite um número válido!")
+
     a = 1.4
     b = 0.3
     x_inicial = 1.0
@@ -38,57 +48,63 @@ if (int(sis) == 1):
     estado_inicial = np.array([x_inicial, y_inicial, n_inicial])
 
     mapa_henon = henon.MapaHenon(estado_inicial=estado_inicial, a=a, b=b)
-    n_iteracoes = 500000
+    if (int(sis) == 1):
+        n_iteracoes = 500000
+
+    elif (int(sis) == 2):
+        n_iteracoes = 5000
+        
     vetor_estados = mapa_henon.simular(n_iteracoes)
     x = vetor_estados[:, 0]
     y = vetor_estados[:, 1]
     n = vetor_estados[:, 2]
 
-    fig, ax = plt.subplots()
-    ax.scatter(x, y, s=0.01, marker=".", color='Black')
-    #ax.set_title(str(n_iteracoes) + " iterações do Mapa de Hénon para $a =$ " + str(a) + " e $b =$ " + str(b) + "\n com $x[0] =$ " + str(x[0]) + " e $y[0] =$ " + str(y[0]))
-    ax.set_ylabel('$y$')
-    ax.set_xlabel('$x$')
-    ax.set_ylim([-0.4, 0.4])
-    ax.set_xlim([-1.4, 1.4])
-    ax.grid(False)
-    sns.despine()
-    fig.tight_layout()
-    fig.savefig("images/caos/henon-map/mapa-de-henon.pdf")
-    fig.savefig("reports/relatorio-ee015/figures/mapa-de-henon.png")
+    if (int(sis) == 1):
+        fig, ax = plt.subplots()
+        ax.scatter(x, y, s=0.01, marker=".", color='Black')
+        #ax.set_title(str(n_iteracoes) + " iterações do Mapa de Hénon para $a =$ " + str(a) + " e $b =$ " + str(b) + "\n com $x[0] =$ " + str(x[0]) + " e $y[0] =$ " + str(y[0]))
+        ax.set_ylabel('$y$')
+        ax.set_xlabel('$x$')
+        ax.set_ylim([-0.4, 0.4])
+        ax.set_xlim([-1.4, 1.4])
+        ax.grid(False)
+        sns.despine()
+        fig.tight_layout()
+        fig.savefig("images/caos/henon-map/mapa-de-henon.pdf")
+        fig.savefig("reports/relatorio-ee015/figures/mapa-de-henon.png")
 
-    fig, ax = plt.subplots()
-    ax.scatter(x, y, s=0.01, marker=".", color='Black')
-    ax.set_ylabel('$y$')
-    ax.set_xlabel('$x$')
-    ax.set_ylim([0.1, 0.3])
-    ax.set_xlim([0, 0.5])
-    ax.grid(False)
-    sns.despine()
-    fig.tight_layout()
-    fig.savefig("images/caos/henon-map/mapa-de-henon-zoom.pdf")
-    fig.savefig("reports/relatorio-ee015/figures/mapa-de-henon-zoom.png")
+        fig, ax = plt.subplots()
+        ax.scatter(x, y, s=0.01, marker=".", color='Black')
+        ax.set_ylabel('$y$')
+        ax.set_xlabel('$x$')
+        ax.set_ylim([0.1, 0.3])
+        ax.set_xlim([0, 0.5])
+        ax.grid(False)
+        sns.despine()
+        fig.tight_layout()
+        fig.savefig("images/caos/henon-map/mapa-de-henon-zoom.pdf")
+        fig.savefig("reports/relatorio-ee015/figures/mapa-de-henon-zoom.png")
 
-    fig, ax = plt.subplots()
-    ax.scatter(x, y, s=0.01, marker=".", color='Black')
-    ax.set_ylabel('$y$')
-    ax.set_xlabel('$x$')
-    ax.set_ylim([0.175, 0.225])
-    ax.set_xlim([0.3, 0.4])
-    ax.grid(False)
-    sns.despine()
-    fig.tight_layout()
-    fig.savefig("images/caos/henon-map/mapa-de-henon-zoom-2.pdf")  
-    fig.savefig("reports/relatorio-ee015/figures/mapa-de-henon-zoom-2.png")  
+        fig, ax = plt.subplots()
+        ax.scatter(x, y, s=0.01, marker=".", color='Black')
+        ax.set_ylabel('$y$')
+        ax.set_xlabel('$x$')
+        ax.set_ylim([0.175, 0.225])
+        ax.set_xlim([0.3, 0.4])
+        ax.grid(False)
+        sns.despine()
+        fig.tight_layout()
+        fig.savefig("images/caos/henon-map/mapa-de-henon-zoom-2.pdf")  
+        fig.savefig("reports/relatorio-ee015/figures/mapa-de-henon-zoom-2.png")  
 
     fig, ax = plt.subplots(2)
     #fig.suptitle("100 primeiras iterações das séries temporais do Mapa de Hénon para\n $a =$ " + str(a) + " e $b =$ " + str(b) + " com $x[0] =$ " + str(x[0]) + " e $y[0] =$ " + str(y[0]))
-    ax[0].plot(n, x, color='Crimson', linewidth=0.9)
+    ax[0].plot(n, x, color='#4b0101', linewidth=0.9)
     ax[0].set_ylabel('$x[n]$')
     ax[0].set_xlabel('$n$')
     ax[0].set_xlim(0, 100)
     ax[0].grid(True)
-    ax[1].plot(n, y, color='DarkGreen', linewidth=0.9)
+    ax[1].plot(n, y, color='#002d04', linewidth=0.9)
     ax[1].set_ylabel('$y[n]$')
     ax[1].set_xlabel('$n$')
     ax[1].set_xlim(0, 100)
@@ -98,7 +114,7 @@ if (int(sis) == 1):
     fig.savefig("images/caos/henon-map/series-temporais.pdf")
 
     fig, ax = plt.subplots()
-    ax.plot(n, x, color='DarkGreen', linewidth=0.9)
+    ax.plot(n, x, color='#002d04', linewidth=0.9)
     #ax.set_title("100 primeiras iterações das séries temporais do Mapa de Hénon em $\hat{x}$ para\n $a =$ " + str(a) + " e $b =$ " + str(b) + " com $x[0] =$ " + str(x[0]) + " e $y[0] =$ " + str(y[0]))
     ax.set_ylabel('$x[n]$')
     ax.set_xlabel('$n$')
@@ -111,6 +127,17 @@ if (int(sis) == 1):
 
 # --------------- LOGISTICO --------------- #
 elif (int(sis) == 2):
+    print("Gerando os gráficos para o mapa logístico...")
+    print("Gerar o diagrama de bifurcação junto com a série temporal?")
+
+    while (1):
+        print("1: Sim, 2: Não")
+        sis = input()
+        if ((int(sis) == 1) or (int(sis) == 2)):
+            break
+        else:
+            print("Digite um número válido!")    
+
     estado_inicial = np.array([0.5, 0])
     r = 3.86
 
@@ -121,7 +148,7 @@ elif (int(sis) == 2):
     n = vetor_estados[:, 1]
 
     fig, ax = plt.subplots()
-    ax.plot(n, x, color='Crimson', linewidth=0.9)
+    ax.plot(n, x, color='#4b0101', linewidth=0.9)
     #ax.set_title("100 iterações iniciais da série temporal do Mapa Logístico\n para $r =$ " + str(r) + " com $x[0] =$ " + str(x[0]))
     ax.set_ylabel('$x[n]$')
     ax.set_xlabel('$n$')
@@ -131,38 +158,41 @@ elif (int(sis) == 2):
     fig.tight_layout()
     fig.savefig("images/caos/logistic-map/serie-temporal.pdf")
 
-    conjunto_r = np.linspace(0.0, 4.0, 1000)
-    n_iteracoes = 1000
-    n_valores_finais = int(0.1*n_iteracoes)
-    fig, ax = plt.subplots()
-    #ax.set_title("Diagrama de bifurcação para o mapa logístico")
-    ax.set_ylabel('$x$')
-    ax.set_xlabel('$r$')
-    ax.set_xlim(0, 4)
-    ax.set_ylim(0, )
-    ax.grid(False)
-    sns.despine()
-    x_plot = []
-    r_plot = []
-    mapa_log = logistic.MapaLogistico(r=0.0, estado_inicial=estado_inicial)
-    for ri in range(0, len(conjunto_r)):
-        estados = estado_inicial
-        mapa_log.atualizar_estado(estados)
-        mapa_log.atualizar_r(float(conjunto_r[ri]))
+    if (int(sis) == 1):
+        conjunto_r = np.linspace(0.0, 4.0, 1000)
+        n_iteracoes = 1000
+        n_valores_finais = int(0.1*n_iteracoes)
+        fig, ax = plt.subplots()
+        #ax.set_title("Diagrama de bifurcação para o mapa logístico")
+        ax.set_ylabel('$x$')
+        ax.set_xlabel('$r$')
+        ax.set_xlim(0, 4)
+        ax.set_ylim(0, )
+        ax.grid(False)
+        sns.despine()
+        x_plot = []
+        r_plot = []
+        mapa_log = logistic.MapaLogistico(r=0.0, estado_inicial=estado_inicial)
+        for ri in range(0, len(conjunto_r)):
+            estados = estado_inicial
+            mapa_log.atualizar_estado(estados)
+            mapa_log.atualizar_r(float(conjunto_r[ri]))
     
-        vetor_estados = mapa_log.simular(n_iteracoes)
-        x = vetor_estados[:, 0]
+            vetor_estados = mapa_log.simular(n_iteracoes)
+            x = vetor_estados[:, 0]
 
-        x_unicos = np.unique(x[-n_valores_finais:])
-        r_unicos = conjunto_r[ri]*np.ones(len(x_unicos))
+            x_unicos = np.unique(x[-n_valores_finais:])
+            r_unicos = conjunto_r[ri]*np.ones(len(x_unicos))
 
-        ax.scatter(r_unicos, x_unicos, s=0.5, marker="o", facecolors='Black', edgecolors='Black')
-    fig.tight_layout()
-    fig.savefig("images/caos/logistic-map/mapa-logistico.pdf")
+            ax.scatter(r_unicos, x_unicos, s=0.5, marker="o", facecolors='Black', edgecolors='Black')
+        fig.tight_layout()
+        fig.savefig("images/caos/logistic-map/mapa-logistico.pdf")
+
     print("Gráficos gerados!")
 
 # --------------- LORENZ --------------- #
 elif (int(sis) == 3):
+    print("Gerando os gráficos para o sistema de Lorenz...")
     t_inicial = 0
     t_final = 50
     dt = 0.001
@@ -225,17 +255,17 @@ elif (int(sis) == 3):
 
     fig, ax = plt.subplots(3)
     #fig.suptitle("Séries temporais de 0 a 100 segundos das coordenadas $xyz$ do Sistema de Lorenz\n utilizando $\sigma = 10$, " + r"$\beta =\frac{8}{3}$, " + r"$\rho=28$, com " + "$x(0) =$ " + str(estado_inicial[0]) + ", $y(0) = $ " + str(estado_inicial[1]) + " e $z(0) =$ " + str(estado_inicial[2]))
-    ax[0].plot(instantes_temporais_1, x_1, color='Crimson', linewidth=0.9)
+    ax[0].plot(instantes_temporais_1, x_1, color='#4b0101', linewidth=0.9)
     ax[0].set_ylabel('$x(t)$')
     ax[0].set_xlabel('$t$')
     ax[0].set_xlim(0,50)  
     ax[0].grid(True)
-    ax[1].plot(instantes_temporais_1, y_1, color='DarkGreen', linewidth=0.9)
+    ax[1].plot(instantes_temporais_1, y_1, color='#002d04', linewidth=0.9)
     ax[1].set_ylabel('$y(t)$')
     ax[1].set_xlabel('$t$')
     ax[1].set_xlim(0,50)
     ax[1].grid(True)
-    ax[2].plot(instantes_temporais_1, z_1, color='DarkBlue', linewidth=0.9)
+    ax[2].plot(instantes_temporais_1, z_1, color='#35063e', linewidth=0.9)
     ax[2].set_ylabel('$z(t)$')
     ax[2].set_xlabel('$t$')
     ax[2].set_xlim(0,50)
@@ -246,7 +276,7 @@ elif (int(sis) == 3):
 
     fig, ax = plt.subplots()
     #fig.suptitle("Série temporal em $\hat{x}$ de 0 a 100 segundos do Sistema de Lorenz\n utilizando $\sigma = 10$, " + r"$\beta =\frac{8}{3}$, " + r"$\rho=28$, com " + "$x(0) =$ " + str(estado_inicial[0]) + ", $y(0) = $ " + str(estado_inicial[1]) + " e $z(0) =$ " + str(estado_inicial[2]))
-    ax.plot(instantes_temporais_1, x_1, color='DarkBlue', linewidth=0.9)
+    ax.plot(instantes_temporais_1, x_1, color='#35063e', linewidth=0.9)
     ax.set_ylabel('$x(t)$')
     ax.set_xlabel('$t$')
     ax.set_xlim(0,50)  
@@ -258,6 +288,7 @@ elif (int(sis) == 3):
 
 # --------------- MACKEYGLASS --------------- #
 elif (int(sis) == 4):
+    print("Gerando os gráficos para as equações de Mackey-Glass...")
     t_inicial = 0
     t_final = 800
     tau = 6
@@ -270,7 +301,7 @@ elif (int(sis) == 4):
     dados, instantes_temporais = mackeyglass_eq.calcular(t_inicial=t_inicial, t_final=t_final)
     fig, ax = plt.subplots()
     #ax.set_title('Série temporal de 0 a 800 dias da equação de Mackey-Glass para\n' + r'$\tau =$ ' + str(tau) + r', $\beta =$ ' + str(beta) + r', $\gamma =$ ' + str(gamma) + r', $n =$ ' + str(n) + r' e $\theta =$ ' + str(theta) + ' utilizando P(0) = ' + str(0.1*theta))
-    ax.plot(instantes_temporais, dados, color='DarkOrange', linewidth=0.9)
+    ax.plot(instantes_temporais, dados, color='#653700', linewidth=0.9)
     ax.set_ylabel('$P(t)$')
     ax.set_xlabel('$t$')
     ax.set_xlim(0,800)
@@ -327,7 +358,7 @@ elif (int(sis) == 4):
     dados, instantes_temporais = mackeyglass_eq.calcular(t_inicial=t_inicial, t_final=t_final)
     fig, ax = plt.subplots()
     #ax.set_title('Série temporal de 0 a 800 dias da equação de Mackey-Glass em caos para\n' + r'$\tau =$ ' + str(tau) + r', $\beta =$ ' + str(beta) + r', $\gamma =$ ' + str(gamma) + r', $n =$ ' + str(n) + r' e $\theta =$ ' + str(theta) + ' utilizando P(0) = ' + str(0.1*theta))
-    ax.plot(instantes_temporais, dados, color='DarkOrange', linewidth=0.9)
+    ax.plot(instantes_temporais, dados, color='#653700', linewidth=0.9)
     ax.set_ylabel('$P(t)$')
     ax.set_xlabel('$t$')
     ax.set_xlim(0,800)

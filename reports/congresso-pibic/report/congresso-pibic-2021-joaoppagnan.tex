@@ -1,0 +1,73 @@
+\documentclass[10pt, technote]{article}
+\usepackage{eadca-template}
+\usepackage[plain]{algorithm}
+
+\usepackage[brazil]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{graphicx,url}
+\usepackage[hang]{subfigure}
+\usepackage{psfrag}
+
+\usepackage{siunitx}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\graphicspath{{../figures/}}
+
+\sloppy
+
+\title{{\noindent \includegraphics[scale = 0.5]{banner-grande.png}}\\ Predição de Séries Temporais Baseada em Redes Neurais
+Artificiais}
+
+\author{Aluno: João Pedro de Oliveira Pagnan\\Orientador: Prof.  Levy Boccato}
+
+\address{Departamento de Engenharia de Computação e Automação Industrial (DCA)\\ Faculdade de Engenharia Elétrica e de Computação (FEEC) \\
+  Universidade Estadual de Campinas (UNICAMP)}
+
+\hyphenation{}
+\pagestyle{fancy}
+
+\begin{document}
+
+\twocolumn[
+\maketitle
+\thispagestyle{fancy}
+  \keywords{Redes Neurais Artificiais, Sistemas Caóticos, Modelos Preditores Não-Lineares, Séries Temporais}
+\hrule
+]
+
+\section{Introdução}
+
+A predição de séries temporais é uma das aplicações mais interessantes do tratamento de informação. O desafio de antecipar padrões de comportamento e construir modelos que sejam apropriados para explicar determinados fenômenos da natureza tem importância  para a biologia, economia, automação industrial, meteorologia e diversas outras áreas da ciência \cite{box2015time}.
+
+Na literatura, encontramos diversos tipos de modelos para a  predição de séries temporais, desde métodos clássicos lineares, como o modelo autorregressivo (AR) \cite{box2015time} até métodos não-lineares utilizando, por exemplo, redes neurais artificiais, sendo que dessas se destacam as redes do tipo \textit{Multilayer Perceptron} (MLP) \cite{rosenblatt1958perceptron} e as redes recorrentes, especialmente a \textit{Long Short-Term Memory} (LSTM)  \cite{connor1994recurrent} e a \textit{Echo State Network} (ESN) \cite{jaeger2007echo}.
+
+Uma classe de sistemas dinâmicos particularmente relevante dentro do contexto de modelagem e predição de séries temporais está ligada à ideia de dinâmica caótica. Diversos fenômenos naturais, como a dinâmica populacional de uma espécie, a dinâmica atmosférica de uma região, ou até mesmo as órbitas de um sistema com três ou mais corpos celestes podem exibir comportamento caótico. Apesar de serem determinísticos (e, portanto, previsíveis), esses sistemas são extremamente sensíveis às condições iniciais \cite{fiedler1994caos}. Isso causa um problema para a predição das séries temporais originadas por eles, pois uma pequena incerteza na medida afetará toda a previsão. 
+
+Tendo em vista o desempenho de modelos não-lineares para previsão de diversas séries temporais \cite{connor1994recurrent}, optamos por estudar a aplicabilidade de redes neurais artificiais à previsão de séries relacionadas a sistemas com dinâmica caótica.
+
+Esta pesquisa comparou o desempenho de quatro arquiteturas distintas de redes neurais artificiais: a rede \textit{Multilayer Perceptron} \cite{rosenblatt1958perceptron}, a rede \textit{Long Short-Term Memory} \cite{connor1994recurrent}, a rede \textit{Gated Recurrent Unit} (GRU) \cite{cho2014learning} e, por fim, a rede \textit{Echo State Network}) \cite{jaeger2007echo}.
+
+A comparação foi realizada em quatro cenários de sistemas caóticos, sendo dois destes a tempo discreto e dois a tempo contínuo. No caso, os sistemas a tempo discreto foram as séries temporais do mapa de Hénon \cite{henon1976two}, e a série temporal relacionada ao mapa logístico \cite{may1976simple}. Já os sistemas a tempo contínuo foram o sistema de Lorenz \cite{lorenz1963deterministic} e as equações de Mackey-Glass \cite{mackey1977oscillation}.
+
+Iniciamos a análise através de um processo de \textit{gridsearch} para determinarmos os parâmetros ótimos para as redes neurais em cada cenário. Em seguida, utilizando os melhores parâmetros, realizou-se um estudo da progressão erro quadrático médio (EQM) com o número de amostras de entrada do modelo preditor (nesse caso, chamado de $K$). Por fim, comparamos qual foi a média e o desvio padrão do EQM com o melhor valor de $K$ de cada modelo nos quatro cenários.
+
+Através desta pesquisa, percebe-se que a ESN possui o melhor desempenho dentre todos os modelos, em todos os cenários. As redes \textit{Echo State Network} têm a vantagem de necessitarem de bem menos recursos computacionais do que os outros modelos avaliados, obtendo um desempenho consideravelmente superior mesmo com um tempo de treinamento ínfimo se comparado às redes neurais artificiais tradicionais.
+
+\section{Metodologia}
+
+\section{Resultados}
+
+\section{Conclusões}
+
+\bibliographystyle{ieeetr}
+\bibliography{bib}
+
+%\pdfinfo{
+%   /Title  (Congresso PIBIC 2021 - João P. Pagnan)
+%   /CreationDate (D:20040502195600)
+%}
+
+
+\end{document}

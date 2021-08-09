@@ -45,7 +45,7 @@ y_henon = estados[:, 1]
 n_henon = estados[:, 2]
 
 fig, ax = plt.subplots()
-cor = 'DarkGreen'
+cor = '#002d04'
 plot_acf(x_henon, ax=ax, color=cor, title=None)
 #ax.set_title("Autocorrelação da série temporal em $\hat{x}$ do Mapa de Hénon para\n $a =$ " + str(a) + " e $b =$ " + str(b) + " com $x[0] =$ " + str(x_henon[0]) + " e $y[0] =$ " + str(y_henon[0]))
 ax.set_ylabel('Autocorrelação $[K]$')
@@ -94,7 +94,7 @@ x_log = estados[:, 0]
 n_log = estados[:, 1]
 
 fig, ax = plt.subplots()
-cor = 'Crimson'
+cor = '#4b0101'
 plot_acf(x_log, ax=ax, color=cor, title=None)
 #ax.set_title("Autocorrelação da série temporal do mapa logístico\n para $r = $ " + str(r) + " e $x[0] =$ " + str(x_log[0]))
 ax.set_ylabel('Autocorrelação $[K]$')
@@ -141,7 +141,7 @@ solucoes_lorenz, instantes_temporais_lorenz = sis_lorenz.calcular(t_inicial = t_
 x_lorenz = solucoes_lorenz[:, 0]
 
 fig, ax = plt.subplots()
-cor = 'DarkBlue'
+cor = '#35063e'
 plot_acf(x_lorenz, ax=ax, color=cor, title=None)
 #ax.set_title("Autocorrelação da série temporal em $\hat{x}$ do Sistema de Lorenz\n utilizando $\sigma = 10$, " + r"$\beta =\frac{8}{3}$, " + r"$\rho=28$, com " + "$x(0) =$ " + str(estado_inicial[0]) + ", $y(0) = $ " + str(estado_inicial[1]) + " e $z(0) =$ " + str(estado_inicial[2]))
 ax.set_ylabel('Autocorrelação $[K]$')
@@ -191,7 +191,7 @@ solucoes, instantes_temporais = macglass.calcular(t_inicial = t_inicial, t_final
 x_mackeyglass = np.array(solucoes)
 
 fig, ax = plt.subplots()
-cor = 'DarkOrange'
+cor = '#653700'
 plot_acf(x_mackeyglass, ax=ax, color=cor, title=None)
 #ax.set_title('Autocorrelação da série temporal da equação de Mackey-Glass para\n' + r'$\tau =$ ' + str(tau) + r', $\beta =$ ' + str(beta) + r', $\gamma =$ ' + str(gamma) + r', $n =$ ' + str(n) + r' e $\theta =$ ' + str(theta) + ' utilizando $P(0) =$ ' + str(0.1*theta))
 ax.set_ylabel('Autocorrelação $[K]$')
