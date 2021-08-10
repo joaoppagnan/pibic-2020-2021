@@ -92,9 +92,15 @@
                        {\normalfont\XIIPT\bfseries\boldmath
                         \centering \pretolerance=10000 }}
 
-\renewcommand{\thesection}{\Roman{section}.}
-\renewcommand{\thesubsection}{\thesection\Roman{subsection}.}
-\renewcommand{\thesubsubsection}{\thesubsection\arabic{subsubsection}.}
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+                       {-6\p@ \@plus -4\p@ \@minus -4\p@}%
+                       {0\p@ \@plus 4\p@ \@minus 4\p@}%
+                       {\normalfont\XIPT\bfseries\boldmath
+                        \centering \pretolerance=10000 }}
+
+\renewcommand{\thesection}{\arabic{section}.}
+\renewcommand{\thesubsection}{\thesection\arabic{subsection}.}
+\renewcommand{\thesubsubsection}{ \thesubsection\arabic{subsubsection}.}
 
 \RequirePackage{titlesec}
 \titlelabel{\thetitle\hspace{1ex}}
