@@ -187,6 +187,7 @@ elif (int(sis) == 2):
             ax.scatter(r_unicos, x_unicos, s=0.5, marker="o", facecolors='Black', edgecolors='Black')
         fig.tight_layout()
         fig.savefig("images/caos/logistic-map/mapa-logistico.pdf")
+        fig.savefig("reports/congresso-pibic/figures/mapa-logistico.png")
 
     print("Gráficos gerados!")
 

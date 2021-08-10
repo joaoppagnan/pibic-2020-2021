@@ -20,7 +20,7 @@
 \title{{\noindent \includegraphics[scale = 0.5]{banner-grande.png}}\\ Predição de Séries Temporais Baseada em Redes Neurais
 Artificiais}
 
-\author{Aluno: João Pedro de Oliveira Pagnan\\Orientador: Prof.  Levy Boccato}
+\author{Aluno: João Pedro de Oliveira Pagnan [FEEC/UNICAMP]\\Orientador: Prof.  Levy Boccato [FEEC/UNICAMP]}
 
 \address{Departamento de Engenharia de Computação e Automação Industrial (DCA)\\ Faculdade de Engenharia Elétrica e de Computação (FEEC) \\
   Universidade Estadual de Campinas (UNICAMP)}
@@ -49,7 +49,7 @@ Tendo em vista o desempenho de modelos não-lineares para previsão de diversas 
 
 Esta pesquisa comparou o desempenho de quatro arquiteturas distintas de redes neurais artificiais: a rede \textit{Multilayer Perceptron} \cite{rosenblatt1958perceptron}, a rede \textit{Long Short-Term Memory} \cite{connor1994recurrent}, a rede \textit{Gated Recurrent Unit} (GRU) \cite{cho2014learning} e, por fim, a rede \textit{Echo State Network} \cite{jaeger2007echo}.
 
-A comparação foi realizada em quatro cenários de sistemas caóticos, sendo dois destes a tempo discreto e dois a tempo contínuo. No caso, os sistemas a tempo discreto foram as séries temporais do mapa de Hénon \cite{henon1976two}, e a série temporal relacionada ao mapa logístico \cite{may1976simple}. Já os sistemas a tempo contínuo foram o sistema de Lorenz \cite{lorenz1963deterministic} e as equações de Mackey-Glass \cite{mackey1977oscillation}.
+A comparação foi realizada em quatro cenários de sistemas caóticos, sendo dois destes a tempo discreto e dois a tempo contínuo. No caso, os sistemas a tempo discreto foram as séries temporais do mapa de Hénon \cite{henon1976two}, e a série temporal relacionada ao mapa logístico \cite{may1976simple}. Já os sistemas a tempo contínuo foram o sistema de Lorenz \cite{lorenz1963deterministic} e as equações de Mackey-Glass \cite{mackey1977oscillation}. Nos sistemas multidimensionais, como o mapa de Hénon e o sistema de Lorenz, foi utilizada a série temporal em $\hat{x}$.
 
 Iniciamos a análise através de um processo de \textit{gridsearch} para determinarmos os parâmetros ótimos para as redes neurais em cada cenário. Em seguida, utilizando os melhores parâmetros, realizou-se um estudo da progressão erro quadrático médio (EQM) com o número de amostras de entrada do modelo preditor (nesse caso, chamado de $K$). Por fim, comparamos qual foi a média e o desvio padrão do EQM com o melhor valor de $K$ de cada modelo nos quatro cenários.
 
@@ -63,13 +63,117 @@ Como o intuito do projeto é analisar o desempenho dos modelos preditores citado
 
 \subsubsection{Mapa de Hénon}
 
-O mapa de Hénon foi um dos sistemas a tempo discreto escolhidos para esta pesquisa. Esse sistema foi proposto por Michel Hénon em 1976 como um modelo simplificado de uma seção de Poincaré do sistema de Lorenz. 
+O mapa de Hénon foi um dos sistemas a tempo discreto escolhidos para esta pesquisa. Esse sistema foi proposto por Michel Hénon em 1976 como um modelo simplificado de uma seção de Poincaré do atrator de Lorenz, sendo descrito pelas equações abaixo \cite{henon1976two}:
+\begin{subequations}
+\begin{equation}
+x[n+1] = y[n] + 1 - a\cdot (x[n])^2
+\end{equation}
+\begin{equation}
+y[n+1] = b \cdot x[n]
+\end{equation}
+\end{subequations}
+
+Para esta pesquisa, foram utilizados os valores usuais para os parâmetros $a$ e $b$. Logo, têm-se que $a = 1.4$ e $b = 0.3$. Além disso, neste e nos outros sistemas, foi gerado um conjunto de $5000$ dados. As figuras a seguir mostram a série temporal em $\hat{x}$ e o atrator obtido com a simulação:
+\begin{figure}[H]
+     \centering
+     \begin{subfigure}
+         \centering
+         \includegraphics[scale=0.24]{serie-henon-x.pdf}
+         %\caption{$y=5/x$}
+     \end{subfigure}
+     \begin{subfigure}
+         \centering
+         \includegraphics[scale=0.24]{mapa-de-henon.png}
+         %\caption{$y=x$}
+     \end{subfigure}
+     \caption{À esquerda, as cem primeiras iterações da série temporal em $\hat{x}$ do mapa de Hénon e, à direita, o atrator correspondente à simulação}
+     \label{fig:henon}
+\end{figure}
 
 \subsubsection{Mapa logístico}
 
+Conforme foi dito anteriormente, o outro sistema caótico a tempo discreto simulado foi o mapa logístico. Descrito em 1976 por Robert May, o mapa logístico é uma das formas de modelar a população de uma determinada espécie em certos instantes de tempo \cite{may1976simple}. A equação de diferenças que descreve esse sistema pode ser vista abaixo:
+\begin{equation}\label{eq:logistic}
+x[n+1] = r\cdot x[n] \cdot (1 - x[n])
+\end{equation}
+
+Nesse caso, o sistema não chega a operar em caos para qualquer valor de $r$. Assim, como o estudo visa analisar o desempenho para sistemas caóticos, foi utilizado $r=3.86$, que, conforme será visto no diagrama de bifurcação abaixo, faz com que a série temporal dada pela equação (\ref{eq:logistic}) opere em caos. Novamente, foram simuladas $5000$ iterações:
+\begin{figure}[H]
+     \centering
+     \begin{subfigure}
+         \centering
+         \includegraphics[scale=0.24]{serie-logistico.pdf}
+         %\caption{$y=5/x$}
+     \end{subfigure}
+     \begin{subfigure}
+         \centering
+         \includegraphics[scale=0.24]{mapa-logistico.png}
+         %\caption{$y=x$}
+     \end{subfigure}
+     \caption{À esquerda, as cem primeiras iterações da série temporal do mapa logístico e, à direita, o diagrama de bifurcação este sistema}
+     \label{fig:logistic}
+\end{figure}
+
 \subsubsection{Sistema de Lorenz}
 
+O sistema de Lorenz foi um dos sistemas dinâmicos caóticos a tempo contínuo simulados nessa pesquisa. Este sistema foi um dos primeiros grandes trabalhos de sistemas caóticos, sendo considerado por muitos a pesquisa que inaugurou a área \cite{gleick1998chaos}. Lorenz modela, através de três equações diferenciais, o fluxo de um fluído em um volume uniformemente aquecido na camada inferior, e uniformemente resfriado na camada superior \cite{lorenz1963deterministic}:
+\begin{subequations}
+\begin{equation}
+\frac{dx}{dt} = -\sigma \cdot (x - y)
+\end{equation}
+\begin{equation}
+\frac{dy}{dt} = x \cdot (\rho - z) - y
+\end{equation}
+\begin{equation}
+\frac{dz}{dt} = x \cdot y - \beta \cdot z
+\end{equation}
+\end{subequations}
+
+Para a simulação numérica foi considerado que $\sigma = 10$, $\beta = \frac{8}{3}$, $\rho = 28$ e foi utilizado $dt = 0.01$, gerando $5000$ dados, assim como nos casos discretos. As figuras abaixo mostram a série temporal em $\hat{x}$ e o atrator de Lorenz para a condição inicial $[x(0)\; y(0)\; z(0)]^T = [0.1\; 0\; 0]^T$:
+\begin{figure}[H]
+     \centering
+     \begin{subfigure}
+         \centering
+         \includegraphics[scale=0.24]{serie-lorenz-x.pdf}
+         %\caption{$y=5/x$}
+     \end{subfigure}
+     \begin{subfigure}
+         \centering
+         \includegraphics[scale=0.24]{diagrama-de-fases-lorenz.pdf}
+         %\caption{$y=x$}
+     \end{subfigure}
+     \caption{À esquerda, a série temporal em $\hat{x}$ do sistema de Lorenz simulado e, à direita, o diagrama de fases correspondente à simulação}
+     \label{fig:lorenz}
+\end{figure}
+
 \subsubsection{Equações de Mackey-Glass}
+
+Por fim, o último sistema caótico simulado, este também a tempo contínuo, foram as equações de Mackey-Glass. Essas equações diferenciais com atraso temporal modelam o controle hormonal da produção de células brancas do sangue e podem serem vistas abaixo \cite{mackey1977oscillation}:
+\begin{subequations}
+\begin{equation}
+\frac{dP(t)}{dt} = \frac{\beta_0\cdot \theta^n}{\theta^n + P(t - \tau)^n} - \gamma\cdot P(t)
+\end{equation}
+\begin{equation}\label{eq:mackey-glass-chaos}
+\frac{dP(t)}{dt} = \frac{\beta_0\cdot \theta^n \cdot P(t - \tau)}{\theta^n + P(t - \tau)^n} - \gamma\cdot P(t)
+\end{equation}
+\end{subequations}
+
+Neste caso, a equação (\ref{eq:mackey-glass-chaos}) exibe um comportamente caótico para valores mais altos de $\tau$. Para a simulação numérica, foi utilizado $n = 10$, $\gamma = 0.1$, $\beta = 0.2$, $\theta = 1$, $\tau = 22$ e $dt = 1.0$, gerando novamente $5000$ dados, resultando na seguinte série temporal e no seguinte atrator:
+\begin{figure}[H]
+     \centering
+     \begin{subfigure}
+         \centering
+         \includegraphics[scale=0.24]{serie-mackeyglass.pdf}
+         %\caption{$y=5/x$}
+     \end{subfigure}
+     \begin{subfigure}
+         \centering
+         \includegraphics[scale=0.24]{atrator-mackeyglass.pdf}
+         %\caption{$y=x$}
+     \end{subfigure}
+     \caption{À esquerda, a série temporal da equação (\ref{eq:mackey-glass-chaos}) exibida de $t = 0 $ a $t = 800$ e, à direita, o atrator correspondente à simulação}
+     \label{fig:mackey-glass}
+\end{figure}
 
 \subsection{Obtenção dos melhores parâmetros}
 
