@@ -28,8 +28,6 @@
 \newcommand{\normal}{\text{Normal}}
 \newcommand{\uniform}{\text{Uniforme}}
 
-\BeforeBeginEnvironment{tabular}{\tiny}
-
 \sloppy
 
 \title{{\noindent \includegraphics[scale = 0.5]{banner-grande.png}}\\ Predição de Séries Temporais Baseada em Redes Neurais
@@ -62,7 +60,7 @@ Uma classe de sistemas dinâmicos particularmente relevante dentro do contexto d
 
 Tendo em vista o desempenho de modelos não-lineares para previsão de diversas séries temporais \cite{connor1994recurrent}, optamos por estudar a aplicabilidade de redes neurais artificiais à previsão de séries relacionadas a sistemas com dinâmica caótica.
 
-Esta pesquisa comparou o desempenho de quatro arquiteturas distintas de redes neurais artificiais: a rede \textit{Multilayer Perceptron} \cite{rosenblatt1958perceptron}, a rede \textit{Long Short-Term Memory} \cite{connor1994recurrent}, a rede \textit{Gated Recurrent Unit} (GRU) \cite{cho2014learning} e, por fim, a rede \textit{Echo State Network} \cite{jaeger2007echo}.
+Esta pesquisa comparou o desempenho de quatro arquiteturas distintas de redes neurais artificiais: a rede \textit{Multilayer Perceptron} \cite{rosenblatt1958perceptron}, a rede \textit{Long Short-Term Memory} \cite{connor1994recurrent}, a rede \textit{Gated Recurrent Unit} (GRU) \cite{cho2014learning} e, por fim, a rede \textit{Echo State Network} (ESN) \cite{jaeger2007echo}.
 
 A comparação foi realizada em quatro cenários de sistemas caóticos, sendo dois destes a tempo discreto e dois a tempo contínuo. No caso, os sistemas a tempo discreto foram as séries temporais do mapa de Hénon \cite{henon1976two}, e a série temporal relacionada ao mapa logístico \cite{may1976simple}. Já os sistemas a tempo contínuo foram o sistema de Lorenz \cite{lorenz1963deterministic} e as equações de Mackey-Glass \cite{mackey1977oscillation}. Nos sistemas multidimensionais, como o mapa de Hénon e o sistema de Lorenz, foi utilizada a série temporal em $\hat{x}$.
 
@@ -192,6 +190,8 @@ Neste caso, a equação (\ref{eq:mackey-glass-chaos}) exibe um comportamente ca�
 
 \subsection{Obtenção dos melhores parâmetros}
 
+\BeforeBeginEnvironment{tabular}{\tiny}
+
 Como foi mencionado na seção introdutória, foi realizado um procedimento de \textit{gridsearch} para a determinação dos melhores parâmetros para as redes neurais. Nesse caso, cada arquitetura testou parâmetros diferentes nesse processo, logo, as próximas seções indicam o que foi testado para cada modelo. Vale reforçar que o \textit{gridsearch} foi realizado em todos os cenários de sistemas caóticos analisados, de forma a obter os melhores parâmetros para cada um deles.
 
 \subsubsection{MLP}
@@ -200,7 +200,7 @@ Para as redes \textit{Multilayer Perceptron}, foi testado o tamanho do \textit{b
 
 O \textit{gridsearch} utilizou validação cruzada com $4$ \textit{folds} nos dados de treinamento, que correspondiam a $85\%$ dos primeiros dados das séries temporais, isto é, os primeiros $4250$ valores.
 
-Vale reforçar que foi utilizada apenas uma camada intermediária em cada cenário. As melhores configurações obtidas podem serem vistos na tabela abaixo:
+Vale reforçar que foi utilizada apenas uma camada intermediária em cada cenário. As melhores configurações obtidas podem serem vistas na tabela abaixo:
 \begin{table}[!ht]
 \begin{center}
 \begin{tabular}{c c c c c c c}
