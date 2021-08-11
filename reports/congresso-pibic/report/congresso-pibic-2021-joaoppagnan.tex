@@ -13,7 +13,22 @@
 \usepackage{siunitx}
 \usepackage{mathtools}
 \usepackage{booktabs}
+\usepackage{pbox}
+\usepackage{etoolbox}
 \graphicspath{{../figures/}}
+
+\newcommand{\sigmoid}{\text{Sigmoid}}
+\newcommand{\sen}{\text{sen}}
+\newcommand{\selu}{\text{SELU}}
+\newcommand{\relu}{\text{ReLU}}
+\newcommand{\elu}{\text{ELU}}
+\newcommand{\lecun}{\text{Lecun}}
+\newcommand{\he}{\text{He}}
+\newcommand{\glorot}{\text{Glorot}}
+\newcommand{\normal}{\text{Normal}}
+\newcommand{\uniform}{\text{Uniforme}}
+
+\BeforeBeginEnvironment{tabular}{\tiny}
 
 \sloppy
 
@@ -177,6 +192,39 @@ Neste caso, a equação (\ref{eq:mackey-glass-chaos}) exibe um comportamente ca�
 
 \subsection{Obtenção dos melhores parâmetros}
 
+Como foi mencionado na seção introdutória, foi realizado um procedimento de \textit{gridsearch} para a determinação dos melhores parâmetros para as redes neurais. Nesse caso, cada arquitetura testou parâmetros diferentes nesse processo, logo, as próximas seções indicam o que foi testado para cada modelo. Vale reforçar que o \textit{gridsearch} foi realizado em todos os cenários de sistemas caóticos analisados, de forma a obter os melhores parâmetros para cada um deles.
+
+\subsubsection{MLP}
+
+Para as redes \textit{Multilayer Perceptron}, foi testado o tamanho do \textit{batch} para o treinamento ($2$, $4$, $8$, $16$, $32$), se será ou não utilizado uma camada de \textit{batch normalization}, a função de ativação para os neurônios \textit{Perceptron} na camada intermediária ($\selu$, $\relu$, $\elu$, $\tanh$, $\sigmoid$), a inicialização dos pesos dos neurônios ($\glorot$, $\he$, $\lecun$, tanto com distribuição normal, quanto uniforme), o número de neurônios na camada intermediária ($5$, $10$, $15$, $20$, $30$, $50$, $75$, $100$) e, por fim, a taxa de aprendizagem ($0.001$, $0.003$, $0.005$, $0.008$, $0.01$). 
+
+O \textit{gridsearch} utilizou validação cruzada com $4$ \textit{folds} nos dados de treinamento, que correspondiam a $85\%$ dos primeiros dados das séries temporais.
+
+Vale reforçar que foi utilizada apenas uma camada intermediária em cada cenário. As melhores configurações obtidas podem serem vistos na tabela abaixo:
+\begin{table}[!ht]
+\begin{center}
+\begin{tabular}{c c c c c c c}
+  \textbf{Cenário}  & \pbox{0.85cm}{\centering \textbf{\; \, \textit{Batch\newline normalization}}} & \pbox{0.4cm}{\centering \textbf{\textit{Batch size}}} & \pbox{0.65cm}{\centering \textbf{Função de ativação}} & \pbox{0.9cm}{\centering \textbf{Inicialização}} & \pbox{0.745cm}{\centering \textbf{Nº de neurônios}} & \pbox{1cm}{\centering \textbf{\, Taxa de\newline aprendizagem}}\\
+ \hline
+ \addlinespace
+ \pbox{0.7cm}{\centering \textbf{Mapa de\newline Hénon}} & Não & $8$ & $\sigmoid$ & $\glorot\, \normal$ & $50$ & $0.003$\\  
+  \addlinespace
+ \pbox{0.7cm}{\centering \textbf{Mapa\newline logístico}} & Não & $2$ & $\tanh$ & $\glorot\, \uniform$ & $10$ & $0.003$\\ 
+  \addlinespace
+ \pbox{0.9cm}{\centering \textbf{Sistema de\newline Lorenz}} & Não & $2$ & $\selu$ & $\lecun\, \normal$ & $50$ & $0.001$\\ 
+  \addlinespace
+ \pbox{0.929cm}{\centering \textbf{Equações de\newline Mackey-Glass}} & Não & $4$ & $\tanh$ & $\glorot\, \normal$ & $5$ & $0.001$\\ 
+\end{tabular}
+\caption{Melhores parâmetros para a rede MLP nos cenários em análise}
+\end{center}
+\end{table}
+
+
+
+\subsubsection{LSTM e GRU}
+
+\subsubsection{ESN}
+
 \subsection{Análise comparativa}
 
 \section{Resultados}
@@ -184,12 +232,13 @@ Neste caso, a equação (\ref{eq:mackey-glass-chaos}) exibe um comportamente ca�
 \section{Conclusões}
 
 \bibliographystyle{ieeetr}
+{\footnotesize
 \bibliography{bib}
-
-%\pdfinfo{
-%   /Title  (Congresso PIBIC 2021 - João P. Pagnan)
-%   /CreationDate (D:20040502195600)
-%}
+}
+\pdfinfo{
+  /Title  (Congresso PIBIC 2021 - João P. Pagnan)
+  /CreationDate (D:20040502195600)
+}
 
 
 \end{document}
