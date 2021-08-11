@@ -198,7 +198,7 @@ Como foi mencionado na seção introdutória, foi realizado um procedimento de \
 
 Para as redes \textit{Multilayer Perceptron}, foi testado o tamanho do \textit{batch} para o treinamento ($2$, $4$, $8$, $16$, $32$), se será ou não utilizado uma camada de \textit{batch normalization}, a função de ativação para os neurônios \textit{Perceptron} na camada intermediária ($\selu$, $\relu$, $\elu$, $\tanh$, $\sigmoid$), a inicialização dos pesos dos neurônios ($\glorot$, $\he$, $\lecun$, tanto com distribuição normal, quanto uniforme), o número de neurônios na camada intermediária ($5$, $10$, $15$, $20$, $30$, $50$, $75$, $100$) e, por fim, a taxa de aprendizagem ($0.001$, $0.003$, $0.005$, $0.008$, $0.01$). 
 
-O \textit{gridsearch} utilizou validação cruzada com $4$ \textit{folds} nos dados de treinamento, que correspondiam a $85\%$ dos primeiros dados das séries temporais.
+O \textit{gridsearch} utilizou validação cruzada com $4$ \textit{folds} nos dados de treinamento, que correspondiam a $85\%$ dos primeiros dados das séries temporais, isto é, os primeiros $4250$ valores.
 
 Vale reforçar que foi utilizada apenas uma camada intermediária em cada cenário. As melhores configurações obtidas podem serem vistos na tabela abaixo:
 \begin{table}[!ht]
@@ -219,9 +219,51 @@ Vale reforçar que foi utilizada apenas uma camada intermediária em cada cenár
 \end{center}
 \end{table}
 
-
-
 \subsubsection{LSTM e GRU}
+
+O processo para a LSTM e GRU foram bem similares, considerando que essas arquiteturas de redes neurais são semelhantes. A principal diferença com relação ao \textit{gridsearch} da MLP foi o fato de que, ao invés de utilizar-se validação cruzada com $k-$\textit{folds}, foi utilizado \textit{holdout}. Esse processo dividiu o conjunto de treinamento (novamente composto por $85\%$ dos dados gerados) em $4$ seções. Cada seção era composta por uma fração dos dados de treinamento, sendo que cada seção incluia a seção anterior no seu conjunto de dados.
+
+Por exemplo, a segunda seção obtida pelo \textit{holdout} inclui a primeira seção e mais alguns dados, além de uma subdivisão de validação que será utilizada para avaliar o resultado. Com isso, obtém-se conjuntos sequenciais de dados para avaliação do desempenho. Esse procedimento é necessário para as redes recorrentes pois a relação temporal entre os dados de entrada deve ser levada em conta.
+
+Foi avaliado o \textit{batch size} ($2$, $4$, $8$, $16$, $32$), a inicialização dos pesos ($\glorot \, \uniform$, $\glorot \, \normal$), o número de neurônios recorrentes na camada intermediária ($5$, $10$, $15$, $20$, $30$, $50$, $75$, $100$), e a taxa de aprendizagem ($0.001$, $0.003$, $0.005$, $0.008$, $0.01$), novamente utilizando apenas uma camada intermediária. Vale reforçar que a função de ativação usual da célula recorrente não foi alterada ($\tanh$), assim, para o sistema de Lorenz, foi feito um ajuste de escala para evitar a saturação na saída dos neurônios.
+
+Os resultados obtidos para a LSTM e para a GRU podem serem vistos nas tabelas a seguir:
+\begin{table}[!ht]
+\begin{center}
+\begin{tabular}{c c c c c}
+  \textbf{Cenário} & \pbox{0.4cm}{\centering \textbf{\textit{Batch size}}} & \pbox{0.9cm}{\centering \textbf{Inicialização}} & \pbox{0.745cm}{\centering \textbf{Nº de neurônios}} & \pbox{1cm}{\centering \textbf{\, Taxa de\newline aprendizagem}}\\
+ \hline
+ \addlinespace
+ \pbox{0.7cm}{\centering \textbf{Mapa de\newline Hénon}} & $4$ & $\glorot\, \normal$ & $15$ & $0.005$\\  
+  \addlinespace
+ \pbox{0.7cm}{\centering \textbf{Mapa\newline logístico}} & $2$ & $\glorot\, \uniform$ & $100$ & $0.008$\\ 
+  \addlinespace
+ \pbox{0.9cm}{\centering \textbf{Sistema de\newline Lorenz}} & $4$ & $\glorot\, \uniform$ & $15$ & $0.003$\\ 
+  \addlinespace
+ \pbox{0.929cm}{\centering \textbf{Equações de\newline Mackey-Glass}} & $2$ & $\glorot\, \uniform$ & $50$ & $0.003$\\ 
+\end{tabular}
+\caption{Melhores parâmetros para a rede LSTM nos cenários em análise}
+\end{center}
+\end{table}
+
+\begin{table}[!ht]
+\begin{center}
+\begin{tabular}{c c c c c}
+  \textbf{Cenário} & \pbox{0.4cm}{\centering \textbf{\textit{Batch size}}} & \pbox{0.9cm}{\centering \textbf{Inicialização}} & \pbox{0.745cm}{\centering \textbf{Nº de neurônios}} & \pbox{1cm}{\centering \textbf{\, Taxa de\newline aprendizagem}}\\
+ \hline
+ \addlinespace
+ \pbox{0.7cm}{\centering \textbf{Mapa de\newline Hénon}} & $4$ & $\glorot\, \normal$ & $30$ & $0.003$\\  
+  \addlinespace
+ \pbox{0.7cm}{\centering \textbf{Mapa\newline logístico}} & $2$ & $\glorot\, \normal$ & $100$ & $0.003$\\ 
+  \addlinespace
+ \pbox{0.9cm}{\centering \textbf{Sistema de\newline Lorenz}} & $8$ & $\glorot\, \uniform$ & $30$ & $0.001$\\ 
+  \addlinespace
+ \pbox{0.929cm}{\centering \textbf{Equações de\newline Mackey-Glass}} & $2$ & $\glorot\, \uniform$ & $10$ & $0.005$\\ 
+\end{tabular}
+\caption{Melhores parâmetros para a rede GRU nos cenários em análise}
+\end{center}
+\end{table}
+
 
 \subsubsection{ESN}
 
