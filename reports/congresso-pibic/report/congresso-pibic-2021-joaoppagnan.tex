@@ -6,8 +6,11 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 
-\usepackage{graphicx,url}
-\usepackage[hang]{subfigure}
+\usepackage{graphicx,url, graphicx}
+\usepackage[bf,sf,footnotesize]{caption}
+\usepackage{subcaption}
+%\usepackage[hang]{subfigure}
+%\usepackage{subcaption}
 \usepackage{psfrag}
 
 \usepackage{siunitx}
@@ -16,6 +19,8 @@
 \usepackage{pbox}
 \usepackage{etoolbox}
 \graphicspath{{../figures/}}
+\setlength{\captionmargin}{0.2cm}
+\renewcommand{\captionfont}{\sffamily\footnotesize\bfseries}
 
 \newcommand{\sigmoid}{\text{Sigmoid}}
 \newcommand{\sen}{\text{sen}}
@@ -59,9 +64,7 @@ Na literatura, encontramos diversos tipos de modelos para a  predição de séri
 
 Uma classe de sistemas dinâmicos particularmente relevante dentro do contexto de modelagem e predição de séries temporais está ligada à ideia de dinâmica caótica. Diversos fenômenos naturais, como a dinâmica populacional de uma espécie, a dinâmica atmosférica de uma região, ou até mesmo as órbitas de um sistema com três ou mais corpos celestes podem exibir comportamento caótico. Apesar de serem determinísticos (e, portanto, previsíveis), esses sistemas são extremamente sensíveis às condições iniciais \cite{fiedler1994caos}. Isso causa um problema para a predição das séries temporais originadas por eles, pois uma pequena incerteza na medida afetará toda a previsão. 
 
-Tendo em vista o desempenho de modelos não-lineares para previsão de diversas séries temporais \cite{connor1994recurrent}, optamos por estudar a aplicabilidade de redes neurais artificiais à previsão de séries relacionadas a sistemas com dinâmica caótica.
-
-Esta pesquisa comparou o desempenho de quatro arquiteturas distintas de redes neurais artificiais: a rede \textit{Multilayer Perceptron} \cite{rosenblatt1958perceptron}, a rede \textit{Long Short-Term Memory} \cite{connor1994recurrent}, a rede \textit{Gated Recurrent Unit} (GRU) \cite{cho2014learning} e, por fim, a rede \textit{Echo State Network} (ESN) \cite{jaeger2007echo}.
+Tendo em vista o desempenho de modelos não-lineares para previsão de diversas séries temporais \cite{connor1994recurrent}, optamos por estudar a aplicabilidade de redes neurais artificiais à previsão de séries relacionadas a sistemas com dinâmica caótica. Esta pesquisa comparou o desempenho de quatro arquiteturas distintas de redes neurais artificiais: a rede \textit{Multilayer Perceptron} \cite{rosenblatt1958perceptron}, a rede \textit{Long Short-Term Memory} \cite{connor1994recurrent}, a rede \textit{Gated Recurrent Unit} (GRU) \cite{cho2014learning} e, por fim, a rede \textit{Echo State Network} (ESN) \cite{jaeger2007echo}.
 
 A comparação foi realizada em quatro cenários de sistemas caóticos, sendo dois destes a tempo discreto e dois a tempo contínuo. No caso, os sistemas a tempo discreto foram as séries temporais do mapa de Hénon \cite{henon1976two}, e a série temporal relacionada ao mapa logístico \cite{may1976simple}. Já os sistemas a tempo contínuo foram o sistema de Lorenz \cite{lorenz1963deterministic} e as equações de Mackey-Glass \cite{mackey1977oscillation}. Nos sistemas multidimensionais, como o mapa de Hénon e o sistema de Lorenz, foi utilizada a série temporal em $\hat{x}$.
 
@@ -89,14 +92,12 @@ y[n+1] = b \cdot x[n]
 
 Para esta pesquisa, foram utilizados os valores usuais para os parâmetros $a$ e $b$. Logo, têm-se que $a = 1.4$ e $b = 0.3$. Além disso, neste e nos outros sistemas, foi gerado um conjunto de $5000$ dados. As figuras a seguir mostram a série temporal em $\hat{x}$ e o atrator obtido com a simulação:
 \begin{figure}[H]
-     \centering
-     \begin{subfigure}
-         \centering
+     \begin{subfigure}[t]{0.24\textwidth}
          \includegraphics[scale=0.24]{serie-henon-x.pdf}
          %\caption{$y=5/x$}
      \end{subfigure}
-     \begin{subfigure}
-         \centering
+     \centering
+     \begin{subfigure}[t]{0.24\textwidth}
          \includegraphics[scale=0.24]{mapa-de-henon.png}
          %\caption{$y=x$}
      \end{subfigure}
@@ -113,14 +114,12 @@ x[n+1] = r\cdot x[n] \cdot (1 - x[n])
 
 Nesse caso, o sistema não chega a operar em caos para qualquer valor de $r$. Assim, como o estudo visa analisar o desempenho para sistemas caóticos, foi utilizado $r=3.86$, que, conforme será visto no diagrama de bifurcação abaixo, faz com que a série temporal dada pela equação (\ref{eq:logistic}) opere em caos. Novamente, foram simuladas $5000$ iterações:
 \begin{figure}[H]
-     \centering
-     \begin{subfigure}
-         \centering
+     \begin{subfigure}[t]{0.24\textwidth} 
          \includegraphics[scale=0.24]{serie-logistico.pdf}
          %\caption{$y=5/x$}
      \end{subfigure}
-     \begin{subfigure}
-         \centering
+     \centering
+     \begin{subfigure}[t]{0.24\textwidth} 
          \includegraphics[scale=0.24]{mapa-logistico.png}
          %\caption{$y=x$}
      \end{subfigure}
@@ -145,14 +144,12 @@ O sistema de Lorenz foi um dos sistemas dinâmicos caóticos a tempo contínuo s
 
 Para a simulação numérica foi considerado que $\sigma = 10$, $\beta = \frac{8}{3}$, $\rho = 28$ e foi utilizado $dt = 0.01$, gerando $5000$ dados, assim como nos casos discretos. As figuras abaixo mostram a série temporal em $\hat{x}$ e o atrator de Lorenz para a condição inicial $[x(0)\; y(0)\; z(0)]^T = [0.1\; 0\; 0]^T$:
 \begin{figure}[H]
-     \centering
-     \begin{subfigure}
-         \centering
+     \begin{subfigure}[t]{0.24\textwidth} 
          \includegraphics[scale=0.24]{serie-lorenz-x.pdf}
          %\caption{$y=5/x$}
      \end{subfigure}
-     \begin{subfigure}
-         \centering
+     \centering
+     \begin{subfigure}[t]{0.24\textwidth}
          \includegraphics[scale=0.24]{diagrama-de-fases-lorenz.pdf}
          %\caption{$y=x$}
      \end{subfigure}
@@ -174,14 +171,12 @@ Por fim, o último sistema caótico simulado, este também a tempo contínuo, fo
 
 Neste caso, a equação (\ref{eq:mackey-glass-chaos}) exibe um comportamente caótico para valores mais altos de $\tau$. Para a simulação numérica, foi utilizado $n = 10$, $\gamma = 0.1$, $\beta = 0.2$, $\theta = 1$, $\tau = 22$ e $dt = 1.0$, gerando novamente $5000$ dados, resultando na seguinte série temporal e no seguinte atrator:
 \begin{figure}[H]
-     \centering
-     \begin{subfigure}
-         \centering
+     \begin{subfigure}[t]{0.24\textwidth}
          \includegraphics[scale=0.24]{serie-mackeyglass.pdf}
          %\caption{$y=5/x$}
      \end{subfigure}
-     \begin{subfigure}
-         \centering
+     \centering
+     \begin{subfigure}[t]{0.24\textwidth}
          \includegraphics[scale=0.24]{atrator-mackeyglass.pdf}
          %\caption{$y=x$}
      \end{subfigure}
@@ -246,7 +241,6 @@ Os resultados obtidos para a LSTM e para a GRU podem serem vistos nas tabelas a 
 \caption{Melhores parâmetros para a rede LSTM nos cenários em análise}
 \end{center}
 \end{table}
-
 \begin{table}[!ht]
 \begin{center}
 \begin{tabular}{c c c c c}
@@ -296,13 +290,110 @@ Obteve-se assim, as seguintes configurações para a ESN em cada um dos cenário
 
 \subsection{Análise do melhor valor para $K$}
 
-Com as melhores configurações para cada rede e cenário obtidas, foi analisada a progressão do erro quadrático médio para cada valor de $K$ para cada rede neural, em cada cenário. Para tal, cada rede (com as configurações ótimas) foi treinada utilizando $85\%$ dos dados gerados, sendo que $10\%$ dos dados de treinamento foi utilizado como o conjunto de validação (nas redes MLP, LSTM e GRU). Em seguida, com o modelo treinado, foi avaliado o EQM no conjunto de teste (que corresponde aos últimos $750$ dados). Esse processo foi realizado $5$ vezes para cada $K$, obtendo assim um valor médio e desvio-padrão para cada $K$ em cada cenário, para cada modelo.
+Com as melhores configurações para cada rede e cenário obtidas, foi analisada a progressão do erro quadrático médio para cada valor de $K$ para cada rede neural, em cada cenário. A faixa de valores para $K$ a ser testada foi determinada utilizando a autocorrelação parcial das séries temporais de cada sistema analisado, e observando a partir de qual valor anterior ao atual a autocorrelação parcial não está mais no intervalo de confiança utilizado no cálculo dessa grandeza.
+
+As figuras abaixo mostram a autocorrelação parcial para as séries temporais utilizadas:
+\begin{figure}[H]
+     \begin{subfigure}[t]{0.24\textwidth}
+         \includegraphics[scale=0.24]{autocorrelacao-parcial-henon.pdf}
+         \caption{Mapa de Hénon}
+     \end{subfigure}
+     \centering
+     \begin{subfigure}[t]{0.24\textwidth} 
+         \includegraphics[scale=0.24]{autocorrelacao-parcial-logistic.pdf}
+         \caption{Mapa logístico}
+     \end{subfigure}
+     \centering
+     \begin{subfigure}[t]{0.24\textwidth}
+         \includegraphics[scale=0.24]{autocorrelacao-parcial-lorenz.pdf}
+         \caption{Sistema de Lorenz}
+     \end{subfigure}
+     \centering
+     \begin{subfigure}[t]{0.24\textwidth} 
+         \includegraphics[scale=0.24]{autocorrelacao-parcial-mackeyglass.pdf}
+         \caption{Equações de Mackey-Glass}
+     \end{subfigure}  
+     \centering   
+     \caption{Autocorrelação parcial para as séries temporais utilizadas}
+     \label{fig:mse-progression}
+\end{figure}
+
+Para realizar esse procedimento, cada rede (com as configurações ótimas) foi treinada utilizando $85\%$ dos dados gerados, sendo que $10\%$ dos dados de treinamento foi utilizado como o conjunto de validação (nas redes MLP, LSTM e GRU). Em seguida, com o modelo treinado, foi avaliado o EQM no conjunto de teste (que corresponde aos últimos $750$ dados). Esse processo foi realizado $5$ vezes para cada $K$, obtendo assim um valor médio e desvio-padrão para cada $K$ em cada cenário, para cada modelo.
 
 Vale reforçar que, como o ajuste de parâmetros da ESN possui solução em forma fechada, não foi necessário utilizar um conjunto de validação no treinamento. No caso da MLP, LSTM e GRU, o processo iterativo de ajuste dos pesos utilizou um conjunto de validação de forma a seguir o procedimento de \textit{early stopping} para evitar o sobreajuste da rede.
 
-As imagens abaixo mostram a progressão do EQM para cada $K$ obtida em todos os cenários para todas as redes:
+As figuras abaixo mostram a progressão do EQM para cada $K$ obtida em todos os cenários para todas as redes:
+\begin{figure}[H]
+     \begin{subfigure}[t]{0.24\textwidth}
+         \includegraphics[scale=0.24]{progressao-k-henon.pdf}
+         \caption{Mapa de Hénon}
+     \end{subfigure}
+     \centering
+     \begin{subfigure}[t]{0.24\textwidth} 
+         \includegraphics[scale=0.24]{progressao-k-logistic.pdf}
+         \caption{Mapa logístico}
+     \end{subfigure}
+     \centering
+     \begin{subfigure}[t]{0.24\textwidth}
+         \includegraphics[scale=0.24]{progressao-k-lorenz.pdf}
+         \caption{Sistema de Lorenz}
+     \end{subfigure}
+     \centering
+     \begin{subfigure}[t]{0.24\textwidth} 
+         \includegraphics[scale=0.24]{progressao-k-mackeyglass.pdf}
+         \caption{Equações de Mackey-Glass}
+     \end{subfigure}  
+     \centering   
+     \caption{Progressão do erro quadrático médio para cada valor de $K$ nos cenários avaliados para todas as redes neurais testadas}
+     \label{fig:mse-progression}
+\end{figure}
 
 \section{Resultados}
+
+Analisando qual foi o valor de $K$ que produziu o melhor desempenho para cada modelo, realizou-se novamente o processo mencionado na seção anterior, foi obtido o EQM para as melhores configurações (paramêtros e $K$) para cada modelo, em todos os cenários. 
+
+As figuras e a tabela a seguir mostram o comparativo dos melhores desempenhos das redes neurais analisadas:
+\begin{figure}[H]
+     \begin{subfigure}[t]{0.24\textwidth}
+         \includegraphics[scale=0.24]{comparacao-k-henon.pdf}
+         \caption{Mapa de Hénon}
+     \end{subfigure}
+     \centering
+     \begin{subfigure}[t]{0.24\textwidth} 
+         \includegraphics[scale=0.24]{comparacao-k-logistic.pdf}
+         \caption{Mapa logístico}
+     \end{subfigure}
+     \centering
+     \begin{subfigure}[t]{0.24\textwidth}
+         \includegraphics[scale=0.24]{comparacao-k-lorenz.pdf}
+         \caption{Sistema de Lorenz}
+     \end{subfigure}
+     \centering
+     \begin{subfigure}[t]{0.24\textwidth} 
+         \includegraphics[scale=0.24]{comparacao-mackeyglass.pdf}
+         \caption{Equações de Mackey-Glass}
+     \end{subfigure}  
+     \centering   
+     \caption{Comparação do melhor desempenho obtido por cada modelo nos cenários testados}
+     \label{fig:model-comparison}
+\end{figure}
+\begin{table}[!ht]
+\begin{center}
+\begin{tabular}{c c c c c}
+  \textbf{Cenário} & \pbox{0.4cm}{\centering \textbf{MLP}} & \pbox{0.9cm}{\centering \textbf{LSTM}} & \pbox{0.745cm}{\centering \textbf{GRU}} & \pbox{1cm}{\centering \textbf{ESN}}\\
+ \hline
+ \addlinespace
+ \pbox{0.7cm}{\centering \textbf{Mapa de\newline Hénon}} & $4$ & $\glorot\, \normal$ & $30$ & $0.003$\\  
+  \addlinespace
+ \pbox{0.7cm}{\centering \textbf{Mapa\newline logístico}} & $2$ & $\glorot\, \normal$ & $100$ & $0.003$\\ 
+  \addlinespace
+ \pbox{0.9cm}{\centering \textbf{Sistema de\newline Lorenz}} & $8$ & $\glorot\, \uniform$ & $30$ & $0.001$\\ 
+  \addlinespace
+ \pbox{0.929cm}{\centering \textbf{Equações de\newline Mackey-Glass}} & $2$ & $\glorot\, \uniform$ & $10$ & $0.005$\\ 
+\end{tabular}
+\caption{Melhor desempenho obtido por cada modelo nos cenários testados}
+\end{center}
+\end{table}
 
 \section{Conclusões}
 

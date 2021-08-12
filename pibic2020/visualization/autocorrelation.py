@@ -59,7 +59,7 @@ for item in ax.collections:
 for item in ax.lines:
     item.set_color(cor)
 plt.subplots_adjust(top=0.95)
-ax.grid(False)
+ax.grid(True)
 sns.despine()
 fig.savefig("images/autocorrelacao/autocorrelacao-henon.pdf")
 
@@ -77,7 +77,7 @@ for item in ax.collections:
 for item in ax.lines:
     item.set_color(cor)
 plt.subplots_adjust(top=0.95)
-ax.grid(False)
+ax.grid(True)
 sns.despine()
 fig.savefig("images/autocorrelacao/autocorrelacao-parcial-henon.pdf")
 
@@ -108,7 +108,7 @@ for item in ax.collections:
 for item in ax.lines:
     item.set_color(cor)
 plt.subplots_adjust(top=0.95)
-ax.grid(False)
+ax.grid(True)
 sns.despine()
 fig.savefig("images/autocorrelacao/autocorrelacao-logistic.pdf")
 
@@ -126,7 +126,7 @@ for item in ax.collections:
 for item in ax.lines:
     item.set_color(cor)
 plt.subplots_adjust(top=0.95)
-ax.grid(False)
+ax.grid(True)
 sns.despine()
 fig.savefig("images/autocorrelacao/autocorrelacao-parcial-logistic.pdf")
 
@@ -155,7 +155,7 @@ for item in ax.collections:
 for item in ax.lines:
     item.set_color(cor)
 plt.subplots_adjust(top=0.95)
-ax.grid(False)
+ax.grid(True)
 sns.despine()
 fig.savefig("images/autocorrelacao/autocorrelacao-lorenz.pdf")
 
@@ -173,7 +173,7 @@ for item in ax.collections:
 for item in ax.lines:
     item.set_color(cor)
 plt.subplots_adjust(top=0.95)
-ax.grid(False)
+ax.grid(True)
 sns.despine()
 fig.savefig("images/autocorrelacao/autocorrelacao-parcial-lorenz.pdf")
 
@@ -205,7 +205,7 @@ for item in ax.collections:
 for item in ax.lines:
     item.set_color(cor)
 plt.subplots_adjust(top=0.95)
-ax.grid(False)
+ax.grid(True)
 sns.despine()
 fig.savefig("images/autocorrelacao/autocorrelacao-mackeyglass.pdf")
 
@@ -223,7 +223,7 @@ for item in ax.collections:
 for item in ax.lines:
     item.set_color(cor)
 plt.subplots_adjust(top=0.95)
-ax.grid(False)
+ax.grid(True)
 sns.despine()
 fig.savefig("images/autocorrelacao/autocorrelacao-parcial-mackeyglass.pdf")
 
