@@ -24,7 +24,7 @@ class ModeloESN(BaseEstimator):
         leaky_values: list
             Lista com os coeficientes de vazamento
         spectral_radius: list
-            Valor com o raio espectral
+            Lista com os valores do raio espectral
         scale: int ou float
             Valor absoluto máximo aceito para os pesos de entrada
         percent_transitory_samples = float

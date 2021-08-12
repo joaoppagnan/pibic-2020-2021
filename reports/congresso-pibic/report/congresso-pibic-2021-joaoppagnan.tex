@@ -1,4 +1,4 @@
-\documentclass[10pt, technote]{article}
+\documentclass[9pt, technote]{article}
 \usepackage{eadca-template}
 \usepackage[plain]{algorithm}
 
@@ -33,7 +33,8 @@
 \title{{\noindent \includegraphics[scale = 0.5]{banner-grande.png}}\\ Predição de Séries Temporais Baseada em Redes Neurais
 Artificiais}
 
-\author{Aluno: João Pedro de Oliveira Pagnan [FEEC/UNICAMP]\\Orientador: Prof.  Levy Boccato [FEEC/UNICAMP]}
+\author{Aluno: João Pedro de Oliveira Pagnan [FEEC/UNICAMP]\\Orientador: Prof.  Levy Boccato [FEEC/UNICAMP]\\
+Coorientador: Prof. Romis Ribeiro de Faissol Attux [FEEC/UNICAMP]}
 
 \address{Departamento de Engenharia de Computação e Automação Industrial (DCA)\\ Faculdade de Engenharia Elétrica e de Computação (FEEC) \\
   Universidade Estadual de Campinas (UNICAMP)}
@@ -264,8 +265,34 @@ Os resultados obtidos para a LSTM e para a GRU podem serem vistos nas tabelas a 
 \end{center}
 \end{table}
 
-
 \subsubsection{ESN}
+
+A \textit{Echo State Network} foi a rede neural mais distinta das outras analisadas nesta pesquisa. Essa rede recorrente baseia-se na teoria de computação por reservatório, chamada assim pois ela utiliza um reservatório de comportamentos dinâmicos que, ao serem combinados linearmente nos neurônios da camada de leitura, produzem as saídas da rede \cite{boccato2013novas}. 
+
+O grande diferencial prático desta rede é que os pesos dos neurônios do reservatório são ajustados com valores fixos antes do treinamento da camada de saída. Esses valores são obtidos aleatoriamente, seguindo determinados parâmetros, como o raio espectral que determina o maior valor singular da matriz de pesos do reservatório,  a taxa de vazamento que representa a velocidade com a qual o reservatório atualiza suas dinâmicas. Além disso, normalmente, a matriz dos pesos do reservatório é esparsa \cite{jaeger2007echo}.
+
+Devido a isso, o ajuste dos neurônios na camada de leitura pode ser realizado com um procedimento de regressão linear, sem necessitar de um treinamento iterativo, como nas redes anteriores. Esse fato economiza tempo de processamento e garante que será atingido o mínimo global da função custo utilizada.
+
+Logo, para esta rede foi realizado um \textit{gridsearch} para determinar o número de neurônios na camada de leitura ($30$, $50$, $70$, $90$, $100$, $120$, $140$, $160$, $180$, $200$, $240$, $280$, $320$, $360$, $400$, $440$, $480$, $500$) e o valor para o raio espectral ($0.1$, $0.2$, $0.3$, $0.4$, $0.5$, $0.6$, $0.7$, $0.8$, $0.9$, $0.95$, $0.96$, $0.97$, $0.98$, $0.99$) e, por tratar-se de uma rede recorrente, também foi utilizado o processo de \textit{holdout} descrito na seção anterior. Vale também mencionar que a taxa de vazamento foi fixada em $0.9$ para todos os cenários.
+
+Obteve-se assim, as seguintes configurações para a ESN em cada um dos cenários:
+\begin{table}[!ht]
+\begin{center}
+\begin{tabular}{c c c}
+  \textbf{Cenário} & {\centering \textbf{Raio espectral}} & {\centering \textbf{Nº de neurônios}}\\
+ \hline
+ \addlinespace
+ \pbox{0.7cm}{\centering \textbf{Mapa de\newline Hénon}} & $0.1$ & $500$\\  
+  \addlinespace
+ \pbox{0.7cm}{\centering \textbf{Mapa\newline logístico}} & $0.1$ & $500$\\ 
+  \addlinespace
+ \pbox{0.9cm}{\centering \textbf{Sistema de\newline Lorenz}} & $0.2$ & $120$\\ 
+  \addlinespace
+ \pbox{0.929cm}{\centering \textbf{Equações de\newline Mackey-Glass}} & $0.4$ & $500$\\ 
+\end{tabular}
+\caption{Melhores parâmetros para a rede ESN nos cenários em análise}
+\end{center}
+\end{table}
 
 \subsection{Análise comparativa}
 
