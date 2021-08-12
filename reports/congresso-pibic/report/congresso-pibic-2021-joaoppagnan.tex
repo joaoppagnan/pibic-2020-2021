@@ -1,4 +1,4 @@
-\documentclass[9pt, technote]{article}
+\documentclass{article}
 \usepackage{eadca-template}
 \usepackage[plain]{algorithm}
 
@@ -90,15 +90,15 @@ y[n+1] = b \cdot x[n]
 \end{equation}
 \end{subequations}
 
-Para esta pesquisa, foram utilizados os valores usuais para os parâmetros $a$ e $b$. Logo, têm-se que $a = 1.4$ e $b = 0.3$. Além disso, neste e nos outros sistemas, foi gerado um conjunto de $5000$ dados. As figuras a seguir mostram a série temporal em $\hat{x}$ e o atrator obtido com a simulação:
+Para esta pesquisa, foram utilizados os valores usuais para os parâmetros $a$ e $b$. Logo, têm-se que $a = 1.4$ e $b = 0.3$. Além disso, neste e nos outros sistemas, foi gerado um conjunto de $5000$ dados. As figura \ref{fig:henon} mostra a série temporal em $\hat{x}$ e o atrator obtido com a simulação:
 \begin{figure}[H]
-     \begin{subfigure}[t]{0.24\textwidth}
-         \includegraphics[scale=0.24]{serie-henon-x.pdf}
+     \begin{subfigure}[t]{0.2\textwidth}
+         \includegraphics[scale=0.2]{serie-henon-x.pdf}
          %\caption{$y=5/x$}
      \end{subfigure}
      \centering
-     \begin{subfigure}[t]{0.24\textwidth}
-         \includegraphics[scale=0.24]{mapa-de-henon.png}
+     \begin{subfigure}[t]{0.2\textwidth}
+         \includegraphics[scale=0.2]{mapa-de-henon.png}
          %\caption{$y=x$}
      \end{subfigure}
      \caption{À esquerda, as cem primeiras iterações da série temporal em $\hat{x}$ do mapa de Hénon e, à direita, o atrator correspondente à simulação}
@@ -112,15 +112,15 @@ Conforme foi dito anteriormente, o outro sistema caótico a tempo discreto simul
 x[n+1] = r\cdot x[n] \cdot (1 - x[n])
 \end{equation}
 
-Nesse caso, o sistema não chega a operar em caos para qualquer valor de $r$. Assim, como o estudo visa analisar o desempenho para sistemas caóticos, foi utilizado $r=3.86$, que, conforme será visto no diagrama de bifurcação abaixo, faz com que a série temporal dada pela equação (\ref{eq:logistic}) opere em caos. Novamente, foram simuladas $5000$ iterações:
+Nesse caso, o sistema não chega a operar em caos para qualquer valor de $r$. Assim, como o estudo visa analisar o desempenho para sistemas caóticos, foi utilizado $r=3.86$, que, conforme será visto no diagrama de bifurcação abaixo, faz com que a série temporal dada pela equação (\ref{eq:logistic}) opere em caos. Novamente, foram simuladas $5000$ iterações e o resultado pode ser visto na figura \ref{fig:logistic}.
 \begin{figure}[H]
-     \begin{subfigure}[t]{0.24\textwidth} 
-         \includegraphics[scale=0.24]{serie-logistico.pdf}
+     \begin{subfigure}[t]{0.2\textwidth} 
+         \includegraphics[scale=0.2]{serie-logistico.pdf}
          %\caption{$y=5/x$}
      \end{subfigure}
      \centering
-     \begin{subfigure}[t]{0.24\textwidth} 
-         \includegraphics[scale=0.24]{mapa-logistico.png}
+     \begin{subfigure}[t]{0.2\textwidth} 
+         \includegraphics[scale=0.2]{mapa-logistico.png}
          %\caption{$y=x$}
      \end{subfigure}
      \caption{À esquerda, as cem primeiras iterações da série temporal do mapa logístico e, à direita, o diagrama de bifurcação este sistema}
@@ -142,15 +142,15 @@ O sistema de Lorenz foi um dos sistemas dinâmicos caóticos a tempo contínuo s
 \end{equation}
 \end{subequations}
 
-Para a simulação numérica foi considerado que $\sigma = 10$, $\beta = \frac{8}{3}$, $\rho = 28$ e foi utilizado $dt = 0.01$, gerando $5000$ dados, assim como nos casos discretos. As figuras abaixo mostram a série temporal em $\hat{x}$ e o atrator de Lorenz para a condição inicial $[x(0)\; y(0)\; z(0)]^T = [0.1\; 0\; 0]^T$:
+Para a simulação numérica foi considerado que $\sigma = 10$, $\beta = \frac{8}{3}$, $\rho = 28$ e foi utilizado $dt = 0.01$, gerando $5000$ dados, assim como nos casos discretos. A figura \ref{fig:lorenz} mostra a série temporal em $\hat{x}$ e o atrator de Lorenz para a condição inicial $[x(0)\; y(0)\; z(0)]^T = [0.1\; 0\; 0]^T$.
 \begin{figure}[H]
-     \begin{subfigure}[t]{0.24\textwidth} 
-         \includegraphics[scale=0.24]{serie-lorenz-x.pdf}
+     \begin{subfigure}[t]{0.2\textwidth} 
+         \includegraphics[scale=0.2]{serie-lorenz-x.pdf}
          %\caption{$y=5/x$}
      \end{subfigure}
      \centering
-     \begin{subfigure}[t]{0.24\textwidth}
-         \includegraphics[scale=0.24]{diagrama-de-fases-lorenz.pdf}
+     \begin{subfigure}[t]{0.2\textwidth}
+         \includegraphics[scale=0.2]{diagrama-de-fases-lorenz.pdf}
          %\caption{$y=x$}
      \end{subfigure}
      \caption{À esquerda, a série temporal em $\hat{x}$ do sistema de Lorenz simulado e, à direita, o diagrama de fases correspondente à simulação}
@@ -169,15 +169,15 @@ Por fim, o último sistema caótico simulado, este também a tempo contínuo, fo
 \end{equation}
 \end{subequations}
 
-Neste caso, a equação (\ref{eq:mackey-glass-chaos}) exibe um comportamente caótico para valores mais altos de $\tau$. Para a simulação numérica, foi utilizado $n = 10$, $\gamma = 0.1$, $\beta = 0.2$, $\theta = 1$, $\tau = 22$ e $dt = 1.0$, gerando novamente $5000$ dados, resultando na seguinte série temporal e no seguinte atrator:
+Neste caso, a equação (\ref{eq:mackey-glass-chaos}) exibe comportamento caótico para valores mais altos de $\tau$. Para a simulação numérica, foi utilizado $n = 10$, $\gamma = 0.1$, $\beta = 0.2$, $\theta = 1$, $\tau = 22$ e $dt = 1.0$, gerando novamente $5000$ dados. A série e o atrator obtidos podem serem vistos na figura \ref{fig:mackey-glass}.
 \begin{figure}[H]
-     \begin{subfigure}[t]{0.24\textwidth}
-         \includegraphics[scale=0.24]{serie-mackeyglass.pdf}
+     \begin{subfigure}[t]{0.2\textwidth}
+         \includegraphics[scale=0.2]{serie-mackeyglass.pdf}
          %\caption{$y=5/x$}
      \end{subfigure}
      \centering
-     \begin{subfigure}[t]{0.24\textwidth}
-         \includegraphics[scale=0.24]{atrator-mackeyglass.pdf}
+     \begin{subfigure}[t]{0.2\textwidth}
+         \includegraphics[scale=0.2]{atrator-mackeyglass.pdf}
          %\caption{$y=x$}
      \end{subfigure}
      \caption{À esquerda, a série temporal da equação (\ref{eq:mackey-glass-chaos}) exibida de $t = 0 $ a $t = 800$ e, à direita, o atrator correspondente à simulação}
@@ -196,7 +196,7 @@ Para as redes \textit{Multilayer Perceptron}, foi testado o tamanho do \textit{b
 
 O \textit{gridsearch} utilizou validação cruzada com $4$ \textit{folds} nos dados de treinamento, que correspondiam a $85\%$ dos primeiros dados das séries temporais, isto é, os primeiros $4250$ valores. Essa proporção entre os dados de treinamento e de teste foi utilizada para todas as redes analisadas.
 
-Vale reforçar que foi utilizada apenas uma camada intermediária em cada cenário. As melhores configurações obtidas podem serem vistas na tabela abaixo:
+Vale reforçar que foi utilizada apenas uma camada intermediária em cada cenário. As melhores configurações obtidas podem serem vistas na tabela \ref{tab:mlp}.
 \begin{table}[!ht]
 \begin{center}
 \begin{tabular}{c c c c c c c}
@@ -212,6 +212,7 @@ Vale reforçar que foi utilizada apenas uma camada intermediária em cada cenár
  \pbox{0.929cm}{\centering \textbf{Equações de\newline Mackey-Glass}} & Não & $4$ & $\tanh$ & $\glorot\, \normal$ & $5$ & $0.001$\\ 
 \end{tabular}
 \caption{Melhores parâmetros para a rede MLP nos cenários em análise}
+\label{tab:mlp}
 \end{center}
 \end{table}
 
@@ -223,7 +224,7 @@ Por exemplo, a segunda seção obtida pelo \textit{holdout} inclui a primeira se
 
 Foi avaliado o \textit{batch size} ($2$, $4$, $8$, $16$, $32$), a inicialização dos pesos ($\glorot \, \uniform$, $\glorot \, \normal$), o número de neurônios recorrentes na camada intermediária ($5$, $10$, $15$, $20$, $30$, $50$, $75$, $100$), e a taxa de aprendizagem ($0.001$, $0.003$, $0.005$, $0.008$, $0.01$), novamente utilizando apenas uma camada intermediária. Vale reforçar que a função de ativação usual da célula recorrente não foi alterada ($\tanh$), assim, para o sistema de Lorenz, foi feito um ajuste de escala para evitar a saturação na saída dos neurônios.
 
-Os resultados obtidos para a LSTM e para a GRU podem serem vistos nas tabelas a seguir:
+Os resultados obtidos para a LSTM e para a GRU podem serem vistos nas tabelas \ref{tab:lstm} e \ref{tab:gru}, respectivamente.
 \begin{table}[!ht]
 \begin{center}
 \begin{tabular}{c c c c c}
@@ -239,6 +240,7 @@ Os resultados obtidos para a LSTM e para a GRU podem serem vistos nas tabelas a 
  \pbox{0.929cm}{\centering \textbf{Equações de\newline Mackey-Glass}} & $2$ & $\glorot\, \uniform$ & $50$ & $0.003$\\ 
 \end{tabular}
 \caption{Melhores parâmetros para a rede LSTM nos cenários em análise}
+\label{tab:lstm}
 \end{center}
 \end{table}
 \begin{table}[!ht]
@@ -256,6 +258,7 @@ Os resultados obtidos para a LSTM e para a GRU podem serem vistos nas tabelas a 
  \pbox{0.929cm}{\centering \textbf{Equações de\newline Mackey-Glass}} & $2$ & $\glorot\, \uniform$ & $10$ & $0.005$\\ 
 \end{tabular}
 \caption{Melhores parâmetros para a rede GRU nos cenários em análise}
+\label{tab:gru}
 \end{center}
 \end{table}
 
@@ -269,7 +272,7 @@ Devido a isso, o ajuste dos neurônios na camada de leitura pode ser realizado c
 
 Logo, para esta rede foi realizado um \textit{gridsearch} para determinar o número de neurônios na camada de leitura ($30$, $50$, $70$, $90$, $100$, $120$, $140$, $160$, $180$, $200$, $240$, $280$, $320$, $360$, $400$, $440$, $480$, $500$) e o valor para o raio espectral ($0.1$, $0.2$, $0.3$, $0.4$, $0.5$, $0.6$, $0.7$, $0.8$, $0.9$, $0.95$, $0.96$, $0.97$, $0.98$, $0.99$) e, por tratar-se de uma rede recorrente, também foi utilizado o processo de \textit{holdout} descrito na seção anterior. Vale também mencionar que a taxa de vazamento foi fixada em $0.9$ para todos os cenários.
 
-Obteve-se assim, as seguintes configurações para a ESN em cada um dos cenários:
+A tabela \ref{tab:esn} exibe as melhores configurações para a ESN em cada um dos cenários.
 \begin{table}[!ht]
 \begin{center}
 \begin{tabular}{c c c}
@@ -285,6 +288,7 @@ Obteve-se assim, as seguintes configurações para a ESN em cada um dos cenário
  \pbox{0.929cm}{\centering \textbf{Equações de\newline Mackey-Glass}} & $0.4$ & $500$\\ 
 \end{tabular}
 \caption{Melhores parâmetros para a rede ESN nos cenários em análise}
+\label{tab:esn}
 \end{center}
 \end{table}
 
@@ -292,55 +296,55 @@ Obteve-se assim, as seguintes configurações para a ESN em cada um dos cenário
 
 Com as melhores configurações para cada rede e cenário obtidas, foi analisada a progressão do erro quadrático médio para cada valor de $K$ para cada rede neural, em cada cenário. A faixa de valores para $K$ a ser testada foi determinada utilizando a autocorrelação parcial das séries temporais de cada sistema analisado, e observando a partir de qual valor anterior ao atual a autocorrelação parcial não está mais no intervalo de confiança utilizado no cálculo dessa grandeza.
 
-As figuras abaixo mostram a autocorrelação parcial para as séries temporais utilizadas:
+A figura \ref{fig:autocorrelation} mostra a autocorrelação parcial para as séries temporais utilizadas.
 \begin{figure}[H]
-     \begin{subfigure}[t]{0.24\textwidth}
-         \includegraphics[scale=0.24]{autocorrelacao-parcial-henon.pdf}
+     \begin{subfigure}[t]{0.2\textwidth}
+         \includegraphics[scale=0.2]{autocorrelacao-parcial-henon.pdf}
          \caption{Mapa de Hénon}
      \end{subfigure}
      \centering
-     \begin{subfigure}[t]{0.24\textwidth} 
-         \includegraphics[scale=0.24]{autocorrelacao-parcial-logistic.pdf}
+     \begin{subfigure}[t]{0.2\textwidth} 
+         \includegraphics[scale=0.2]{autocorrelacao-parcial-logistic.pdf}
          \caption{Mapa logístico}
      \end{subfigure}
      \centering
-     \begin{subfigure}[t]{0.24\textwidth}
-         \includegraphics[scale=0.24]{autocorrelacao-parcial-lorenz.pdf}
+     \begin{subfigure}[t]{0.2\textwidth}
+         \includegraphics[scale=0.2]{autocorrelacao-parcial-lorenz.pdf}
          \caption{Sistema de Lorenz}
      \end{subfigure}
      \centering
-     \begin{subfigure}[t]{0.24\textwidth} 
-         \includegraphics[scale=0.24]{autocorrelacao-parcial-mackeyglass.pdf}
+     \begin{subfigure}[t]{0.2\textwidth} 
+         \includegraphics[scale=0.2]{autocorrelacao-parcial-mackeyglass.pdf}
          \caption{Equações de Mackey-Glass}
      \end{subfigure}  
      \centering   
      \caption{Autocorrelação parcial para as séries temporais utilizadas}
-     \label{fig:mse-progression}
+     \label{fig:autocorrelation}
 \end{figure}
 
 Para realizar esse procedimento, cada rede (com as configurações ótimas) foi treinada utilizando $85\%$ dos dados gerados, sendo que $10\%$ dos dados de treinamento foi utilizado como o conjunto de validação (nas redes MLP, LSTM e GRU). Em seguida, com o modelo treinado, foi avaliado o EQM no conjunto de teste (que corresponde aos últimos $750$ dados). Esse processo foi realizado $5$ vezes para cada $K$, obtendo assim um valor médio e desvio-padrão para cada $K$ em cada cenário, para cada modelo.
 
 Vale reforçar que, como o ajuste de parâmetros da ESN possui solução em forma fechada, não foi necessário utilizar um conjunto de validação no treinamento. No caso da MLP, LSTM e GRU, o processo iterativo de ajuste dos pesos utilizou um conjunto de validação de forma a seguir o procedimento de \textit{early stopping} para evitar o sobreajuste da rede.
 
-As figuras abaixo mostram a progressão do EQM para cada $K$ obtida em todos os cenários para todas as redes:
+A figura \ref{fig:mse-progression} mostra a progressão do EQM para cada $K$ obtida em todos os cenários para todas as redes. 
 \begin{figure}[H]
-     \begin{subfigure}[t]{0.24\textwidth}
-         \includegraphics[scale=0.24]{progressao-k-henon.pdf}
+     \begin{subfigure}[t]{0.2\textwidth}
+         \includegraphics[scale=0.2]{progressao-k-henon.pdf}
          \caption{Mapa de Hénon}
      \end{subfigure}
      \centering
-     \begin{subfigure}[t]{0.24\textwidth} 
-         \includegraphics[scale=0.24]{progressao-k-logistic.pdf}
+     \begin{subfigure}[t]{0.2\textwidth} 
+         \includegraphics[scale=0.2]{progressao-k-logistic.pdf}
          \caption{Mapa logístico}
      \end{subfigure}
      \centering
-     \begin{subfigure}[t]{0.24\textwidth}
-         \includegraphics[scale=0.24]{progressao-k-lorenz.pdf}
+     \begin{subfigure}[t]{0.2\textwidth}
+         \includegraphics[scale=0.2]{progressao-k-lorenz.pdf}
          \caption{Sistema de Lorenz}
      \end{subfigure}
      \centering
-     \begin{subfigure}[t]{0.24\textwidth} 
-         \includegraphics[scale=0.24]{progressao-k-mackeyglass.pdf}
+     \begin{subfigure}[t]{0.2\textwidth} 
+         \includegraphics[scale=0.2]{progressao-k-mackeyglass.pdf}
          \caption{Equações de Mackey-Glass}
      \end{subfigure}  
      \centering   
@@ -350,27 +354,27 @@ As figuras abaixo mostram a progressão do EQM para cada $K$ obtida em todos os 
 
 \section{Resultados}
 
-Analisando qual foi o valor de $K$ que produziu o melhor desempenho para cada modelo, realizou-se novamente o processo mencionado na seção anterior, foi obtido o EQM para as melhores configurações (paramêtros e $K$) para cada modelo, em todos os cenários. 
+Analisando qual foi o valor de $K$ que produziu o melhor desempenho para cada modelo, realizou-se novamente o processo mencionado na seção anterior e foi obtido o EQM para as melhores configurações (paramêtros e $K$) para cada modelo, em todos os cenários. 
 
-As figuras e a tabela a seguir mostram o comparativo dos melhores desempenhos das redes neurais analisadas:
-\begin{figure}[H]
-     \begin{subfigure}[t]{0.24\textwidth}
-         \includegraphics[scale=0.24]{comparacao-k-henon.pdf}
+A figura \ref{fig:model-comparison} e a tabela \ref{tab:model-comparison} mostram o comparativo dos melhores desempenhos das redes neurais analisadas. Além disso, a figura mostra uma comparação da predição em si de cada modelo nos dados de testes de cada cenário.
+\begin{figure}[!h]
+     \begin{subfigure}[t]{0.2\textwidth}
+         \includegraphics[scale=0.2]{comparacao-k-henon.pdf}
          \caption{Mapa de Hénon}
      \end{subfigure}
      \centering
-     \begin{subfigure}[t]{0.24\textwidth} 
-         \includegraphics[scale=0.24]{comparacao-k-logistic.pdf}
+     \begin{subfigure}[t]{0.2\textwidth} 
+         \includegraphics[scale=0.2]{comparacao-k-logistic.pdf}
          \caption{Mapa logístico}
      \end{subfigure}
      \centering
-     \begin{subfigure}[t]{0.24\textwidth}
-         \includegraphics[scale=0.24]{comparacao-k-lorenz.pdf}
+     \begin{subfigure}[t]{0.2\textwidth}
+         \includegraphics[scale=0.2]{comparacao-k-lorenz.pdf}
          \caption{Sistema de Lorenz}
      \end{subfigure}
      \centering
-     \begin{subfigure}[t]{0.24\textwidth} 
-         \includegraphics[scale=0.24]{comparacao-mackeyglass.pdf}
+     \begin{subfigure}[t]{0.2\textwidth} 
+         \includegraphics[scale=0.2]{comparacao-mackeyglass.pdf}
          \caption{Equações de Mackey-Glass}
      \end{subfigure}  
      \centering   
@@ -380,20 +384,61 @@ As figuras e a tabela a seguir mostram o comparativo dos melhores desempenhos da
 \begin{table}[!ht]
 \begin{center}
 \begin{tabular}{c c c c c}
-  \textbf{Cenário} & \pbox{0.4cm}{\centering \textbf{MLP}} & \pbox{0.9cm}{\centering \textbf{LSTM}} & \pbox{0.745cm}{\centering \textbf{GRU}} & \pbox{1cm}{\centering \textbf{ESN}}\\
+  \textbf{Cenário} & {\centering \textbf{MLP}} & {\centering \textbf{LSTM}} & {\centering \textbf{GRU}} & {\centering \textbf{ESN}}\\
  \hline
  \addlinespace
- \pbox{0.7cm}{\centering \textbf{Mapa de\newline Hénon}} & $4$ & $\glorot\, \normal$ & $30$ & $0.003$\\  
+ \pbox{0.7cm}{\centering \textbf{Mapa de\newline Hénon}} &
+ \scalebox{0.65}{${\scriptscriptstyle (8.474\pm6.635)\times 10^{-4}}$} &
+ \scalebox{0.65}{${\scriptscriptstyle (1.491\pm0.752)\times 10^{-4}}$} &
+ \scalebox{0.65}{${\scriptscriptstyle (3.455\pm1.014)\times 10^{-4}}$} &
+ \scalebox{0.65}{${\scriptscriptstyle (3.232\pm0.549)\times 10^{-9}}$}\\  
   \addlinespace
- \pbox{0.7cm}{\centering \textbf{Mapa\newline logístico}} & $2$ & $\glorot\, \normal$ & $100$ & $0.003$\\ 
+ \pbox{0.7cm}{\centering \textbf{Mapa\newline logístico}} & 
+ \scalebox{0.65}{${\scriptscriptstyle (3.572\pm0.399)\times 10^{-4}}$} & 
+ \scalebox{0.65}{${\scriptscriptstyle (7.268\pm4.679)\times 10^{-5}}$} &
+ \scalebox{0.65}{${\scriptscriptstyle (9.782\pm5.248)\times 10^{-5}}$} & 
+ \scalebox{0.65}{${\scriptscriptstyle (1.546\pm1.651)\times 10^{-8}}$}\\ 
   \addlinespace
- \pbox{0.9cm}{\centering \textbf{Sistema de\newline Lorenz}} & $8$ & $\glorot\, \uniform$ & $30$ & $0.001$\\ 
+ \pbox{0.9cm}{\centering \textbf{Sistema de\newline Lorenz}} & 
+ \scalebox{0.65}{${\scriptscriptstyle (8.038\pm2.934)\times 10^{-4}}$} & 
+ \scalebox{0.65}{${\scriptscriptstyle (1.241\pm0.234)\times 10^{-3}}$} & 
+ \scalebox{0.65}{${\scriptscriptstyle (2.632\pm1.821)\times 10^{-4}}$} & 
+ \scalebox{0.65}{${\scriptscriptstyle (1.523\pm1.240)\times 10^{-6}}$}\\ 
   \addlinespace
- \pbox{0.929cm}{\centering \textbf{Equações de\newline Mackey-Glass}} & $2$ & $\glorot\, \uniform$ & $10$ & $0.005$\\ 
+ \pbox{0.929cm}{\centering \textbf{Equações de\newline Mackey-Glass}} & 
+ \scalebox{0.65}{${\scriptscriptstyle (3.023\pm0.470)\times 10^{-4}}$} & 
+ \scalebox{0.65}{${\scriptscriptstyle (4.180\pm0.972)\times 10^{-5}}$} & 
+ \scalebox{0.65}{${\scriptscriptstyle (4.843\pm0.997)\times 10^{-5}}$} & 
+ \scalebox{0.65}{${\scriptscriptstyle (4.380\pm0.644)\times 10^{-7}}$}\\ 
 \end{tabular}
 \caption{Melhor desempenho obtido por cada modelo nos cenários testados}
+\label{tab:model-comparison}
 \end{center}
 \end{table}
+\begin{figure}[!ht]
+     \begin{subfigure}[t]{0.24\textwidth}
+         \includegraphics[scale=0.15]{vs-henon-merged.pdf}
+         \caption{Mapa de Hénon}
+     \end{subfigure}
+     \centering
+     \begin{subfigure}[t]{0.24\textwidth} 
+         \includegraphics[scale=0.15]{vs-logistic-merged.pdf}
+         \caption{Mapa logístico}
+     \end{subfigure}
+     \centering
+     \begin{subfigure}[t]{0.24\textwidth}
+         \includegraphics[scale=0.15]{vs-lorenz-merged.pdf}
+         \caption{Sistema de Lorenz}
+     \end{subfigure}
+     \centering
+     \begin{subfigure}[t]{0.24\textwidth}
+         \includegraphics[scale=0.15]{vs-mackeyglass-merged.pdf}
+         \caption{Equações de Mackey-Glass}
+     \end{subfigure}
+     \centering     
+     \caption{Comparação do melhor desempenho obtido por cada modelo nos cenários testados}
+     \label{fig:model-comparison}
+\end{figure}
 
 \section{Conclusões}
 
