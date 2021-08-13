@@ -64,11 +64,11 @@ Na literatura, encontramos diversos tipos de modelos para a  predição de séri
 
 Uma classe de sistemas dinâmicos particularmente relevante dentro do contexto de modelagem e predição de séries temporais está ligada à ideia de dinâmica caótica. Diversos fenômenos naturais, como a dinâmica populacional de uma espécie, a dinâmica atmosférica de uma região, ou até mesmo as órbitas de um sistema com três ou mais corpos celestes podem exibir comportamento caótico. Apesar de serem determinísticos (e, portanto, previsíveis), esses sistemas são extremamente sensíveis às condições iniciais \cite{fiedler1994caos}. Isso causa um problema para a predição das séries temporais originadas por eles, pois uma pequena incerteza na medida afetará toda a previsão. 
 
-Tendo em vista o desempenho de modelos não-lineares para previsão de diversas séries temporais \cite{connor1994recurrent}, optamos por estudar a aplicabilidade de redes neurais artificiais à previsão de séries relacionadas a sistemas com dinâmica caótica. Esta pesquisa comparou o desempenho de quatro arquiteturas distintas de redes neurais artificiais: a rede \textit{Multilayer Perceptron} \cite{rosenblatt1958perceptron}, a rede \textit{Long Short-Term Memory} \cite{connor1994recurrent}, a rede \textit{Gated Recurrent Unit} (GRU) \cite{cho2014learning} e, por fim, a rede \textit{Echo State Network} (ESN) \cite{jaeger2007echo}.
+Tendo em vista o desempenho de modelos não-lineares para previsão de diversas séries temporais \cite{connor1994recurrent}, optamos por estudar a aplicabilidade de redes neurais artificiais à previsão de séries relacionadas a sistemas com dinâmica caótica. Esta pesquisa comparou o desempenho de quatro arquiteturas de redes neurais artificiais: a rede \textit{Multilayer Perceptron} \cite{rosenblatt1958perceptron}, a rede \textit{Long Short-Term Memory} \cite{connor1994recurrent}, a rede \textit{Gated Recurrent Unit} (GRU) \cite{cho2014learning} e, por fim, a rede \textit{Echo State Network} (ESN) \cite{jaeger2007echo}.
 
 A comparação foi realizada em quatro cenários de sistemas caóticos, sendo dois destes a tempo discreto e dois a tempo contínuo. No caso, os sistemas a tempo discreto foram as séries temporais do mapa de Hénon \cite{henon1976two}, e a série temporal relacionada ao mapa logístico \cite{may1976simple}. Já os sistemas a tempo contínuo foram o sistema de Lorenz \cite{lorenz1963deterministic} e as equações de Mackey-Glass \cite{mackey1977oscillation}. Nos sistemas multidimensionais, como o mapa de Hénon e o sistema de Lorenz, foi utilizada a série temporal em $\hat{x}$.
 
-Iniciamos a análise através de um processo de \textit{gridsearch} para determinarmos os parâmetros ótimos para as redes neurais em cada cenário. Em seguida, utilizando os melhores parâmetros, realizou-se um estudo da progressão erro quadrático médio (EQM) com o número de amostras de entrada do modelo preditor (nesse caso, chamado de $K$). Por fim, comparamos qual foi a média e o desvio padrão do EQM com o melhor valor de $K$ de cada modelo nos quatro cenários.
+Iniciamos a análise através de um processo de \textit{gridsearch} para determinarmos os parâmetros ótimos para as redes neurais em cada cenário. Em seguida, utilizando os melhores parâmetros, realizou-se um estudo da progressão do erro quadrático médio (EQM) com o número de amostras de entrada do modelo preditor (nesse caso, chamado de $K$). Por fim, comparamos qual foi a média e o desvio padrão do EQM com o melhor valor de $K$ de cada modelo nos quatro cenários. No caso, o horizonte de predição utilizado foi de $L=3$. Assim, iremos predizer o valor da terceira iteração à frente do valor atual da série temporal.
 
 Através desta pesquisa, percebe-se que a ESN possui o melhor desempenho dentre todos os modelos, em todos os cenários. As redes \textit{Echo State Network} têm a vantagem de necessitarem de bem menos recursos computacionais do que os outros modelos avaliados, obtendo um desempenho consideravelmente superior mesmo com um tempo de treinamento ínfimo se comparado às redes neurais artificiais tradicionais.
 
@@ -76,7 +76,7 @@ Através desta pesquisa, percebe-se que a ESN possui o melhor desempenho dentre 
 
 \subsection{Geração de dados}
 
-Como o intuito do projeto é analisar o desempenho dos modelos preditores citados em sistemas caóticos, os dados necessários para o treinamento e para a análise da \textit{performance} podem serem obtidos através da solução numérica dos sistemas caóticos. As próximas seções evidenciam o processo utilizado, junto com os parâmetros escolhidos para os sistemas caóticos.
+Como o intuito do projeto é analisar o desempenho dos modelos preditores citados em sistemas caóticos, os dados necessários para o treinamento e para a análise da \textit{performance} podem serem obtidos através da simulação numérica dos sistemas caóticos. As próximas seções evidenciam o processo utilizado, junto com os parâmetros escolhidos para cada sistema.
 
 \subsubsection{Mapa de Hénon}
 
@@ -90,7 +90,7 @@ y[n+1] = b \cdot x[n]
 \end{equation}
 \end{subequations}
 
-Para esta pesquisa, foram utilizados os valores usuais para os parâmetros $a$ e $b$. Logo, têm-se que $a = 1.4$ e $b = 0.3$. Além disso, neste e nos outros sistemas, foi gerado um conjunto de $5000$ dados. As figura \ref{fig:henon} mostra a série temporal em $\hat{x}$ e o atrator obtido com a simulação:
+Para esta pesquisa, foram utilizados os valores usuais para os parâmetros $a$ e $b$. Logo, têm-se que $a = 1.4$ e $b = 0.3$. Além disso, neste e nos outros sistemas, foi gerado um conjunto de $5000$ dados. As figura \ref{fig:henon} mostra a série temporal em $\hat{x}$ e o atrator obtido com a simulação para $[x[0]\; y[0]]^T = [0\; 0]^T$.
 \begin{figure}[H]
      \begin{subfigure}[t]{0.2\textwidth}
          \includegraphics[scale=0.2]{serie-henon-x.pdf}
@@ -112,7 +112,7 @@ Conforme foi dito anteriormente, o outro sistema caótico a tempo discreto simul
 x[n+1] = r\cdot x[n] \cdot (1 - x[n])
 \end{equation}
 
-Nesse caso, o sistema não chega a operar em caos para qualquer valor de $r$. Assim, como o estudo visa analisar o desempenho para sistemas caóticos, foi utilizado $r=3.86$, que, conforme será visto no diagrama de bifurcação abaixo, faz com que a série temporal dada pela equação (\ref{eq:logistic}) opere em caos. Novamente, foram simuladas $5000$ iterações e o resultado pode ser visto na figura \ref{fig:logistic}.
+Nesse caso, o sistema não chega a operar em caos para qualquer valor de $r$. Assim, como o estudo visa analisar o desempenho para sistemas caóticos, foi utilizado $r=3.86$, que, conforme será visto no diagrama de bifurcação abaixo, faz com que a série temporal dada pela equação (\ref{eq:logistic}) opere em caos. Novamente, foram simuladas $5000$ iterações, para $x[0] = 0.5$ e o resultado pode ser visto na figura \ref{fig:logistic}.
 \begin{figure}[H]
      \begin{subfigure}[t]{0.2\textwidth} 
          \includegraphics[scale=0.2]{serie-logistico.pdf}
@@ -169,7 +169,7 @@ Por fim, o último sistema caótico simulado, este também a tempo contínuo, fo
 \end{equation}
 \end{subequations}
 
-Neste caso, a equação (\ref{eq:mackey-glass-chaos}) exibe comportamento caótico para valores mais altos de $\tau$. Para a simulação numérica, foi utilizado $n = 10$, $\gamma = 0.1$, $\beta = 0.2$, $\theta = 1$, $\tau = 22$ e $dt = 1.0$, gerando novamente $5000$ dados. A série e o atrator obtidos podem serem vistos na figura \ref{fig:mackey-glass}.
+Neste caso, a equação (\ref{eq:mackey-glass-chaos}) exibe comportamento caótico para valores mais altos de $\tau$. Para a simulação numérica, foi utilizado $n = 10$, $\gamma = 0.1$, $\beta = 0.2$, $\theta = 1$, $\tau = 22$, $dt = 1.0$ e $P(0^-)=0.1$, gerando novamente $5000$ dados. A série e o atrator obtidos podem serem vistos na figura \ref{fig:mackey-glass}.
 \begin{figure}[H]
      \begin{subfigure}[t]{0.2\textwidth}
          \includegraphics[scale=0.2]{serie-mackeyglass.pdf}
@@ -222,7 +222,7 @@ O processo para a LSTM e GRU foram bem similares, considerando que essas arquite
 
 Por exemplo, a segunda seção obtida pelo \textit{holdout} inclui a primeira seção e mais alguns dados, além de uma subdivisão de validação que será utilizada para avaliar o resultado. Com isso, obtém-se conjuntos sequenciais de dados para avaliação do desempenho. Esse procedimento é necessário para as redes recorrentes pois a relação temporal entre os dados de entrada deve ser levada em conta.
 
-Foi avaliado o \textit{batch size} ($2$, $4$, $8$, $16$, $32$), a inicialização dos pesos ($\glorot \, \uniform$, $\glorot \, \normal$), o número de neurônios recorrentes na camada intermediária ($5$, $10$, $15$, $20$, $30$, $50$, $75$, $100$), e a taxa de aprendizagem ($0.001$, $0.003$, $0.005$, $0.008$, $0.01$), novamente utilizando apenas uma camada intermediária. Vale reforçar que a função de ativação usual da célula recorrente não foi alterada ($\tanh$), assim, para o sistema de Lorenz, foi feito um ajuste de escala para evitar a saturação na saída dos neurônios.
+Foi avaliado o \textit{batch size} ($2$, $4$, $8$, $16$, $32$), a inicialização dos pesos ($\glorot \, \uniform$, $\glorot \, \normal$), o número de neurônios recorrentes na camada intermediária ($5$, $10$, $15$, $20$, $30$, $50$, $75$, $100$), e a taxa de aprendizagem ($0.001$, $0.003$, $0.005$, $0.008$, $0.01$), novamente utilizando apenas uma camada intermediária. Vale reforçar que a função de ativação usual da célula recorrente não foi alterada ($\tanh$), assim, para o sistema de Lorenz, foi feito um ajuste de escala para evitar a saturação dos neurônios.
 
 Os resultados obtidos para a LSTM e para a GRU podem serem vistos nas tabelas \ref{tab:lstm} e \ref{tab:gru}, respectivamente.
 \begin{table}[!ht]
@@ -266,11 +266,11 @@ Os resultados obtidos para a LSTM e para a GRU podem serem vistos nas tabelas \r
 
 A \textit{Echo State Network} foi a rede neural mais distinta das outras analisadas nesta pesquisa. Essa rede recorrente baseia-se na teoria de computação por reservatório, chamada assim pois ela utiliza um reservatório de comportamentos dinâmicos que, ao serem combinados linearmente nos neurônios da camada de leitura, produzem as saídas da rede \cite{boccato2013novas}. 
 
-O grande diferencial prático desta rede é que os pesos dos neurônios do reservatório são ajustados com valores fixos antes do treinamento da camada de saída. Esses valores são obtidos aleatoriamente, seguindo determinados parâmetros, como o raio espectral que determina o maior valor singular da matriz de pesos do reservatório,  a taxa de vazamento que representa a velocidade com a qual o reservatório atualiza suas dinâmicas. Além disso, normalmente, a matriz dos pesos do reservatório é esparsa \cite{jaeger2007echo}.
+O grande diferencial prático desta rede é que os pesos dos neurônios do reservatório são ajustados com valores fixos antes do treinamento da camada de saída. Esses valores são obtidos aleatoriamente, seguindo determinados parâmetros, como o raio espectral, que determina o maior valor singular da matriz de pesos do reservatório e a taxa de vazamento, que representa a velocidade com a qual o reservatório atualiza suas dinâmicas. Além disso, normalmente, a matriz dos pesos do reservatório é esparsa \cite{jaeger2007echo}.
 
 Devido a isso, o ajuste dos neurônios na camada de leitura pode ser realizado com um procedimento de regressão linear, sem necessitar de um treinamento iterativo, como nas redes anteriores. Esse fato economiza tempo de processamento e garante que será atingido o mínimo global da função custo utilizada.
 
-Logo, para esta rede foi realizado um \textit{gridsearch} para determinar o número de neurônios na camada de leitura ($30$, $50$, $70$, $90$, $100$, $120$, $140$, $160$, $180$, $200$, $240$, $280$, $320$, $360$, $400$, $440$, $480$, $500$) e o valor para o raio espectral ($0.1$, $0.2$, $0.3$, $0.4$, $0.5$, $0.6$, $0.7$, $0.8$, $0.9$, $0.95$, $0.96$, $0.97$, $0.98$, $0.99$) e, por tratar-se de uma rede recorrente, também foi utilizado o processo de \textit{holdout} descrito na seção anterior. Vale também mencionar que a taxa de vazamento foi fixada em $0.9$ para todos os cenários.
+Para esta rede foi realizado um \textit{gridsearch} para determinar o número de neurônios na camada de leitura ($30$, $50$, $70$, $90$, $100$, $120$, $140$, $160$, $180$, $200$, $240$, $280$, $320$, $360$, $400$, $440$, $480$, $500$) e o valor para o raio espectral ($0.1$, $0.2$, $0.3$, $0.4$, $0.5$, $0.6$, $0.7$, $0.8$, $0.9$, $0.95$, $0.96$, $0.97$, $0.98$, $0.99$) e, por tratar-se de uma rede recorrente, também foi utilizado o processo de \textit{holdout} descrito na seção anterior. Vale também mencionar que a taxa de vazamento foi fixada em $0.9$ para todos os cenários.
 
 A tabela \ref{tab:esn} exibe as melhores configurações para a ESN em cada um dos cenários.
 \begin{table}[!ht]
@@ -356,7 +356,7 @@ A figura \ref{fig:mse-progression} mostra a progressão do EQM para cada $K$ obt
 
 Analisando qual foi o valor de $K$ que produziu o melhor desempenho para cada modelo, realizou-se novamente o processo mencionado na seção anterior e foi obtido o EQM para as melhores configurações (paramêtros e $K$) para cada modelo, em todos os cenários. 
 
-A figura \ref{fig:model-comparison} e a tabela \ref{tab:model-comparison} mostram o comparativo dos melhores desempenhos das redes neurais analisadas. Além disso, a figura mostra uma comparação da predição em si de cada modelo nos dados de testes de cada cenário.
+A figura \ref{fig:model-comparison} e a tabela \ref{tab:model-comparison} mostram o comparativo dos melhores desempenhos das redes neurais analisadas. Além disso, a figura \ref{fig:series-comparison} mostra uma comparação da predição em si de cada modelo nos dados de testes de cada cenário.
 \begin{figure}[!h]
      \begin{subfigure}[t]{0.2\textwidth}
          \includegraphics[scale=0.2]{comparacao-k-henon.pdf}
@@ -411,7 +411,7 @@ A figura \ref{fig:model-comparison} e a tabela \ref{tab:model-comparison} mostra
  \scalebox{0.65}{${\scriptscriptstyle (4.843\pm0.997)\times 10^{-5}}$} & 
  \scalebox{0.65}{${\scriptscriptstyle (4.380\pm0.644)\times 10^{-7}}$}\\ 
 \end{tabular}
-\caption{Melhor desempenho obtido por cada modelo nos cenários testados}
+\caption{Melhor EQM obtido por cada modelo nos cenários testados}
 \label{tab:model-comparison}
 \end{center}
 \end{table}
@@ -436,16 +436,26 @@ A figura \ref{fig:model-comparison} e a tabela \ref{tab:model-comparison} mostra
          \caption{Equações de Mackey-Glass}
      \end{subfigure}
      \centering     
-     \caption{Comparação do melhor desempenho obtido por cada modelo nos cenários testados}
-     \label{fig:model-comparison}
+     \caption{Comparação da predição realizada por cada modelo nos cenários testados}
+     \label{fig:series-comparison}
 \end{figure}
 
 \section{Análise e Conclusão}
 
 Analisando os resultados obtidos, percebe-se que, com exceção do cenário do sistema de Lorenz, a rede MLP foi consideravelmente pior do que as redes recorrentes. Também percebe-se que, dentre as redes recorrentes, a ESN obteve um EQM bem inferior ao obtido pela LSTM e pela GRU.
 
+O desempenho inferior da rede MLP com relação às redes recorrentes provavelmente deve-se ao fato de que a relação temporal presente na LSTM, GRU e ESN auxilia na modelagem da dinâmica da série temporal. Já o pior desempenho da LSTM na série temporal do sistema de Lorenz provavelmente está relacionado aos efeitos estocásticos presentes no ajuste de peso dessa rede neural que, conforme indicado em \cite{doya1992bifurcations}, é uma dificuldade do treinamento dessa rede.
+
+Algo interessante de mencionar é que, no geral, o desempenho de todas os modelos estudados foram consideravelmente bons nas séries temporais dos sistemas a tempo contínuo (sistema de Lorenz e equações de Mackey-Glass), sendo que as diferenças foram mais pronunciadas na série temporal do mapa de Hénon e do mapa logístico. Provavelmente, a suavidade presente nas séries de Lorenz e de Mackey-Glass facilita a modelagem do preditor, além do fato de que as séries temporais mencionadas são bem menos erráticas se comparadas às séries de Hénon e do mapa logístico.
+
+O principal resultado obtido foi o fato de que, percebe-se que o modelo preditor utilizando a rede de estado de eco obteve um desempenho bem superior aos outros modelos, em todos os cenários. O erro quadrático médio foi tão baixo que, observando a predição nos dados de teste, praticamente não há diferença entre os valores reais e os valores previstos. Essa superioridade da ESN também é realçada na tabela comparativa, que indica que a ESN obteve previsões de cerca de $100$ a $10000$ melhores que os outros modelos.
+
+Esse resultado combinado ao fato de que o treinamento do modelo preditor baseado na rede de estado de eco é bem menos custoso computacionalmente se comparado ao das outras redes, mostra que a ESN é uma boa alternativa para futuros estudos de modelos preditores de séries temporais. Além disso, conforme mostrado em outros trabalhos como \cite{jaeger2004harnessing, jaeger2007echo, boccato2013novas}, a rede de estado de eco também é uma boa ferramenta para aplicações em outras áreas, como o problema de equalização de canais.
+
+Como sugestão de trabalhos futuros, pode ser avaliada a eficácia da ESN em reconstruir atratores através de séries temporais experimentais de sistemas caóticos. Se o desempenho para essa tarefa for tão bom quanto ao obtido na predição das séries estudadas, a ESN pode-se tornar uma ferramenta ainda mais poderosa para a modelagem de sistemas com dinâmica caótica.
+
 \bibliographystyle{ieeetr}
-{\footnotesize
+{\scriptsize
 \bibliography{bib}
 }
 \pdfinfo{
