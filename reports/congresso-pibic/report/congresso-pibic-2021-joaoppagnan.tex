@@ -21,6 +21,7 @@
 \graphicspath{{../figures/}}
 \setlength{\captionmargin}{0.2cm}
 \renewcommand{\captionfont}{\sffamily\footnotesize\bfseries}
+\usepackage{tabularx}
 
 \newcommand{\sigmoid}{\text{Sigmoid}}
 \newcommand{\sen}{\text{sen}}
@@ -191,7 +192,7 @@ Como foi mencionado na seção introdutória, foi realizado um procedimento de \
 
 Para as redes \textit{Multilayer Perceptron}, foi testado o tamanho do \textit{batch} para o treinamento ($2$, $4$, $8$, $16$, $32$), se será ou não utilizado uma camada de \textit{batch normalization}, a função de ativação para os neurônios \textit{Perceptron} na camada intermediária ($\selu$, $\relu$, $\elu$, $\tanh$, $\sigmoid$), a inicialização dos pesos dos neurônios ($\glorot$, $\he$, $\lecun$, tanto com distribuição normal, quanto uniforme), o número de neurônios na camada intermediária ($5$, $10$, $15$, $20$, $30$, $50$, $75$, $100$) e, por fim, a taxa de aprendizagem ($0.001$, $0.003$, $0.005$, $0.008$, $0.01$). 
 
-O \textit{gridsearch} utilizou validação cruzada com $4$ \textit{folds} nos dados de treinamento, que correspondiam a $85\%$ dos primeiros dados das séries temporais, isto é, os primeiros $4250$ valores. Essa proporção entre os dados de treinamento e de teste foi utilizada para todas as redes analisadas.
+O \textit{gridsearch} utilizou validação cruzada com $4$ \textit{folds} nos dados de treinamento, que correspondiam aos primeiros $4250$ valores. Essa proporção entre os dados de treinamento e de teste foi utilizada para todas as redes analisadas.
 
 Vale reforçar que foi utilizada apenas uma camada intermediária em cada cenário. As melhores configurações obtidas podem serem vistas na tabela \ref{tab:mlp}.
 \begin{table}[!ht]
@@ -272,17 +273,13 @@ Para esta rede foi realizado um \textit{gridsearch} para determinar o número de
 A tabela \ref{tab:esn} exibe as melhores configurações para a ESN em cada um dos cenários.
 \begin{table}[!ht]
 \begin{center}
-\begin{tabular}{c c c}
-  \textbf{Cenário} & {\centering \textbf{Raio espectral}} & {\centering \textbf{Nº de neurônios}}\\
+\begin{tabular}{c c c c c}
+  \textbf{Parâmetro} & \pbox{0.7cm}{\centering \textbf{Mapa de\newline Hénon}} & \pbox{0.6cm}{\centering \textbf{Mapa\newline logístico}} & \pbox{1.0cm}{\centering \textbf{Sistema de\newline Lorenz}} & \pbox{1.1cm}{\centering \textbf{Equações de\newline Mackey-Glass}}\\
  \hline
  \addlinespace
- \pbox{0.7cm}{\centering \textbf{Mapa de\newline Hénon}} & $0.1$ & $500$\\  
+ {\centering \textbf{Raio espectral}} & $0.1$ & $0.1$ & $0.2$ & $0.4$\\  
   \addlinespace
- \pbox{0.7cm}{\centering \textbf{Mapa\newline logístico}} & $0.1$ & $500$\\ 
-  \addlinespace
- \pbox{0.9cm}{\centering \textbf{Sistema de\newline Lorenz}} & $0.2$ & $120$\\ 
-  \addlinespace
- \pbox{0.929cm}{\centering \textbf{Equações de\newline Mackey-Glass}} & $0.4$ & $500$\\ 
+ {\centering \textbf{Nº de neurônios}} & $500$ & $500$ & $120$ & $500$\\ 
 \end{tabular}
 \caption{Melhores parâmetros para a rede ESN nos cenários em análise}
 \label{tab:esn}
@@ -413,23 +410,23 @@ A figura \ref{fig:model-comparison} e a tabela \ref{tab:model-comparison} mostra
 \end{center}
 \end{table}
 \begin{figure}[!ht]
-     \begin{subfigure}[t]{0.24\textwidth}
-         \includegraphics[scale=0.15]{vs-henon-merged.pdf}
+     \begin{subfigure}[t]{0.2\textwidth}
+         \includegraphics[scale=0.2]{vs-henon-zoom.pdf}
          \caption{Mapa de Hénon}
      \end{subfigure}
      \centering
-     \begin{subfigure}[t]{0.24\textwidth} 
-         \includegraphics[scale=0.15]{vs-logistic-merged.pdf}
+     \begin{subfigure}[t]{0.2\textwidth} 
+         \includegraphics[scale=0.2]{vs-logistic-zoom.pdf}
          \caption{Mapa logístico}
      \end{subfigure}
      \centering
-     \begin{subfigure}[t]{0.24\textwidth}
-         \includegraphics[scale=0.15]{vs-lorenz-merged.pdf}
+     \begin{subfigure}[t]{0.2\textwidth}
+         \includegraphics[scale=0.2]{vs-lorenz-zoom.pdf}
          \caption{Sistema de Lorenz}
      \end{subfigure}
      \centering
-     \begin{subfigure}[t]{0.24\textwidth}
-         \includegraphics[scale=0.15]{vs-mackeyglass-merged.pdf}
+     \begin{subfigure}[t]{0.2\textwidth}
+         \includegraphics[scale=0.2]{vs-mackeyglass-zoom.pdf}
          \caption{Equações de Mackey-Glass}
      \end{subfigure}
      \centering     
