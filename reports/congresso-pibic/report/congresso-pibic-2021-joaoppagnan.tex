@@ -62,7 +62,7 @@ Na literatura, encontramos diversos tipos de modelos para a  predição de séri
 
 Uma classe de sistemas dinâmicos particularmente relevante dentro do contexto de modelagem e predição de séries temporais está ligada à ideia de dinâmica caótica. Diversos fenômenos naturais, como a dinâmica populacional de uma espécie, a dinâmica atmosférica de uma região, ou até mesmo as órbitas de um sistema com três ou mais corpos celestes podem exibir comportamento caótico. Apesar de serem determinísticos (e, portanto, previsíveis), esses sistemas são extremamente sensíveis às condições iniciais \cite{fiedler1994caos}. Isso causa um problema para a predição das séries temporais originadas por eles, pois uma pequena incerteza na medida afetará toda a previsão. 
 
-Tendo em vista o desempenho de modelos não-lineares para previsão de diversas séries temporais \cite{connor1994recurrent}, optamos por estudar a aplicabilidade de redes neurais artificiais à previsão de séries relacionadas a sistemas com dinâmica caótica. Esta pesquisa comparou o desempenho de quatro arquiteturas de redes neurais artificiais: a rede \textit{Multilayer Perceptron} \cite{rosenblatt1958perceptron}, a rede \textit{Long Short-Term Memory} \cite{connor1994recurrent}, a rede \textit{Gated Recurrent Unit} (GRU) \cite{cho2014learning} e, por fim, a rede \textit{Echo State Network} (ESN) \cite{jaeger2007echo}.
+Tendo em vista o desempenho de modelos não-lineares para previsão de diversas séries temporais \cite{connor1994recurrent}, optamos por estudar a aplicabilidade de redes neurais artificiais à previsão de séries relacionadas a sistemas com dinâmica caótica. Esta pesquisa comparou o desempenho de quatro arquiteturas de redes neurais artificiais: a rede \textit{Multilayer Perceptron} \cite{rosenblatt1958perceptron}, a rede \textit{Long Short-Term Memory} \cite{connor1994recurrent}, a rede \textit{Gated Recurrent Unit} (GRU) \cite{cho2014learning} e, por fim, a rede \textit{Echo State Network} \cite{jaeger2007echo}.
 
 A comparação foi realizada em quatro cenários de sistemas caóticos, sendo dois destes a tempo discreto e dois a tempo contínuo. No caso, os sistemas a tempo discreto foram o mapa de Hénon \cite{henon1976two}, e o mapa logístico \cite{may1976simple}. Já os sistemas a tempo contínuo foram o sistema de Lorenz \cite{lorenz1963deterministic} e as equações de Mackey-Glass \cite{mackey1977oscillation}. Nos sistemas multidimensionais, como o mapa de Hénon e o sistema de Lorenz, consideramos apenas uma das variáveis de estado. 
 
@@ -190,12 +190,12 @@ Como foi mencionado na seção introdutória, foi realizado um procedimento de \
 
 \subsubsection{MLP}
 
-Para as redes \textit{Multilayer Perceptron}, foi testado o tamanho do \textit{batch} para o treinamento ($2$, $4$, $8$, $16$, $32$), se será ou não utilizado uma camada de \textit{batch normalization}, a função de ativação para os neurônios \textit{Perceptron} na camada intermediária ($\selu$, $\relu$, $\elu$, $\tanh$, $\sigmoid$), a inicialização dos pesos dos neurônios ($\glorot$, $\he$, $\lecun$, tanto com distribuição normal, quanto uniforme), o número de neurônios na camada intermediária ($5$, $10$, $15$, $20$, $30$, $50$, $75$, $100$) e, por fim, a taxa de aprendizagem ($0.001$, $0.003$, $0.005$, $0.008$, $0.01$). 
+Para as redes \textit{Multilayer Perceptron}, foi testado o tamanho do \textit{batch} para o treinamento, se será ou não utilizado uma camada de \textit{batch normalization}, a função de ativação para os neurônios \textit{Perceptron} na camada intermediária, a inicialização dos pesos dos neurônios, o número de neurônios na camada intermediária e, por fim, a taxa de aprendizagem. 
 
 O \textit{gridsearch} utilizou validação cruzada com $4$ \textit{folds} nos dados de treinamento, que correspondiam aos primeiros $4250$ valores. Essa proporção entre os dados de treinamento e de teste foi utilizada para todas as redes analisadas.
 
 Vale reforçar que foi utilizada apenas uma camada intermediária em cada cenário. As melhores configurações obtidas podem serem vistas na tabela \ref{tab:mlp}.
-\begin{table}[!ht]
+\begin{table}[H]
 \begin{center}
 \begin{tabular}{c c c c c c c}
   \textbf{Cenário}  & \pbox{0.85cm}{\centering \textbf{\; \, \textit{Batch\newline normalization}}} & \pbox{0.4cm}{\centering \textbf{\textit{Batch size}}} & \pbox{0.65cm}{\centering \textbf{Função de ativação}} & \pbox{0.9cm}{\centering \textbf{Inicialização}} & \pbox{0.745cm}{\centering \textbf{Nº de neurônios}} & \pbox{1cm}{\centering \textbf{\, Taxa de\newline aprendizagem}}\\
@@ -220,10 +220,10 @@ O processo para a LSTM e GRU foi bem similar, considerando que essas arquitetura
 
 Por exemplo, a segunda seção obtida pelo \textit{holdout} inclui a primeira seção e mais alguns dados, além de uma subdivisão de validação que será utilizada para avaliar o resultado. Com isso, obtém-se conjuntos sequenciais de dados para avaliação do desempenho. Esse procedimento é necessário para as redes recorrentes pois a relação temporal entre os dados de entrada deve ser levada em conta.
 
-Foi avaliado o \textit{batch size} ($2$, $4$, $8$, $16$, $32$), a inicialização dos pesos ($\glorot \, \uniform$, $\glorot \, \normal$), o número de neurônios recorrentes na camada intermediária ($5$, $10$, $15$, $20$, $30$, $50$, $75$, $100$), e a taxa de aprendizagem ($0.001$, $0.003$, $0.005$, $0.008$, $0.01$), novamente utilizando apenas uma camada intermediária. Vale reforçar que a função de ativação usual da célula recorrente não foi alterada ($\tanh$). Por conta disso, para o sistema de Lorenz, foi feito um ajuste de escala para evitar a saturação dos neurônios.
+Foi avaliado o \textit{batch size}, a inicialização dos pesos, o número de neurônios recorrentes na camada intermediária, e a taxa de aprendizagem, novamente utilizando apenas uma camada intermediária e mantendo a função de ativação usual da célula recorrente ($\tanh$). Por conta disso, para o sistema de Lorenz, foi feito um ajuste de escala para evitar a saturação dos neurônios.
 
 Os resultados obtidos para a LSTM e para a GRU podem serem vistos nas tabelas \ref{tab:lstm} e \ref{tab:gru}, respectivamente.
-\begin{table}[!ht]
+\begin{table}[H]
 \begin{center}
 \begin{tabular}{c c c c c}
   \textbf{Cenário} & \pbox{0.4cm}{\centering \textbf{\textit{Batch size}}} & \pbox{0.9cm}{\centering \textbf{Inicialização}} & \pbox{0.745cm}{\centering \textbf{Nº de neurônios}} & \pbox{1cm}{\centering \textbf{\, Taxa de\newline aprendizagem}}\\
@@ -241,7 +241,7 @@ Os resultados obtidos para a LSTM e para a GRU podem serem vistos nas tabelas \r
 \label{tab:lstm}
 \end{center}
 \end{table}
-\begin{table}[!ht]
+\begin{table}[H]
 \begin{center}
 \begin{tabular}{c c c c c}
   \textbf{Cenário} & \pbox{0.4cm}{\centering \textbf{\textit{Batch size}}} & \pbox{0.9cm}{\centering \textbf{Inicialização}} & \pbox{0.745cm}{\centering \textbf{Nº de neurônios}} & \pbox{1cm}{\centering \textbf{\, Taxa de\newline aprendizagem}}\\
@@ -268,10 +268,10 @@ O grande diferencial prático desta rede é que os pesos dos neurônios do reser
 
 Devido a isso, o ajuste dos neurônios na camada de leitura pode ser realizado com um procedimento de regressão linear, sem necessitar de um treinamento iterativo, como nas redes anteriores. Esse fato economiza tempo de processamento e garante que será atingido o mínimo global da função custo utilizada.
 
-Para esta rede foi realizado um \textit{gridsearch} para determinar o número de neurônios na camada de leitura ($30$, $50$, $70$, $90$, $100$, $120$, $140$, $160$, $180$, $200$, $240$, $280$, $320$, $360$, $400$, $440$, $480$, $500$) e o valor para o raio espectral ($0.1$, $0.2$, $0.3$, $0.4$, $0.5$, $0.6$, $0.7$, $0.8$, $0.9$, $0.95$, $0.96$, $0.97$, $0.98$, $0.99$) e, por tratar-se de uma rede recorrente, também foi utilizado o processo de \textit{holdout} descrito na seção anterior. Vale também mencionar que a taxa de vazamento foi fixada em $0.9$ para todos os cenários.
+Para esta rede foi realizado um \textit{gridsearch} para determinar o número de neurônios na camada de leitura e o valor para o raio espectral. Por tratar-se de uma rede recorrente, também foi utilizado o processo de \textit{holdout} descrito na seção anterior. Vale também mencionar que a taxa de vazamento foi fixada em $0.9$ para todos os cenários.
 
 A tabela \ref{tab:esn} exibe as melhores configurações para a ESN em cada um dos cenários.
-\begin{table}[!ht]
+\begin{table}[H]
 \begin{center}
 \begin{tabular}{c c c c c}
   \textbf{Parâmetro} & \pbox{0.7cm}{\centering \textbf{Mapa de\newline Hénon}} & \pbox{0.6cm}{\centering \textbf{Mapa\newline logístico}} & \pbox{1.0cm}{\centering \textbf{Sistema de\newline Lorenz}} & \pbox{1.1cm}{\centering \textbf{Equações de\newline Mackey-Glass}}\\
@@ -288,33 +288,7 @@ A tabela \ref{tab:esn} exibe as melhores configurações para a ESN em cada um d
 
 \subsection{Análise do melhor valor para $K$}
 
-Com as melhores configurações para cada rede e cenário obtidas, foi analisada a progressão do erro quadrático médio para cada valor de $K$ para cada rede neural, em cada cenário. A faixa de valores para $K$ a ser testada foi determinada utilizando a autocorrelação parcial das séries temporais de cada sistema analisado, e observando a partir de qual valor anterior ao atual a autocorrelação parcial não está mais no intervalo de confiança utilizado no cálculo dessa grandeza.
-
-A figura \ref{fig:autocorrelation} mostra a autocorrelação parcial para as séries temporais utilizadas.
-\begin{figure}[H]
-     \begin{subfigure}[t]{0.2\textwidth}
-         \includegraphics[scale=0.2]{autocorrelacao-parcial-henon.pdf}
-         \caption{Mapa de Hénon}
-     \end{subfigure}
-     \centering
-     \begin{subfigure}[t]{0.2\textwidth} 
-         \includegraphics[scale=0.2]{autocorrelacao-parcial-logistic.pdf}
-         \caption{Mapa logístico}
-     \end{subfigure}
-     \centering
-     \begin{subfigure}[t]{0.2\textwidth}
-         \includegraphics[scale=0.2]{autocorrelacao-parcial-lorenz.pdf}
-         \caption{Sistema de Lorenz}
-     \end{subfigure}
-     \centering
-     \begin{subfigure}[t]{0.2\textwidth} 
-         \includegraphics[scale=0.2]{autocorrelacao-parcial-mackeyglass.pdf}
-         \caption{Equações de Mackey-Glass}
-     \end{subfigure}  
-     \centering   
-     \caption{Autocorrelação parcial para as séries temporais utilizadas}
-     \label{fig:autocorrelation}
-\end{figure}
+Com as melhores configurações para cada rede e cenário obtidas, foi analisada a progressão do erro quadrático médio para cada valor de $K$ para cada rede neural, em cada cenário. A faixa de valores para $K$ a ser testada foi determinada utilizando a autocorrelação parcial das séries temporais de cada sistema analisado e observando os valores de $K$ que têm as autocorrelações parciais mais relevantes.
 
 Para realizar esse procedimento, cada rede (com as configurações ótimas) foi treinada utilizando $85\%$ dos dados gerados, sendo que $10\%$ dos dados de treinamento foi utilizado como o conjunto de validação (nas redes MLP, LSTM e GRU). Em seguida, com o modelo treinado, foi avaliado o EQM no conjunto de teste (que corresponde aos últimos $750$ dados). Esse processo foi realizado $5$ vezes para cada $K$, obtendo assim um valor médio e desvio-padrão para cada $K$ em cada cenário, para cada modelo.
 
@@ -350,7 +324,7 @@ A figura \ref{fig:mse-progression} mostra a progressão do EQM para cada $K$ obt
 
 Analisando qual foi o valor de $K$ que produziu o melhor desempenho para cada modelo, realizou-se novamente o processo mencionado na seção anterior e foi obtido o EQM para as melhores configurações (paramêtros e $K$) para cada modelo, em todos os cenários. 
 
-A figura \ref{fig:model-comparison} e a tabela \ref{tab:model-comparison} mostram o comparativo dos melhores desempenhos das redes neurais analisadas. Além disso, a figura \ref{fig:series-comparison} mostra uma comparação da predição em si de cada modelo nos dados de testes de cada cenário.
+A figura \ref{fig:model-comparison} exibe o comparativo dos melhores desempenhos das redes neurais analisadas, e a figura \ref{fig:series-comparison} mostra uma comparação da predição em si de cada modelo nos dados de testes de cada cenário.
 \begin{figure}[!h]
      \begin{subfigure}[t]{0.2\textwidth}
          \includegraphics[scale=0.2]{comparacao-k-henon.pdf}
@@ -375,40 +349,6 @@ A figura \ref{fig:model-comparison} e a tabela \ref{tab:model-comparison} mostra
      \caption{Comparação do melhor desempenho obtido por cada modelo nos cenários testados}
      \label{fig:model-comparison}
 \end{figure}
-\begin{table}[!ht]
-\begin{center}
-\begin{tabular}{c c c c c}
-  \textbf{Cenário} & {\centering \textbf{MLP}} & {\centering \textbf{LSTM}} & {\centering \textbf{GRU}} & {\centering \textbf{ESN}}\\
- \hline
- \addlinespace
- \pbox{0.7cm}{\centering \textbf{Mapa de\newline Hénon}} &
- \scalebox{0.65}{${\scriptscriptstyle (8.474\pm6.635)\times 10^{-4}}$} &
- \scalebox{0.65}{${\scriptscriptstyle (1.491\pm0.752)\times 10^{-4}}$} &
- \scalebox{0.65}{${\scriptscriptstyle (3.455\pm1.014)\times 10^{-4}}$} &
- \scalebox{0.65}{${\scriptscriptstyle (3.232\pm0.549)\times 10^{-9}}$}\\  
-  \addlinespace
- \pbox{0.7cm}{\centering \textbf{Mapa\newline logístico}} & 
- \scalebox{0.65}{${\scriptscriptstyle (3.572\pm0.399)\times 10^{-4}}$} & 
- \scalebox{0.65}{${\scriptscriptstyle (7.268\pm4.679)\times 10^{-5}}$} &
- \scalebox{0.65}{${\scriptscriptstyle (9.782\pm5.248)\times 10^{-5}}$} & 
- \scalebox{0.65}{${\scriptscriptstyle (1.546\pm1.651)\times 10^{-8}}$}\\ 
-  \addlinespace
- \pbox{0.9cm}{\centering \textbf{Sistema de\newline Lorenz}} & 
- \scalebox{0.65}{${\scriptscriptstyle (8.038\pm2.934)\times 10^{-4}}$} & 
- \scalebox{0.65}{${\scriptscriptstyle (1.241\pm0.234)\times 10^{-3}}$} & 
- \scalebox{0.65}{${\scriptscriptstyle (2.632\pm1.821)\times 10^{-4}}$} & 
- \scalebox{0.65}{${\scriptscriptstyle (1.523\pm1.240)\times 10^{-6}}$}\\ 
-  \addlinespace
- \pbox{0.929cm}{\centering \textbf{Equações de\newline Mackey-Glass}} & 
- \scalebox{0.65}{${\scriptscriptstyle (3.023\pm0.470)\times 10^{-4}}$} & 
- \scalebox{0.65}{${\scriptscriptstyle (4.180\pm0.972)\times 10^{-5}}$} & 
- \scalebox{0.65}{${\scriptscriptstyle (4.843\pm0.997)\times 10^{-5}}$} & 
- \scalebox{0.65}{${\scriptscriptstyle (4.380\pm0.644)\times 10^{-7}}$}\\ 
-\end{tabular}
-\caption{Melhor EQM obtido por cada modelo nos cenários testados}
-\label{tab:model-comparison}
-\end{center}
-\end{table}
 \begin{figure}[!ht]
      \begin{subfigure}[t]{0.2\textwidth}
          \includegraphics[scale=0.2]{vs-henon-zoom.pdf}

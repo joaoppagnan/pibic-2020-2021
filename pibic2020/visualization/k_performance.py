@@ -816,6 +816,7 @@ mlp_model = [1]
 lstm_model = [2]
 gru_model = [3]
 esn_model = [4]
+models = [mlp_model, lstm_model, gru_model, esn_model]
 
 # henon
 fig, ax = plt.subplots(tight_layout=True)
@@ -844,6 +845,12 @@ ax.set_xlabel('Modelo')
 ax.set_ylabel('Erro Quadrático Médio')
 ax.set_xticks([1, 2, 3, 4])
 ax.set_xticklabels(['MLP', 'LSTM', 'GRU', 'ESN'])
+
+ax.text(mlp_model[0]+0.05, MSE_mlp[0], r"($8.474\pm 6.635$)$\times 10^{-4}$", fontsize='small')
+ax.text(lstm_model[0]+0.05, MSE_lstm[0], r"($1.491\pm 0.752$)$\times 10^{-4}$", fontsize='small')
+ax.text(gru_model[0]+0.05, MSE_gru[0], r"($3.455\pm 1.014$)$\times 10^{-4}$", fontsize='small')
+ax.text(esn_model[0]-0.70, MSE_esn[0], r"($3.232\pm0.549$)$\times 10^{-9}$", fontsize='small')
+
 #ax.set_title('Desempenho no mapa de Hénon para as redes analisadas\n com o melhor valor de $K$')
 sns.despine()
 ax.grid()
@@ -877,6 +884,12 @@ ax.set_xlabel('Modelo')
 ax.set_ylabel('Erro Quadrático Médio')
 ax.set_xticks([1, 2, 3, 4])
 ax.set_xticklabels(['MLP', 'LSTM', 'GRU', 'ESN'])
+
+ax.text(mlp_model[0]+0.05, MSE_mlp[0], r"($3.572\pm 0.399$)$\times 10^{-4}$", fontsize='small')
+ax.text(lstm_model[0]+0.05, MSE_lstm[0], r"($7.268\pm 4.679$)$\times 10^{-5}$", fontsize='small')
+ax.text(gru_model[0]+0.05, MSE_gru[0], r"($9.782\pm 5.248$)$\times 10^{-5}$", fontsize='small')
+ax.text(esn_model[0]-0.70, MSE_esn[0], r"($1.546\pm 1.651$)$\times 10^{-8}$", fontsize='small')
+
 #ax.set_title('Desempenho no mapa logístico para as redes analisadas\n com o melhor valor de $K$')
 sns.despine()
 ax.grid()
@@ -910,6 +923,12 @@ ax.set_xlabel('Modelo')
 ax.set_ylabel('Erro Quadrático Médio')
 ax.set_xticks([1, 2, 3, 4])
 ax.set_xticklabels(['MLP', 'LSTM', 'GRU', 'ESN'])
+
+ax.text(mlp_model[0]+0.05, MSE_mlp[0], r"($8.038\pm 2.934$)$\times 10^{-4}$", fontsize='small')
+ax.text(lstm_model[0]+0.05, MSE_lstm[0], r"($1.241\pm 0.234$)$\times 10^{-3}$", fontsize='small')
+ax.text(gru_model[0]+0.05, MSE_gru[0], r"($2.632\pm 1.821$)$\times 10^{-4}$", fontsize='small')
+ax.text(esn_model[0]-0.70, MSE_esn[0], r"($1.523\pm 1.240$)$\times 10^{-6}$", fontsize='small')
+
 #ax.set_title('Desempenho no sistema de Lorenz para as redes analisadas\n com o melhor valor de $K$')
 sns.despine()
 ax.grid()
@@ -941,6 +960,12 @@ ax.errorbar(esn_model, MSE_esn, MSE_std_esn, linestyle='None', marker='*', label
 ax.legend()
 ax.set_xlabel('Modelo')
 ax.set_ylabel('Erro Quadrático Médio')
+
+ax.text(mlp_model[0]+0.05, MSE_mlp[0], r"($3.023\pm 0.470$)$\times 10^{-4}$", fontsize='small')
+ax.text(lstm_model[0]+0.05, MSE_lstm[0], r"($4.180\pm 0.972$)$\times 10^{-5}$", fontsize='small')
+ax.text(gru_model[0]+0.05, MSE_gru[0], r"($4.843\pm 0.997$)$\times 10^{-5}$", fontsize='small')
+ax.text(esn_model[0]-0.70, MSE_esn[0], r"($4.380\pm 0.644$)$\times 10^{-7}$", fontsize='small')
+
 #ax.set_title('Desempenho nas equações de Mackey-Glass para as redes analisadas\n com o melhor valor de $K$')
 sns.despine()
 ax.grid()
