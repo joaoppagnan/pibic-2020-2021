@@ -41,6 +41,9 @@ Artificiais}
 \author{Aluno: João Pedro de Oliveira Pagnan [FEEC/UNICAMP]\\Orientador: Prof.  Levy Boccato [FEEC/UNICAMP]\\
 Coorientador: Prof. Romis Ribeiro de Faissol Attux [FEEC/UNICAMP]}
 
+\address{Departamento de Engenharia de Computação e Automação Industrial (DCA)\\ Faculdade de Engenharia Elétrica e de Computação (FEEC) \\
+  Universidade Estadual de Campinas (UNICAMP)}
+
 \hyphenation{}
 \pagestyle{fancy}
 
@@ -49,7 +52,7 @@ Coorientador: Prof. Romis Ribeiro de Faissol Attux [FEEC/UNICAMP]}
 \twocolumn[
 \maketitle
 \thispagestyle{fancy}
-  \keywords{Redes Neurais Artificiais, Sistemas Caóticos, Predição, Séries Temporais}
+  \keywords{Redes Neurais Artificiais, Sistemas Caóticos, Séries Temporais}
 \hrule
 ]
 
@@ -63,17 +66,17 @@ Uma classe de sistemas dinâmicos particularmente relevante dentro do contexto d
 
 Tendo em vista o desempenho de modelos não-lineares para previsão de diversas séries temporais \cite{connor1994recurrent}, optamos por estudar a aplicabilidade de redes neurais artificiais à previsão de séries relacionadas a sistemas com dinâmica caótica. Esta pesquisa comparou o desempenho de quatro arquiteturas de redes neurais artificiais: a rede \textit{Multilayer Perceptron} \cite{rosenblatt1958perceptron}, a rede \textit{Long Short-Term Memory} \cite{connor1994recurrent}, a rede \textit{Gated Recurrent Unit} (GRU) \cite{cho2014learning} e, por fim, a rede \textit{Echo State Network} (ESN) \cite{jaeger2007echo}.
 
-A comparação foi realizada em quatro cenários de sistemas caóticos, sendo dois destes a tempo discreto e dois a tempo contínuo. No caso, os sistemas a tempo discreto foram o mapa de Hénon \cite{henon1976two}, e o mapa logístico \cite{may1976simple}. Já os sistemas a tempo contínuo foram o sistema de Lorenz \cite{lorenz1963deterministic} e as equações de Mackey-Glass \cite{mackey1977oscillation}. Nos sistemas multidimensionais, como o mapa de Hénon e o sistema de Lorenz, consideramos apenas uma das variáveis de estado. 
+A comparação foi realizada em quatro cenários de sistemas caóticos, sendo dois destes a tempo discreto e dois a tempo contínuo. No caso, os sistemas a tempo discreto foram as séries temporais do mapa de Hénon \cite{henon1976two}, e a série temporal relacionada ao mapa logístico \cite{may1976simple}. Já os sistemas a tempo contínuo foram o sistema de Lorenz \cite{lorenz1963deterministic} e as equações de Mackey-Glass \cite{mackey1977oscillation}. Nos sistemas multidimensionais, como o mapa de Hénon e o sistema de Lorenz, foi utilizada a série temporal em $\hat{x}$.
 
-Iniciamos a análise através de um processo de \textit{gridsearch} para determinarmos os parâmetros ótimos para as redes neurais em cada cenário. Em seguida, utilizando os melhores parâmetros, realizou-se um estudo da progressão do erro quadrático médio (EQM) com o número de amostras de entrada do modelo preditor (nesse caso, chamado de $K$). Por fim, comparamos qual foi a média e o desvio padrão do EQM com o melhor valor de $K$ de cada modelo nos quatro cenários. No caso, o horizonte de predição utilizado foi $L=3$. Assim, iremos predizer o valor da terceira iteração à frente do valor atual da série temporal.
+Iniciamos a análise através de um processo de \textit{gridsearch} para determinarmos os parâmetros ótimos para as redes neurais em cada cenário. Em seguida, utilizando os melhores parâmetros, realizou-se um estudo da progressão do erro quadrático médio (EQM) com o número de amostras de entrada do modelo preditor (nesse caso, chamado de $K$). Por fim, comparamos qual foi a média e o desvio padrão do EQM com o melhor valor de $K$ de cada modelo nos quatro cenários. No caso, o horizonte de predição utilizado foi de $L=3$. Assim, iremos predizer o valor da terceira iteração à frente do valor atual da série temporal.
 
-Através desta pesquisa, constatamos que a ESN se mostrou uma opção bastante adequada para a previsão. Com efeito, a ESN não apenas alcançou o melhor desempenho em todos os cenários, como também é a estrutura mais leve dentre as consideradas, tendo um processo de treinamento bem mais simples e rápido que as demais redes. 
+Através desta pesquisa, percebe-se que a ESN possui o melhor desempenho dentre todos os modelos, em todos os cenários. As redes \textit{Echo State Network} têm a vantagem de necessitarem de bem menos recursos computacionais do que os outros modelos avaliados, obtendo um desempenho consideravelmente superior mesmo com um tempo de treinamento ínfimo se comparado às redes neurais artificiais tradicionais.
 
 \section{Metodologia}
 
-\subsection{Cenários utilizados}
+\subsection{Geração de dados}
 
-Como o intuito do projeto é analisar o desempenho dos modelos preditores citados em sistemas caóticos, os dados necessários para o treinamento foram obtidos através da simulação numérica dos sistemas caóticos. As próximas seções evidenciam o processo utilizado, junto com os parâmetros escolhidos para cada sistema.
+Como o intuito do projeto é analisar o desempenho dos modelos preditores citados em sistemas caóticos, os dados necessários para o treinamento e para a análise da \textit{performance} podem serem obtidos através da simulação numérica dos sistemas caóticos. As próximas seções evidenciam o processo utilizado, junto com os parâmetros escolhidos para cada sistema.
 
 \subsubsection{Mapa de Hénon}
 
@@ -87,7 +90,7 @@ y[n+1] = b \cdot x[n]
 \end{equation}
 \end{subequations}
 
-Para esta pesquisa, foram utilizados os valores usuais para os parâmetros $a$ e $b$. Logo, têm-se que $a = 1.4$ e $b = 0.3$. Além disso, neste e nos outros sistemas, foi gerado um conjunto de $5000$ amostras. A figura \ref{fig:henon} mostra a série temporal em $\hat{x}$ e o atrator obtido com a simulação para $[x[0]\; y[0]]^T = [0\; 0]^T$.
+Para esta pesquisa, foram utilizados os valores usuais para os parâmetros $a$ e $b$. Logo, têm-se que $a = 1.4$ e $b = 0.3$. Além disso, neste e nos outros sistemas, foi gerado um conjunto de $5000$ dados. As figura \ref{fig:henon} mostra a série temporal em $\hat{x}$ e o atrator obtido com a simulação para $[x[0]\; y[0]]^T = [0\; 0]^T$.
 \begin{figure}[H]
      \begin{subfigure}[t]{0.2\textwidth}
          \includegraphics[scale=0.2]{serie-henon-x.pdf}
@@ -104,7 +107,7 @@ Para esta pesquisa, foram utilizados os valores usuais para os parâmetros $a$ e
 
 \subsubsection{Mapa logístico}
 
-Conforme foi dito anteriormente, o outro sistema caótico a tempo discreto simulado foi o mapa logístico. Descrito em 1976 por Robert May, o mapa logístico é uma das formas de modelar a população de uma determinada espécie em certos instantes de tempo \cite{may1976simple}. A equação a diferenças que descreve esse sistema pode ser vista abaixo:
+Conforme foi dito anteriormente, o outro sistema caótico a tempo discreto simulado foi o mapa logístico. Descrito em 1976 por Robert May, o mapa logístico é uma das formas de modelar a população de uma determinada espécie em certos instantes de tempo \cite{may1976simple}. A equação de diferenças que descreve esse sistema pode ser vista abaixo:
 \begin{equation}\label{eq:logistic}
 x[n+1] = r\cdot x[n] \cdot (1 - x[n])
 \end{equation}
@@ -120,13 +123,13 @@ Nesse caso, o sistema não chega a operar em caos para qualquer valor de $r$. As
          \includegraphics[scale=0.2]{mapa-logistico.png}
          %\caption{$y=x$}
      \end{subfigure}
-     \caption{À esquerda, as cem primeiras iterações da série temporal do mapa logístico e, à direita, o diagrama de bifurcação deste sistema}
+     \caption{À esquerda, as cem primeiras iterações da série temporal do mapa logístico e, à direita, o diagrama de bifurcação este sistema}
      \label{fig:logistic}
 \end{figure}
 
 \subsubsection{Sistema de Lorenz}
 
-O sistema de Lorenz foi um dos sistemas dinâmicos caóticos a tempo contínuo simulados nessa pesquisa. Este sistema foi um dos primeiros grandes trabalhos de sistemas caóticos, sendo considerado por muitos a pesquisa que inaugurou a área \cite{gleick1998chaos}. Lorenz modela, através de três equações diferenciais, o fluxo de um fluido em um volume uniformemente aquecido na camada inferior, e uniformemente resfriado na camada superior \cite{lorenz1963deterministic}:
+O sistema de Lorenz foi um dos sistemas dinâmicos caóticos a tempo contínuo simulados nessa pesquisa. Este sistema foi um dos primeiros grandes trabalhos de sistemas caóticos, sendo considerado por muitos a pesquisa que inaugurou a área \cite{gleick1998chaos}. Lorenz modela, através de três equações diferenciais, o fluxo de um fluído em um volume uniformemente aquecido na camada inferior, e uniformemente resfriado na camada superior \cite{lorenz1963deterministic}:
 \begin{subequations}
 \begin{equation}
 \frac{dx}{dt} = -\sigma \cdot (x - y)
@@ -139,7 +142,7 @@ O sistema de Lorenz foi um dos sistemas dinâmicos caóticos a tempo contínuo s
 \end{equation}
 \end{subequations}
 
-Para a simulação numérica foi considerado que $\sigma = 10$, $\beta = \frac{8}{3}$, $\rho = 28$ e foi utilizado $dt = 0.01$, gerando $5000$ amostras, assim como nos casos discretos. A figura \ref{fig:lorenz} mostra a série temporal em $\hat{x}$ e o atrator de Lorenz para a condição inicial $[x(0)\; y(0)\; z(0)]^T = [0.1\; 0\; 0]^T$.
+Para a simulação numérica foi considerado que $\sigma = 10$, $\beta = \frac{8}{3}$, $\rho = 28$ e foi utilizado $dt = 0.01$, gerando $5000$ dados, assim como nos casos discretos. A figura \ref{fig:lorenz} mostra a série temporal em $\hat{x}$ e o atrator de Lorenz para a condição inicial $[x(0)\; y(0)\; z(0)]^T = [0.1\; 0\; 0]^T$.
 \begin{figure}[H]
      \begin{subfigure}[t]{0.2\textwidth} 
          \includegraphics[scale=0.2]{serie-lorenz-x.pdf}
@@ -156,7 +159,7 @@ Para a simulação numérica foi considerado que $\sigma = 10$, $\beta = \frac{8
 
 \subsubsection{Equações de Mackey-Glass}
 
-Por fim, o último sistema caótico simulado, também contínuo, está associado às equações de Mackey-Glass, as quais modelam o controle hormonal da produção de células brancas do sangue e podem ser vistas abaixo \cite{mackey1977oscillation}:
+Por fim, o último sistema caótico simulado, este também a tempo contínuo, foram as equações de Mackey-Glass. Essas equações diferenciais com atraso temporal modelam o controle hormonal da produção de células brancas do sangue e podem serem vistas abaixo \cite{mackey1977oscillation}:
 \begin{subequations}
 \begin{equation}
 \frac{dP(t)}{dt} = \frac{\beta_0\cdot \theta^n}{\theta^n + P(t - \tau)^n} - \gamma\cdot P(t)
@@ -166,7 +169,7 @@ Por fim, o último sistema caótico simulado, também contínuo, está associado
 \end{equation}
 \end{subequations}
 
-Neste caso, a equação (\ref{eq:mackey-glass-chaos}) exibe comportamento caótico para valores mais altos de $\tau$. Para a simulação numérica, foi utilizado $n = 10$, $\gamma = 0.1$, $\beta = 0.2$, $\theta = 1$, $\tau = 22$, $dt = 1.0$ e $P(0^-)=0.1$, gerando novamente $5000$ amostras. A série e o atrator obtidos podem ser vistos na figura \ref{fig:mackey-glass}.
+Neste caso, a equação (\ref{eq:mackey-glass-chaos}) exibe comportamento caótico para valores mais altos de $\tau$. Para a simulação numérica, foi utilizado $n = 10$, $\gamma = 0.1$, $\beta = 0.2$, $\theta = 1$, $\tau = 22$, $dt = 1.0$ e $P(0^-)=0.1$, gerando novamente $5000$ dados. A série e o atrator obtidos podem serem vistos na figura \ref{fig:mackey-glass}.
 \begin{figure}[H]
      \begin{subfigure}[t]{0.2\textwidth}
          \includegraphics[scale=0.2]{serie-mackeyglass.pdf}
@@ -215,11 +218,11 @@ Vale reforçar que foi utilizada apenas uma camada intermediária em cada cenár
 
 \subsubsection{LSTM e GRU}
 
-O processo para a LSTM e GRU foi bem similar, considerando que essas arquiteturas de redes neurais são semelhantes. A principal diferença com relação ao \textit{gridsearch} da MLP foi o fato de que, ao invés de utilizar-se validação cruzada com $k-$\textit{folds}, foi utilizado \textit{holdout}. Esse processo dividiu o conjunto de treinamento (novamente composto por $85\%$ dos dados gerados) em $4$ seções. Cada seção era composta por uma fração dos dados de treinamento, sendo que cada seção incluia a seção anterior no seu conjunto de dados.
+O processo para a LSTM e GRU foram bem similares, considerando que essas arquiteturas de redes neurais são semelhantes. A principal diferença com relação ao \textit{gridsearch} da MLP foi o fato de que, ao invés de utilizar-se validação cruzada com $k-$\textit{folds}, foi utilizado \textit{holdout}. Esse processo dividiu o conjunto de treinamento (novamente composto por $85\%$ dos dados gerados) em $4$ seções. Cada seção era composta por uma fração dos dados de treinamento, sendo que cada seção incluia a seção anterior no seu conjunto de dados.
 
 Por exemplo, a segunda seção obtida pelo \textit{holdout} inclui a primeira seção e mais alguns dados, além de uma subdivisão de validação que será utilizada para avaliar o resultado. Com isso, obtém-se conjuntos sequenciais de dados para avaliação do desempenho. Esse procedimento é necessário para as redes recorrentes pois a relação temporal entre os dados de entrada deve ser levada em conta.
 
-Foi avaliado o \textit{batch size} ($2$, $4$, $8$, $16$, $32$), a inicialização dos pesos ($\glorot \, \uniform$, $\glorot \, \normal$), o número de neurônios recorrentes na camada intermediária ($5$, $10$, $15$, $20$, $30$, $50$, $75$, $100$), e a taxa de aprendizagem ($0.001$, $0.003$, $0.005$, $0.008$, $0.01$), novamente utilizando apenas uma camada intermediária. Vale reforçar que a função de ativação usual da célula recorrente não foi alterada ($\tanh$). Por conta disso, para o sistema de Lorenz, foi feito um ajuste de escala para evitar a saturação dos neurônios.
+Foi avaliado o \textit{batch size} ($2$, $4$, $8$, $16$, $32$), a inicialização dos pesos ($\glorot \, \uniform$, $\glorot \, \normal$), o número de neurônios recorrentes na camada intermediária ($5$, $10$, $15$, $20$, $30$, $50$, $75$, $100$), e a taxa de aprendizagem ($0.001$, $0.003$, $0.005$, $0.008$, $0.01$), novamente utilizando apenas uma camada intermediária. Vale reforçar que a função de ativação usual da célula recorrente não foi alterada ($\tanh$), assim, para o sistema de Lorenz, foi feito um ajuste de escala para evitar a saturação dos neurônios.
 
 Os resultados obtidos para a LSTM e para a GRU podem serem vistos nas tabelas \ref{tab:lstm} e \ref{tab:gru}, respectivamente.
 \begin{table}[!ht]
@@ -447,9 +450,9 @@ Algo interessante de mencionar é que, no geral, o desempenho de todas os modelo
 
 O principal resultado obtido foi o fato de que, percebe-se que o modelo preditor utilizando a rede de estado de eco obteve um desempenho bem superior aos outros modelos, em todos os cenários. O erro quadrático médio foi tão baixo que, observando a predição nos dados de teste, praticamente não há diferença entre os valores reais e os valores previstos. Essa superioridade da ESN também é realçada na tabela comparativa, que indica que a ESN obteve previsões de cerca de $100$ a $10000$ melhores que os outros modelos.
 
-Esse resultado, aliado ao fato de que o treinamento da ESN é bem menos custoso computacionalmente se comparado ao das outras redes, mostra que esta rede é uma boa alternativa para futuros estudos de modelos preditores de séries temporais. Além disso, conforme mostrado em outros trabalhos como \cite{jaeger2004harnessing, jaeger2007echo, boccato2013novas}, a ESN também é uma boa ferramenta para outras tarefas de extração de informação, como em equalização de canais e separação de fontes. 
+Esse resultado combinado ao fato de que o treinamento do modelo preditor baseado na rede de estado de eco é bem menos custoso computacionalmente se comparado ao das outras redes, mostra que a ESN é uma boa alternativa para futuros estudos de modelos preditores de séries temporais. Além disso, conforme mostrado em outros trabalhos como \cite{jaeger2004harnessing, jaeger2007echo, boccato2013novas}, a rede de estado de eco também é uma boa ferramenta para aplicações em outras áreas, como o problema de equalização de canais.
 
-Como sugestão de trabalhos futuros, pode ser avaliada a eficácia da ESN em reconstruir atratores através de séries temporais experimentais de sistemas caóticos. Se o desempenho para essa tarefa for tão bom quanto o obtido na predição das séries estudadas, a ESN pode-se tornar uma ferramenta ainda mais poderosa para a modelagem de sistemas com dinâmica caótica.
+Como sugestão de trabalhos futuros, pode ser avaliada a eficácia da ESN em reconstruir atratores através de séries temporais experimentais de sistemas caóticos. Se o desempenho para essa tarefa for tão bom quanto ao obtido na predição das séries estudadas, a ESN pode-se tornar uma ferramenta ainda mais poderosa para a modelagem de sistemas com dinâmica caótica.
 
 \bibliographystyle{ieeetr}
 {\scriptsize
