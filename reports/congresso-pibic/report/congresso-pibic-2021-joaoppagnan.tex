@@ -15,6 +15,8 @@
 
 \usepackage{siunitx}
 \usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{amsmath}
 \usepackage{booktabs}
 \usepackage{pbox}
 \usepackage{etoolbox}
@@ -22,6 +24,7 @@
 \setlength{\captionmargin}{0.2cm}
 \renewcommand{\captionfont}{\sffamily\footnotesize\bfseries}
 \usepackage{tabularx}
+
 
 \usepackage{tikz}
 \usetikzlibrary{shapes,arrows,fit, positioning, arrows.meta}
@@ -191,16 +194,16 @@ Neste caso, a equação (\ref{eq:mackey-glass-chaos}) exibe comportamento caóti
 
 \BeforeBeginEnvironment{tabular}{\tiny}
 
-Como foi mencionado na seção introdutória, foi realizado um procedimento de \textit{gridsearch} para a determinação dos melhores parâmetros para as redes neurais. Nesse caso, cada arquitetura testou parâmetros diferentes nesse processo, logo, as próximas seções indicam o que foi testado para cada modelo, além de uma breve exposição sobre as particularidades de cada arquitetura. Vale reforçar que o \textit{gridsearch} foi realizado em todos os cenários de sistemas caóticos analisados, de forma a obter os melhores parâmetros para cada um deles.
+Como foi mencionado na seção introdutória, foi realizado um procedimento de \textit{gridsearch} para a determinação dos melhores parâmetros para as redes neurais. Nesse caso, cada arquitetura testou parâmetros diferentes nesse processo, logo, as próximas seções indicam o que foi testado para cada modelo, além de uma breve exposição sobre as particularidades de cada modelo. Vale reforçar que o \textit{gridsearch} foi realizado em todos os cenários de sistemas caóticos analisados, de forma a obter os melhores parâmetros para cada um deles.
 
 \subsubsection{MLP}
 
-As redes MLP, como o nome já diz, são compostas por múltiplas camadas de neurônios artificiais \textit{Perceptron}  \cite{rosenblatt1958perceptron}. Cada neurônio recebe $x_i$ atributos e os ponderam por pesos $w_i$. Em seguida, é aplicada uma função de ativação $\varphi(\cdot)$ sobre esta soma ponderada, acrescida de um termo de \textit{bias}, conforme indica a equação (\ref{eq:mlp-out}).
+As redes MLP, como o nome já diz, são compostas por múltiplas camadas de neurônios artificiais \textit{Perceptron}  \cite{rosenblatt1958perceptron}. Cada neurônio recebe $x_i$ atributos de entrada e os pondera por pesos $w_i$. Em seguida, é aplicada uma função de ativação $\varphi(\cdot)$ sobre esta soma ponderada, acrescida de um termo de \textit{bias}, conforme indica a equação (\ref{eq:mlp-out}).
 \begin{equation}\label{eq:mlp-out}
 y = \varphi  \Big(\sum_{i=1}^{m}w_i x_i + w_0 \Big) = \varphi \Big(\sum_{i=0}^{m}w_i x_i \Big) = \varphi (\mathbf{w}^T \cdot \mathbf{x})
 \end{equation}
 
-Tipicamente, uma rede neural MLP é composta por um número arbitrário $N_L$ de  camadas com $n$ neurônios do tipo \textit{Perceptron}, com a característica de que as saídas dos neurônios da $l$-ésima camada são propagadas para a frente, servindo como as entradas de todos os neurônios da camada seguinte ($l+1$). Por isso, este tipo de rede é conhecida como totalmente conectada (ou densa) e pertence à categoria de modelos \textit{feedforward}. A Figura \ref{fig:mlp-architecture} apresenta a estrutura típica das redes MLP.
+Tipicamente, uma rede neural MLP é composta por um número arbitrário $N_L$ de  camadas com $n$ neurônios do tipo \textit{Perceptron}, com a característica de que as saídas dos neurônios da $l$-ésima camada são propagadas para a frente, servindo como as entradas de todos os neurônios da camada seguinte ($l+1$). Por isso, este tipo de rede é conhecida como totalmente conectada (ou densa) e pertence à categoria de modelos \textit{feedforward}. A figura \ref{fig:mlp-architecture} apresenta a estrutura típica das redes MLP.
 \begin{figure}[H]
 \centering
 \includegraphics[scale = 0.3]{mlp-network.pdf}
@@ -208,7 +211,7 @@ Tipicamente, uma rede neural MLP é composta por um número arbitrário $N_L$ de
 \label{fig:mlp-architecture}
 \end{figure}
 
-O processo de treinamento de uma rede neural artificial normalmente é realizado com sequências de vetores de entrada $\mathbf{x}$, chamadas de \textit{mini-batch}, e chamamos um período de treinamento de época (do inglês \textit{epoch}) \cite{geron2019hands}. Os pesos sinápticos $\textbf{w}$ são ajustados com um processo iterativo de forma a minimizar uma função custo $J(\textbf{w})$ que representa uma medida do erro entre as saídas geradas pela rede e as saídas desejadas. Para isso, é frequente o uso de algoritmos de otimização baseados em derivadas da função custo. Para esta pesquisa, foi utilizado o método de Nesterov (NAG, do inglês \textit{Nesterov Accelerated Gradient}) \cite{dozat2016incorporating}. O famoso algoritmo de retropropagação do erro é empregado para viabilizar o cálculo das derivadas com relação aos pesos sinápticos dos neurônios situados nas camadas internas da rede.
+O processo de treinamento de uma rede neural artificial normalmente é realizado com sequências de vetores de entrada $\mathbf{x}$, chamadas de \textit{mini-batch}, sendo que um período de treinamento é chamado de época \cite{geron2019hands}. Os pesos sinápticos $\textbf{w}$ são ajustados com um processo iterativo de forma a minimizar uma função custo $J(\textbf{w})$ que representa uma medida do erro entre as saídas geradas pela rede e as saídas desejadas. Para isso, é frequente o uso de algoritmos de otimização baseados em derivadas da função custo. Para esta pesquisa, foi utilizado o algoritmo Nadam \cite{dozat2016incorporating}. O processo de retropropagação do erro é empregado para viabilizar o cálculo das derivadas com relação aos pesos sinápticos dos neurônios situados nas camadas internas da rede.
 
 Para as redes \textit{Multilayer Perceptron}, foi testado o tamanho do \textit{batch} para o treinamento, se será ou não utilizado uma camada de normalização do \textit{batch}, a função de ativação para os neurônios \textit{Perceptron} na camada intermediária, a inicialização dos pesos dos neurônios, o número de neurônios na camada intermediária e, por fim, a taxa de aprendizagem. 
 
@@ -238,7 +241,7 @@ Vale reforçar que foi utilizada apenas uma camada intermediária em cada cenár
 
 Diferentemente das redes MLP, as redes recorrentes têm estruturas computacionais que podem armazenar os estados anteriores dos neurônios, possuindo também portas não-lineares que regulam o fluxo de informação de entrada e de saída da célula computacional \cite{haykin2010neural}. 
 
-A diferença entre uma célula LSTM e uma célula GRU é a presença de um vetor de longo prazo $\mathbf{c}$ e um vetor de curto prazo $\mathbf{h}$, conforme indicado na Figura \ref{fig:lstm}, na LSTM. 
+A diferença entre uma célula LSTM e uma célula GRU é a presença de um vetor de longo prazo $\mathbf{c}$ e um vetor de curto prazo $\mathbf{h}$ na LSTM, conforme indicado na figura \ref{fig:lstm}. 
 \noindent{
 \begin{figure}[H]
 \begin{minipage}{0.2\textwidth}
@@ -318,7 +321,7 @@ A diferença entre uma célula LSTM e uma célula GRU é a presença de um vetor
     % Draw External outputs? named as basis c2,h2,x2
     \node[] (c2) at (4,1.5) {$\mathbf{c}(t)$};
     \node[] (h2) at (4,-1.5) {$\mathbf{h}(t)$};
-    \node[] (x2) at (2.5,3) {$\mathbf{h}(t)$};
+    \node[] (x2) at (2.5,3) {$\mathbf{y}(t)$};
     
     % Draw internals functions, named as basis fi,ii,ci,oi
     \node[] (fi) at (-2.35,-0.25) {$\mathbf{f}(t)$};
@@ -363,10 +366,10 @@ A diferença entre uma célula LSTM e uma célula GRU é a presença de um vetor
 {\tiny
 $$\mathbf{f}(t) = \sigma(\mathbf{W}_f [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_f)$$
 $$\mathbf{i}(t) = \sigma(\mathbf{W}_i [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_i)$$
-$$\mathbf{\tilde{c}}(t) = \sigma(\mathbf{W}_c [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_c)$$
+$$\mathbf{\tilde{c}}(t) = \tanh(\mathbf{W}_c [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_c)$$
 $$\mathbf{c}(t) = \mathbf{f}(t) \otimes \mathbf{c}(t-1) + \mathbf{i}(t) \otimes \mathbf{\tilde{c}}(t)$$
 $$\mathbf{o}(t) = \sigma(\mathbf{W}_o [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_o)$$
-$$\mathbf{h}(t) = \mathbf{o}(t) \otimes \tanh (\mathbf{c}(t))$$}
+$$\mathbf{y}(t) = \mathbf{h}(t) = \mathbf{o}(t) \otimes \tanh (\mathbf{c}(t))$$}
 \end{center}
 \end{minipage}
 \caption{Estrutura e equações de uma célula LSTM}
@@ -380,7 +383,7 @@ A célula GRU é uma versão simplificada da célula LSTM e funciona de uma form
 
 À semelhança das redes MLP, o treinamento das redes LSTM e GRU também é realizado através de algoritmos de otimização baseados em derivadas da função custo; a diferença é que agora é necessário propagar as derivadas ao longo da estrutura e, também, ao longo do tempo devido às realimentações. O algoritmo BPTT (\textit{backpropagation-through-time}) representa a extensão do \textit{backpropagation} para o cenário das redes recorrentes \cite{geron2019hands}. 
 
-O processo para a LSTM e GRU foi bem similar, considerando que essas arquiteturas de redes neurais são semelhantes. A principal diferença com relação ao \textit{gridsearch} da MLP foi o fato de que, ao invés de utilizar-se validação cruzada com $k-$\textit{folds}, foi utilizado \textit{holdout}. Esse processo dividiu o conjunto de treinamento (novamente composto por $85\%$ dos dados gerados) em $4$ seções. Cada seção era composta por uma fração dos dados de treinamento, sendo que cada seção incluia a seção anterior no seu conjunto de dados.
+O \textit{gridsearch} para a LSTM e GRU foi bem similar, considerando que essas arquiteturas de redes neurais são semelhantes. A principal diferença com relação ao \textit{gridsearch} da MLP foi o fato de que, ao invés de utilizar-se validação cruzada com $k-$\textit{folds}, foi utilizado \textit{holdout}. Esse processo dividiu o conjunto de treinamento (novamente composto por $85\%$ dos dados gerados) em $4$ seções. Cada seção era composta por uma fração dos dados de treinamento, sendo que cada seção incluia a seção anterior no seu conjunto de dados.
 
 Por exemplo, a segunda seção obtida pelo \textit{holdout} inclui a primeira seção e mais alguns dados, além de uma subdivisão de validação que será utilizada para avaliar o resultado. Com isso, obtém-se conjuntos sequenciais de dados para avaliação do desempenho. Esse procedimento é necessário para as redes recorrentes pois a relação temporal entre os dados de entrada deve ser levada em conta.
 
@@ -428,11 +431,21 @@ Os resultados obtidos para a LSTM e para a GRU podem serem vistos nas tabelas \r
 
 A \textit{Echo State Network} foi a rede neural mais distinta das outras analisadas nesta pesquisa. Essa rede recorrente baseia-se na teoria de computação por reservatório, chamada assim pois ela utiliza um reservatório de comportamentos dinâmicos que, ao serem combinados linearmente nos neurônios da camada de leitura, produzem as saídas da rede \cite{boccato2013novas}. 
 
-O grande diferencial prático desta rede é que os pesos dos neurônios do reservatório são ajustados com valores fixos antes do treinamento da camada de saída. Esses valores são obtidos aleatoriamente, seguindo determinados parâmetros, como o raio espectral, que determina o maior valor singular da matriz de pesos do reservatório e a taxa de vazamento, que representa a velocidade com a qual o reservatório atualiza suas dinâmicas. Além disso, normalmente, a matriz dos pesos do reservatório é esparsa \cite{jaeger2007echo}.
+As equações abaixo descrevem a ESN, sendo $\mathbf{x}(n)$ o vetor de entrada, $\mathbf{W}_{in} \in \mathbb{R}^{N \times K}$ os pesos da camada de entrada, $\mathbf{u}(t)$ o vetor que representa as ativações dos $N$ neurônios não-lineares totalmente conectados do reservatório, representando os estados da rede, $\mathbf{W} \in \mathbb{R}^{N \times N}$ os pesos das conexões recorrentes do reservatório, $\mathbf{f}(\cdot)$ denota as funções de ativação das unidades internas da rede, $\mathbf{W}_{out} \in \mathbb{R}^{L \times N}$ é a matriz dos pesos da camada de saída e, por fim, $\mathbf{y}(n)$ denota as saídas da rede.
+\begin{subequations}
+\begin{equation}
+\mathbf{u}(n+1) = \mathbf{f}(\mathbf{W}_{in} \cdot \mathbf{x}(n+1) + \mathbf{W} \cdot \mathbf{u}(n))
+\end{equation}
+\begin{equation}
+\mathbf{y}(n+1) = \mathbf{W}_{out} \cdot \mathbf{u}(n+1)
+\end{equation}
+\end{subequations}
+
+O grande diferencial prático desta rede é que os pesos dos neurônios do reservatório $\mathbf{W}$ são ajustados com valores fixos antes do treinamento da camada de saída. Esses parâmetros são determinados tendo em vista a propriedade de estados de eco, existindo alguns métodos simples para a criação aleatória dos pesos e que asseguram a propriedade, conforme demonstrado em \cite{jaeger2007echo}. 
 
 Devido a isso, o ajuste dos neurônios na camada de leitura pode ser realizado com um procedimento de regressão linear, sem necessitar de um treinamento iterativo, como nas redes anteriores. Esse fato economiza tempo de processamento e garante que será atingido o mínimo global da função custo utilizada.
 
-Para esta rede foi realizado um \textit{gridsearch} para determinar o número de neurônios na camada de leitura e o valor para o raio espectral. Por tratar-se de uma rede recorrente, também foi utilizado o processo de \textit{holdout} descrito na seção anterior. Vale também mencionar que a taxa de vazamento foi fixada em $0.9$ para todos os cenários.
+Para esta rede foi realizado um \textit{gridsearch} para determinar o número de neurônios na camada de leitura e o valor para o raio espectral, que determina o maior valor singular da matriz de pesos do reservatório. Por tratar-se de uma rede recorrente, também foi utilizado o processo de \textit{holdout} descrito na seção anterior. Vale também mencionar que a taxa de vazamento, que representa a velocidade com a qual o reservatório atualiza suas dinâmicas, foi fixada em $0.9$ para todos os cenários.
 
 A tabela \ref{tab:esn} exibe as melhores configurações para a ESN em cada um dos cenários.
 \begin{table}[H]
@@ -488,7 +501,7 @@ A figura \ref{fig:mse-progression} mostra a progressão do EQM para cada $K$ obt
 
 Analisando qual foi o valor de $K$ que produziu o melhor desempenho para cada modelo, realizou-se novamente o processo mencionado na seção anterior e foi obtido o EQM para as melhores configurações (paramêtros e $K$) para cada modelo, em todos os cenários. 
 
-A figura \ref{fig:model-comparison} exibe o comparativo dos melhores desempenhos das redes neurais analisadas, e a figura \ref{fig:series-comparison} mostra uma comparação da predição em si de cada modelo nos cenários onde a diferença foi visualmente mais perceptível.
+A figura \ref{fig:model-comparison} exibe o comparativo dos melhores desempenhos das redes neurais analisadas, e a figura \ref{fig:series-comparison} mostra uma comparação da predição em si de cada modelo nos cenários onde a diferença foi mais perceptível visualmente.
 \begin{figure}[!h]
      \begin{subfigure}[t]{0.2\textwidth}
          \includegraphics[scale=0.2]{comparacao-k-henon.pdf}
