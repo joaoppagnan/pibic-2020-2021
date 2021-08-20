@@ -819,7 +819,7 @@ esn_model = [4]
 models = [mlp_model, lstm_model, gru_model, esn_model]
 
 # henon
-fig, ax = plt.subplots(tight_layout=True)
+fig, ax = plt.subplots(tight_layout=True, figsize=(7, 5))
 MSE_mlp = pd.DataFrame(mse_mlp_henon, columns=['Media do MSE']).to_numpy()
 MSE_mlp = MSE_mlp.ravel()
 MSE_std_mlp = pd.DataFrame(mse_mlp_henon, columns=['Desvio Padrao do MSE']).to_numpy()
@@ -858,7 +858,7 @@ fig.savefig("images/results/henon-best.pdf")
 fig.savefig("reports/congresso-pibic/figures/comparacao-k-henon.pdf")
 
 # logistic
-fig, ax = plt.subplots(tight_layout=True)
+fig, ax = plt.subplots(tight_layout=True, figsize=(7, 5))
 MSE_mlp = pd.DataFrame(mse_mlp_logistic, columns=['Media do MSE']).to_numpy()
 MSE_mlp = MSE_mlp.ravel()
 MSE_std_mlp = pd.DataFrame(mse_mlp_logistic, columns=['Desvio Padrao do MSE']).to_numpy()
@@ -897,7 +897,7 @@ fig.savefig("images/results/logistic-best.pdf")
 fig.savefig("reports/congresso-pibic/figures/comparacao-k-logistic.pdf")
 
 # sistema de lorenz
-fig, ax = plt.subplots(tight_layout=True)
+fig, ax = plt.subplots(tight_layout=True, figsize=(7, 5))
 MSE_mlp = pd.DataFrame(mse_mlp_lorenz, columns=['Media do MSE']).to_numpy()
 MSE_mlp = MSE_mlp.ravel()
 MSE_std_mlp = pd.DataFrame(mse_mlp_lorenz, columns=['Desvio Padrao do MSE']).to_numpy()
@@ -936,7 +936,7 @@ fig.savefig("images/results/lorenz-best.pdf")
 fig.savefig("reports/congresso-pibic/figures/comparacao-k-lorenz.pdf")
 
 # mackey-glass
-fig, ax = plt.subplots(tight_layout=True)
+fig, ax = plt.subplots(tight_layout=True, figsize=(7, 5))
 MSE_mlp = pd.DataFrame(mse_mlp_mackeyglass, columns=['Media do MSE']).to_numpy()
 MSE_mlp = MSE_mlp.ravel()
 MSE_std_mlp = pd.DataFrame(mse_mlp_mackeyglass, columns=['Desvio Padrao do MSE']).to_numpy()
@@ -970,6 +970,6 @@ ax.text(esn_model[0]-0.83, MSE_esn[0], r"($4.380\pm 0.644$)$\times 10^{-7}$", fo
 sns.despine()
 ax.grid()
 fig.savefig("images/results/mackeyglass-best.pdf")
-fig.savefig("reports/congresso-pibic/figures/comparacao-mackeyglass.pdf")
+fig.savefig("reports/congresso-pibic/figures/comparacao-k-mackeyglass.pdf")
 print("Gráficos gerados!")
 print("")
