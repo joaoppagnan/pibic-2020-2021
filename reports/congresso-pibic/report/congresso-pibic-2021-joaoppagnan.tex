@@ -23,6 +23,11 @@
 \renewcommand{\captionfont}{\sffamily\footnotesize\bfseries}
 \usepackage{tabularx}
 
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,fit, positioning, arrows.meta}
+\usetikzlibrary{backgrounds}
+\usepgflibrary{shapes.multipart}
+
 \newcommand{\sigmoid}{\text{Sigmoid}}
 \newcommand{\sen}{\text{sen}}
 \newcommand{\selu}{\text{SELU}}
@@ -182,20 +187,35 @@ Neste caso, a equação (\ref{eq:mackey-glass-chaos}) exibe comportamento caóti
      \label{fig:mackey-glass}
 \end{figure}
 
-\subsection{Obtenção dos melhores parâmetros}
+\subsection{Modelos avaliados e configurações utilizadas}
 
 \BeforeBeginEnvironment{tabular}{\tiny}
 
-Como foi mencionado na seção introdutória, foi realizado um procedimento de \textit{gridsearch} para a determinação dos melhores parâmetros para as redes neurais. Nesse caso, cada arquitetura testou parâmetros diferentes nesse processo, logo, as próximas seções indicam o que foi testado para cada modelo. Vale reforçar que o \textit{gridsearch} foi realizado em todos os cenários de sistemas caóticos analisados, de forma a obter os melhores parâmetros para cada um deles.
+Como foi mencionado na seção introdutória, foi realizado um procedimento de \textit{gridsearch} para a determinação dos melhores parâmetros para as redes neurais. Nesse caso, cada arquitetura testou parâmetros diferentes nesse processo, logo, as próximas seções indicam o que foi testado para cada modelo, além de uma breve exposição sobre as particularidades de cada arquitetura. Vale reforçar que o \textit{gridsearch} foi realizado em todos os cenários de sistemas caóticos analisados, de forma a obter os melhores parâmetros para cada um deles.
 
 \subsubsection{MLP}
 
-Para as redes \textit{Multilayer Perceptron}, foi testado o tamanho do \textit{batch} para o treinamento, se será ou não utilizado uma camada de \textit{batch normalization}, a função de ativação para os neurônios \textit{Perceptron} na camada intermediária, a inicialização dos pesos dos neurônios, o número de neurônios na camada intermediária e, por fim, a taxa de aprendizagem. 
+As redes MLP, como o nome já diz, são compostas por múltiplas camadas de neurônios artificiais \textit{Perceptron}  \cite{rosenblatt1958perceptron}. Cada neurônio recebe $x_i$ atributos e os ponderam por pesos $w_i$. Em seguida, é aplicada uma função de ativação $\varphi(\cdot)$ sobre esta soma ponderada, acrescida de um termo de \textit{bias}, conforme indica a equação (\ref{eq:mlp-out}).
+\begin{equation}\label{eq:mlp-out}
+y = \varphi  \Big(\sum_{i=1}^{m}w_i x_i + w_0 \Big) = \varphi \Big(\sum_{i=0}^{m}w_i x_i \Big) = \varphi (\mathbf{w}^T \cdot \mathbf{x})
+\end{equation}
+
+Tipicamente, uma rede neural MLP é composta por um número arbitrário $N_L$ de  camadas com $n$ neurônios do tipo \textit{Perceptron}, com a característica de que as saídas dos neurônios da $l$-ésima camada são propagadas para a frente, servindo como as entradas de todos os neurônios da camada seguinte ($l+1$). Por isso, este tipo de rede é conhecida como totalmente conectada (ou densa) e pertence à categoria de modelos \textit{feedforward}. A Figura \ref{fig:mlp-architecture} apresenta a estrutura típica das redes MLP.
+\begin{figure}[H]
+\centering
+\includegraphics[scale = 0.3]{mlp-network.pdf}
+\caption{Estrutura típica de uma rede MLP (figura adaptada de \cite{boccato2013novas}) }
+\label{fig:mlp-architecture}
+\end{figure}
+
+O processo de treinamento de uma rede neural artificial normalmente é realizado com sequências de vetores de entrada $\mathbf{x}$, chamadas de \textit{mini-batch}, e chamamos um período de treinamento de época (do inglês \textit{epoch}) \cite{geron2019hands}. Os pesos sinápticos $\textbf{w}$ são ajustados com um processo iterativo de forma a minimizar uma função custo $J(\textbf{w})$ que representa uma medida do erro entre as saídas geradas pela rede e as saídas desejadas. Para isso, é frequente o uso de algoritmos de otimização baseados em derivadas da função custo. Para esta pesquisa, foi utilizado o método de Nesterov (NAG, do inglês \textit{Nesterov Accelerated Gradient}) \cite{dozat2016incorporating}. O famoso algoritmo de retropropagação do erro é empregado para viabilizar o cálculo das derivadas com relação aos pesos sinápticos dos neurônios situados nas camadas internas da rede.
+
+Para as redes \textit{Multilayer Perceptron}, foi testado o tamanho do \textit{batch} para o treinamento, se será ou não utilizado uma camada de normalização do \textit{batch}, a função de ativação para os neurônios \textit{Perceptron} na camada intermediária, a inicialização dos pesos dos neurônios, o número de neurônios na camada intermediária e, por fim, a taxa de aprendizagem. 
 
 O \textit{gridsearch} utilizou validação cruzada com $4$ \textit{folds} nos dados de treinamento, que correspondiam aos primeiros $4250$ valores. Essa proporção entre os dados de treinamento e de teste foi utilizada para todas as redes analisadas.
 
 Vale reforçar que foi utilizada apenas uma camada intermediária em cada cenário. As melhores configurações obtidas podem serem vistas na tabela \ref{tab:mlp}.
-\begin{table}[H]
+\begin{table}[!ht]
 \begin{center}
 \begin{tabular}{c c c c c c c}
   \textbf{Cenário}  & \pbox{0.85cm}{\centering \textbf{\; \, \textit{Batch\newline normalization}}} & \pbox{0.4cm}{\centering \textbf{\textit{Batch size}}} & \pbox{0.65cm}{\centering \textbf{Função de ativação}} & \pbox{0.9cm}{\centering \textbf{Inicialização}} & \pbox{0.745cm}{\centering \textbf{Nº de neurônios}} & \pbox{1cm}{\centering \textbf{\, Taxa de\newline aprendizagem}}\\
@@ -215,6 +235,150 @@ Vale reforçar que foi utilizada apenas uma camada intermediária em cada cenár
 \end{table}
 
 \subsubsection{LSTM e GRU}
+
+Diferentemente das redes MLP, as redes recorrentes têm estruturas computacionais que podem armazenar os estados anteriores dos neurônios, possuindo também portas não-lineares que regulam o fluxo de informação de entrada e de saída da célula computacional \cite{haykin2010neural}. 
+
+A diferença entre uma célula LSTM e uma célula GRU é a presença de um vetor de longo prazo $\mathbf{c}$ e um vetor de curto prazo $\mathbf{h}$, conforme indicado na Figura \ref{fig:lstm}, na LSTM. 
+\noindent{
+\begin{figure}[H]
+\begin{minipage}{0.2\textwidth}
+\begin{center}
+\scalebox{0.55}{
+\begin{tikzpicture}[
+    % GLOBAL CFG
+    font=\sf \scriptsize,
+    >=LaTeX,
+    % Styles
+    cell/.style={% For the main box
+        rectangle, 
+        rounded corners=5mm, 
+        draw,
+        very thick,
+        },
+    operator/.style={%For operators like +  and  x
+        circle,
+        draw,
+        inner sep=-0.5pt,
+        minimum height =.2cm,
+        },
+    function/.style={%For functions
+        ellipse,
+        draw,
+        inner sep=1pt
+        },
+    ct/.style={% For external inputs and outputs
+        circle,
+        draw,
+        line width = .75pt,
+        minimum width=1cm,
+        inner sep=1pt,
+        },
+    gt/.style={% For internal inputs
+        rectangle,
+        draw,
+        minimum width=4mm,
+        minimum height=3mm,
+        inner sep=1pt
+        },
+    mylabel/.style={% something new that I have learned
+        font=\scriptsize\sffamily
+        },
+    ArrowC1/.style={% Arrows with rounded corners
+        rounded corners=.25cm,
+        thick,
+        },
+    ArrowC2/.style={% Arrows with big rounded corners
+        rounded corners=.5cm,
+        thick,
+        }
+    ]
+
+%Start drawing the thing...    
+    % Draw the cell: 
+    \node [cell, minimum height =4cm, minimum width=6cm] at (0,0){} ;
+
+    % Draw inputs named ibox#
+    \node [gt] (ibox1) at (-2,-0.75) {$\sigma$};
+    \node [gt] (ibox2) at (-1.5,-0.75) {$\sigma$};
+    \node [gt, minimum width=1cm] (ibox3) at (-0.5,-0.75) {$\tanh$};
+    \node [gt] (ibox4) at (0.5,-0.75) {$\sigma$};
+
+   % Draw opérators   named mux# , add# and func#
+    \node [operator] (mux1) at (-2,1.5) {$\times$};
+    \node [operator] (add1) at (-0.5,1.5) {+};
+    \node [operator] (mux2) at (-0.5,0) {$\times$};
+    \node [operator] (mux3) at (1.5,0) {$\times$};
+    \node [function] (func1) at (1.5,0.75) {$\tanh$};
+
+    % Draw External inputs? named as basis c,h,x
+    \node[] (c) at (-4,1.5) {$\mathbf{c}(t-1)$};
+    \node[] (h) at (-4,-1.5) {$\mathbf{h}(t-1)$};
+    \node[] (x) at (-2.5,-3) {$\mathbf{x}(t)$};
+
+    % Draw External outputs? named as basis c2,h2,x2
+    \node[] (c2) at (4,1.5) {$\mathbf{c}(t)$};
+    \node[] (h2) at (4,-1.5) {$\mathbf{h}(t)$};
+    \node[] (x2) at (2.5,3) {$\mathbf{h}(t)$};
+    
+    % Draw internals functions, named as basis fi,ii,ci,oi
+    \node[] (fi) at (-2.35,-0.25) {$\mathbf{f}(t)$};
+    \node[] (ii) at (-1.5,0.2) {$\mathbf{i}(t)$};
+    \node[] (ci) at (-0.1,-0.35) {$\mathbf{\tilde{c}}(t)$};
+	\node[] (oi) at (0.5,0.2) {$\mathbf{o}(t)$};       
+    
+% Start connecting all.
+    %Intersections and displacements are used. 
+    % Drawing arrows    
+    \draw [ArrowC1] (c) -- (mux1) -- (add1) -- (c2);
+
+    % Inputs
+    \draw [ArrowC2] (h) -| (ibox4);
+    \draw [ArrowC1] (h -| ibox1)++(-0.5,0) -| (ibox1); 
+    \draw [ArrowC1] (h -| ibox2)++(-0.5,0) -| (ibox2);
+    \draw [ArrowC1] (h -| ibox3)++(-0.5,0) -| (ibox3);
+    \draw [ArrowC1] (x) -- (x |- h)-| (ibox3);
+
+    % Internal
+    \draw [->, ArrowC2] (ibox1) -- (mux1);
+    \draw [->, ArrowC2] (ibox2) |- (mux2);
+    \draw [->, ArrowC2] (ibox3) -- (mux2);
+    \draw [->, ArrowC2] (ibox4) |- (mux3);
+    \draw [->, ArrowC2] (mux2) -- (add1);
+    \draw [->, ArrowC1] (add1 -| func1)++(-0.5,0) -| (func1);
+    \draw [->, ArrowC2] (func1) -- (mux3);
+
+    %Outputs
+    \draw [->, ArrowC2] (mux3) |- (h2);
+    \draw [->] (add1) |- (c2);
+    \draw (c2 -| x2) ++(0,-0.1) coordinate (i1);
+    \draw [-, ArrowC2] (h2 -| x2)++(-0.5,0) -| (i1);
+    \draw [->, ArrowC2] (i1)++(0,0.2) -- (x2);
+
+\end{tikzpicture}}
+\end{center}
+\end{minipage}
+\; \; \; \; \; \; \; \;
+\begin{minipage}{0.2\textwidth}
+\begin{center}
+{\tiny
+$$\mathbf{f}(t) = \sigma(\mathbf{W}_f [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_f)$$
+$$\mathbf{i}(t) = \sigma(\mathbf{W}_i [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_i)$$
+$$\mathbf{\tilde{c}}(t) = \sigma(\mathbf{W}_c [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_c)$$
+$$\mathbf{c}(t) = \mathbf{f}(t) \otimes \mathbf{c}(t-1) + \mathbf{i}(t) \otimes \mathbf{\tilde{c}}(t)$$
+$$\mathbf{o}(t) = \sigma(\mathbf{W}_o [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_o)$$
+$$\mathbf{h}(t) = \mathbf{o}(t) \otimes \tanh (\mathbf{c}(t))$$}
+\end{center}
+\end{minipage}
+\caption{Estrutura e equações de uma célula LSTM}
+\label{fig:lstm}
+\end{figure}
+}
+
+As LSTMs manipulam o vetor $\mathbf{c}(t)$, aprendendo durante o treinamento o que deve ser guardado nele, o que deve ser descartado e o que deve ser aproveitado para gerar a saída $\mathbf{h}(t)$. Dessa forma, podemos dizer que a atualização do vetor de estados $\mathbf{c}(t)$ é feita com o descarte de informações e a incorporação de novidades vindas da entrada. 
+
+A célula GRU é uma versão simplificada da célula LSTM e funciona de uma forma bem similar. Nela há somente o vetor de estados de curto prazo  $\mathbf{h}$, assim, para que uma memória seja mantida, o conteúdo do local em questão deve ser primeiramente apagado.
+
+À semelhança das redes MLP, o treinamento das redes LSTM e GRU também é realizado através de algoritmos de otimização baseados em derivadas da função custo; a diferença é que agora é necessário propagar as derivadas ao longo da estrutura e, também, ao longo do tempo devido às realimentações. O algoritmo BPTT (\textit{backpropagation-through-time}) representa a extensão do \textit{backpropagation} para o cenário das redes recorrentes \cite{geron2019hands}. 
 
 O processo para a LSTM e GRU foi bem similar, considerando que essas arquiteturas de redes neurais são semelhantes. A principal diferença com relação ao \textit{gridsearch} da MLP foi o fato de que, ao invés de utilizar-se validação cruzada com $k-$\textit{folds}, foi utilizado \textit{holdout}. Esse processo dividiu o conjunto de treinamento (novamente composto por $85\%$ dos dados gerados) em $4$ seções. Cada seção era composta por uma fração dos dados de treinamento, sendo que cada seção incluia a seção anterior no seu conjunto de dados.
 
@@ -296,7 +460,7 @@ Vale reforçar que, como o ajuste de parâmetros da ESN possui solução em form
 
 A figura \ref{fig:mse-progression} mostra a progressão do EQM para cada $K$ obtida em todos os cenários para todas as redes. 
 \begin{figure}[H]
-     \begin{subfigure}[t]{0.2\textwidth}
+     \begin{subfigure}[t]{0.2\textwidth} 
          \includegraphics[scale=0.2]{progressao-k-henon.pdf}
          \caption{Mapa de Hénon}
      \end{subfigure}
@@ -324,7 +488,7 @@ A figura \ref{fig:mse-progression} mostra a progressão do EQM para cada $K$ obt
 
 Analisando qual foi o valor de $K$ que produziu o melhor desempenho para cada modelo, realizou-se novamente o processo mencionado na seção anterior e foi obtido o EQM para as melhores configurações (paramêtros e $K$) para cada modelo, em todos os cenários. 
 
-A figura \ref{fig:model-comparison} exibe o comparativo dos melhores desempenhos das redes neurais analisadas, e a figura \ref{fig:series-comparison} mostra uma comparação da predição em si de cada modelo nos dados de testes de cada cenário.
+A figura \ref{fig:model-comparison} exibe o comparativo dos melhores desempenhos das redes neurais analisadas, e a figura \ref{fig:series-comparison} mostra uma comparação da predição em si de cada modelo nos cenários onde a diferença foi visualmente mais perceptível.
 \begin{figure}[!h]
      \begin{subfigure}[t]{0.2\textwidth}
          \includegraphics[scale=0.2]{comparacao-k-henon.pdf}
@@ -350,19 +514,9 @@ A figura \ref{fig:model-comparison} exibe o comparativo dos melhores desempenhos
      \label{fig:model-comparison}
 \end{figure}
 \begin{figure}[!ht]
-     \begin{subfigure}[t]{0.2\textwidth}
-         \includegraphics[scale=0.2]{vs-henon-zoom.pdf}
-         \caption{Mapa de Hénon}
-     \end{subfigure}
-     \centering
      \begin{subfigure}[t]{0.2\textwidth} 
          \includegraphics[scale=0.2]{vs-logistic-zoom.pdf}
          \caption{Mapa logístico}
-     \end{subfigure}
-     \centering
-     \begin{subfigure}[t]{0.2\textwidth}
-         \includegraphics[scale=0.2]{vs-lorenz-zoom.pdf}
-         \caption{Sistema de Lorenz}
      \end{subfigure}
      \centering
      \begin{subfigure}[t]{0.2\textwidth}
@@ -370,7 +524,7 @@ A figura \ref{fig:model-comparison} exibe o comparativo dos melhores desempenhos
          \caption{Equações de Mackey-Glass}
      \end{subfigure}
      \centering     
-     \caption{Comparação da predição realizada por cada modelo nos cenários testados}
+     \caption{Comparação da predição realizada por cada modelo nos cenários do mapa logístico e das equações de Mackey-Glass}
      \label{fig:series-comparison}
 \end{figure}
 
