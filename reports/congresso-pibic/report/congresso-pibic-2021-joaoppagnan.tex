@@ -221,16 +221,16 @@ Vale reforçar que foi utilizada apenas uma camada intermediária em cada cenár
 \begin{table}[H]
 \begin{center}
 \begin{tabular}{c c c c c c c}
-  \textbf{Cenário}  & \pbox{0.85cm}{\centering \textbf{\; \, \textit{Batch\newline normalization}}} & \pbox{0.4cm}{\centering \textbf{\textit{Batch size}}} & \pbox{0.65cm}{\centering \textbf{Função de ativação}} & \pbox{0.9cm}{\centering \textbf{Inicialização}} & \pbox{0.745cm}{\centering \textbf{Nº de neurônios}} & \pbox{1cm}{\centering \textbf{\, Taxa de\newline aprendizagem}}\\
+  \textbf{Cenário}  & \pbox{0.85cm}{\centering \textbf{\; \, \textit{Batch\newline normalization}}} & \pbox{0.65cm}{\centering \textbf{\textit{Tamanho do \textit{batch}}}} & {\centering \textbf{Ativação}} & \pbox{0.9cm}{\centering \textbf{Inicialização}} & \pbox{0.745cm}{\centering \textbf{Nº de neurônios}} & \pbox{1cm}{\centering \textbf{\, Taxa de\newline aprendizagem}}\\
  \hline
  \addlinespace
  \pbox{0.7cm}{\centering \textbf{Mapa de\newline Hénon}} & Não & $8$ & $\sigmoid$ & $\glorot\, \normal$ & $50$ & $0.003$\\  
   \addlinespace
  \pbox{0.7cm}{\centering \textbf{Mapa\newline logístico}} & Não & $2$ & $\tanh$ & $\glorot\, \uniform$ & $10$ & $0.003$\\ 
   \addlinespace
- \pbox{0.9cm}{\centering \textbf{Sistema de\newline Lorenz}} & Não & $2$ & $\selu$ & $\lecun\, \normal$ & $50$ & $0.001$\\ 
+ \pbox{0.75cm}{\centering \textbf{Sistema de Lorenz}} & Não & $2$ & $\selu$ & $\lecun\, \normal$ & $50$ & $0.001$\\ 
   \addlinespace
- \pbox{0.929cm}{\centering \textbf{Equações de\newline Mackey-Glass}} & Não & $4$ & $\tanh$ & $\glorot\, \normal$ & $5$ & $0.001$\\ 
+ \pbox{0.75cm}{\centering \textbf{Equações de Mackey-Glass}} & Não & $4$ & $\tanh$ & $\glorot\, \normal$ & $5$ & $0.001$\\ 
 \end{tabular}
 \caption{Melhores parâmetros para a rede MLP nos cenários em análise}
 \label{tab:mlp}
@@ -393,7 +393,7 @@ Os resultados obtidos para a LSTM e para a GRU podem ser vistos nas tabelas \ref
 \begin{table}[H]
 \begin{center}
 \begin{tabular}{c c c c c}
-  \textbf{Cenário} & \pbox{0.4cm}{\centering \textbf{\textit{Batch size}}} & \pbox{0.9cm}{\centering \textbf{Inicialização}} & \pbox{0.745cm}{\centering \textbf{Nº de neurônios}} & \pbox{1cm}{\centering \textbf{\, Taxa de\newline aprendizagem}}\\
+  \textbf{Cenário} & \pbox{0.65cm}{\centering \textbf{\textit{Tamanho do \textit{batch}}}} & \pbox{0.9cm}{\centering \textbf{Inicialização}} & \pbox{0.745cm}{\centering \textbf{Nº de neurônios}} & \pbox{1cm}{\centering \textbf{\, Taxa de\newline aprendizagem}}\\
  \hline
  \addlinespace
  \pbox{0.7cm}{\centering \textbf{Mapa de\newline Hénon}} & $4$ & $\glorot\, \normal$ & $15$ & $0.005$\\  
@@ -411,7 +411,7 @@ Os resultados obtidos para a LSTM e para a GRU podem ser vistos nas tabelas \ref
 \begin{table}[H]
 \begin{center}
 \begin{tabular}{c c c c c}
-  \textbf{Cenário} & \pbox{0.4cm}{\centering \textbf{\textit{Batch size}}} & \pbox{0.9cm}{\centering \textbf{Inicialização}} & \pbox{0.745cm}{\centering \textbf{Nº de neurônios}} & \pbox{1cm}{\centering \textbf{\, Taxa de\newline aprendizagem}}\\
+  \textbf{Cenário} & \pbox{0.65cm}{\centering \textbf{\textit{Tamanho do \textit{batch}}}} & \pbox{0.9cm}{\centering \textbf{Inicialização}} & \pbox{0.745cm}{\centering \textbf{Nº de neurônios}} & \pbox{1cm}{\centering \textbf{\, Taxa de\newline aprendizagem}}\\
  \hline
  \addlinespace
  \pbox{0.7cm}{\centering \textbf{Mapa de\newline Hénon}} & $4$ & $\glorot\, \normal$ & $30$ & $0.003$\\  
