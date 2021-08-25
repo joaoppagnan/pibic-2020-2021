@@ -100,7 +100,7 @@ De forma resumida, a dinâmica caótica é marcada pela presença dos seguintes 
 \item Dão origem a atratores estranhos (estruturas topológicas que ditam a evolução temporal do fluxo de um sistema caótico) \cite{ruelle1971nature}.
 \end{enumerate}
 
-Retomados os pontos principais da dinâmica caótica, daremos continuidade à discussão apresentando os cenários escolhidos para a análise. Vale mencionar que, na simulação numérica dos quatro sistemas foram geradas $5000$ amostras.
+Retomados os pontos principais da dinâmica caótica, daremos continuidade à discussão apresentando os cenários escolhidos para a análise. Vale mencionar que, na simulação numérica dos quatro sistemas, foram geradas $5000$ amostras para cada série temporal.
 
 \subsection{Sistema de Lorenz}
 
@@ -122,7 +122,7 @@ sendo $\sigma$, $\rho$ e $\beta$ constantes reais, estando relacionadas a certas
 
 Utilizando $\sigma = 10$, $\rho = 28$ e $\beta = 8/3$, Lorenz demonstrou que esse sistema de equações diferenciais exibe comportamento caótico, sendo que a maioria das condições iniciais $[x(0)\; y(0)\; z(0)] = [0\; 0\; 0]^T$ convergem para um atrator estranho (nesse caso, atrator de Lorenz).
 
-A figura \ref{fig:lorenz} indica a série temporal em $x$, que foi utilizada em nossa análise, para $[x(0)\; y(0)\; z(0)]^T = [0.1\; 0\; 0]^T$, e o atrator de Lorenz para a trajetória. Para a simulação, os parâmetros do sistema foram configurados para os mesmos valores utilizados por Lorenz (exibidos no parágrafo anterior), e foi utilizado $dt = 0.01$ para resolver as EDOs numericamente.
+A figura \ref{fig:lorenz} indica a série temporal em $x$, que foi utilizada em nossa análise, para $[x(0)\; y(0)\; z(0)]^T = [0.1\; 0\; 0]^T$, e o atrator de Lorenz para a trajetória. Para a simulação, os parâmetros do sistema foram configurados para os mesmos valores utilizados por Lorenz (exibidos no parágrafo anterior), e foi utilizado $dt = 0.01$ para resolver as equações diferenciais numericamente.
 \begin{figure}[H]
      \begin{subfigure}[t]{0.4\textwidth} 
          \includegraphics[scale=0.4]{serie-lorenz-x.pdf}
