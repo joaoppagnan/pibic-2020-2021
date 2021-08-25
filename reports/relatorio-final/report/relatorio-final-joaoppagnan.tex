@@ -1,0 +1,119 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{newpxtext, newpxmath}
+\usepackage[breaklinks=true]{hyperref}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage[left=3cm, right=2cm, top=3cm, bottom=2cm]{geometry}
+\geometry{a4paper}
+\usepackage{fancyhdr}
+\usepackage[brazilian]{babel}
+\usepackage{siunitx}
+\usepackage{float}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt} 
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+\graphicspath{{../figures/}}
+\sisetup{output-decimal-marker={.}}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{cleveref}
+\usepackage{spverbatim}
+\usepackage{setspace}
+\usepackage{subcaption}
+\usepackage{csquotes}
+\usepackage{booktabs}
+\usepackage{pbox}
+\setlength{\parskip}{1em}
+\singlespacing
+
+\newcommand{\empt}[2]{$#1^{\langle #2 \rangle}$}
+\newcommand{\sigmoid}{\text{Sigmoid}}
+\newcommand{\sen}{\text{sen}}
+
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,fit, positioning, arrows.meta}
+\usetikzlibrary{backgrounds}
+\usepgflibrary{shapes.multipart}
+\def\layersep{2.5cm}
+\def\layersepp{5cm}	
+
+\begin{document}
+\begin{titlepage}
+\newcommand{\HRule}{\rule{\linewidth}{1.5mm}}
+	
+\center
+
+\includegraphics[width=0.15\textwidth]{logo-unicamp.pdf}\\[1.0cm]
+
+\textsc{\Large Programa Institucional de Bolsas de Iniciação Científica PIBIC}\\[0.5cm]
+
+\textsc{\large Relatório Final}\\[1.5cm]
+
+{\Large \bfseries Predição de Séries Temporais Baseada em Redes Neurais Artificiais}\\[2.5cm]
+
+\begin{flushleft}
+Submetido à \\ Pró-Reitoria de Pesquisa da Universidade Estadual de Campinas\\[1.5cm]
+
+Departamento de Engenharia de Computação e Automação Industrial (DCA)\\
+Faculdade de Engenharia Elétrica e de Computação (FEEC)\\
+Universidade Estadual de Campinas (UNICAMP)\\
+CEP 13083-852, Campinas - SP\\[1.0cm]
+
+Aluno: João Pedro de Oliveira Pagnan\\
+Orientador: Prof. Levy Boccato \\[4.5cm]
+\end{flushleft}	
+	
+Campinas, \today
+
+\end{titlepage}
+
+\newpage
+
+\section{Introdução}
+
+Depois de uma exposição sobre certos modelos preditores com redes neurais artificiais e sobre as características principais de sistemas com dinâmica caótica, apresentados no relatório parcial (seções $2.1$ e $2.2$, respectivamente), este relatório final irá expor os cenários utilizados para a análise, a metodologia utilizada, os resultados obtidos e, por fim, as conclusões desta pesquisa sobre o desempenho de redes neurais artificiais na predição de séries temporais originadas por sistemas com dinâmica caótica, além de alguns detalhes sobre as arquiteturas estudadas nesta segunda parte da pesquisa, que foram a \textit{Gated Recurrent Unit} (GRU) \cite{cho2014learning} e a \textit{Echo State Network} (ESN) \cite{jaeger2007echo}. 
+
+A seção 2 apresenta os quatro cenários escolhidos para a análise do desempenho das redes neurais, sendo dois destes a tempo discreto e dois a tempo contínuo, trazendo também um breve contexto sobre os estudos que originaram tais sistemas. No caso, os sistemas a tempo discreto foram o mapa de Hénon \cite{henon1976two} e o mapa logístico \cite{may1976simple}. Já os sistemas a tempo contínuo foram o sistema de Lorenz \cite{lorenz1963deterministic} e as equações de Mackey-Glass \cite{mackey1977oscillation}.
+
+Já na seção 3, discutiremos os dois modelos previamente citados que foram estudados e implementados, juntos das redes neurais apresentadas no relatório parcial, nesta segunda parte da pesquisa. 
+
+A seção 4 realizará uma exposição da busca em grade realizada em cada modelo, expondo quais foram os parâmetros testados e os critérios definidos para o processo de busca. Além disso, a seção 4 também apresentará a metodologia utilizada para definir o número de amostras de entrada de cada modelo preditor (nesse caso, chamado de $K$), além de indicar qual foi a progressão do erro quadrático médio (EQM) em função do valor de $K$ para cada modelo nos quatro cenários.
+
+Por fim, as seções 5 e 6 apresentam os resultados e as conclusões obtidas, respectivamente, encerrando, assim, esta pesquisa de iniciação científica.
+ 
+\section{Cenários utilizados}
+
+\subsection{Sistema de Lorenz}
+
+\subsection{Mapa de Hénon}
+
+\subsection{Mapa logístico}
+
+\subsection{Equações de Mackey-Glass}
+
+\section{Modelos avaliados}
+
+\subsection{\textit{Gated Recurrent Unit} (GRU)}
+
+\subsection{\textit{Echo State Network} (ESN)}
+
+\section{Metodologia}
+
+\section{Resultados}
+
+\section{Conclusão}
+
+\bibliographystyle{ieeetr}
+
+{\footnotesize \bibliography{bib}}
+
+\pdfinfo{
+   /Title  (Relatório EE015 - João Pedro O. Pagnan)
+   /CreationDate (D:20040502195600)
+}
+
+\end{document}
