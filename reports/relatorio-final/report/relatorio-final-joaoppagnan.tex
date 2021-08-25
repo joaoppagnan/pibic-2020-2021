@@ -77,17 +77,64 @@ Campinas, \today
 
 Depois de uma exposição sobre certos modelos preditores com redes neurais artificiais e sobre as características principais de sistemas com dinâmica caótica, apresentados no relatório parcial (seções $2.1$ e $2.2$, respectivamente), este relatório final irá expor os cenários utilizados para a análise, a metodologia utilizada, os resultados obtidos e, por fim, as conclusões desta pesquisa sobre o desempenho de redes neurais artificiais na predição de séries temporais originadas por sistemas com dinâmica caótica, além de alguns detalhes sobre as arquiteturas estudadas nesta segunda parte da pesquisa, que foram a \textit{Gated Recurrent Unit} (GRU) \cite{cho2014learning} e a \textit{Echo State Network} (ESN) \cite{jaeger2007echo}. 
 
-A seção 2 apresenta os quatro cenários escolhidos para a análise do desempenho das redes neurais, sendo dois destes a tempo discreto e dois a tempo contínuo, trazendo também um breve contexto sobre os estudos que originaram tais sistemas. No caso, os sistemas a tempo discreto foram o mapa de Hénon \cite{henon1976two} e o mapa logístico \cite{may1976simple}. Já os sistemas a tempo contínuo foram o sistema de Lorenz \cite{lorenz1963deterministic} e as equações de Mackey-Glass \cite{mackey1977oscillation}.
+A seção 2 apresenta os quatro cenários escolhidos para a análise do desempenho das redes neurais, sendo dois destes a tempo discreto e dois a tempo contínuo. No caso, os sistemas a tempo discreto foram o mapa de Hénon \cite{henon1976two} e o mapa logístico \cite{may1976simple}. Já os sistemas a tempo contínuo foram o sistema de Lorenz \cite{lorenz1963deterministic} e as equações de Mackey-Glass \cite{mackey1977oscillation}.
 
-Já na seção 3, discutiremos os dois modelos previamente citados que foram estudados e implementados, juntos das redes neurais apresentadas no relatório parcial, nesta segunda parte da pesquisa. 
+Já na seção 3, discutiremos os dois modelos previamente citados que foram estudados e implementados, juntamente com as redes neurais apresentadas no relatório parcial, nesta segunda parte da pesquisa. 
 
-A seção 4 realizará uma exposição da busca em grade realizada em cada modelo, expondo quais foram os parâmetros testados e os critérios definidos para o processo de busca. Além disso, a seção 4 também apresentará a metodologia utilizada para definir o número de amostras de entrada de cada modelo preditor (nesse caso, chamado de $K$), além de indicar qual foi a progressão do erro quadrático médio (EQM) em função do valor de $K$ para cada modelo nos quatro cenários.
+A seção 4 realiza uma exposição da busca em grade \cite{geron2019hands} realizada em cada modelo, expondo quais foram os parâmetros testados e os critérios definidos para o processo de busca. Além disso, a seção 4 também apresentará a metodologia utilizada para definir o número de amostras de entrada de cada modelo preditor (nesse caso, chamado de $K$), além de indicar qual foi a progressão do erro quadrático médio (EQM) em função do valor de $K$ para cada modelo nos quatro cenários.
 
 Por fim, as seções 5 e 6 apresentam os resultados e as conclusões obtidas, respectivamente, encerrando, assim, esta pesquisa de iniciação científica.
  
 \section{Cenários utilizados}
 
+Antes de falarmos sobre os cenários utilizados na análise, vale a pena reforçarmos as características principais de sistemas com dinâmica caótica. 
+
+Sistemas caóticos se destacam pois, apesar de serem determinísticos, apresentam dependência sensitiva em relação às condições iniciais (DSCI). Dessa forma, duas trajetórias que partem de posições relativamente próximas no espaço de estados podem evoluir de uma forma totalmente distinta devido às não-linearidades presentes que amplificam as diferenças entre essas condições iniciais \cite{fiedler1994caos}.
+
+De forma resumida, a dinâmica caótica é marcada pela presença dos seguintes aspectos \cite{attux2001dinamica}:
+\begin{enumerate}
+\item Forte sensibilidade com respeito às condições iniciais;
+\item A evolução temporal das variáveis de estado (parâmetros de ordem do sistema) é rápida e tem uma aparência errática;
+\item Um sinal originado por um sistema caótico tem espectro de potências contínuo e de faixa larga;
+\item Há uma produção de informação por parte do sistema;
+\item Dão origem a atratores estranhos (estruturas topológicas que ditam a evolução temporal do fluxo de um sistema caótico) \cite{ruelle1971nature}.
+\end{enumerate}
+
+Retomados os pontos principais da dinâmica caótica, daremos continuidade à discussão apresentando os cenários escolhidos para a análise. Vale mencionar que, na simulação numérica dos quatro sistemas foram geradas $5000$ amostras.
+
 \subsection{Sistema de Lorenz}
+
+O sistema de Lorenz foi um dos sistemas dinâmicos caóticos a tempo contínuo abordados nessa pesquisa. Este sistema foi um dos primeiros grandes trabalhos envolvendo a noção de regime caótico, sendo considerado por muitos a pesquisa que inaugurou a área \cite{gleick1998chaos}.
+
+Lorenz modela, através de três equações diferenciais, o fluxo de um fluido em um volume uniformemente aquecido na camada inferior e uniformemente resfriado na camada superior \cite{lorenz1963deterministic}:
+\begin{subequations}
+\begin{equation}
+\frac{dx}{dt} = -\sigma \cdot (x - y)
+\end{equation}
+\begin{equation}
+\frac{dy}{dt} = x \cdot (\rho - z) - y
+\end{equation}
+\begin{equation}
+\frac{dz}{dt} = x \cdot y - \beta \cdot z
+\end{equation}
+\end{subequations}
+sendo $\sigma$, $\rho$ e $\beta$ constantes reais, estando relacionadas a certas características físicas do sistema, como o número de Prandtl \cite{coulson1990chemical}, o número de Rayleigh \cite{rayleigh1916lix} e as dimensões do volume que o fluido ocupa.
+
+Utilizando $\sigma = 10$, $\rho = 28$ e $\beta = 8/3$, Lorenz demonstrou que esse sistema de equações diferenciais exibe comportamento caótico, sendo que a maioria das condições iniciais $[x(0)\; y(0)\; z(0)] = [0\; 0\; 0]^T$ convergem para um atrator estranho (nesse caso, atrator de Lorenz).
+
+A figura \ref{fig:lorenz} indica a série temporal em $x$, que foi utilizada em nossa análise, para $[x(0)\; y(0)\; z(0)]^T = [0.1\; 0\; 0]^T$, e o atrator de Lorenz para a trajetória. Para a simulação, os parâmetros do sistema foram configurados para os mesmos valores utilizados por Lorenz (exibidos no parágrafo anterior), e foi utilizado $dt = 0.01$ para resolver as EDOs numericamente.
+\begin{figure}[H]
+     \begin{subfigure}[t]{0.4\textwidth} 
+         \includegraphics[scale=0.4]{serie-lorenz-x.pdf}
+     \end{subfigure}
+     \centering
+     \begin{subfigure}[t]{0.4\textwidth}
+         \includegraphics[scale=0.4]{diagrama-de-fases-lorenz.pdf}
+     \end{subfigure}
+     \caption{À esquerda, a série temporal em $x$ do sistema de Lorenz simulado e, à direita, o diagrama de fases correspondente à simulação}
+     \label{fig:lorenz}
+\end{figure}
+
 
 \subsection{Mapa de Hénon}
 
