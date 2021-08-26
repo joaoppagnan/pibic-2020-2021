@@ -100,7 +100,7 @@ De forma resumida, a dinâmica caótica é marcada pela presença dos seguintes 
 \item Dão origem a atratores estranhos (estruturas topológicas que ditam a evolução temporal do fluxo de um sistema caótico) \cite{ruelle1971nature}.
 \end{enumerate}
 
-Retomados os pontos principais da dinâmica caótica, daremos continuidade à discussão apresentando os cenários escolhidos para a análise. Vale mencionar que, na simulação numérica dos quatro sistemas, foram geradas $5000$ amostras para cada série temporal.
+Retomados os pontos principais da dinâmica caótica, daremos continuidade à discussão apresentando os cenários escolhidos para a análise. Vale mencionar que, na simulação numérica dos quatro sistemas, foram geradas $5000$ amostras para cada série temporal. Além disso, nos sistemas multidimensionais, como o mapa de Hénon e o sistema de Lorenz, consideramos apenas a variável de estado $x$ na previsão, em ambos os casos.
 
 \subsection{Sistema de Lorenz}
 
@@ -118,18 +118,18 @@ Lorenz modela, através de três equações diferenciais, o fluxo de um fluido e
 \frac{dz}{dt} = x \cdot y - \beta \cdot z
 \end{equation}
 \end{subequations}
-sendo $\sigma$, $\rho$ e $\beta$ constantes reais, estando relacionadas a certas características físicas do sistema, como o número de Prandtl \cite{coulson1990chemical}, o número de Rayleigh \cite{rayleigh1916lix} e as dimensões do volume que o fluido ocupa.
+sendo $\sigma$, $\rho$ e $\beta$ constantes reais, estando relacionadas a certas características físicas do sistema, como o número de Prandtl, o número de Rayleigh e as dimensões do volume que o fluido ocupa \cite{fiedler1994caos}.
 
 Utilizando $\sigma = 10$, $\rho = 28$ e $\beta = 8/3$, Lorenz demonstrou que esse sistema de equações diferenciais exibe comportamento caótico, sendo que a maioria das condições iniciais $[x(0)\; y(0)\; z(0)] = [0\; 0\; 0]^T$ convergem para um atrator estranho (nesse caso, atrator de Lorenz).
 
 A figura \ref{fig:lorenz} indica a série temporal em $x$, que foi utilizada em nossa análise, para $[x(0)\; y(0)\; z(0)]^T = [0.1\; 0\; 0]^T$, e o atrator de Lorenz para a trajetória. Para a simulação, os parâmetros do sistema foram configurados para os mesmos valores utilizados por Lorenz (exibidos no parágrafo anterior), e foi utilizado $dt = 0.01$ para resolver as equações diferenciais numericamente.
 \begin{figure}[H]
-     \begin{subfigure}[t]{0.4\textwidth} 
-         \includegraphics[scale=0.4]{serie-lorenz-x.pdf}
+     \begin{subfigure}[t]{0.35\textwidth} 
+         \includegraphics[scale=0.35]{serie-lorenz-x.pdf}
      \end{subfigure}
      \centering
-     \begin{subfigure}[t]{0.4\textwidth}
-         \includegraphics[scale=0.4]{diagrama-de-fases-lorenz.pdf}
+     \begin{subfigure}[t]{0.35\textwidth}
+         \includegraphics[scale=0.35]{diagrama-de-fases-lorenz.pdf}
      \end{subfigure}
      \caption{À esquerda, a série temporal em $x$ do sistema de Lorenz simulado e, à direita, o diagrama de fases correspondente à simulação}
      \label{fig:lorenz}
@@ -138,9 +138,90 @@ A figura \ref{fig:lorenz} indica a série temporal em $x$, que foi utilizada em 
 
 \subsection{Mapa de Hénon}
 
+O mapa de Hénon foi um dos sistemas a tempo discreto escolhidos para esta pesquisa. Esse sistema foi proposto por Michel Hénon em 1976 como um modelo simplificado de uma seção de Poincaré do atrator de Lorenz, sendo descrito pelas equações abaixo \cite{henon1976two}:
+\begin{subequations}
+\begin{equation}
+x[n+1] = y[n] + 1 - a\cdot (x[n])^2
+\end{equation}
+\begin{equation}
+y[n+1] = b \cdot x[n]
+\end{equation}
+\end{subequations}
+
+A presença de dinâmica caótica neste sistema discreto irá depender dos valores dos parâmetros $a$ e $b$. Hénon mostrou, em sua pesquisa, que, para $a = 1.4$ e $b = 0.3$, há a presença de um atrator estranho do diagrama de fases desse sistema dinâmico discreto. 
+
+O mapa de Hénon realiza um mapeamento de dois pontos, chamados de pontos fixos. Para os valores dos parâmetros $a$ e $b$ mencionados anteriormente, tais pontos são dados por:
+$$x = \frac{\sqrt{609}-7}{28} \approx 0.631354477$$
+$$y = \frac{3(\sqrt{609}-7)}{280} \approx 0.189406343$$
+
+Um desses pontos está sobre o atrator e é instável. Tal instabilidade é confirmada quando é realizada uma análise da trajetória com outros pontos próximos a este, onde percebe-se que, dependendo da região do atrator pela qual o ponto em análise se aproxima ao ponto fixo, a trajetória irá divergir ou convergir para o ponto no atrator. 
+
+A figura \ref{fig:henon} mostra a série temporal referente à variável $x$ e o atrator obtido com a simulação para $[x[0]\; y[0]]^T = [1\; 0]^T$.
+\begin{figure}[H]
+     \begin{subfigure}[t]{0.35\textwidth}
+         \includegraphics[scale=0.35]{serie-henon-x.pdf}
+         %\caption{$y=5/x$}
+     \end{subfigure}
+     \centering
+     \begin{subfigure}[t]{0.35\textwidth}
+         \includegraphics[scale=0.35]{mapa-de-henon.png}
+         %\caption{$y=x$}
+     \end{subfigure}
+     \caption{À esquerda, as cem primeiras iterações da série temporal em $x$ do mapa de Hénon e, à direita, o atrator correspondente à simulação}
+     \label{fig:henon}
+\end{figure}
+
 \subsection{Mapa logístico}
 
+Descrito em 1976 por Robert May, o mapa logístico representa uma das formas de modelar a população de uma determinada espécie em certos instantes de tempo \cite{may1976simple}. A equação a diferenças que descreve esse sistema pode ser vista abaixo:
+\begin{equation}\label{eq:logistic}
+x[n+1] = r\cdot x[n] \cdot (1 - x[n])
+\end{equation}
+sendo $x_n$ um número real entre $0$ e $1$ que representa a razão entre o tamanho atual da população e o tamanho máximo desta.
+
+Nesse caso, o sistema não chega a operar em caos para qualquer valor de $r$. Assim, como o estudo visa analisar o desempenho para sistemas caóticos, foi utilizado $r=3.86$, que, conforme será visto no diagrama de bifurcação abaixo, faz com que a série temporal dada pela equação (\ref{eq:logistic}) opere em caos. 
+
+A figura \ref{fig:logistic} indica a série temporal obtida partindo de $x[0] = 0.5$ e o diagrama de bifurcação para este sistema de equações.
+\begin{figure}[H]
+     \begin{subfigure}[t]{0.35\textwidth} 
+         \includegraphics[scale=0.35]{serie-logistico.pdf}
+         %\caption{$y=5/x$}
+     \end{subfigure}
+     \centering
+     \begin{subfigure}[t]{0.35\textwidth} 
+         \includegraphics[scale=0.35]{mapa-logistico.png}
+         %\caption{$y=x$}
+     \end{subfigure}
+     \caption{À esquerda, as cem primeiras iterações da série temporal do mapa logístico e, à direita, o diagrama de bifurcação deste sistema}
+     \label{fig:logistic}
+\end{figure}
+
 \subsection{Equações de Mackey-Glass}
+
+Por fim, o último sistema caótico simulado, também contínuo, está associado às equações de Mackey-Glass, as quais modelam o controle hormonal da produção de células brancas do sangue e podem ser vistas abaixo \cite{mackey1977oscillation}:
+\begin{subequations}
+\begin{equation}
+\frac{dP(t)}{dt} = \frac{\beta_0\cdot \theta^n}{\theta^n + P(t - \tau)^n} - \gamma\cdot P(t)
+\end{equation}
+\begin{equation}\label{eq:mackey-glass-chaos}
+\frac{dP(t)}{dt} = \frac{\beta_0\cdot \theta^n \cdot P(t - \tau)}{\theta^n + P(t - \tau)^n} - \gamma\cdot P(t)
+\end{equation}
+\end{subequations}
+
+Neste caso, a equação (\ref{eq:mackey-glass-chaos}) exibe comportamento caótico para valores mais altos de $\tau$. Para a simulação numérica, foi utilizado $n = 10$, $\gamma = 0.1$, $\beta = 0.2$, $\theta = 1$, $\tau = 22$, $dt = 1.0$ e $P(0^-)=0.1$, gerando novamente $5000$ amostras. A série e o atrator obtidos podem ser vistos na figura \ref{fig:mackey-glass}.
+\begin{figure}[H]
+     \begin{subfigure}[t]{0.35\textwidth}
+         \includegraphics[scale=0.35]{serie-mackeyglass.pdf}
+         %\caption{$y=5/x$}
+     \end{subfigure}
+     \centering
+     \begin{subfigure}[t]{0.35\textwidth}
+         \includegraphics[scale=0.35]{atrator-mackeyglass.pdf}
+         %\caption{$y=x$}
+     \end{subfigure}
+     \caption{À esquerda, a série temporal da equação (\ref{eq:mackey-glass-chaos}) exibida de $t = 0 $ a $t = 800$ e, à direita, o atrator correspondente à simulação}
+     \label{fig:mackey-glass}
+\end{figure}
 
 \section{Modelos avaliados}
 
