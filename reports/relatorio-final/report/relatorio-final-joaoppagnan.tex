@@ -370,6 +370,12 @@ $$\mathbf{y}(t) = \mathbf{h}(t) = \mathbf{z}(t) \otimes \mathbf{h}(t-1) + (1 - \
 
 Primeiramente, por ser uma rede recorrente, há uma realimentação nestas estruturas. Ou seja, a saída atual é determinada levando em conta estados passados da rede.
 
+Mas, diferentemente das redes LSTM, há agora somente um vetor de estados passados $\mathbf{h}(t)$ ,e o vetor $\mathbf{z}(t)$ determinará se a memória $\mathbf{h}(t-1)$ será mantida ou apagada. Além disso, agora há a presença do vetor $\mathbf{r}(t)$, que controla qual parte de $\mathbf{h}(t-1)$ irá compor $\mathbf{g}(t)$. 
+
+Intuitivamente, pelo fato das GRU serem, basicamente, uma versão mais simples das redes LSTM, espera-se que a última seja melhor que ela. Porém, conforme mostrado em \cite{cho2014learning}, para determinadas tarefas, a GRU é superior à LSTM. Além disso, a implementação de um modelo preditor com a rede GRU é bem similar a implementação da LSTM. Por causa disso, incluímos a \textit{Gated Recurrent Unit} na análise comparativa. 
+
+O outro modelo recorrente estudado nesta segunda metade da pesquisa foi as redes com estado de eco. Estas sim são bem distintas das outras redes neurais estudadas. Veremos então o que diferencia esse modelo dos outros na próxima subseção.
+
 \subsection{\textit{Echo State Network} (ESN)}
 
 \section{Metodologia}
