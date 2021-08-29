@@ -177,7 +177,7 @@ Descrito em 1976 por Robert May, o mapa logístico representa uma das formas de 
 \begin{equation}\label{eq:logistic}
 x[n+1] = r\cdot x[n] \cdot (1 - x[n])
 \end{equation}
-sendo $x_n$ um número real entre $0$ e $1$ que representa a razão entre o tamanho atual da população e o tamanho máximo desta.
+sendo $x_n$ um número real entre $0$ e $1$ que representa a razão entre o tamanho atual da população e o tamanho máximo desta, e tendo $r$ um valor real entre $0$ e $4$, representando a taxa de crescimento desta população.
 
 Nesse caso, o sistema não chega a operar em caos para qualquer valor de $r$. Assim, como o estudo visa analisar o desempenho para sistemas caóticos, foi utilizado $r=3.86$, que, conforme será visto no diagrama de bifurcação abaixo, faz com que a série temporal dada pela equação (\ref{eq:logistic}) opere em caos. 
 
@@ -207,8 +207,9 @@ Por fim, o último sistema caótico simulado, também contínuo, está associado
 \frac{dP(t)}{dt} = \frac{\beta_0\cdot \theta^n \cdot P(t - \tau)}{\theta^n + P(t - \tau)^n} - \gamma\cdot P(t)
 \end{equation}
 \end{subequations}
+sendo $P(t)$ a densidade de tais células em um instante de tempo e $\beta_0$, $\theta$, $n$, $\tau$ e $\gamma$ valores reais relacionados a certos parâmetros hormonais de um organismo, geralmente sendo determinados experimentalmente.
 
-Neste caso, a equação (\ref{eq:mackey-glass-chaos}) exibe comportamento caótico para valores mais altos de $\tau$. Para a simulação numérica, foi utilizado $n = 10$, $\gamma = 0.1$, $\beta = 0.2$, $\theta = 1$, $\tau = 22$, $dt = 1.0$ e $P(0^-)=0.1$, gerando novamente $5000$ amostras. A série e o atrator obtidos podem ser vistos na figura \ref{fig:mackey-glass}.
+Neste caso, conforme demonstrado em \cite{mackey1977oscillation}, a equação (\ref{eq:mackey-glass-chaos}) exibe comportamento caótico para valores mais altos de $\tau$. Para a simulação numérica, foi utilizado $n = 10$, $\gamma = 0.1$, $\beta = 0.2$, $\theta = 1$, $\tau = 22$, $dt = 1.0$ e $P(0^-)=0.1$, gerando novamente $5000$ amostras. A série e o atrator obtidos podem ser vistos na figura \ref{fig:mackey-glass}.
 \begin{figure}[H]
      \begin{subfigure}[t]{0.35\textwidth}
          \includegraphics[scale=0.35]{serie-mackeyglass.pdf}
@@ -223,9 +224,151 @@ Neste caso, a equação (\ref{eq:mackey-glass-chaos}) exibe comportamento caóti
      \label{fig:mackey-glass}
 \end{figure}
 
+Com isso, finalizamos a exposição sobre os cenários de sistemas com dinâmica caótica escolhidos para a análise comparativa. Na próxima seção, falaremos a respeito dos dois modelos estudados e implementados nesta segunda parte da pesquisa. Em seguida, apresentaremos a metodologia aplicada nesses e nos outros modelos mostrados no relatório parcial, assim como as particularidades para cada caso.
+
 \section{Modelos avaliados}
 
+Como o estudo de redes neurais artificiais foi iniciado na primeira metade da pesquisa, uma exposição mais detalhada dos fundamentos destes modelos (no caso, as redes MLP e as rede recorrentes LSTM) pode ser vista no relatório parcial.
+
+Assim, as próximas duas subseções abordarão especificamente as redes recorrentes GRU e ESN.
+
 \subsection{\textit{Gated Recurrent Unit} (GRU)}
+
+Como já mencionamos anteriormente, as redes recorrentes \textit{Gated Recurrent Unit} possuem células computacionais semelhantes às células das redes LSTM, apresentadas no relatório parcial. Sua estrutura interna pode ser vista na figura \ref{fig:gru-cell}.
+\begin{figure}[H]
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\scalebox{1}{
+\begin{tikzpicture}[
+    % GLOBAL CFG
+    font=\sf \scriptsize,
+    >=LaTeX,
+    % Styles
+    cell/.style={% For the main box
+        rectangle, 
+        rounded corners=5mm, 
+        draw,
+        very thick,
+        },
+    operator/.style={%For operators like +  and  x
+        circle,
+        draw,
+        inner sep=-0.5pt,
+        minimum height =.2cm,
+        },
+    function/.style={%For functions
+        ellipse,
+        draw,
+        inner sep=1pt
+        },
+    ct/.style={% For external inputs and outputs
+        circle,
+        draw,
+        line width = .75pt,
+        minimum width=1cm,
+        inner sep=1pt,
+        },
+    gt/.style={% For internal inputs
+        rectangle,
+        draw,
+        minimum width=4mm,
+        minimum height=3mm,
+        inner sep=1pt
+        },
+    mylabel/.style={% something new that I have learned
+        font=\tiny\sffamily
+        },
+    ArrowC1/.style={% Arrows with rounded corners
+        rounded corners=.25cm,
+        thick,
+        },
+    ArrowC2/.style={% Arrows with big rounded corners
+        rounded corners=.5cm,
+        thick,
+        }
+    ]
+
+%Start drawing the thing...    
+    % Draw the cell: 
+    \node [cell, minimum height =4cm, minimum width=6cm] at (0,0){} ;
+
+    % Draw inputs named ibox#
+    \node [gt] (ibox1) at (-1.5,-0.75) {$\sigma$};
+    \node [gt] (ibox2) at (0,-1.2) {$\sigma$};
+
+   % Draw opérators   named mux# , add# and func#
+    \node [operator] (mux1) at (-1.5,0) {$\times$};
+    \node [operator] (mux2) at (0,1.5) {$\times$};
+    \node [operator] (mux4) at (2.5,0.75) {$\times$};
+    \node [operator] (add1) at (2.5,1.5) {+};    
+    \node [function] (func1) at (2.5,0) {$\tanh$};
+    \node [operator] (min1) at (1.25,0.75) {{$-1$}};
+
+    % Draw External inputs? named as basis c,h,x
+    \node[] (h) at (-4,1.5) {$\mathbf{h}(t-1)$};
+    \node[] (x) at (0,-3) {$\mathbf{x}(t)$};
+
+    % Draw External outputs? named as basis c2,h2,x2
+    \node[] (h2) at (4,1.5) {$\mathbf{h}(t)$};
+    \node[] (x2) at (2.5,3) {$\mathbf{y}(t)$};
+    
+    % Draw internals functions, named as basis fi,ii,ci,oi
+    \node[] (ri) at (-1.85,-0.35) {$\mathbf{r}(t)$};
+    \node[] (zi) at (0.4,-0.85) {$\mathbf{z}(t)$};  
+    \node[] (gi) at (2.1,0.4) {$\mathbf{g}(t)$}; 
+    
+% Start connecting all.
+    %Intersections and displacements are used. 
+    % Drawing arrows    
+    \draw [ArrowC1] (h) -- (mux2);
+    \draw [->, ArrowC1] (h -| ibox1)++(-1,0) |- (ibox1);
+
+    % Inputs
+
+    % Internal
+    \draw [->, ArrowC2] (ibox1) -- (mux1);
+    
+    \draw [->, ArrowC2] (ibox2) -- (mux2);
+    \draw [->, ArrowC2] (mux4) -- (add1);
+    \draw [->, ArrowC2] (func1) -- (mux4);
+   % \draw [->, ArrowC1] (add1 -| func1)++(-0.5,0) -| (func1);
+
+    %Outputs
+    \draw [ArrowC1] (mux2) -- (add1);
+    \draw [ArrowC1, ->] (add1) -- (h2);
+    \draw (h2 -| x2) ++(0,-0.1) coordinate (i1);
+    \draw [->, ArrowC1] (h -| mux1)++(-0.5,0) |- (mux1);
+    %\draw (h -- mux1) ++(-2,2) coordinate (mux1);
+    \draw [->, ArrowC2] (i1)++(0,0.2) -- (x2);
+    \draw [->, ArrowC1] (x -| ibox1) ++ (+1.5,+1.25) -| (ibox1);
+    \draw [->, ArrowC1] (x -| func1) ++ (-2.5,+1.25) -| (func1);
+    \draw [->, ArrowC1] (x) -- (ibox2);
+   % \draw [->, ArrowC1] (mux1) -- (func1);
+    \draw [->, ArrowC2] (mux1 -| func1)++(-2.4,0) -- (func1) coordinate (i1);
+    \draw [ArrowC1] (mux1) -- ++(+1.4,0);
+    \draw [->, ArrowC1] (min1) -- (mux4);
+    \draw [->, ArrowC1] (ibox2) |- (min1);
+
+\end{tikzpicture}}
+\end{center}
+\end{minipage}
+\; \; \; \; \; \; \; \; \; \; \; \;
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+{
+$$\mathbf{f}(t) = \sigma(\mathbf{W}_f [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_f)$$
+$$\mathbf{i}(t) = \sigma(\mathbf{W}_i [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_i)$$
+$$\mathbf{\tilde{c}}(t) = \tanh(\mathbf{W}_c [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_c)$$
+$$\mathbf{c}(t) = \mathbf{f}(t) \otimes \mathbf{c}(t-1) + \mathbf{i}(t) \otimes \mathbf{\tilde{c}}(t)$$
+$$\mathbf{o}(t) = \sigma(\mathbf{W}_o [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_o)$$
+$$\mathbf{y}(t) = \mathbf{h}(t) = \mathbf{o}(t) \otimes \tanh (\mathbf{c}(t))$$}
+\end{center}
+\end{minipage}
+\caption{Estrutura e equações de uma célula GRU}
+\label{fig:gru-cell}
+\end{figure}
+
+Primeiramente, por ser uma rede recorrente, há uma realimentação nestas estruturas. Ou seja, a saída atual é determinada levando em conta estados passados da rede.
 
 \subsection{\textit{Echo State Network} (ESN)}
 
