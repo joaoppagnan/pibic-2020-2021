@@ -320,7 +320,7 @@ Como já mencionamos anteriormente, as redes recorrentes \textit{Gated Recurrent
 % Start connecting all.
     %Intersections and displacements are used. 
     % Drawing arrows    
-    \draw [ArrowC1] (h) -- (mux2);
+    \draw [->, ArrowC1] (h) -- (mux2);
     \draw [->, ArrowC1] (h -| ibox1)++(-1,0) |- (ibox1);
 
     % Inputs
@@ -334,7 +334,7 @@ Como já mencionamos anteriormente, as redes recorrentes \textit{Gated Recurrent
    % \draw [->, ArrowC1] (add1 -| func1)++(-0.5,0) -| (func1);
 
     %Outputs
-    \draw [ArrowC1] (mux2) -- (add1);
+    \draw [ArrowC1, ->] (mux2) -- (add1);
     \draw [ArrowC1, ->] (add1) -- (h2);
     \draw (h2 -| x2) ++(0,-0.1) coordinate (i1);
     \draw [->, ArrowC1] (h -| mux1)++(-0.5,0) |- (mux1);
