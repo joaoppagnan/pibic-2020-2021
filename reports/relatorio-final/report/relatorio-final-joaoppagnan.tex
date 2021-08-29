@@ -305,17 +305,17 @@ Como já mencionamos anteriormente, as redes recorrentes \textit{Gated Recurrent
     \node [operator] (min1) at (1.25,0.75) {{$-1$}};
 
     % Draw External inputs? named as basis c,h,x
-    \node[] (h) at (-4,1.5) {$\mathbf{h}(t-1)$};
-    \node[] (x) at (0,-3) {$\mathbf{x}(t)$};
+    \node[] (h) at (-4,1.5) {$\mathbf{h}(n-1)$};
+    \node[] (x) at (0,-3) {$\mathbf{x}(n)$};
 
     % Draw External outputs? named as basis c2,h2,x2
-    \node[] (h2) at (4,1.5) {$\mathbf{h}(t)$};
-    \node[] (x2) at (2.5,3) {$\mathbf{y}(t)$};
+    \node[] (h2) at (4,1.5) {$\mathbf{h}(n)$};
+    \node[] (x2) at (2.5,3) {$\mathbf{y}(n)$};
     
     % Draw internals functions, named as basis fi,ii,ci,oi
-    \node[] (ri) at (-1.85,-0.35) {$\mathbf{r}(t)$};
-    \node[] (zi) at (0.4,-0.85) {$\mathbf{z}(t)$};  
-    \node[] (gi) at (2.1,0.4) {$\mathbf{g}(t)$}; 
+    \node[] (ri) at (-1.85,-0.35) {$\mathbf{r}(n)$};
+    \node[] (zi) at (0.4,-0.85) {$\mathbf{z}(n)$};  
+    \node[] (gi) at (2.1,0.4) {$\mathbf{g}(n)$}; 
     
 % Start connecting all.
     %Intersections and displacements are used. 
@@ -357,10 +357,10 @@ Como já mencionamos anteriormente, as redes recorrentes \textit{Gated Recurrent
 \begin{center}
 {
 $$$$
-$$\mathbf{z}(t) = \sigma \left(\mathbf{W}_z [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_z \right)$$
-$$\mathbf{r}(t) = \sigma \left(\mathbf{W}_r [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_r \right)$$
-$$\mathbf{g}(t) = \tanh \left(\mathbf{W}_g [\mathbf{r}(t) \otimes \mathbf{h}(t-1), \mathbf{x}(t)]  + \mathbf{b}_g \right)$$
-$$\mathbf{y}(t) = \mathbf{h}(t) = \mathbf{z}(t) \otimes \mathbf{h}(t-1) + (1 - \mathbf{z}(t)) \otimes \mathbf{g}(t)$$
+$$\mathbf{z}(n) = \sigma \left(\mathbf{W}_z [\mathbf{h}(n-1), \mathbf{x}(n)] + \mathbf{b}_z \right)$$
+$$\mathbf{r}(n) = \sigma \left(\mathbf{W}_r [\mathbf{h}(n-1), \mathbf{x}(n)] + \mathbf{b}_r \right)$$
+$$\mathbf{g}(n) = \tanh \left(\mathbf{W}_g [\mathbf{r}(n) \otimes \mathbf{h}(n-1), \mathbf{x}(n)]  + \mathbf{b}_g \right)$$
+$$\mathbf{y}(n) = \mathbf{h}(n) = \mathbf{z}(n) \otimes \mathbf{h}(n-1) + (1 - \mathbf{z}(n)) \otimes \mathbf{g}(n)$$
 }
 \end{center}
 \end{minipage}
