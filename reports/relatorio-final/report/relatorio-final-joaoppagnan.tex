@@ -85,7 +85,7 @@ A seção 4 realiza uma exposição da busca em grade \cite{geron2019hands} real
 
 Por fim, as seções 5 e 6 apresentam os resultados e as conclusões obtidas, respectivamente, encerrando, assim, esta pesquisa de iniciação científica.
  
-\section{Cenários utilizados}
+\section{Cenários escolhidos}
 
 Antes de falarmos sobre os cenários utilizados na análise, vale a pena reforçarmos as características principais de sistemas com dinâmica caótica. 
 
@@ -226,7 +226,7 @@ Neste caso, conforme demonstrado em \cite{mackey1977oscillation}, a equação (\
 
 Com isso, finalizamos a exposição sobre os cenários de sistemas com dinâmica caótica escolhidos para a análise comparativa. Na próxima seção, falaremos a respeito dos dois modelos estudados e implementados nesta segunda parte da pesquisa. Em seguida, apresentaremos a metodologia aplicada nesses e nos outros modelos mostrados no relatório parcial, assim como as particularidades para cada caso.
 
-\section{Modelos avaliados}
+\section{Modelos estudados}
 
 Como o estudo de redes neurais artificiais foi iniciado na primeira metade da pesquisa, uma exposição mais detalhada dos fundamentos destes modelos (no caso, as redes MLP e as rede recorrentes LSTM) pode ser vista no relatório parcial.
 
@@ -370,11 +370,11 @@ $$\mathbf{y}(n) = \mathbf{h}(n) = \mathbf{z}(n) \otimes \mathbf{h}(n-1) + (1 - \
 
 Primeiramente, por ser uma rede recorrente, há uma realimentação nestas estruturas. Ou seja, a saída atual é determinada levando em conta estados passados da rede.
 
-Mas, diferentemente das redes LSTM, há agora somente um vetor de estados passados $\mathbf{h}(n)$ ,e o vetor $\mathbf{z}(n)$ determinará se a memória $\mathbf{h}(n-1)$ será mantida ou apagada. Além disso, agora há a presença do vetor $\mathbf{r}(n)$, que controla qual parte de $\mathbf{h}(n-1)$ irá compor $\mathbf{g}(n)$. 
+Mas, diferentemente da LSTM, na célula GRU há somente um vetor de estados passados $\mathbf{h}(n)$, e o vetor $\mathbf{z}(n)$ determinará se a memória $\mathbf{h}(n-1)$ será mantida ou apagada. Além disso, também é utilizado o vetor $\mathbf{r}(n)$, que controla qual parte de $\mathbf{h}(n-1)$ irá compor $\mathbf{g}(n)$. 
 
-Intuitivamente, pelo fato das GRU serem, basicamente, uma versão mais simples das redes LSTM, espera-se que a última seja melhor que ela. Porém, conforme mostrado em \cite{cho2014learning}, para determinadas tarefas, a GRU é superior à LSTM. Além disso, a implementação de um modelo preditor com a rede GRU é bem similar a implementação da LSTM. Por causa disso, incluímos a \textit{Gated Recurrent Unit} na análise comparativa. 
+Intuitivamente, pelo fato das GRU serem, basicamente, uma versão mais simples das redes LSTM, espera-se que a última seja melhor que a primeira. Porém, conforme mostrado em \cite{cho2014learning}, em determinadas aplicações a GRU é superior à LSTM. Além disso, a implementação de um modelo preditor com a rede GRU é bem similar a implementação de um preditor baseado na LSTM. Por causa disso, incluímos a \textit{Gated Recurrent Unit} na análise comparativa. 
 
-O outro modelo recorrente estudado nesta segunda metade da pesquisa foi as redes com estados de eco. Estas sim são bem distintas das outras redes neurais estudadas. Veremos então o que diferencia esse modelo dos outros na próxima subseção.
+O outro modelo recorrente estudado nesta segunda metade da pesquisa foi as redes com estados de eco. Essas arquiteturas são relativamente distintas das outras redes neurais estudadas. Veremos então o que diferencia esse modelo dos outros na próxima subseção.
 
 \subsection{\textit{Echo State Network} (ESN)}
 
@@ -404,9 +404,33 @@ Devido a isso, o ajuste dos neurônios na camada de saída pode ser realizado co
 
 \section{Metodologia}
 
+\subsection{Configurações utilizadas}
+
+\subsubsection{MLP}
+
+\subsubsection{LSTM e GRU}
+
+\subsubsection{ESN}
+
+\subsection{Estudo da autocorrelação parcial das séries temporais}
+
+\subsection{Análise do melhor valor para $K$}
+
 \section{Resultados}
 
 \section{Conclusão}
+
+Analisando os resultados obtidos, percebe-se que, com exceção do cenário do sistema de Lorenz, a rede MLP foi consideravelmente pior do que as redes recorrentes. Também percebe-se que, dentre as redes recorrentes, a ESN obteve um EQM bem inferior ao obtido pela LSTM e pela GRU.
+
+O desempenho inferior da rede MLP com relação às redes recorrentes provavelmente decorre do fato de que a relação temporal presente na LSTM, GRU e ESN auxilia na modelagem da dinâmica da série temporal. Já o pior desempenho da LSTM na série temporal do sistema de Lorenz provavelmente está relacionado aos efeitos estocásticos presentes no ajuste dos pesos sinápticos dessa rede neural que, conforme indicado em \cite{doya1992bifurcations}, é uma dificuldade em seu treinamento.
+
+Algo interessante de mencionar é que, no geral, os desempenhos de todos os modelos estudados foram consideravelmente bons nas séries temporais dos sistemas a tempo contínuo (sistema de Lorenz e equações de Mackey-Glass), sendo que as diferenças foram mais pronunciadas na série temporal do mapa de Hénon e do mapa logístico. Provavelmente, a suavidade presente nas séries de Lorenz e de Mackey-Glass facilita a modelagem do preditor, além do fato de que as séries temporais mencionadas são bem menos erráticas se comparadas às séries de Hénon e do mapa logístico.
+
+O principal resultado observado foi que o modelo preditor utilizando a rede com estados de eco obteve um desempenho bem superior aos outros modelos, em todos os cenários. O erro quadrático médio foi tão baixo que, observando a predição nos dados de teste, praticamente não há diferença entre os valores reais e os valores previstos. Essa superioridade da ESN também é realçada na imagem  comparativa do EQM, que indica que a ESN  atingiu patamares de erro cerca de $100$ ou até $10000$ vezes menores que os outros modelos. 
+
+Esse resultado, aliado ao fato de que o treinamento da ESN é bem menos custoso computacionalmente se comparado ao das outras redes, mostra que esta rede é uma boa alternativa para futuros estudos de modelos preditores de séries temporais. Além disso, conforme mostrado em outros trabalhos como \cite{jaeger2004harnessing, jaeger2007echo, boccato2013novas}, a ESN também é uma boa ferramenta para outras tarefas de extração de informação, como em equalização de canais e separação de fontes. 
+
+Como sugestão de trabalhos futuros, pode ser avaliada a eficácia da ESN em reconstruir atratores através de séries temporais experimentais de sistemas caóticos. Se o desempenho para essa tarefa for tão bom quanto o obtido na predição das séries estudadas, a ESN pode tornar-se uma ferramenta ainda mais poderosa para a modelagem de sistemas com dinâmica caótica.
 
 \bibliographystyle{ieeetr}
 
