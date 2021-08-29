@@ -234,11 +234,11 @@ Assim, as próximas duas subseções abordarão especificamente as redes recorre
 
 \subsection{\textit{Gated Recurrent Unit} (GRU)}
 
-Como já mencionamos anteriormente, as redes recorrentes \textit{Gated Recurrent Unit} possuem células computacionais semelhantes às células das redes LSTM, apresentadas no relatório parcial. Sua estrutura interna pode ser vista na figura \ref{fig:gru-cell}.
+Como já mencionamos anteriormente, as redes recorrentes \textit{Gated Recurrent Unit} possuem células computacionais semelhantes às células das redes LSTM, apresentadas no relatório parcial. Sua estrutura interna pode ser vista na figura \ref{fig:gru-cell}, juntamente com as equações que a descrevem.
 \begin{figure}[H]
 \begin{minipage}{0.4\textwidth}
 \begin{center}
-\scalebox{1}{
+\scalebox{0.9}{
 \begin{tikzpicture}[
     % GLOBAL CFG
     font=\sf \scriptsize,
@@ -352,16 +352,16 @@ Como já mencionamos anteriormente, as redes recorrentes \textit{Gated Recurrent
 \end{tikzpicture}}
 \end{center}
 \end{minipage}
-\; \; \; \; \; \; \; \; \; \; \; \;
+\; \; \; \; \; \; \;
 \begin{minipage}{0.4\textwidth}
 \begin{center}
 {
-$$\mathbf{f}(t) = \sigma(\mathbf{W}_f [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_f)$$
-$$\mathbf{i}(t) = \sigma(\mathbf{W}_i [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_i)$$
-$$\mathbf{\tilde{c}}(t) = \tanh(\mathbf{W}_c [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_c)$$
-$$\mathbf{c}(t) = \mathbf{f}(t) \otimes \mathbf{c}(t-1) + \mathbf{i}(t) \otimes \mathbf{\tilde{c}}(t)$$
-$$\mathbf{o}(t) = \sigma(\mathbf{W}_o [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_o)$$
-$$\mathbf{y}(t) = \mathbf{h}(t) = \mathbf{o}(t) \otimes \tanh (\mathbf{c}(t))$$}
+$$$$
+$$\mathbf{z}(t) = \sigma \left(\mathbf{W}_z [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_z \right)$$
+$$\mathbf{r}(t) = \sigma \left(\mathbf{W}_r [\mathbf{h}(t-1), \mathbf{x}(t)] + \mathbf{b}_r \right)$$
+$$\mathbf{g}(t) = \tanh \left(\mathbf{W}_g [\mathbf{r}(t) \otimes \mathbf{h}(t-1), \mathbf{x}(t)]  + \mathbf{b}_g \right)$$
+$$\mathbf{y}(t) = \mathbf{h}(t) = \mathbf{z}(t) \otimes \mathbf{h}(t-1) + (1 - \mathbf{z}(t)) \otimes \mathbf{g}(t)$$
+}
 \end{center}
 \end{minipage}
 \caption{Estrutura e equações de uma célula GRU}
