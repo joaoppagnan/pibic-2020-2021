@@ -316,7 +316,7 @@ Como já mencionamos anteriormente, as redes recorrentes \textit{Gated Recurrent
     \node [operator] (mux4) at (2.5,0.75) {$\times$};
     \node [operator] (add1) at (2.5,1.5) {+};    
     \node [function] (func1) at (2.5,0) {$\tanh$};
-    \node [operator] (min1) at (1.25,0.75) {{$-1$}};
+    \node [operator] (min1) at (1.25,0.75) {{\scalebox{0.5}{$-1$}}};
 
     % Draw External inputs? named as basis c,h,x
     \node[] (h) at (-4,1.5) {$\mathbf{h}(n-1)$};
@@ -426,6 +426,8 @@ Iniciaremos a discussão com a apresentação da busca em grade realizada em tod
 
 Vale reforçar que, para todos os modelos e cenários, os dados de treinamento correspondiam a cerca de $85\%$ das amostras das séries temporais geradas, que correspondiam aos primeiros $4250$ valores. Além disso, o conjunto de validação, utilizado na busca em grade para avaliar a predição de uma configuração testada, corresponde a $10\%$ dos dados de treinamento (as últimas $425$ amostras). Assim, os dados de treinamento efetivamente correspondem às primeiras $3825$ amostras, os dados de validação correspondem às $425$ amostras depois destas e, por fim, o conjunto de teste corresponde aos últimos $750$ dados. Essa proporção entre os dados de treinamento, de teste e de validação foi utilizada para todas as redes analisadas.
 
+Em seguida, na seção 4.2, será apresentado a análise feita 
+
 \subsection{Configurações utilizadas}
 
 Conforme dito anteriormente, foi realizado uma busca em grade com validação cruzada para determinar as melhores configurações de cada rede neural para a predição das séries temporais em cada cenário. Para cada arquitetura, um conjunto de valores candidatos foi gerado para cada hiperparâmetro e todas as combinações possíveis foram avaliadas tendo em vista o desempenho do modelo em dados de validação.
@@ -436,7 +438,7 @@ Já nas redes recorrentes, foi considerado um esquema de validação do tipo \te
 
 Por fim, para a obtenção dos melhores hiperparâmetros, foi considerado que $K = 4$. 
 
-Com esses detalhes expostos, iniciaremos a exposição com a busca em grade realizada na rede MLP.
+Com esses detalhes expostos, iniciaremos a exposição com a busca em grade realizada na rede MLP para, em seguida, falarmos sobre as configurações obtidas para as redes recorrentes.
 
 \subsubsection{MLP}
 
@@ -531,7 +533,78 @@ As tabelas \ref{tab:lstm} e \ref{tab:gru} exibem as melhores configurações obt
 
 \subsubsection{ESN}
 
+Para esta rede foi realizada uma busca em grade para determinar o número de neurônios no reservatório ($30$, $50$, $70$, $90$, $100$, $120$, $140$, $160$, $180$, $200$, $240$, $280$, $320$, $360$, $400$, $440$, $480$, $500$) e o valor para o raio espectral ($0.1$, $0.2$, $0.3$, $0.4$, $0.5$, $0.6$, $0.7$, $0.8$, $0.9$, $0.95$, $0.96$, $0.97$, $0.98$, $0.99$), que determina o maior valor singular da matriz de pesos do reservatório. Por tratar-se de uma rede recorrente, também foi utilizado o processo de \textit{holdout} descrito na seção 4.1. Vale também mencionar que a taxa de vazamento, que representa a velocidade com a qual o reservatório atualiza suas dinâmicas, foi fixada em $0.9$ para todos os cenários.
+
+A tabela \ref{tab:esn} exibe as melhores configurações para a ESN em cada um dos cenários.
+\begin{table}[H]
+\begin{center}
+\scalebox{0.75}{
+\begin{tabular}{c c c c c}
+  \textbf{Parâmetro} & \pbox{2cm}{\centering \textbf{Mapa de Hénon}} & \pbox{2cm}{\centering \textbf{Mapa logístico}} & \pbox{2cm}{\centering \textbf{Sistema de Lorenz}} & \pbox{3.5cm}{\centering \textbf{Equações de Mackey-Glass}}\\
+   \addlinespace
+ \hline
+ \addlinespace
+ {\centering \textbf{Nº de neurônios}} & $500$ & $500$ & $120$ & $500$\\
+  \addlinespace
+  \hline
+  \addlinespace
+ {\centering \textbf{Raio espectral}} & $0.1$ & $0.1$ & $0.2$ & $0.4$\\  
+\end{tabular}}
+\caption{Melhores parâmetros para a rede ESN nos cenários em análise}
+\label{tab:esn}
+\end{center}
+\end{table}
+
+Com isso, concluímos a apresentação das melhores configurações para as redes neurais avaliadas em todos os cenários escolhidos. Na próxima seção, falaremos sobre outra análise realizada, dessa vez não sobre os modelos em teste, mas sim sobre certas características das séries temporais utilizadas. 
+
 \subsection{Estudo da autocorrelação parcial das séries temporais}
+
+Com as melhores configurações para cada rede e cenário obtidas, foi analisada a progressão do erro quadrático médio para cada valor de $K$. A faixa de valores para $K$ a ser testada foi determinada utilizando a autocorrelação parcial das séries temporais de cada sistema analisado, levando em consideração os valores de $K$ que têm as autocorrelações parciais mais relevantes.
+
+A figura \ref{fig:autocorrelation} mostra a autocorrelação parcial para as séries temporais utilizadas.
+\begin{figure}[H]
+     \begin{subfigure}[t]{0.35\textwidth}
+         \includegraphics[scale=0.35]{autocorrelacao-parcial-henon.pdf}
+         \caption{Mapa de Hénon}
+     \end{subfigure}
+     \centering
+     \begin{subfigure}[t]{0.35\textwidth} 
+         \includegraphics[scale=0.35]{autocorrelacao-parcial-logistic.pdf}
+         \caption{Mapa logístico}
+     \end{subfigure}
+     \centering
+     \\
+     \begin{subfigure}[t]{0.35\textwidth}
+         \includegraphics[scale=0.35]{autocorrelacao-parcial-lorenz.pdf}
+         \caption{Sistema de Lorenz}
+     \end{subfigure}
+     \centering
+     \begin{subfigure}[t]{0.35\textwidth} 
+         \includegraphics[scale=0.35]{autocorrelacao-parcial-mackeyglass.pdf}
+         \caption{Equações de Mackey-Glass}
+     \end{subfigure}  
+     \centering   
+     \caption{Autocorrelação parcial para as séries temporais utilizadas}
+     \label{fig:autocorrelation}
+\end{figure}
+
+Vale mencionar que, a autocorrelação parcial encontra a correlação dos resíduos (chamados assim pois são mantidos após a remoção dos efeitos já explicados pelos primeiros atrasos) com o próximo valor de atraso, removendo correlações entre este e atrasos passados. Logo, essa medida descreve somente a relação direta entre duas observações da série afastadas por $K$ instantes de tempo.
+
+A tabela \ref{tab:autocorrelation} mostra a faixa de valores para $K$ a ser testada obtida com a análise descrita nos parágrafos anteriores.
+  \begin{table}[H]
+\begin{center}
+\scalebox{0.75}{
+\begin{tabular}{c c c c c}
+   & \pbox{2cm}{\centering \textbf{Mapa de Hénon}} & \pbox{2cm}{\centering \textbf{Mapa logístico}} & \pbox{2cm}{\centering \textbf{Sistema de Lorenz}} & \pbox{3.5cm}{\centering \textbf{Equações de Mackey-Glass}}\\
+   \addlinespace
+ \hline
+ \addlinespace
+ {\centering \textbf{Faixa de valores}} & $1 \thicksim 9$ & $1 \thicksim 8$ & $1 \thicksim 10$ & $1 \thicksim 7$\\
+\end{tabular}}
+\caption{Faixa de valores inteiros para $K$ a ser testada em cada cenário para todas as redes}
+\label{tab:autocorrelation}
+\end{center}
+\end{table}
 
 \subsection{Análise do melhor valor para $K$}
 
