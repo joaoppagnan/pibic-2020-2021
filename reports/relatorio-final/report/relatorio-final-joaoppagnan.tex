@@ -28,9 +28,12 @@
 \setlength{\parskip}{1em}
 \singlespacing
 
+\usepackage{pbox}
+\usepackage{etoolbox}
+\usepackage{tabularx}
+
 \newcommand{\empt}[2]{$#1^{\langle #2 \rangle}$}
-\newcommand{\sigmoid}{\text{Sigmoid}}
-\newcommand{\sen}{\text{sen}}
+
 
 \usepackage{amsmath}
 \usepackage{enumitem}
@@ -40,6 +43,17 @@
 \usepgflibrary{shapes.multipart}
 \def\layersep{2.5cm}
 \def\layersepp{5cm}	
+
+\newcommand{\sigmoid}{\text{Sigmoid}}
+\newcommand{\sen}{\text{sen}}
+\newcommand{\selu}{\text{SELU}}
+\newcommand{\relu}{\text{ReLU}}
+\newcommand{\elu}{\text{ELU}}
+\newcommand{\lecun}{\text{Lecun}}
+\newcommand{\he}{\text{He}}
+\newcommand{\glorot}{\text{Glorot}}
+\newcommand{\normal}{\text{Normal}}
+\newcommand{\uniform}{\text{Uniforme}}
 
 \begin{document}
 \begin{titlepage}
@@ -378,7 +392,7 @@ O outro modelo recorrente estudado nesta segunda metade da pesquisa foi as redes
 
 \subsection{\textit{Echo State Network} (ESN)}
 
-Diferentemente das redes neurais mostradas até aqui, incluindo as citadas no relatório parcial, as redes com estados de eco baseiam-se na teoria de de computação por reservatório, chamada assim pois é utilizado um reservatório de comportamentos dinâmicos que, ao serem combinados linearmente nos neurônios da camada de saída, produzem as respostas da rede aos estímulos de entrada \cite{boccato2013novas}. 
+Diferentemente das redes neurais mostradas até aqui, incluindo as citadas no relatório parcial, as redes com estados de eco baseiam-se na teoria de computação por reservatório, chamada assim pois é utilizado um reservatório de comportamentos dinâmicos que, ao serem combinados linearmente nos neurônios da camada de saída, produzem as respostas da rede aos estímulos de entrada \cite{boccato2013novas}. 
 
 A figura \ref{fig:esn-model} apresenta a estrutura interna de uma rede ESN.
 \begin{figure}[H]
@@ -402,13 +416,118 @@ O grande diferencial prático desta rede é que os pesos das conexões recorrent
 
 Devido a isso, o ajuste dos neurônios na camada de saída pode ser realizado com um procedimento de regressão linear, sem necessitar de um treinamento iterativo, como nas outras redes recorrentes. Esse fato economiza tempo de processamento e garante que será atingido o mínimo global da função custo utilizada.
 
+Com isso, finalizamos o restante da exposição teórica desta pesquisa. A próxima seção descreverá  a metodologia utilizada nesta análise.
+
 \section{Metodologia}
+
+Nesta segunda parte da pesquisa de iniciação científica foram implementados modelos preditores com as quatro redes neurais artificiais estudadas (MLP, LSTM, GRU e ESN) para os quatro cenários exibidos na seção 2. 
+
+Iniciaremos a discussão com a apresentação da busca em grade realizada em todos os modelos, de forma a determinar os parâmetros ótimos das redes neurais em cada cenário. Em seguida, utilizando os melhores parâmetros, avaliamos a progressão do erro quadrático médio em função do número de amostras de entrada $K$ do modelo preditor. Por fim, comparamos qual foi a média e o desvio padrão do EQM com o melhor valor de $K$ de cada modelo nos quatro cenários. Em todos os experimentos, o horizonte de predição utilizado foi $L=3$. Assim, iremos predizer o valor da terceira iteração à frente do valor atual da série temporal.
+
+Vale reforçar que, para todos os modelos e cenários, os dados de treinamento correspondiam a cerca de $85\%$ das amostras das séries temporais geradas, que correspondiam aos primeiros $4250$ valores. Além disso, o conjunto de validação, utilizado na busca em grade para avaliar a predição de uma configuração testada, corresponde a $10\%$ dos dados de treinamento (as últimas $425$ amostras). Assim, os dados de treinamento efetivamente correspondem às primeiras $3825$ amostras, os dados de validação correspondem às $425$ amostras depois destas e, por fim, o conjunto de teste corresponde aos últimos $750$ dados. Essa proporção entre os dados de treinamento, de teste e de validação foi utilizada para todas as redes analisadas.
 
 \subsection{Configurações utilizadas}
 
+Conforme dito anteriormente, foi realizado uma busca em grade com validação cruzada para determinar as melhores configurações de cada rede neural para a predição das séries temporais em cada cenário. Para cada arquitetura, um conjunto de valores candidatos foi gerado para cada hiperparâmetro e todas as combinações possíveis foram avaliadas tendo em vista o desempenho do modelo em dados de validação.
+
+Além da diferença no que será testado, houveram algumas distinções entre o processo realizado na MLP e nas redes recorrentes. Como a relação temporal entre as amostras não é importante para a MLP, a busca em grade considerou uma validação cruzada com $4$ \textit{folds} nos dados de treinamento. Ou seja, para cada configuração, foi avaliado o desempenho desta rede na predição de quatro subconjuntos das quatro séries temporais escolhidas.
+
+Já nas redes recorrentes, foi considerado um esquema de validação do tipo \textit{holdout}. Esse processo dividiu o conjunto de treinamento (novamente composto por $85\%$ dos dados gerados) em $4$ seções. Cada seção era composta por uma fração dos dados de treinamento, sendo que cada seção incluía a seção anterior no seu conjunto de dados. Por exemplo, a segunda seção obtida pelo \textit{holdout} inclui a primeira seção e mais algumas amostras, além de uma subdivisão de validação que será utilizada para avaliar o resultado. Com isso, obtém-se conjuntos sequenciais de dados para avaliação do desempenho. Esse procedimento é necessário para as redes recorrentes, pois a relação temporal entre os dados de entrada deve ser levada em conta.
+
+Por fim, para a obtenção dos melhores hiperparâmetros, foi considerado que $K = 4$. 
+
+Com esses detalhes expostos, iniciaremos a exposição com a busca em grade realizada na rede MLP.
+
 \subsubsection{MLP}
 
+Na busca em grade para a MLP, avaliamos diferentes tamanhos de \textit{batch} ($2$, $4$, $8$, $16$, $32$), se haveria ou não uma camada de \textit{batch normalization} na entrada da rede MLP, diferentes opções de função de ativação dos neurônios na camada intermediária ($\selu$, $\relu$, $\elu$, $\tanh$, $\sigmoid$), esquemas alternativos para a inicialização dos pesos ($\glorot$, $\he$, $\lecun$, tanto com distribuição normal, quanto uniforme), diferentes quantidades de neurônios na camada intermediária ($5$, $10$, $15$, $20$, $30$, $50$, $75$, $100$) e, também, diferentes valores para a taxa de aprendizagem ($0.001$, $0.003$, $0.005$, $0.008$, $0.01$). 
+
+Vale reforçar que foi utilizada apenas uma camada intermediária em cada cenário. As melhores configurações obtidas podem ser vistas na tabela \ref{tab:mlp}.
+\begin{table}[H]
+\begin{center}
+\scalebox{0.75}{
+\begin{tabular}{c c c c c c c}
+  \textbf{Cenário} & \pbox{3cm}{\centering \textbf{\textit{Batch normalization}}} & \pbox{2cm}{\centering \textbf{Tamanho do \textit{batch}}} & {\centering \textbf{Ativação}} & {\centering \textbf{Inicialização}} & \pbox{2cm}{\centering \textbf{Nº de neurônios}} & \pbox{4cm}{\centering \textbf{Taxa de aprendizagem}}\\
+ \addlinespace 
+ \hline
+ \addlinespace
+ \pbox{2cm}{\centering \textbf{Mapa de Hénon}} & Não & $8$ & $\sigmoid$ & $\glorot\, \normal$ & $50$ & $0.003$\\  
+  \addlinespace
+  \hline
+  \addlinespace
+\pbox{2cm}{\centering \textbf{Mapa logístico}} & Não & $2$ & $\tanh$ & $\glorot\, \uniform$ & $10$ & $0.003$\\ 
+  \addlinespace
+  \hline
+  \addlinespace
+ \pbox{2cm}{\centering \textbf{Sistema de Lorenz}} & Não & $2$ & $\selu$ & $\lecun\, \normal$ & $50$ & $0.001$\\ 
+  \addlinespace
+  \hline
+  \addlinespace
+ \pbox{2.5cm}{\centering \textbf{Equações de Mackey-Glass}} & Não & $4$ & $\tanh$ & $\glorot\, \normal$ & $5$ & $0.001$\\ 
+\end{tabular}}
+\caption{Melhores parâmetros para a rede MLP nos cenários em análise}
+\label{tab:mlp}
+\end{center}
+\end{table}
+
 \subsubsection{LSTM e GRU}
+
+Para as redes recorrentes LSTM e GRU, foi avaliado o tamanho do \textit{batch} ($2$, $4$, $8$, $16$, $32$), a inicialização dos pesos ($\glorot \, \uniform$, $\glorot \, \normal$), o número de neurônios recorrentes na camada intermediária ($5$, $10$, $15$, $20$, $30$, $50$, $75$, $100$), e a taxa de aprendizagem ($0.001$, $0.003$, $0.005$, $0.008$, $0.01$), novamente utilizando apenas uma camada intermediária e mantendo a função de ativação usual da célula recorrente ($\tanh$). Por conta disso, para o sistema de Lorenz, foi feito um ajuste de escala para evitar a saturação dos neurônios.
+
+As tabelas \ref{tab:lstm} e \ref{tab:gru} exibem as melhores configurações obtidas em cada cenário para as redes LSTM e GRU, respectivamente.
+\begin{table}[H]
+\begin{center}
+\scalebox{0.75}{
+\begin{tabular}{c c c c c}
+  \textbf{Cenário} & \pbox{2cm}{\centering \textbf{Tamanho do \textit{batch}}} & {\centering \textbf{Inicialização}} & \pbox{2cm}{\centering \textbf{Nº de neurônios}} & \pbox{4cm}{\centering \textbf{Taxa de aprendizagem}}\\
+ \addlinespace 
+ \hline
+ \addlinespace
+ \pbox{2cm}{\centering \textbf{Mapa de Hénon}} & $4$ & $\glorot\, \normal$ & $15$ & $0.005$\\  
+  \addlinespace
+  \hline
+  \addlinespace
+\pbox{2cm}{\centering \textbf{Mapa logístico}} & $2$ & $\glorot\, \uniform$ & $100$ & $0.008$\\ 
+  \addlinespace
+  \hline
+  \addlinespace
+ \pbox{2cm}{\centering \textbf{Sistema de Lorenz}} & $4$ & $\glorot\, \uniform$ & $15$ & $0.003$\\  
+  \addlinespace
+  \hline
+  \addlinespace
+ \pbox{2.5cm}{\centering \textbf{Equações de Mackey-Glass}} & $2$ & $\glorot\, \uniform$ & $50$ & $0.003$\\ 
+\end{tabular}}
+\caption{Melhores parâmetros para a rede LSTM nos cenários em análise}
+\label{tab:lstm}
+\end{center}
+\end{table}
+
+\begin{table}[H]
+\begin{center}
+\scalebox{0.75}{
+\begin{tabular}{c c c c c}
+  \textbf{Cenário} & \pbox{2cm}{\centering \textbf{Tamanho do \textit{batch}}} & {\centering \textbf{Inicialização}} & \pbox{2cm}{\centering \textbf{Nº de neurônios}} & \pbox{4cm}{\centering \textbf{Taxa de aprendizagem}}\\
+ \addlinespace 
+ \hline
+ \addlinespace
+ \pbox{2cm}{\centering \textbf{Mapa de Hénon}} & $4$ & $\glorot\, \normal$ & $30$ & $0.003$\\    
+  \addlinespace
+  \hline
+  \addlinespace
+\pbox{2cm}{\centering \textbf{Mapa logístico}} & $2$ & $\glorot\, \normal$ & $100$ & $0.003$\\  
+  \addlinespace
+  \hline
+  \addlinespace
+ \pbox{2cm}{\centering \textbf{Sistema de Lorenz}} & $8$ & $\glorot\, \uniform$ & $30$ & $0.001$\\ 
+  \addlinespace
+  \hline
+  \addlinespace
+ \pbox{2.5cm}{\centering \textbf{Equações de Mackey-Glass}} & $2$ & $\glorot\, \uniform$ & $10$ & $0.005$\\ 
+\end{tabular}}
+\caption{Melhores parâmetros para a rede GRU nos cenários em análise}
+\label{tab:gru}
+\end{center}
+\end{table}
 
 \subsubsection{ESN}
 
