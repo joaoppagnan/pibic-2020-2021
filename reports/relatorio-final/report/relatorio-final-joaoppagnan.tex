@@ -119,9 +119,9 @@ Retomados os pontos principais da dinâmica caótica, daremos continuidade à di
 
 \subsection{Sistema de Lorenz}
 
-O sistema de Lorenz foi um dos sistemas dinâmicos caóticos a tempo contínuo abordados nessa pesquisa. Este sistema foi um dos primeiros grandes trabalhos envolvendo a noção de regime caótico, sendo considerado por muitos a pesquisa que inaugurou a área \cite{gleick1998chaos}.
+O sistema de Lorenz foi um dos sistemas dinâmicos caóticos a tempo contínuo abordados nessa pesquisa. Este sistema foi um dos primeiros grandes trabalhos envolvendo a noção de regime caótico, sendo considerado por muitos a pesquisa que inaugurou a área \cite{gleick1998chaos}. 
 
-Lorenz modela, através de três equações diferenciais, o fluxo de um fluido em um volume uniformemente aquecido na camada inferior e uniformemente resfriado na camada superior \cite{lorenz1963deterministic}:
+Através de simulações numéricas de uma dinâmica atmosférica, o matemático e meteorologista Edward Norton Lorenz observou uma dependência sensitiva às condições iniciais em certos sistemas dinâmicos \cite{fiedler1994caos}. Dando continuidade à seus experimentos, Lorenz modelou, através de três equações diferenciais, o fluxo de um fluido em um volume uniformemente aquecido na camada inferior e uniformemente resfriado na camada superior \cite{lorenz1963deterministic}:
 \begin{subequations}
 \begin{equation}
 \frac{dx}{dt} = -\sigma \cdot (x - y)
@@ -153,7 +153,7 @@ A figura \ref{fig:lorenz} indica a série temporal em $x$, que foi utilizada em 
 
 \subsection{Mapa de Hénon}
 
-O mapa de Hénon foi um dos sistemas a tempo discreto escolhidos para esta pesquisa. Esse sistema foi proposto por Michel Hénon em 1976 como um modelo simplificado de uma seção de Poincaré do atrator de Lorenz, sendo descrito pelas equações abaixo \cite{henon1976two}:
+O mapa de Hénon foi um dos sistemas a tempo discreto escolhidos para esta pesquisa. Esse sistema foi proposto pelo astrônomo e matemático francês  Michel Hénon em 1976 como um modelo simplificado de uma seção de Poincaré do atrator de Lorenz, sendo descrito pelas equações abaixo \cite{henon1976two}:
 \begin{subequations}
 \begin{equation}
 x[n+1] = y[n] + 1 - a\cdot (x[n])^2
@@ -188,13 +188,19 @@ A figura \ref{fig:henon} mostra a série temporal referente à variável $x$ e o
 
 \subsection{Mapa logístico}
 
-Descrito em 1976 por Robert May, o mapa logístico representa uma das formas de modelar a população de uma determinada espécie em certos instantes de tempo \cite{may1976simple}. A equação a diferenças que descreve esse sistema pode ser vista abaixo:
+Descrito em 1976 pelo biólogo e matemático Robert May, o mapa logístico representa uma das formas de modelar a população de uma determinada espécie em certos instantes de tempo \cite{may1976simple}. A equação a diferenças que descreve esse sistema pode ser vista abaixo:
 \begin{equation}\label{eq:logistic}
 x[n+1] = r\cdot x[n] \cdot (1 - x[n])
 \end{equation}
 sendo $x_n$ um número real entre $0$ e $1$ que representa a razão entre o tamanho atual da população e o tamanho máximo desta, e tendo $r$ um valor real entre $0$ e $4$, representando a taxa de crescimento desta população.
 
-Nesse caso, o sistema não chega a operar em caos para qualquer valor de $r$. Assim, como o estudo visa analisar o desempenho para sistemas caóticos, foi utilizado $r=3.86$, que, conforme será visto no diagrama de bifurcação abaixo, faz com que a série temporal dada pela equação (\ref{eq:logistic}) opere em caos. 
+Nesse caso, o sistema não chega a operar em caos para qualquer valor de $r$. Robert May, através de análises numéricas \cite{fiedler1994caos}, viu que, para valores maiores que $3.44949$, o sistema entra em regime caótico. Interessantemente, ao aumentar mais o valor do parâmetro $r$, o cientista percebeu que há certas zonas de estabilidade, onde o sistema converge para um ciclo-limite. 
+
+Inicialmente, após sair do regime caótico, a dinâmica terá período $2$, e, com o aumento de $r$, o sistema começa a ter período $4$, $8$, $16$, $32$, e assim por diante, até voltar, novamente, ao movimento caótico. Esse padrão de ir do caos a estabilidade para, então, voltar ao regime caótico, se repete até que $r$ atinja seu valor máximo.
+
+Quando o físico e matemático Mitchell Feigenbaum estudou esse fenômeno, também presente em outros sistemas caóticos e em certas estruturas fractais, percebeu que a razão entre o comprimento de dois intervalos sucessivos de bifurcação tende a $\delta \approx 4.66920$ \cite{feigenbaum1978quantitative}. Tal valor tem a alcunha de constante de Feigenbaum, não estando relacionado a nenhuma outra propriedade matemática ou constante da natureza conhecida até então.
+
+Como o estudo visa analisar o desempenho para sistemas caóticos, foi utilizado $r=3.86$, que, conforme será visto no diagrama de bifurcação abaixo, faz com que a série temporal dada pela equação (\ref{eq:logistic}) opere em caos. 
 
 A figura \ref{fig:logistic} indica a série temporal obtida partindo de $x[0] = 0.5$ e o diagrama de bifurcação para este sistema de equações.
 \begin{figure}[H]
@@ -238,6 +244,8 @@ Neste caso, conforme demonstrado em \cite{mackey1977oscillation}, a equação (\
      \caption{À esquerda, a série temporal da equação (\ref{eq:mackey-glass-chaos}) exibida de $t = 0 $ a $t = 800$ e, à direita, o atrator correspondente à simulação}
      \label{fig:mackey-glass}
 \end{figure}
+
+Curiosamente, os pesquisadores perceberam que regimes caóticos dessa equação estão correlacionados com certos problemas fisiológicos nos nossos organismos \cite{mackey1977oscillation}.
 
 Com isso, finalizamos a exposição sobre os cenários de sistemas com dinâmica caótica escolhidos para a análise comparativa. Na próxima seção, falaremos a respeito dos dois modelos estudados e implementados nesta segunda parte da pesquisa. Em seguida, apresentaremos a metodologia aplicada nesses e nos outros modelos mostrados no relatório parcial, assim como as particularidades para cada caso.
 
@@ -699,7 +707,7 @@ Nas tabelas \ref{tab:henon-eqm}, \ref{}, \ref{} e \ref{}, constam os valores mé
 
 \section{Resultados}
 
-\section{Conclusão}
+\section{Análise e Conclusão}
 
 Analisando os resultados obtidos, percebe-se que, com exceção do cenário do sistema de Lorenz, a rede MLP foi consideravelmente pior do que as redes recorrentes. Também percebe-se que, dentre as redes recorrentes, a ESN obteve um EQM bem inferior ao obtido pela LSTM e pela GRU.
 
