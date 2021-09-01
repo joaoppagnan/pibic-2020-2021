@@ -873,8 +873,96 @@ Nas tabelas \ref{tab:henon-eqm}, \ref{tab:logistic-eqm}, \ref{tab:lorenz-eqm} e 
 \end{center}
 \end{table}
 
+Após avaliarmos o desempenho dos modelos para as faixas de $K$ obtidas com a análise da autocorrelação parcial das séries temporais, foram selecionados os três melhores valores para esse parâmetro, ou seja, os que tiveram as três menores médias de erro quadrático médio, para uma etapa de retreinamento e reavaliação. 
+
+Novamente, utilizando os três melhores valores de $K$, realizamos o processo mencionado no início desta seção, cinco vezes para cada $K$. 
+
+A figura \ref{fig:mse-progression-3best} mostra a nova progressão obtida em cada cenário para os modelos avaliados, e as tabelas \ref{}, \ref{}, \ref{} e \ref{}, exibem os valores numéricos das médias e desvios-padrões para os valores selecionados do parâmetro $K$.
+\begin{figure}[!ht]
+     \begin{subfigure}[t]{0.4\textwidth} 
+         \includegraphics[scale=0.4]{henon-3best.pdf}
+         \caption{Mapa de Hénon}
+     \end{subfigure}
+     \centering
+     \begin{subfigure}[t]{0.4\textwidth} 
+         \includegraphics[scale=0.4]{logistic-3best.pdf}
+         \caption{Mapa logístico}
+     \end{subfigure}
+     \\
+     \centering
+     \begin{subfigure}[t]{0.4\textwidth}
+         \includegraphics[scale=0.4]{lorenz-3best.pdf}
+         \caption{Sistema de Lorenz}
+     \end{subfigure}
+     \centering
+     \begin{subfigure}[t]{0.4\textwidth} 
+         \includegraphics[scale=0.4]{mackeyglass-3best.pdf}
+         \caption{Equações de Mackey-Glass}
+     \end{subfigure}  
+     \centering   
+     \caption{Progressão do erro quadrático médio para os três melhores valores de $K$ nos cenários avaliados para todas as redes neurais testadas}
+     \label{fig:mse-progression-3best}
+\end{figure}
+
+Finalmente, depois de visualizarmos a progressão do EQM nos três melhores valores de $K$ para cada caso, selecionamos os melhores para o último teste realizado, novamente, seguindo o procedimento descrito no início desta seção.
+
+A próxima seção exibe os resultados obtidos, assim como certos trechos das predições onde a diferença entre os modelos foi perceptível.
 
 \section{Resultados}
+
+Após identificarmos o melhor valor de $K$ para cada modelo, realizou-se novamente o processo mencionado na seção anterior e foi obtido o EQM para as melhores configurações (parâmetros e $K$) para cada modelo, em todos os cenários. 
+
+A figura \ref{fig:model-comparison} exibe o comparativo dos melhores desempenhos das redes neurais analisadas, e a figura \ref{fig:series-comparison} mostra uma comparação da predição em si de cada modelo nos cenários onde a diferença foi mais perceptível visualmente.
+\begin{figure}[H]
+     \begin{subfigure}[t]{0.4\textwidth}
+         \includegraphics[scale=0.4]{comparacao-k-henon.pdf}
+         \caption{Mapa de Hénon}
+     \end{subfigure}
+     \centering
+     \begin{subfigure}[t]{0.4\textwidth} 
+         \includegraphics[scale=0.4]{comparacao-k-logistic.pdf}
+         \caption{Mapa logístico}
+     \end{subfigure}
+     \centering
+     \begin{subfigure}[t]{0.4\textwidth}
+         \includegraphics[scale=0.4]{comparacao-k-lorenz.pdf}
+         \caption{Sistema de Lorenz}
+     \end{subfigure}
+     \centering
+     \begin{subfigure}[t]{0.4\textwidth} 
+         \includegraphics[scale=0.4]{comparacao-k-mackeyglass.pdf}
+         \caption{Equações de Mackey-Glass}
+     \end{subfigure}  
+     \centering   
+     \caption{Comparação do melhor desempenho obtido por cada modelo nos cenários testados}
+     \label{fig:model-comparison}
+\end{figure}
+\begin{figure}[H]
+     \begin{subfigure}[t]{0.4\textwidth} 
+         \includegraphics[scale=0.4]{vs-henon-zoom.pdf}
+         \caption{Mapa de Hénon}
+     \end{subfigure}
+     \centering
+     \begin{subfigure}[t]{0.4\textwidth} 
+         \includegraphics[scale=0.4]{vs-logistic-zoom.pdf}
+         \caption{Mapa logístico}
+     \end{subfigure}
+     \centering
+     \\
+     \begin{subfigure}[t]{0.4\textwidth} 
+         \includegraphics[scale=0.4]{vs-lorenz-zoom.pdf}
+         \caption{Sistema de Lorenz}
+     \end{subfigure}
+     \centering
+     \begin{subfigure}[t]{0.4\textwidth}
+         \includegraphics[scale=0.4]{vs-mackeyglass-zoom.pdf}
+         \caption{Equações de Mackey-Glass}
+     \end{subfigure}
+     \centering     
+     \caption{Comparação da predição realizada por cada modelo nos cenários do mapa logístico e das equações de Mackey-Glass}
+     \label{fig:series-comparison}
+\end{figure}
+
 
 \section{Análise e Conclusão}
 
