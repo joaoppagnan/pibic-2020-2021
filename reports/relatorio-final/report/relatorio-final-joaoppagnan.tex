@@ -121,7 +121,7 @@ Retomados os pontos principais da dinâmica caótica, daremos continuidade à di
 
 O sistema de Lorenz foi um dos sistemas dinâmicos caóticos a tempo contínuo abordados nessa pesquisa. Este sistema foi um dos primeiros grandes trabalhos envolvendo a noção de regime caótico, sendo considerado por muitos a pesquisa que inaugurou a área \cite{gleick1998chaos}. 
 
-Através de simulações numéricas de dinâmicas atmosféricas, o matemático e meteorologista Edward Norton Lorenz observou uma dependência sensitiva às condições iniciais em certos sistemas dinâmicos \cite{fiedler1994caos}. Dando continuidade à seus experimentos, Lorenz modelou, através de três equações diferenciais, o fluxo de um fluido em um volume uniformemente aquecido na camada inferior e uniformemente resfriado na camada superior \cite{lorenz1963deterministic}:
+Através de simulações numéricas de dinâmicas atmosféricas, o matemático e meteorologista Edward Norton Lorenz observou uma dependência sensitiva às condições iniciais em certos sistemas dinâmicos \cite{fiedler1994caos}. Dando continuidade a seus experimentos, Lorenz modelou, através de três equações diferenciais, o fluxo de um fluido em um volume uniformemente aquecido na camada inferior e uniformemente resfriado na camada superior \cite{lorenz1963deterministic}:
 \begin{subequations}
 \begin{equation}
 \frac{dx}{dt} = -\sigma \cdot (x - y)
@@ -194,7 +194,7 @@ x[n+1] = r\cdot x[n] \cdot (1 - x[n])
 \end{equation}
 sendo $x_n$ um número real entre $0$ e $1$ que representa a razão entre o tamanho atual da população e o tamanho máximo desta, e tendo $r$ um valor real entre $0$ e $4$, representando a taxa de crescimento desta população.
 
-Nesse caso, o sistema não chega a operar em caos para qualquer valor de $r$. Robert May, através de análises numéricas \cite{fiedler1994caos}, viu que, para valores maiores que $3.44949$, o sistema entra em regime caótico. Interessantemente, ao aumentar mais o valor do parâmetro $r$, o cientista percebeu que há certas zonas de estabilidade, onde o sistema converge para um ciclo-limite. 
+Nesse caso, o sistema não chega a operar em caos para qualquer valor de $r$. Robert May, através de análises numéricas \cite{gleick1998chaos}, viu que, para valores maiores que $3.44949$, o sistema entra em regime caótico. Interessantemente, ao aumentar mais o valor do parâmetro $r$, o cientista percebeu que há certas zonas de estabilidade, onde o sistema converge para um ciclo-limite. 
 
 Inicialmente, após sair do regime caótico, a dinâmica terá período $2$, e, com o aumento de $r$, o sistema começa a ter período $4$, $8$, $16$, $32$, e assim por diante, até voltar, novamente, ao movimento caótico. Esse padrão de ir do caos a estabilidade para, então, voltar ao regime caótico, se repete até que $r$ atinja seu valor máximo.
 
@@ -435,7 +435,9 @@ Iniciaremos a discussão com a apresentação da busca em grade realizada em tod
 
 Vale reforçar que, para todos os modelos e cenários, os dados de treinamento correspondiam a cerca de $85\%$ das amostras das séries temporais geradas, que correspondiam aos primeiros $4250$ valores. Além disso, o conjunto de validação, utilizado na busca em grade para avaliar a predição de uma configuração testada, corresponde a $10\%$ dos dados de treinamento (as últimas $425$ amostras). Assim, os dados de treinamento efetivamente correspondem às primeiras $3825$ amostras, os dados de validação correspondem às $425$ amostras depois destas e, por fim, o conjunto de teste corresponde aos últimos $750$ dados. Essa proporção entre os dados de treinamento, de teste e de validação foi utilizada para todas as redes analisadas.
 
-Em seguida, na seção 4.2, será apresentado a análise feita 
+Em seguida, na seção 4.2, será apresentado a análise feita da autocorrelação parcial das séries temporais, de forma a determinar a faixa de valores de $K$ para ser testada em cada cenário.
+
+Por último, na seção 4.3, falaremos sobre os testes realizados em cada valor de $K$ nos modelos avaliados.´
 
 \subsection{Configurações utilizadas}
 
@@ -458,9 +460,11 @@ Vale reforçar que foi utilizada apenas uma camada intermediária em cada cenár
 \begin{center}
 \scalebox{0.75}{
 \begin{tabular}{c c c c c c c}
+\toprule
+\addlinespace
   \textbf{Cenário} & \pbox{3cm}{\centering \textbf{\textit{Batch normalization}}} & \pbox{2cm}{\centering \textbf{Tamanho do \textit{batch}}} & {\centering \textbf{Ativação}} & {\centering \textbf{Inicialização}} & \pbox{2cm}{\centering \textbf{Nº de neurônios}} & \pbox{4cm}{\centering \textbf{Taxa de aprendizagem}}\\
  \addlinespace 
- \hline
+ \midrule
  \addlinespace
  \pbox{2cm}{\centering \textbf{Mapa de Hénon}} & Não & $8$ & $\sigmoid$ & $\glorot\, \normal$ & $50$ & $0.003$\\  
   \addlinespace
@@ -475,7 +479,8 @@ Vale reforçar que foi utilizada apenas uma camada intermediária em cada cenár
   \hline
   \addlinespace
  \pbox{2.5cm}{\centering \textbf{Equações de Mackey-Glass}} & Não & $4$ & $\tanh$ & $\glorot\, \normal$ & $5$ & $0.001$\\ 
-\end{tabular}}
+\bottomrule 
+ \end{tabular}}
 \caption{Melhores parâmetros para a rede MLP nos cenários em análise}
 \label{tab:mlp}
 \end{center}
@@ -490,9 +495,11 @@ As tabelas \ref{tab:lstm} e \ref{tab:gru} exibem as melhores configurações obt
 \begin{center}
 \scalebox{0.75}{
 \begin{tabular}{c c c c c}
+\toprule
+\addlinespace
   \textbf{Cenário} & \pbox{2cm}{\centering \textbf{Tamanho do \textit{batch}}} & {\centering \textbf{Inicialização}} & \pbox{2cm}{\centering \textbf{Nº de neurônios}} & \pbox{4cm}{\centering \textbf{Taxa de aprendizagem}}\\
  \addlinespace 
- \hline
+ \midrule
  \addlinespace
  \pbox{2cm}{\centering \textbf{Mapa de Hénon}} & $4$ & $\glorot\, \normal$ & $15$ & $0.005$\\  
   \addlinespace
@@ -507,6 +514,7 @@ As tabelas \ref{tab:lstm} e \ref{tab:gru} exibem as melhores configurações obt
   \hline
   \addlinespace
  \pbox{2.5cm}{\centering \textbf{Equações de Mackey-Glass}} & $2$ & $\glorot\, \uniform$ & $50$ & $0.003$\\ 
+ \bottomrule
 \end{tabular}}
 \caption{Melhores parâmetros para a rede LSTM nos cenários em análise}
 \label{tab:lstm}
@@ -517,9 +525,11 @@ As tabelas \ref{tab:lstm} e \ref{tab:gru} exibem as melhores configurações obt
 \begin{center}
 \scalebox{0.75}{
 \begin{tabular}{c c c c c}
+\toprule
+\addlinespace
   \textbf{Cenário} & \pbox{2cm}{\centering \textbf{Tamanho do \textit{batch}}} & {\centering \textbf{Inicialização}} & \pbox{2cm}{\centering \textbf{Nº de neurônios}} & \pbox{4cm}{\centering \textbf{Taxa de aprendizagem}}\\
  \addlinespace 
- \hline
+ \midrule
  \addlinespace
  \pbox{2cm}{\centering \textbf{Mapa de Hénon}} & $4$ & $\glorot\, \normal$ & $30$ & $0.003$\\    
   \addlinespace
@@ -534,6 +544,7 @@ As tabelas \ref{tab:lstm} e \ref{tab:gru} exibem as melhores configurações obt
   \hline
   \addlinespace
  \pbox{2.5cm}{\centering \textbf{Equações de Mackey-Glass}} & $2$ & $\glorot\, \uniform$ & $10$ & $0.005$\\ 
+ \bottomrule
 \end{tabular}}
 \caption{Melhores parâmetros para a rede GRU nos cenários em análise}
 \label{tab:gru}
@@ -549,15 +560,18 @@ A tabela \ref{tab:esn} exibe as melhores configurações para a ESN em cada um d
 \begin{center}
 \scalebox{0.75}{
 \begin{tabular}{c c c c c}
+\toprule
+\addlinespace
   \textbf{Parâmetro} & \pbox{2cm}{\centering \textbf{Mapa de Hénon}} & \pbox{2cm}{\centering \textbf{Mapa logístico}} & \pbox{2cm}{\centering \textbf{Sistema de Lorenz}} & \pbox{3.5cm}{\centering \textbf{Equações de Mackey-Glass}}\\
    \addlinespace
- \hline
+ \midrule
  \addlinespace
  {\centering \textbf{Nº de neurônios}} & $500$ & $500$ & $120$ & $500$\\
   \addlinespace
   \hline
   \addlinespace
- {\centering \textbf{Raio espectral}} & $0.1$ & $0.1$ & $0.2$ & $0.4$\\  
+ {\centering \textbf{Raio espectral}} & $0.1$ & $0.1$ & $0.2$ & $0.4$\\
+ \bottomrule  
 \end{tabular}}
 \caption{Melhores parâmetros para a rede ESN nos cenários em análise}
 \label{tab:esn}
@@ -604,11 +618,14 @@ A tabela \ref{tab:autocorrelation} mostra a faixa de valores para $K$ a ser test
 \begin{center}
 \scalebox{0.75}{
 \begin{tabular}{c c c c c}
+\toprule
+\addlinespace
    & \pbox{2cm}{\centering \textbf{Mapa de Hénon}} & \pbox{2cm}{\centering \textbf{Mapa logístico}} & \pbox{2cm}{\centering \textbf{Sistema de Lorenz}} & \pbox{3.5cm}{\centering \textbf{Equações de Mackey-Glass}}\\
    \addlinespace
- \hline
+ \midrule
  \addlinespace
  {\centering \textbf{Faixa de valores}} & $1 \thicksim 9$ & $1 \thicksim 8$ & $1 \thicksim 10$ & $1 \thicksim 7$\\
+ \bottomrule
 \end{tabular}}
 \caption{Faixa de valores inteiros para $K$ a ser testada em cada cenário para todas as redes}
 \label{tab:autocorrelation}
@@ -650,16 +667,18 @@ A figura \ref{fig:mse-progression} mostra a progressão do EQM observada em cada
      \label{fig:mse-progression}
 \end{figure}
 
-Nas tabelas \ref{tab:henon-eqm}, \ref{}, \ref{} e \ref{}, constam os valores médios e desvios-padrões para cada valor $K$ dos modelos avaliados, no cenário do mapa de Hénon, do mapa logístico, do sistema de Lorenz, e das equações de Mackey-Glass, respectivamente.
-\begin{table}[H]
+Nas tabelas \ref{tab:henon-eqm}, \ref{tab:logistic-eqm}, \ref{} e \ref{}, constam os valores médios e desvios-padrões para cada valor $K$ dos modelos avaliados, no cenário do mapa de Hénon, do mapa logístico, do sistema de Lorenz, e das equações de Mackey-Glass, respectivamente.
+\begin{table}[!ht]
 \begin{center}
 \begin{subtable}{1\textwidth}
 \begin{center}
 \scalebox{0.75}{
 \begin{tabular}{c c c c c}
+\toprule
+\addlinespace
  $\bm{K}$ & {\centering \textbf{MLP}} & {\centering \textbf{LSTM}} & {\centering \textbf{GRU}} &  {\centering \textbf{ESN}} \\
    \addlinespace
- \hline
+ \midrule
  \addlinespace
  $\bm{1}$ & $(1.758 \pm 0.130) \times 10^{-1}$ & $(1.612 \pm 0.081) \times 10^{-1}$ & $(1.646 \pm 0.139) \times 10^{-1}$ & $(4.657 \pm 3.054) \times 10^{-9}$\\
  \addlinespace
@@ -693,10 +712,59 @@ Nas tabelas \ref{tab:henon-eqm}, \ref{}, \ref{} e \ref{}, constam os valores mé
  \addlinespace
  \hline
  \addlinespace
- $\bm{9}$ & $(1.514 \pm 0.805) \times 10^{-3}$ & $(2.151 \pm 0.605) \times 10^{-4}$ & $(3.007 \pm 2.156) \times 10^{-4}$ & $(1.141 \pm 0.068) \times 10^{-2}$
+ $\bm{9}$ & $(1.514 \pm 0.805) \times 10^{-3}$ & $(2.151 \pm 0.605) \times 10^{-4}$ & $(3.007 \pm 2.156) \times 10^{-4}$ & $(1.141 \pm 0.068) \times 10^{-2}$\\
+ \bottomrule
 \end{tabular}}
 \caption{Mapa de Hénon}
 \label{tab:henon-eqm}
+\end{center}
+\end{subtable}
+\begin{subtable}{1\textwidth}
+\begin{center}
+\scalebox{0.75}{
+\begin{tabular}{c c c c c}
+\addlinespace
+\addlinespace
+\addlinespace
+\toprule
+\addlinespace
+ $\bm{K}$ & {\centering \textbf{MLP}} & {\centering \textbf{LSTM}} & {\centering \textbf{GRU}} &  {\centering \textbf{ESN}} \\
+   \addlinespace
+ \midrule
+ \addlinespace
+ $\bm{1}$ & $(1.758 \pm 0.130) \times 10^{-1}$ & $(1.612 \pm 0.081) \times 10^{-1}$ & $(1.646 \pm 0.139) \times 10^{-1}$ & $(4.657 \pm 3.054) \times 10^{-9}$\\
+ \addlinespace
+ \hline
+ \addlinespace
+ $\bm{2}$ & $(5.190 \pm 1.620) \times 10^{-3}$ & $(8.223 \pm 1.426) \times 10^{-3}$ & $(4.315 \pm 1.958) \times 10^{-3}$ & $(9.764 \pm 3.727) \times 10^{-9}$\\
+ \addlinespace
+ \hline
+ \addlinespace
+ $\bm{3}$ & $(2.346 \pm 3.765) \times 10^{-3}$ & $(9.028 \pm 7.506) \times 10^{-4}$ & $(1.252 \pm 1.082) \times 10^{-3}$ & $(8.699 \pm 2.645) \times 10^{-8}$\\
+ \addlinespace
+ \hline
+ \addlinespace
+ $\bm{4}$ & $(6.415 \pm 4.726) \times 10^{-4}$ & $(2.498 \pm 0.854) \times 10^{-4}$ & $(7.557 \pm 2.607) \times 10^{-4}$ & $(1.595 \pm 0.425) \times 10^{-6}$\\
+   \addlinespace
+ \hline
+ \addlinespace
+ $\bm{5}$ & $(1.892 \pm 0.214) \times 10^{-3}$ & $(2.256 \pm 1.282) \times 10^{-4}$ & $(6.827 \pm 3.646) \times 10^{-4}$ & $(3.355 \pm 0.519) \times 10^{-5}$\\
+ \addlinespace
+ \hline
+ \addlinespace
+ $\bm{6}$ & $(1.739 \pm 1.251) \times 10^{-3}$ & $(2.341 \pm 0.471) \times 10^{-4}$ & $(5.686 \pm 2.254) \times 10^{-4}$ & $(5.113 \pm 1.617) \times 10^{-4}$\\
+ \addlinespace
+ \hline
+ \addlinespace
+ $\bm{7}$ & $(3.239 \pm 1.034) \times 10^{-3}$ & $(4.771 \pm 2.439) \times 10^{-4}$ & $(4.486 \pm 0.877) \times 10^{-4}$ & $(5.731 \pm 0.882) \times 10^{-3}$\\
+ \addlinespace
+ \hline
+ \addlinespace
+ $\bm{8}$ & $(9.436 \pm 2.631) \times 10^{-4}$ & $(1.578 \pm 0.689) \times 10^{-4}$ & $(2.411 \pm 1.391) \times 10^{-4}$ & $(4.978 \pm 0.620) \times 10^{-2}$\\ 
+ \bottomrule
+\end{tabular}}
+\caption{Mapa Logístico}
+\label{tab:logistic-eqm}
 \end{center}
 \end{subtable}
 \caption{Valores médios e desvios-padrões do erro quadrático médio obtidos para cada $K$ nos cenários utilizadas}
