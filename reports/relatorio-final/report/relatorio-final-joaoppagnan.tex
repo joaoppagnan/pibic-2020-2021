@@ -199,7 +199,7 @@ Nesse caso, o sistema não chega a operar em caos para qualquer valor de $r$. Ro
 
 Inicialmente, após sair do regime caótico, a dinâmica terá período $2$, e, com o aumento de $r$, o sistema começa a ter período $4$, $8$, $16$, $32$, e assim por diante, até voltar, novamente, ao movimento caótico. Esse padrão de ir do caos a estabilidade para, então, voltar ao regime caótico, se repete até que $r$ atinja seu valor máximo.
 
-Quando o físico e matemático Mitchell Feigenbaum estudou esse fenômeno, também presente em outros sistemas caóticos e em certas estruturas fractais, percebeu que a razão entre o comprimento de dois intervalos sucessivos de bifurcação tende a $\delta \approx 4.66920$ \cite{feigenbaum1978quantitative}. Tal valor tem a alcunha de constante de Feigenbaum, não estando relacionado a nenhuma outra propriedade matemática ou constante da natureza conhecida até então.
+Quando o físico e matemático Mitchell Feigenbaum estudou esse fenômeno, também presente em outros sistemas caóticos e em certas estruturas fractais, percebeu que a razão entre o comprimento de dois intervalos sucessivos de bifurcação tende a $\delta \approx 4.66920$ \cite{feigenbaum1978quantitative}. Esse valor é chamado de constante de Feigenbaum, não estando relacionado a nenhuma outra propriedade matemática ou constante da natureza conhecida até então.
 
 Como o estudo visa analisar o desempenho para sistemas caóticos, foi utilizado $r=3.86$, que, conforme será visto no diagrama de bifurcação abaixo, faz com que a série temporal dada pela equação (\ref{eq:logistic}) opere em caos. 
 
@@ -668,12 +668,12 @@ A figura \ref{fig:mse-progression} mostra a progressão do EQM observada em cada
      \label{fig:mse-progression}
 \end{figure}
 
-Nas tabelas \ref{tab:henon-eqm}, \ref{tab:logistic-eqm}, \ref{} e \ref{}, constam os valores médios e desvios-padrões para cada valor $K$ dos modelos avaliados, no cenário do mapa de Hénon, do mapa logístico, do sistema de Lorenz, e das equações de Mackey-Glass, respectivamente.
-\begin{table}[!ht]
+Nas tabelas \ref{tab:henon-eqm}, \ref{tab:logistic-eqm}, \ref{tab:lorenz-eqm} e \ref{tab:mackeyglass-eqm}, constam os valores médios e desvios-padrões para cada valor $K$ dos modelos avaliados, no cenário do mapa de Hénon, do mapa logístico, do sistema de Lorenz, e das equações de Mackey-Glass, respectivamente.
+\begin{table}[H]
 \begin{center}
 \begin{subtable}{1\textwidth}
 \begin{center}
-\scalebox{0.75}{
+\scalebox{0.55}{
 \begin{tabular}{c c c c c}
 \toprule
 \addlinespace
@@ -722,7 +722,7 @@ Nas tabelas \ref{tab:henon-eqm}, \ref{tab:logistic-eqm}, \ref{} e \ref{}, consta
 \end{subtable}
 \begin{subtable}{1\textwidth}
 \begin{center}
-\scalebox{0.75}{
+\scalebox{0.55}{
 \begin{tabular}{c c c c c}
 \addlinespace
 \addlinespace
@@ -733,39 +733,139 @@ Nas tabelas \ref{tab:henon-eqm}, \ref{tab:logistic-eqm}, \ref{} e \ref{}, consta
    \addlinespace
  \midrule
  \addlinespace
- $\bm{1}$ & $(1.758 \pm 0.130) \times 10^{-1}$ & $(1.612 \pm 0.081) \times 10^{-1}$ & $(1.646 \pm 0.139) \times 10^{-1}$ & $(4.657 \pm 3.054) \times 10^{-9}$\\
+ $\bm{1}$ & $(3.275 \pm 0.349) \times 10^{-4}$ & $(1.269 \pm 0.144) \times 10^{-3}$  & $(2.296 \pm 2.195) \times 10^{-3}$ & $(1.082 \pm 1.165) \times 10^{-6}$\\
+ \addlinespace 
+ \hline
+ \addlinespace
+ $\bm{2}$ & $(1.519 \pm 0.131) \times 10^{-3}$ & $(4.836 \pm 4.925) \times 10^{-5}$ & $(1.589 \pm 0.424) \times 10^{-4}$ & $(1.316 \pm 2.068) \times 10^{-8}$ \\ 
+ \addlinespace
+ \hline 
+ \addlinespace
+ $\bm{3}$ & $(3.250 \pm 0.495) \times 10^{-4}$ & $(1.470 \pm 0.352) \times 10^{-4}$ & $(1.965 \pm 0.849) \times 10^{-4}$ & $(1.381 \pm 0.436) \times 10^{-8}$\\ 
  \addlinespace
  \hline
  \addlinespace
- $\bm{2}$ & $(5.190 \pm 1.620) \times 10^{-3}$ & $(8.223 \pm 1.426) \times 10^{-3}$ & $(4.315 \pm 1.958) \times 10^{-3}$ & $(9.764 \pm 3.727) \times 10^{-9}$\\
+ $\bm{4}$ & $(2.943 \pm 0.462) \times 10^{-4}$ & $(1.683 \pm 0.378) \times 10^{-4}$ & $(3.322 \pm 1.297) \times 10^{-4}$ & $(5.314 \pm 1.738) \times 10^{-7}$\\
+   \addlinespace 
+ \hline
+ \addlinespace
+ $\bm{5}$ & $(4.488 \pm 0.631) \times 10^{-4}$ & $(2.193 \pm 0.832) \times 10^{-4}$ & $(7.226 \pm 6.237) \times 10^{-4}$ & $(1.402 \pm 0.298) \times 10^{-5}$\\
+ \addlinespace
+ \hline 
+ \addlinespace
+ $\bm{6}$ & $(3.918 \pm 0.475) \times 10^{-3}$ & $(2.073 \pm 1.147) \times 10^{-4}$ & $(2.312 \pm 1.397) \times 10^{-4}$ & $(5.552 \pm 0.952) \times 10^{-4}$\\
+ \addlinespace
+ \hline 
+ \addlinespace
+ $\bm{7}$ & $(2.887 \pm 1.216) \times 10^{-3}$ & $(8.216 \pm 5.138) \times 10^{-5}$ & $(2.159 \pm 2.128) \times 10^{-4}$ & $(3.821 \pm 0.688) \times 10^{-3}$\\
+ \addlinespace
+ \hline 
+ \addlinespace
+ $\bm{8}$ & $(5.066 \pm 1.723) \times 10^{-4}$ & $(9.880 \pm 5.323) \times 10^{-5}$ & $(1.173 \pm 0.678) \times 10^{-4}$ & $(9.947 \pm 0.553) \times 10^{-3}$\\ 
+ \bottomrule
+\end{tabular}}
+\caption{Mapa logístico}
+\label{tab:logistic-eqm}
+\end{center}
+\end{subtable}
+\begin{subtable}{1\textwidth}
+\begin{center}
+\scalebox{0.55}{
+\begin{tabular}{c c c c c}
+\addlinespace
+\addlinespace
+\addlinespace
+\toprule
+\addlinespace
+ $\bm{K}$ & {\centering \textbf{MLP}} & {\centering \textbf{LSTM}} & {\centering \textbf{GRU}} &  {\centering \textbf{ESN}} \\
+   \addlinespace
+ \midrule
+ \addlinespace
+ $\bm{1}$ & &  &  & \\
+ \addlinespace 
+ \hline
+ \addlinespace
+ $\bm{2}$ & &  &  & \\ 
  \addlinespace
  \hline
  \addlinespace
- $\bm{3}$ & $(2.346 \pm 3.765) \times 10^{-3}$ & $(9.028 \pm 7.506) \times 10^{-4}$ & $(1.252 \pm 1.082) \times 10^{-3}$ & $(8.699 \pm 2.645) \times 10^{-8}$\\
+ $\bm{3}$ & & & & \\ 
  \addlinespace
  \hline
  \addlinespace
- $\bm{4}$ & $(6.415 \pm 4.726) \times 10^{-4}$ & $(2.498 \pm 0.854) \times 10^{-4}$ & $(7.557 \pm 2.607) \times 10^{-4}$ & $(1.595 \pm 0.425) \times 10^{-6}$\\
+ $\bm{4}$ & &  &  & \\
    \addlinespace
  \hline
  \addlinespace
- $\bm{5}$ & $(1.892 \pm 0.214) \times 10^{-3}$ & $(2.256 \pm 1.282) \times 10^{-4}$ & $(6.827 \pm 3.646) \times 10^{-4}$ & $(3.355 \pm 0.519) \times 10^{-5}$\\
+ $\bm{5}$ & & & & \\
  \addlinespace
  \hline
  \addlinespace
- $\bm{6}$ & $(1.739 \pm 1.251) \times 10^{-3}$ & $(2.341 \pm 0.471) \times 10^{-4}$ & $(5.686 \pm 2.254) \times 10^{-4}$ & $(5.113 \pm 1.617) \times 10^{-4}$\\
+ $\bm{6}$ & & & & \\
  \addlinespace
  \hline
  \addlinespace
- $\bm{7}$ & $(3.239 \pm 1.034) \times 10^{-3}$ & $(4.771 \pm 2.439) \times 10^{-4}$ & $(4.486 \pm 0.877) \times 10^{-4}$ & $(5.731 \pm 0.882) \times 10^{-3}$\\
+ $\bm{7}$ & & & & \\
  \addlinespace
  \hline
  \addlinespace
- $\bm{8}$ & $(9.436 \pm 2.631) \times 10^{-4}$ & $(1.578 \pm 0.689) \times 10^{-4}$ & $(2.411 \pm 1.391) \times 10^{-4}$ & $(4.978 \pm 0.620) \times 10^{-2}$\\ 
+ $\bm{8}$ & & & & \\ 
+ \addlinespace
+ \hline
+ \addlinespace
+ $\bm{9}$ & & & \\ 
+ \addlinespace
+ \hline
+ \addlinespace
+ $\bm{10}$ & & & \\  
  \bottomrule
 \end{tabular}}
-\caption{Mapa Logístico}
-\label{tab:logistic-eqm}
+\caption{Sistema de Lorenz}
+\label{tab:lorenz-eqm}
+\end{center}
+\end{subtable}
+\begin{subtable}{1\textwidth}
+\begin{center}
+\scalebox{0.55}{
+\begin{tabular}{c c c c c}
+\addlinespace
+\addlinespace
+\addlinespace
+\toprule
+\addlinespace
+ $\bm{K}$ & {\centering \textbf{MLP}} & {\centering \textbf{LSTM}} & {\centering \textbf{GRU}} &  {\centering \textbf{ESN}} \\
+   \addlinespace
+ \midrule
+ \addlinespace
+ $\bm{1}$ & &  &  & \\
+ \addlinespace 
+ \hline
+ \addlinespace
+ $\bm{2}$ & &  &  & \\ 
+ \addlinespace
+ \hline
+ \addlinespace
+ $\bm{3}$ & & & & \\ 
+ \addlinespace
+ \hline
+ \addlinespace
+ $\bm{4}$ & &  &  & \\
+   \addlinespace
+ \hline
+ \addlinespace
+ $\bm{5}$ & & & & \\
+ \addlinespace
+ \hline
+ \addlinespace
+ $\bm{6}$ & & & & \\
+ \addlinespace
+ \hline
+ \addlinespace
+ $\bm{7}$ & & & & \\
+ \bottomrule
+\end{tabular}}
+\caption{Equações de Mackey-Glass}
+\label{tab:mackeyglass-eqm}
 \end{center}
 \end{subtable}
 \caption{Valores médios e desvios-padrões do erro quadrático médio obtidos para cada $K$ nos cenários utilizadas}
