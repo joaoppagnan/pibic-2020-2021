@@ -379,7 +379,7 @@ Como já mencionamos anteriormente, as redes recorrentes \textit{Gated Recurrent
 \; \; \; \; \; \; \;
 \begin{minipage}{0.4\textwidth}
 \begin{center}
-{
+{ \footnotesize
 $$$$
 $$\mathbf{z}(n) = \sigma \left(\mathbf{W}_z [\mathbf{h}(n-1), \mathbf{x}(n)] + \mathbf{b}_z \right)$$
 $$\mathbf{r}(n) = \sigma \left(\mathbf{W}_r [\mathbf{h}(n-1), \mathbf{x}(n)] + \mathbf{b}_r \right)$$
@@ -480,6 +480,7 @@ Vale reforçar que foi utilizada apenas uma camada intermediária em cada cenár
   \hline
   \addlinespace
  \pbox{2.5cm}{\centering \textbf{Equações de Mackey-Glass}} & Não & $4$ & $\tanh$ & $\glorot\, \normal$ & $5$ & $0.001$\\ 
+ \addlinespace
 \bottomrule 
  \end{tabular}}
 \caption{Melhores parâmetros para a rede MLP nos cenários em análise}
@@ -515,6 +516,7 @@ As tabelas \ref{tab:lstm} e \ref{tab:gru} exibem as melhores configurações obt
   \hline
   \addlinespace
  \pbox{2.5cm}{\centering \textbf{Equações de Mackey-Glass}} & $2$ & $\glorot\, \uniform$ & $50$ & $0.003$\\ 
+ \addlinespace
  \bottomrule
 \end{tabular}}
 \caption{Melhores parâmetros para a rede LSTM nos cenários em análise}
@@ -545,6 +547,7 @@ As tabelas \ref{tab:lstm} e \ref{tab:gru} exibem as melhores configurações obt
   \hline
   \addlinespace
  \pbox{2.5cm}{\centering \textbf{Equações de Mackey-Glass}} & $2$ & $\glorot\, \uniform$ & $10$ & $0.005$\\ 
+ \addlinespace
  \bottomrule
 \end{tabular}}
 \caption{Melhores parâmetros para a rede GRU nos cenários em análise}
