@@ -396,9 +396,9 @@ Primeiramente, por ser uma rede recorrente, há uma realimentação nestas estru
 
 Mas, diferentemente da LSTM, na célula GRU há somente um vetor de estados passados $\mathbf{h}(n)$, e o vetor $\mathbf{z}(n)$ determinará se a memória $\mathbf{h}(n-1)$ será mantida ou apagada. Além disso, também é utilizado o vetor $\mathbf{r}(n)$, que controla qual parte de $\mathbf{h}(n-1)$ irá compor $\mathbf{g}(n)$. 
 
-Intuitivamente, pelo fato das GRU serem, basicamente, uma versão mais simples das redes LSTM, espera-se que a última seja melhor que a primeira. Porém, conforme mostrado em \cite{cho2014learning}, em determinadas aplicações a GRU é superior à LSTM. Além disso, a implementação de um modelo preditor com a rede GRU é bem similar a implementação de um preditor baseado na LSTM. Por causa disso, incluímos a \textit{Gated Recurrent Unit} na análise comparativa. 
+Intuitivamente, pelo fato das GRU serem, basicamente, uma versão mais simples das redes LSTM, espera-se que a última seja melhor que a primeira. Porém, conforme mostrado em \cite{cho2014learning}, em determinadas aplicações a GRU é superior à LSTM. Além disso, a implementação de um modelo preditor com a rede GRU é bem similar a implementação de um preditor baseado na LSTM. Logo, incluímos a \textit{Gated Recurrent Unit} na análise comparativa. 
 
-O outro modelo recorrente estudado nesta segunda metade da pesquisa foi as redes com estados de eco. Essas arquiteturas são relativamente distintas das outras redes neurais estudadas. Veremos então o que diferencia esse modelo dos outros na próxima subseção.
+O outro modelo recorrente estudado nesta segunda metade da pesquisa foram as redes com estados de eco. Essas arquiteturas são relativamente distintas das outras redes neurais estudadas. Veremos então o que diferencia esse modelo dos outros na próxima subseção.
 
 \subsection{\textit{Echo State Network} (ESN)}
 
@@ -424,7 +424,7 @@ As equações em (\ref{eq:esn}) descrevem a ESN, sendo $\mathbf{x}(n)$ o vetor d
 
 O grande diferencial prático desta rede é que os pesos das conexões recorrentes dentro do reservatório $\mathbf{W}$ são ajustados com valores fixos antes do treinamento da camada de saída. Esses parâmetros são determinados tendo em vista a propriedade de estados de eco, existindo alguns métodos simples para a criação aleatória dos pesos e que asseguram a propriedade, conforme demonstrado em \cite{jaeger2007echo}. 
 
-Devido a isso, o ajuste dos neurônios na camada de saída pode ser realizado com um procedimento de regressão linear, sem necessitar de um treinamento iterativo, como nas outras redes recorrentes. Esse fato economiza tempo de processamento e garante que será atingido o mínimo global da função custo utilizada.
+Portanto, o ajuste dos neurônios na camada de saída pode ser realizado com um procedimento de regressão linear, sem necessitar de um treinamento iterativo, como nas outras redes neurais estudadas nesta pesquisa. Esse fato economiza tempo de processamento e garante que será atingido o mínimo global da função custo utilizada.
 
 Com isso, finalizamos o restante da exposição teórica desta pesquisa. A próxima seção descreverá  a metodologia utilizada nesta análise.
 
@@ -909,13 +909,13 @@ A figura \ref{fig:mse-progression-3best} mostra a nova progressão obtida em cad
 
 Finalmente, depois de visualizarmos a progressão do EQM nos três melhores valores de $K$ para cada caso, selecionamos os melhores para o último teste realizado, novamente, seguindo o procedimento descrito no início desta seção.
 
-A próxima seção exibe os resultados obtidos, assim como certos trechos das predições onde a diferença entre os modelos foi perceptível.
+A próxima seção exibe os resultados obtidos, juntamente com certos trechos das predições onde a diferença entre os modelos foi perceptível.
 
 \section{Resultados}
 
 Após identificarmos o melhor valor de $K$ para cada modelo, realizou-se novamente o processo mencionado na seção anterior e foi obtido o EQM para as melhores configurações (parâmetros e $K$) para cada modelo, em todos os cenários. 
 
-A figura \ref{fig:model-comparison} exibe o comparativo dos melhores desempenhos das redes neurais analisadas, e a figura \ref{fig:series-comparison} mostra uma comparação da predição em si de cada modelo nos cenários onde a diferença foi mais perceptível visualmente.
+A figura \ref{fig:model-comparison} exibe o comparativo dos melhores desempenhos das redes neurais analisadas, e a figura \ref{fig:series-comparison} mostra uma comparação da predição em si de cada modelo em certos trechos das séries temporais onde a diferença foi mais perceptível visualmente.
 \begin{figure}[H]
      \begin{subfigure}[t]{0.4\textwidth}
          \includegraphics[scale=0.4]{comparacao-k-henon.pdf}
