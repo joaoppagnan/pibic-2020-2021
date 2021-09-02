@@ -90,7 +90,7 @@ Campinas, \today
 
 \section{Introdução}
 
-Depois de uma exposição sobre certos modelos preditores com redes neurais artificiais e sobre as características principais de sistemas com dinâmica caótica, apresentados no relatório parcial (seções $2.1$ e $2.2$, respectivamente), este relatório final irá expor os cenários utilizados para a análise, a metodologia utilizada, os resultados obtidos e, por fim, as conclusões desta pesquisa sobre o desempenho de redes neurais artificiais na predição de séries temporais originadas por sistemas com dinâmica caótica, além de alguns detalhes sobre as arquiteturas estudadas nesta segunda parte da pesquisa, que foram a \textit{Gated Recurrent Unit} (GRU) \cite{cho2014learning} e a \textit{Echo State Network} (ESN) \cite{jaeger2007echo}. 
+Depois de uma exposição sobre certos modelos preditores com redes neurais artificiais e sobre as características principais de sistemas com dinâmica caótica, apresentados no relatório parcial (seções $2.1$ e $2.2$, respectivamente), este relatório final apresentará os cenários utilizados para a análise, a metodologia utilizada, os resultados obtidos e, por fim, as conclusões desta pesquisa sobre o desempenho de redes neurais artificiais na predição de séries temporais originadas por sistemas com dinâmica caótica, além de alguns detalhes sobre as arquiteturas estudadas nesta segunda parte da pesquisa, que foram a \textit{Gated Recurrent Unit} (GRU) \cite{cho2014learning} e a \textit{Echo State Network} (ESN) \cite{jaeger2007echo}. 
 
 A seção 2 apresenta os quatro cenários escolhidos para a análise do desempenho das redes neurais, sendo dois destes a tempo discreto e dois a tempo contínuo. No caso, os sistemas a tempo discreto foram o mapa de Hénon \cite{henon1976two} e o mapa logístico \cite{may1976simple}. Já os sistemas a tempo contínuo foram o sistema de Lorenz \cite{lorenz1963deterministic} e as equações de Mackey-Glass \cite{mackey1977oscillation}.
 
@@ -98,7 +98,7 @@ Já na seção 3, discutiremos os dois modelos previamente citados que foram est
 
 A seção 4 realiza uma exposição da busca em grade \cite{geron2019hands} realizada em cada modelo, expondo quais foram os parâmetros testados e os critérios definidos para o processo de busca. Além disso, a seção 4 também apresentará a metodologia utilizada para definir o número de amostras de entrada de cada modelo preditor (nesse caso, chamado de $K$), além de indicar qual foi a progressão do erro quadrático médio (EQM) em função do valor de $K$ para cada modelo nos quatro cenários.
 
-Por fim, as seções 5 e 6 apresentam os resultados e as conclusões obtidas, respectivamente, encerrando, assim, esta pesquisa de iniciação científica.
+Por fim, as seções 5 e 6 mostram os resultados e as conclusões obtidas, respectivamente, encerrando, assim, esta pesquisa de iniciação científica.
  
 \section{Cenários escolhidos}
 
@@ -115,7 +115,7 @@ De forma resumida, a dinâmica caótica é marcada pela presença dos seguintes 
 \item Dão origem a atratores estranhos (estruturas topológicas que ditam a evolução temporal do fluxo de um sistema caótico) \cite{ruelle1971nature}.
 \end{enumerate}
 
-Retomados os pontos principais da dinâmica caótica, daremos continuidade à discussão apresentando os cenários escolhidos para a análise. Vale mencionar que, na simulação numérica dos quatro sistemas, foram geradas $5000$ amostras para cada série temporal. Além disso, nos sistemas multidimensionais, como o mapa de Hénon e o sistema de Lorenz, consideramos apenas a variável de estado $x$ na previsão, em ambos os casos.
+Retomados os pontos principais da dinâmica caótica, daremos continuidade à discussão apresentando os cenários escolhidos para a análise. Vale mencionar que, na simulação numérica dos quatro sistemas foram geradas $5000$ amostras para cada série temporal. Além disso, nos sistemas multidimensionais, como o mapa de Hénon e o sistema de Lorenz, consideramos apenas a variável de estado $x$ na previsão, em ambos os casos.
 
 \subsection{Sistema de Lorenz}
 
@@ -135,7 +135,7 @@ Através de simulações numéricas de dinâmicas atmosféricas, o matemático e
 \end{subequations}
 sendo $\sigma$, $\rho$ e $\beta$ constantes reais, estando relacionadas a certas características físicas do sistema, como o número de Prandtl, o número de Rayleigh e as dimensões do volume que o fluido ocupa \cite{fiedler1994caos}.
 
-Utilizando $\sigma = 10$, $\rho = 28$ e $\beta = 8/3$, Lorenz demonstrou que esse sistema de equações diferenciais exibe comportamento caótico, sendo que a maioria das condições iniciais $[x(0)\; y(0)\; z(0)] = [0\; 0\; 0]^T$ convergem para um atrator estranho (nesse caso, atrator de Lorenz).
+Utilizando $\sigma = 10$, $\rho = 28$ e $\beta = 8/3$, Lorenz demonstrou que esse sistema de equações diferenciais exibe comportamento caótico, sendo que a maioria das condições iniciais $[x(0)\; y(0)\; z(0)]^T$ convergem para um atrator estranho (nesse caso, atrator de Lorenz).
 
 A figura \ref{fig:lorenz} indica a série temporal em $x$, que foi utilizada em nossa análise, para $[x(0)\; y(0)\; z(0)]^T = [0.1\; 0\; 0]^T$, e o atrator de Lorenz para a trajetória. Para a simulação, os parâmetros do sistema foram configurados para os mesmos valores utilizados por Lorenz (exibidos no parágrafo anterior), e foi utilizado $dt = 0.01$ para resolver as equações diferenciais numericamente.
 \begin{figure}[H]
@@ -166,7 +166,7 @@ onde $a$ e $b$ são valores reais.
 
 A presença de dinâmica caótica neste sistema discreto irá depender dos valores dos parâmetros $a$ e $b$. Hénon mostrou em sua pesquisa que, para $a = 1.4$ e $b = 0.3$, há a presença de um atrator estranho do diagrama de fases desse sistema dinâmico discreto. 
 
-O mapa de Hénon realiza um mapeamento de dois pontos, chamados de pontos fixos. Para os valores dos parâmetros $a$ e $b$ mencionados anteriormente, tais pontos são dados por:
+Vale mencionar que o mapa de Hénon realiza um mapeamento de dois pontos, chamados de pontos fixos. Para os valores dos parâmetros $a$ e $b$ mencionados anteriormente, tais pontos são dados por:
 $$x = \frac{\sqrt{609}-7}{28} \approx 0.631354477$$
 $$y = \frac{3(\sqrt{609}-7)}{280} \approx 0.189406343$$
 
@@ -195,7 +195,7 @@ x[n+1] = r\cdot x[n] \cdot (1 - x[n])
 \end{equation}
 sendo $x_n$ um número real entre $0$ e $1$ que representa a razão entre o tamanho atual da população e o tamanho máximo desta, e tendo $r$ um valor real entre $0$ e $4$, representando a taxa de crescimento desta população.
 
-Nesse caso, o sistema não chega a operar em caos para qualquer valor de $r$. Robert May, através de análises numéricas \cite{gleick1998chaos}, viu que, para valores maiores que $3.44949$, o sistema entra em regime caótico. Interessantemente, ao aumentar mais o valor do parâmetro $r$, o cientista percebeu que há certas zonas de estabilidade, onde o sistema converge para um ciclo-limite. 
+Nesse caso, o sistema não chega a operar em caos para qualquer valor de $r$. Robert May, através de análises numéricas \cite{gleick1998chaos}, viu que para valores maiores que $3.44949$, o sistema entra em regime caótico. Interessantemente, ao aumentar mais o valor do parâmetro $r$, o cientista percebeu que há certas zonas de estabilidade, onde o sistema converge para um ciclo-limite. 
 
 Inicialmente, após sair do regime caótico, a dinâmica terá período $2$, e, com o aumento de $r$, o sistema começa a ter período $4$, $8$, $16$, $32$, e assim por diante, até voltar, novamente, ao movimento caótico. Esse padrão de ir do caos a estabilidade para, então, voltar ao regime caótico, se repete até que $r$ atinja seu valor máximo.
 
@@ -231,8 +231,10 @@ Por fim, o último sistema caótico simulado, também contínuo, está associado
 \end{subequations}
 sendo $P(t)$ a densidade de tais células em um instante de tempo e $\beta_0$, $\theta$, $n$, $\tau$ e $\gamma$ valores reais relacionados a certos parâmetros hormonais de um organismo, geralmente sendo determinados experimentalmente.
 
-Neste caso, conforme demonstrado em \cite{mackey1977oscillation}, a equação (\ref{eq:mackey-glass-chaos}) exibe comportamento caótico para valores mais altos de $\tau$. Para a simulação numérica, foi utilizado $n = 10$, $\gamma = 0.1$, $\beta = 0.2$, $\theta = 1$, $\tau = 22$, $dt = 1.0$ e $P(0^-)=0.1$, gerando novamente $5000$ amostras. A série e o atrator obtidos podem ser vistos na figura \ref{fig:mackey-glass}.
-\begin{figure}[H]
+Neste caso, conforme demonstrado em \cite{mackey1977oscillation}, a equação (\ref{eq:mackey-glass-chaos}) exibe comportamento caótico para valores mais altos de $\tau$. Além disso, os pesquisadores perceberam que regimes caóticos dessa equação estão correlacionados com certos problemas fisiológicos nos nossos organismos \cite{mackey1977oscillation}.
+
+Para a simulação numérica, foi utilizado $n = 10$, $\gamma = 0.1$, $\beta = 0.2$, $\theta = 1$, $\tau = 22$, $dt = 1.0$ e $P(0^-)=0.1$, gerando novamente $5000$ amostras. A série e o atrator obtidos podem ser vistos na figura \ref{fig:mackey-glass}.
+\begin{figure}[!ht]
      \begin{subfigure}[t]{0.35\textwidth}
          \includegraphics[scale=0.35]{serie-mackeyglass.pdf}
          %\caption{$y=5/x$}
@@ -245,8 +247,6 @@ Neste caso, conforme demonstrado em \cite{mackey1977oscillation}, a equação (\
      \caption{À esquerda, a série temporal da equação (\ref{eq:mackey-glass-chaos}) exibida de $t = 0 $ a $t = 800$ e, à direita, o atrator correspondente à simulação}
      \label{fig:mackey-glass}
 \end{figure}
-
-Curiosamente, os pesquisadores perceberam que regimes caóticos dessa equação estão correlacionados com certos problemas fisiológicos nos nossos organismos \cite{mackey1977oscillation}.
 
 Com isso, finalizamos a exposição sobre os cenários de sistemas com dinâmica caótica escolhidos para a análise comparativa. Na próxima seção, falaremos a respeito dos dois modelos estudados e implementados nesta segunda parte da pesquisa. Em seguida, apresentaremos a metodologia aplicada nesses e nos outros modelos mostrados no relatório parcial, assim como as particularidades para cada caso.
 
@@ -438,7 +438,7 @@ Vale reforçar que, para todos os modelos e cenários, os dados de treinamento c
 
 Em seguida, na seção 4.2, será apresentado a análise feita da autocorrelação parcial das séries temporais, de forma a determinar a faixa de valores de $K$ para ser testada em cada cenário.
 
-Por último, na seção 4.3, falaremos sobre os testes realizados em cada valor de $K$ nos modelos avaliados.´
+Por último, na seção 4.3, falaremos sobre os testes realizados em cada valor de $K$ nos modelos avaliados, de forma a determinarmos a melhor configuração para esse parâmetro.
 
 \subsection{Configurações utilizadas}
 
@@ -456,7 +456,7 @@ Com esses detalhes expostos, iniciaremos a exposição com a busca em grade real
 
 Na busca em grade para a MLP, avaliamos diferentes tamanhos de \textit{batch} ($2$, $4$, $8$, $16$, $32$), se haveria ou não uma camada de \textit{batch normalization} na entrada da rede MLP, diferentes opções de função de ativação dos neurônios na camada intermediária ($\selu$, $\relu$, $\elu$, $\tanh$, $\sigmoid$), esquemas alternativos para a inicialização dos pesos ($\glorot$, $\he$, $\lecun$, tanto com distribuição normal, quanto uniforme), diferentes quantidades de neurônios na camada intermediária ($5$, $10$, $15$, $20$, $30$, $50$, $75$, $100$) e, também, diferentes valores para a taxa de aprendizagem ($0.001$, $0.003$, $0.005$, $0.008$, $0.01$). 
 
-Vale reforçar que foi utilizada apenas uma camada intermediária em cada cenário. As melhores configurações obtidas podem ser vistas na tabela \ref{tab:mlp}.
+Vale reforçar que foi utilizada apenas uma camada intermediária em cada cenário, e as melhores configurações obtidas podem ser vistas na tabela \ref{tab:mlp}.
 \begin{table}[H]
 \begin{center}
 \scalebox{0.75}{
@@ -615,7 +615,7 @@ A figura \ref{fig:autocorrelation} mostra a autocorrelação parcial para as sé
      \label{fig:autocorrelation}
 \end{figure}
 
-Vale mencionar que, a autocorrelação parcial encontra a correlação dos resíduos (chamados assim pois são mantidos após a remoção dos efeitos já explicados pelos primeiros atrasos) com o próximo valor de atraso, removendo correlações entre este e atrasos passados. Logo, essa medida descreve somente a relação direta entre duas observações da série afastadas por $K$ instantes de tempo.
+Vale mencionar que a autocorrelação parcial encontra a correlação dos resíduos (chamados assim pois são mantidos após a remoção dos efeitos já explicados pelos primeiros atrasos) com o próximo valor de atraso, removendo correlações entre este e atrasos passados. Logo, essa medida descreve somente a relação direta entre duas observações da série afastadas por $K$ instantes de tempo.
 
 A tabela \ref{tab:autocorrelation} mostra a faixa de valores para $K$ a ser testada obtida com a análise descrita nos parágrafos anteriores.
 \begin{table}[H]
@@ -638,11 +638,11 @@ A tabela \ref{tab:autocorrelation} mostra a faixa de valores para $K$ a ser test
 
 \subsection{Análise do melhor valor para $K$}
 
-Com as melhores configurações para cada rede e cenário obtidas, foi analisada a progressão do erro quadrático médio para cada valor de $K$. A faixa de valores para $K$ a ser testada foi determinada utilizando a autocorrelação parcial das séries temporais de cada sistema analisado, levando em consideração os valores de $K$ que têm as autocorrelações parciais mais relevantes.
+Com as faixas de valores de $K$ estabelecidas, avaliamos a progressão do erro quadrático médio para diferentes configurações desse parâmetro.
 
 Para realizar esse procedimento, cada rede (com as configurações ótimas) foi treinada utilizando $85\%$ dos dados gerados, sendo que $10\%$ dos dados de treinamento foi utilizado como o conjunto de validação (nas redes MLP, LSTM e GRU). Em seguida, com o modelo treinado, foi avaliado o EQM no conjunto de teste (que corresponde às últimas 750 amostras). Esse processo foi realizado $5$ vezes para cada $K$, obtendo assim um valor médio e desvio-padrão para cada modelo e em cada cenário. 
 
-Vale reforçar que, como o ajuste de parâmetros da ESN possui solução em forma fechada, não foi necessário utilizar um conjunto de validação no treinamento. No caso da MLP, LSTM e GRU, o processo iterativo de ajuste dos pesos utilizou um conjunto de validação de forma a seguir o procedimento de \textit{early stopping} para evitar o sobreajuste da rede.
+Além disso, como o ajuste de parâmetros da ESN possui solução em forma fechada, não foi necessário utilizar um conjunto de validação no treinamento. No caso da MLP, LSTM e GRU, o processo iterativo de ajuste dos pesos utilizou um conjunto de validação de forma a seguir o procedimento de \textit{early stopping} para evitar o sobreajuste da rede.
 
 A figura \ref{fig:mse-progression} mostra a progressão do EQM observada em cada cenário para cada uma das redes estudadas. 
 \begin{figure}[!ht]
@@ -876,7 +876,7 @@ Nas tabelas \ref{tab:henon-eqm}, \ref{tab:logistic-eqm}, \ref{tab:lorenz-eqm} e 
 \end{center}
 \end{table}
 
-Após avaliarmos o desempenho dos modelos para as faixas de $K$ obtidas com a análise da autocorrelação parcial das séries temporais, foram selecionados os três melhores valores para esse parâmetro, ou seja, os que tiveram as três menores médias de erro quadrático médio, para uma etapa de retreinamento e reavaliação. 
+Após avaliarmos o desempenho dos modelos para as faixas de $K$ obtidas com a análise da autocorrelação parcial das séries temporais, foram selecionados os três melhores valores para esse parâmetro de cada modelo, ou seja, os que tiveram as três menores médias de erro quadrático médio, para uma etapa de retreinamento e reavaliação. 
 
 Novamente, utilizando os três melhores valores de $K$, realizamos o processo mencionado no início desta seção, cinco vezes para cada $K$. 
 
@@ -1173,6 +1173,13 @@ O principal resultado observado foi que o modelo preditor utilizando a rede com 
 Esse resultado, aliado ao fato de que o treinamento da ESN é bem menos custoso computacionalmente se comparado ao das outras redes, mostra que esta rede é uma boa alternativa para futuros estudos de modelos preditores de séries temporais. Além disso, conforme mostrado em outros trabalhos como \cite{jaeger2004harnessing, jaeger2007echo, boccato2013novas}, a ESN também é uma boa ferramenta para outras tarefas de extração de informação, como em equalização de canais e separação de fontes. 
 
 Como sugestão de trabalhos futuros, pode ser avaliada a eficácia da ESN em reconstruir atratores através de séries temporais experimentais de sistemas caóticos. Se o desempenho para essa tarefa for tão bom quanto o obtido na predição das séries estudadas, a ESN pode tornar-se uma ferramenta ainda mais poderosa para a modelagem de sistemas com dinâmica caótica.
+
+Com isso, finalizamos esta pesquisa de iniciação científica. Através dos processos descritos neste relatório final e, anteriormente, no relatório parcial, o aluno teve contato com ferramentas do estado da arte de predição de séries temporais, úteis não só para séries originadas por dinâmicas caóticas, como também para cenários relacionados a outros tipos de sistemas.
+
+Além disso, o aluno teve uma exposição a outras ferramentas de aprendizado de máquina que não necessariamente estão relacionadas com problemas de predição, mas que possam ser úteis para outros tipos de projetos de pesquisa que o estudante possa participar no futuro.
+
+Logo, esse projeto forneceu os princípios para que o aluno possa, além de atuar em diversas áreas do conhecimento, como a matemática, a física, a biologia, e várias outras, desenvolver pesquisas científicas, cumprindo, assim, o principal objetivo de um projeto de iniciação científica.
+
 
 \bibliographystyle{ieeetr}
 
