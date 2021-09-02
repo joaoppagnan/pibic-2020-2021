@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-VERSION = '0.5' 
+VERSION = '1.0' 
 DESCRIPTION = 'Pacote de Python para o projeto do PIBIC 2020/2021'
 LONG_DESCRIPTION = 'Pacote de Python para o projeto do PIBIC 2020/2021'
 

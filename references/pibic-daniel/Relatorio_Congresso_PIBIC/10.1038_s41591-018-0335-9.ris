@@ -1,0 +1,86 @@
+TY  - JOUR
+AU  - Liang, Huiying
+AU  - Tsui, Brian Y.
+AU  - Ni, Hao
+AU  - Valentim, Carolina C. S.
+AU  - Baxter, Sally L.
+AU  - Liu, Guangjian
+AU  - Cai, Wenjia
+AU  - Kermany, Daniel S.
+AU  - Sun, Xin
+AU  - Chen, Jiancong
+AU  - He, Liya
+AU  - Zhu, Jie
+AU  - Tian, Pin
+AU  - Shao, Hua
+AU  - Zheng, Lianghong
+AU  - Hou, Rui
+AU  - Hewett, Sierra
+AU  - Li, Gen
+AU  - Liang, Ping
+AU  - Zang, Xuan
+AU  - Zhang, Zhiqi
+AU  - Pan, Liyan
+AU  - Cai, Huimin
+AU  - Ling, Rujuan
+AU  - Li, Shuhua
+AU  - Cui, Yongwang
+AU  - Tang, Shusheng
+AU  - Ye, Hong
+AU  - Huang, Xiaoyan
+AU  - He, Waner
+AU  - Liang, Wenqing
+AU  - Zhang, Qing
+AU  - Jiang, Jianmin
+AU  - Yu, Wei
+AU  - Gao, Jianqun
+AU  - Ou, Wanxing
+AU  - Deng, Yingmin
+AU  - Hou, Qiaozhen
+AU  - Wang, Bei
+AU  - Yao, Cuichan
+AU  - Liang, Yan
+AU  - Zhang, Shu
+AU  - Duan, Yaou
+AU  - Zhang, Runze
+AU  - Gibson, Sarah
+AU  - Zhang, Charlotte L.
+AU  - Li, Oulan
+AU  - Zhang, Edward D.
+AU  - Karin, Gabriel
+AU  - Nguyen, Nathan
+AU  - Wu, Xiaokang
+AU  - Wen, Cindy
+AU  - Xu, Jie
+AU  - Xu, Wenqin
+AU  - Wang, Bochu
+AU  - Wang, Winston
+AU  - Li, Jing
+AU  - Pizzato, Bianca
+AU  - Bao, Caroline
+AU  - Xiang, Daoman
+AU  - He, Wanting
+AU  - He, Suiqin
+AU  - Zhou, Yugui
+AU  - Haw, Weldon
+AU  - Goldbaum, Michael
+AU  - Tremoulet, Adriana
+AU  - Hsu, Chun-Nan
+AU  - Carter, Hannah
+AU  - Zhu, Long
+AU  - Zhang, Kang
+AU  - Xia, Huimin
+PY  - 2019
+DA  - 2019/03/01
+TI  - Evaluation and accurate diagnoses of pediatric diseases using artificial intelligence
+JO  - Nature Medicine
+SP  - 433
+EP  - 438
+VL  - 25
+IS  - 3
+AB  - Artificial intelligence (AI)-based methods have emerged as powerful tools to transform medical care. Although machine learning classifiers (MLCs) have already demonstrated strong performance in image-based diagnoses, analysis of diverse and massive electronic health record (EHR) data remains challenging. Here, we show that MLCs can query EHRs in a manner similar to the hypothetico-deductive reasoning used by physicians and unearth associations that previous statistical methods have not found. Our model applies an automated natural language processing system using deep learning techniques to extract clinically relevant information from EHRs. In total, 101.6 million data points from 1,362,559 pediatric patient visits presenting to a major referral center were analyzed to train and validate the framework. Our model demonstrates high diagnostic accuracy across multiple organ systems and is comparable to experienced pediatricians in diagnosing common childhood diseases. Our study provides a proof of concept for implementing an AI-based system as a means to aid physicians in tackling large amounts of data, augmenting diagnostic evaluations, and to provide clinical decision support in cases of diagnostic uncertainty or complexity. Although this impact may be most evident in areas where healthcare providers are in relative shortage, the benefits of such an AI system are likely to be universal.
+SN  - 1546-170X
+UR  - https://doi.org/10.1038/s41591-018-0335-9
+DO  - 10.1038/s41591-018-0335-9
+ID  - Liang2019
+ER  - 

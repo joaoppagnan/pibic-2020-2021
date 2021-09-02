@@ -10,10 +10,10 @@
 % margem esq 2,5cm
 % margem dir 2 cm
 %\RequirePackage[a4paper,twocolumn,top=3.5cm,left=2.5cm,right=2cm,bottom=2.5cm]{geometry}
-\RequirePackage[a4paper,twocolumn,top=2.5cm,left=2cm,right=2cm,bottom=2.5cm]{geometry}
+\RequirePackage[a4paper,twocolumn,top=1.75cm,left=1.5cm,right=1.5cm,bottom=1.75cm]{geometry}
 
 \parindent 1.27cm
-\parskip   6pt
+\parskip   5pt
 
 \flushbottom
 % headers and footers
@@ -30,11 +30,11 @@
 \setlength{\columnsep}{0.5cm}
 
 % captions
-\RequirePackage[bf,sf,footnotesize,indent]{caption2}
+%\RequirePackage[bf,sf,footnotesize,indent]{caption}
 %\setlength{\captionmargin}{0.8cm}
-\setlength{\captionmargin}{0.5cm}
-\renewcommand{\captionfont}{\sffamily\footnotesize\bfseries}
-\renewcommand{\captionlabeldelim}{.}
+%\setlength{\captionmargin}{0.2cm}
+%\renewcommand{\captionfont}{\sffamily\footnotesize\bfseries}
+%\renewcommand{\captionlabeldelim}{.}
 
 % font
 \RequirePackage{times}
@@ -92,9 +92,15 @@
                        {\normalfont\XIIPT\bfseries\boldmath
                         \centering \pretolerance=10000 }}
 
-\renewcommand{\thesection}{\Roman{section}.}
-\renewcommand{\thesubsection}{\thesection\Roman{subsection}.}
-\renewcommand{\thesubsubsection}{\thesubsection\arabic{subsubsection}.}
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+                       {-6\p@ \@plus -4\p@ \@minus -4\p@}%
+                       {0\p@ \@plus 4\p@ \@minus 4\p@}%
+                       {\normalfont\bfseries\boldmath
+                        \centering \pretolerance=10000 }}
+
+\renewcommand{\thesection}{\arabic{section}.}
+\renewcommand{\thesubsection}{\thesection\arabic{subsection}.}
+\renewcommand{\thesubsubsection}{ \thesubsection\arabic{subsubsection}.}
 
 \RequirePackage{titlesec}
 \titlelabel{\thetitle\hspace{1ex}}
@@ -103,8 +109,6 @@
 \pagestyle{empty}
 
 \newcommand{\authortag}[1]{$^{#1}$}
-
-\def\address#1{\gdef\@address{#1}}
 
 \def\@maketitle{\newpage
  %\null % isso dava um espaco extra antes do title
@@ -116,9 +120,6 @@
    \vglue 6pt plus 3pt minus 3pt
   {\normalsize
    \textbf{\begin{tabular}[t]{c}\@author\end{tabular}}\par}
-   \vglue 6pt plus 3pt minus 3pt
-  {\normalsize
-   \begin{tabular}[t]{c}\@address\end{tabular}\par}
    \vglue 6pt plus 3pt minus 3pt
    \end{center}\par
 }
