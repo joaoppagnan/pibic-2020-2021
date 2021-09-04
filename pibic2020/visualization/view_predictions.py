@@ -69,7 +69,7 @@ if (int(model) == 1):
     # gerando os graficos
     # henon
     print("Gerando os gráficos para o mapa de Hénon...")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(n_henon, y_henon_teste, color='#002d04', label='Valor real')
     ax.plot(n_henon, y_henon_pred, color='tab:blue', label='MLP')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa de Hénon\n utilizando as melhores configurações no conjunto de teste")
@@ -80,7 +80,7 @@ if (int(model) == 1):
     sns.despine()
     ax.legend()
     fig.savefig("images/mlp-basica/performance/mlp-basica-vs-henon.pdf")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(n_henon, y_henon_teste, color='#002d04', label='Valor real')
     ax.plot(n_henon, y_henon_pred, color='tab:blue', label='MLP')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa de Hénon\n utilizando as melhores configurações no conjunto de teste")
@@ -113,7 +113,7 @@ if (int(model) == 1):
 
     # logistic
     print("Gerando os gráficos para o mapa logístico...")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(n_logistic, y_logistic_teste, color='#4b0101', label='Valor real')
     ax.plot(n_logistic, y_logistic_pred, color='tab:blue', label='MLP')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa logístico\n utilizando as melhores configurações no conjunto de teste")
@@ -157,7 +157,7 @@ if (int(model) == 1):
 
     # lorenz
     print("Gerando os gráficos para o sistema de Lorenz...")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(t_lorenz, y_lorenz_teste, color='#35063e', label='Valor real')
     ax.plot(t_lorenz, y_lorenz_pred, color='tab:blue', label='MLP')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa logístico\n utilizando as melhores configurações no conjunto de teste")
@@ -168,7 +168,7 @@ if (int(model) == 1):
     sns.despine()
     ax.legend()
     fig.savefig("images/mlp-basica/performance/mlp-basica-vs-lorenz.pdf")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(t_lorenz, y_lorenz_teste, color='#35063e', label='Valor real')
     ax.plot(t_lorenz, y_lorenz_pred, color='tab:blue', label='MLP')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa logístico\n utilizando as melhores configurações no conjunto de teste")
@@ -201,7 +201,7 @@ if (int(model) == 1):
 
     # mackeyglass
     print("Gerando os gráficos para as equações de Mackey-Glass...")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(t_mackeyglass, y_mackeyglass_teste, color='#653700', label='Valor real')
     ax.plot(t_mackeyglass, y_mackeyglass_pred, color='tab:blue', label='MLP')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa logístico\n utilizando as melhores configurações no conjunto de teste")
@@ -291,7 +291,7 @@ elif (int(model) == 2):
     # gerando os graficos
     # henon
     print("Gerando os gráficos para o mapa de Hénon...")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(n_henon, y_henon_teste, color='#002d04', label='Valor real')
     ax.plot(n_henon, y_henon_pred, color='tab:orange', label='LSTM')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa de Hénon\n utilizando as melhores configurações no conjunto de teste")
@@ -302,7 +302,7 @@ elif (int(model) == 2):
     sns.despine()
     ax.legend()
     fig.savefig("images/lstm/performance/lstm-vs-henon.pdf")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(n_henon, y_henon_teste, color='#002d04', label='Valor real')
     ax.plot(n_henon, y_henon_pred, color='tab:orange', label='LSTM')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa de Hénon\n utilizando as melhores configurações no conjunto de teste")
@@ -335,7 +335,7 @@ elif (int(model) == 2):
 
     # logistic
     print("Gerando os gráficos para o mapa logístico...")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(n_logistic, y_logistic_teste, color='#4b0101', label='Valor real')
     ax.plot(n_logistic, y_logistic_pred, color='tab:orange', label='LSTM')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa logístico\n utilizando as melhores configurações no conjunto de teste")
@@ -346,7 +346,7 @@ elif (int(model) == 2):
     sns.despine()
     ax.legend()
     fig.savefig("images/lstm/performance/lstm-vs-logistic.pdf")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(n_logistic, y_logistic_teste, color='#4b0101', label='Valor real')
     ax.plot(n_logistic, y_logistic_pred, color='tab:orange', label='LSTM')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa logístico\n utilizando as melhores configurações no conjunto de teste")
@@ -379,7 +379,7 @@ elif (int(model) == 2):
 
     # lorenz
     print("Gerando os gráficos para o sistema de Lorenz...")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(t_lorenz, y_lorenz_teste, color='#35063e', label='Valor real')
     ax.plot(t_lorenz, y_lorenz_pred, color='tab:orange', label='LSTM')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa logístico\n utilizando as melhores configurações no conjunto de teste")
@@ -390,7 +390,7 @@ elif (int(model) == 2):
     sns.despine()
     ax.legend()
     fig.savefig("images/lstm/performance/lstm-vs-lorenz.pdf")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(t_lorenz, y_lorenz_teste, color='#35063e', label='Valor real')
     ax.plot(t_lorenz, y_lorenz_pred, color='tab:orange', label='LSTM')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa logístico\n utilizando as melhores configurações no conjunto de teste")
@@ -423,7 +423,7 @@ elif (int(model) == 2):
 
     # mackeyglass
     print("Gerando os gráficos para as equações de Mackey-Glass...")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(t_mackeyglass, y_mackeyglass_teste, color='#653700', label='Valor real')
     ax.plot(t_mackeyglass, y_mackeyglass_pred, color='tab:orange', label='LSTM')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa logístico\n utilizando as melhores configurações no conjunto de teste")
@@ -434,7 +434,7 @@ elif (int(model) == 2):
     sns.despine()
     ax.legend()
     fig.savefig("images/lstm/performance/lstm-vs-mackeyglass.pdf")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(t_mackeyglass, y_mackeyglass_teste, color='#653700', label='Valor real')
     ax.plot(t_mackeyglass, y_mackeyglass_pred, color='tab:orange', label='LSTM')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa logístico\n utilizando as melhores configurações no conjunto de teste")
@@ -513,7 +513,7 @@ elif (int(model) == 3):
     # gerando os graficos
     # henon
     print("Gerando os gráficos para o mapa de Hénon...")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(n_henon, y_henon_teste, color='#002d04', label='Valor real')
     ax.plot(n_henon, y_henon_pred, color='tab:green', label='GRU')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa de Hénon\n utilizando as melhores configurações no conjunto de teste")
@@ -524,7 +524,7 @@ elif (int(model) == 3):
     sns.despine()
     ax.legend()
     fig.savefig("images/gru/performance/gru-vs-henon.pdf")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(n_henon, y_henon_teste, color='#002d04', label='Valor real')
     ax.plot(n_henon, y_henon_pred, color='tab:green', label='GRU')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa de Hénon\n utilizando as melhores configurações no conjunto de teste")
@@ -557,7 +557,7 @@ elif (int(model) == 3):
 
     # logistic
     print("Gerando os gráficos para o mapa logístico...")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(n_logistic, y_logistic_teste, color='#4b0101', label='Valor real')
     ax.plot(n_logistic, y_logistic_pred, color='tab:green', label='GRU')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa logístico\n utilizando as melhores configurações no conjunto de teste")
@@ -568,7 +568,7 @@ elif (int(model) == 3):
     sns.despine()
     ax.legend()
     fig.savefig("images/gru/performance/gru-vs-logistic.pdf")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(n_logistic, y_logistic_teste, color='#4b0101', label='Valor real')
     ax.plot(n_logistic, y_logistic_pred, color='tab:green', label='GRU')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa logístico\n utilizando as melhores configurações no conjunto de teste")
@@ -601,7 +601,7 @@ elif (int(model) == 3):
 
     # lorenz
     print("Gerando os gráficos para o sistema de Lorenz...")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(t_lorenz, y_lorenz_teste, color='#35063e', label='Valor real')
     ax.plot(t_lorenz, y_lorenz_pred, color='tab:green', label='GRU')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa logístico\n utilizando as melhores configurações no conjunto de teste")
@@ -612,7 +612,7 @@ elif (int(model) == 3):
     sns.despine()
     ax.legend()
     fig.savefig("images/gru/performance/gru-vs-lorenz.pdf")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(t_lorenz, y_lorenz_teste, color='#35063e', label='Valor real')
     ax.plot(t_lorenz, y_lorenz_pred, color='tab:green', label='GRU')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa logístico\n utilizando as melhores configurações no conjunto de teste")
@@ -645,7 +645,7 @@ elif (int(model) == 3):
 
     # mackeyglass
     print("Gerando os gráficos para as equações de Mackey-Glass...")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(t_mackeyglass, y_mackeyglass_teste, color='#653700', label='Valor real')
     ax.plot(t_mackeyglass, y_mackeyglass_pred, color='tab:green', label='GRU')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa logístico\n utilizando as melhores configurações no conjunto de teste")
@@ -656,7 +656,7 @@ elif (int(model) == 3):
     sns.despine()
     ax.legend()
     fig.savefig("images/gru/performance/gru-vs-mackeyglass.pdf")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(t_mackeyglass, y_mackeyglass_teste, color='#653700', label='Valor real')
     ax.plot(t_mackeyglass, y_mackeyglass_pred, color='tab:green', label='GRU')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa logístico\n utilizando as melhores configurações no conjunto de teste")
@@ -735,7 +735,7 @@ elif (int(model) == 4):
     # gerando os graficos
     # henon
     print("Gerando os gráficos para o mapa de Hénon...")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(n_henon, y_henon_teste, color='#002d04', label='Valor real')
     ax.plot(n_henon, y_henon_pred, color='tab:red', label='ESN')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa de Hénon\n utilizando as melhores configurações no conjunto de teste")
@@ -746,7 +746,7 @@ elif (int(model) == 4):
     sns.despine()
     ax.legend()
     fig.savefig("images/esn/performance/esn-vs-henon.pdf")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(n_henon, y_henon_teste, color='#002d04', label='Valor real')
     ax.plot(n_henon, y_henon_pred, color='tab:red', label='ESN')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa de Hénon\n utilizando as melhores configurações no conjunto de teste")
@@ -779,7 +779,7 @@ elif (int(model) == 4):
 
     # logistic
     print("Gerando os gráficos para o mapa logístico...")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(n_logistic, y_logistic_teste, color='#4b0101', label='Valor real')
     ax.plot(n_logistic, y_logistic_pred, color='tab:red', label='ESN')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa logístico\n utilizando as melhores configurações no conjunto de teste")
@@ -790,7 +790,7 @@ elif (int(model) == 4):
     sns.despine()
     ax.legend()
     fig.savefig("images/esn/performance/esn-vs-logistic.pdf")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(n_logistic, y_logistic_teste, color='#4b0101', label='Valor real')
     ax.plot(n_logistic, y_logistic_pred, color='tab:red', label='ESN')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa logístico\n utilizando as melhores configurações no conjunto de teste")
@@ -823,7 +823,7 @@ elif (int(model) == 4):
 
     # lorenz
     print("Gerando os gráficos para o sistema de Lorenz...")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(t_lorenz, y_lorenz_teste, color='#35063e', label='Valor real')
     ax.plot(t_lorenz, y_lorenz_pred, color='tab:red', label='ESN')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa logístico\n utilizando as melhores configurações no conjunto de teste")
@@ -834,7 +834,7 @@ elif (int(model) == 4):
     sns.despine()
     ax.legend()
     fig.savefig("images/esn/performance/esn-vs-lorenz.pdf")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(t_lorenz, y_lorenz_teste, color='#35063e', label='Valor real')
     ax.plot(t_lorenz, y_lorenz_pred, color='tab:red', label='ESN')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa logístico\n utilizando as melhores configurações no conjunto de teste")
@@ -867,7 +867,7 @@ elif (int(model) == 4):
 
     # mackeyglass
     print("Gerando os gráficos para as equações de Mackey-Glass...")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(t_mackeyglass, y_mackeyglass_teste, color='#653700', label='Valor real')
     ax.plot(t_mackeyglass, y_mackeyglass_pred, color='tab:red', label='ESN')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa logístico\n utilizando as melhores configurações no conjunto de teste")
@@ -878,7 +878,7 @@ elif (int(model) == 4):
     sns.despine()
     ax.legend()
     fig.savefig("images/esn/performance/esn-vs-mackeyglass.pdf")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(t_mackeyglass, y_mackeyglass_teste, color='#653700', label='Valor real')
     ax.plot(t_mackeyglass, y_mackeyglass_pred, color='tab:red', label='ESN')
     #ax.set_title("Comparação da predição da MLP com o valor real do mapa logístico\n utilizando as melhores configurações no conjunto de teste")
@@ -999,7 +999,7 @@ elif (int(model) == 5):
     # gerando os graficos
     # henon
     print("Gerando os gráficos para o mapa de Hénon...")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(n_henon, y_henon_teste, color='#002d04', label='Valor real')
     ax.plot(n_henon, y_mlp_henon_pred, label='MLP')
     ax.plot(n_henon, y_lstm_henon_pred, label='LSTM')
@@ -1013,7 +1013,7 @@ elif (int(model) == 5):
     sns.despine()
     ax.legend()
     fig.savefig("images/comparativo/vs-henon.pdf")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(n_henon, y_henon_teste, color='#002d04', label='Valor real')
     ax.plot(n_henon, y_mlp_henon_pred, label='MLP')
     ax.plot(n_henon, y_lstm_henon_pred, label='LSTM')
@@ -1055,7 +1055,7 @@ elif (int(model) == 5):
 
     # logistic
     print("Gerando os gráficos para o mapa logístico...")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(n_logistic, y_logistic_teste, color='#4b0101', label='Valor real')
     ax.plot(n_logistic, y_mlp_logistic_pred, label='MLP')
     ax.plot(n_logistic, y_lstm_logistic_pred, label='LSTM')
@@ -1069,7 +1069,7 @@ elif (int(model) == 5):
     sns.despine()
     ax.legend()
     fig.savefig("images/comparativo/vs-logistic.pdf")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(n_logistic, y_logistic_teste, color='#4b0101', label='Valor real')
     ax.plot(n_logistic, y_mlp_logistic_pred, label='MLP')
     ax.plot(n_logistic, y_lstm_logistic_pred, label='LSTM')
@@ -1111,7 +1111,7 @@ elif (int(model) == 5):
 
     # lorenz
     print("Gerando os gráficos para o sistema de Lorenz...")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(t_lorenz, y_lorenz_teste, color='#35063e', label='Valor real')
     ax.plot(t_lorenz, y_mlp_lorenz_pred, label='MLP')
     ax.plot(t_lorenz, y_lstm_lorenz_pred, label='LSTM')
@@ -1125,7 +1125,7 @@ elif (int(model) == 5):
     sns.despine()
     ax.legend()
     fig.savefig("images/comparativo/vs-lorenz.pdf")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(t_lorenz, y_lorenz_teste, color='#35063e', label='Valor real')
     ax.plot(t_lorenz, y_mlp_lorenz_pred, label='MLP')
     ax.plot(t_lorenz, y_lstm_lorenz_pred, label='LSTM')
@@ -1167,7 +1167,7 @@ elif (int(model) == 5):
 
     # mackeyglass
     print("Gerando os gráficos para as equações de Mackey-Glass...")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(t_mackeyglass, y_mackeyglass_teste, color='#653700', label='Valor real')
     ax.plot(t_mackeyglass, y_mlp_mackeyglass_pred, label='MLP')
     ax.plot(t_mackeyglass, y_lstm_mackeyglass_pred, label='LSTM')
@@ -1181,7 +1181,7 @@ elif (int(model) == 5):
     sns.despine()
     ax.legend()
     fig.savefig("images/comparativo/vs-mackeyglass.pdf")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(tight_layout=True)
     ax.plot(t_mackeyglass, y_mackeyglass_teste, color='#653700', label='Valor real')
     ax.plot(t_mackeyglass, y_mlp_mackeyglass_pred, label='MLP')
     ax.plot(t_mackeyglass, y_lstm_mackeyglass_pred, label='LSTM')
