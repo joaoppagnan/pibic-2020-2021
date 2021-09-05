@@ -156,14 +156,31 @@ elif (int(sis) == 2):
     fig.savefig("images/caos/logistic-map/serie-temporal.pdf")
 
     if (int(sis) == 1):
-        conjunto_r = np.linspace(0.0, 4.0, 1000)
+        print("Aplicar zoom?")
+
+        while (1):
+            print("1: Sim, 2: Não")
+            sis = input()
+            if ((int(sis) == 1) or (int(sis) == 2)):
+                break
+            else:
+                print("Digite um número válido!")  
+
+        if (int(sis) == 2):
+            conjunto_r = np.linspace(0.0, 4.0, 1000)
+        elif (int(sis) == 1):
+            conjunto_r = np.linspace(3.8, 3.9, 1000)            
         n_iteracoes = 1000
         n_valores_finais = int(0.1*n_iteracoes)
         fig, ax = plt.subplots(tight_layout=True)
         #ax.set_title("Diagrama de bifurcação para o mapa logístico")
         ax.set_ylabel('$x$')
         ax.set_xlabel('$r$')
-        ax.set_xlim(0, 4)
+
+        if (int(sis) == 2):
+            ax.set_xlim(0, 4)
+        elif (int(sis) == 1):
+            ax.set_xlim(3.8, 3.9)
         ax.set_ylim(0, )
         ax.grid(False)
         sns.despine()
@@ -181,12 +198,18 @@ elif (int(sis) == 2):
             x_unicos = np.unique(x[-n_valores_finais:])
             r_unicos = conjunto_r[ri]*np.ones(len(x_unicos))
 
-            ax.scatter(r_unicos, x_unicos, s=0.5, marker="o", facecolors='Black', edgecolors='Black')
+            ax.scatter(r_unicos, x_unicos, s=0.25, marker=".", facecolors='Black', edgecolors='Black')
 
         ax.vlines([3.86], 0, 1, linestyles='dashed', colors='red')
-        fig.savefig("images/caos/logistic-map/mapa-logistico.pdf")
-        fig.savefig("reports/congresso-pibic/figures/mapa-logistico.png")
-        fig.savefig("reports/relatorio-final/figures/mapa-logistico.png")
+
+        if (int(sis) == 2):        
+            fig.savefig("images/caos/logistic-map/mapa-logistico.pdf")
+            fig.savefig("reports/congresso-pibic/figures/mapa-logistico.png")
+            fig.savefig("reports/relatorio-final/figures/mapa-logistico.png")
+        elif (int(sis) == 1):
+            fig.savefig("images/caos/logistic-map/mapa-logistico-zoom.pdf")
+            fig.savefig("reports/congresso-pibic/figures/mapa-logistico-zoom.png")
+            fig.savefig("reports/relatorio-final/figures/mapa-logistico-zoom.png")
 
     print("Gráficos gerados!")
 
