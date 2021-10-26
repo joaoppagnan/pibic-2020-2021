@@ -66,12 +66,6 @@ Artificiais}
   \titlepage
 \end{frame}
 
-\begin{frame}{Seções}
-%\begin{multicols}{2}
-    \footnotesize \tableofcontents
-%\end{multicols}
-\end{frame}
-
 % Section titles are shown in at the top of the slides with the current section 
 % highlighted. Note that the number of sections determines the size of the top 
 % bar, and hence the university name and logo. If you do not add any sections 
@@ -81,30 +75,15 @@ Artificiais}
 \begin{frame}
     \frametitle{Introdução}
     \framesubtitle{Previsão de séries temporais de sistemas caóticos}
-    \justifying O desafio de antecipar padrões de comportamento e construir modelos que sejam apropriados para explicar determinados fenômenos da natureza tem importância para a:
-    
-    \begin{itemize}[<+-| alert@+>]
-        \item Astronomia,
-        \item Biologia,
-        \item Meteorologia,
-        \item Automação,
-        \item e várias outras áreas da ciência.
-    \end{itemize}
+    \justifying O desafio de antecipar padrões de comportamento e construir modelos que sejam apropriados para explicar determinados fenômenos da natureza tem importância para várias áreas da ciência.
 \end{frame}
 
 \begin{frame}
     \frametitle{Introdução}
     \framesubtitle{Previsão de séries temporais de sistemas caóticos}
     \justifying Uma classe de sistemas dinâmicos particularmente relevante dentro do contexto de modelagem e predição de séries temporais está ligada à ideia de dinâmica caótica. Apesar de serem determinísticos, esses sistemas são extremamente sensíveis às condições iniciais \cite{fiedler1994caos}.
-
 \end{frame}
 
-\begin{frame}
-    \frametitle{Introdução}
-    \framesubtitle{Previsão de séries temporais de sistemas caóticos}
-    \justifying Tal característica intensifica o desafio de predizer as séries temporais originadas por eles, pois uma pequena incerteza na medida afetará toda a previsão. 
-
-\end{frame}
 
 \subsection{Previsão de séries temporais com redes neurais artificiais}
 
@@ -166,9 +145,7 @@ y = \varphi  \left(\sum_{i=1}^{m}w_i x_i + w_0 \right) = \varphi \left(\sum_{i=0
 \begin{frame}
 \frametitle{Redes neurais utilizadas para a previsão}
 \framesubtitle{MLP}
-\justifying O processo de treinamento de uma rede neural artificial normalmente é realizado com sequências de vetores de entrada $\mathbf{x}$, chamadas de \textit{mini-batch}, sendo que um período de treinamento é chamado de época \cite{geron2019hands}. 
-
-Os pesos sinápticos $\textbf{w}$ são ajustados com um processo iterativo de forma a minimizar uma função custo $J(\textbf{w})$ que representa uma medida do erro entre as saídas geradas pela rede e as saídas desejadas. 
+\justifying Os pesos sinápticos $\textbf{w}$ são ajustados com um processo iterativo de forma a minimizar uma função custo $J(\textbf{w})$ que representa uma medida do erro entre as saídas geradas pela rede e as saídas desejadas. 
 \end{frame}
 
 \subsection{LSTM e GRU}
@@ -495,7 +472,7 @@ Em seguida, avaliamos a progressão do erro quadrático médio (EQM) em função
          \caption{Equações de Mackey-Glass}
      \end{subfigure}  
      \centering   
-     \caption{Comparação do desempenho obtido por cada modelo.}
+     %\caption{Comparação do desempenho obtido por cada modelo.}
      \label{fig:model-comparison}
 \end{figure}
 \end{frame}
@@ -544,11 +521,6 @@ Em seguida, avaliamos a progressão do erro quadrático médio (EQM) em função
 \begin{frame}
 \frametitle{Análise e Conclusão}
 \justifying Considerando que a ESN obteve, de longe, o melhor desempenho, e que o treinamento desta arquitetura é bem menos custoso computacionalmente se comparado às demais, pode-se concluir que esta rede é uma boa alternativa para futuros estudos de modelos preditores de séries temporais. 
-\end{frame}
-
-\begin{frame}
-\frametitle{Análise e Conclusão}
-\justifying Além disso, conforme mostrado em outros trabalhos como \cite{jaeger2004harnessing, jaeger2007echo, boccato2013novas}, a ESN também é uma boa ferramenta para outras tarefas de extração de informação, como em equalização de canais e separação de fontes. 
 \end{frame}
 
 \begin{frame}
