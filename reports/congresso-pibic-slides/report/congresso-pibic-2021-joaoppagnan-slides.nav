@@ -121,12 +121,10 @@
 \headcommand {\sectionentry {7}{Refer\^encias}{49}{Refer\^encias}{1}}
 \headcommand {\slideentry {7}{0}{0}{49/49}{}{1}}
 \headcommand {\beamer@framepages {49}{49}}
-\headcommand {\slideentry {7}{0}{0}{49/50}{}{1}}
-\headcommand {\beamer@framepages {49}{50}}
-\headcommand {\slideentry {7}{0}{1}{51/51}{}{1}}
-\headcommand {\beamer@framepages {51}{51}}
-\headcommand {\beamer@partpages {49}{51}}
-\headcommand {\beamer@subsectionpages {49}{51}}
-\headcommand {\beamer@sectionpages {49}{51}}
-\headcommand {\beamer@documentpages {51}}
-\headcommand {\gdef \inserttotalframenumber {39}}
+\headcommand {\slideentry {7}{0}{1}{50/50}{}{1}}
+\headcommand {\beamer@framepages {50}{50}}
+\headcommand {\beamer@partpages {49}{50}}
+\headcommand {\beamer@subsectionpages {49}{50}}
+\headcommand {\beamer@sectionpages {49}{50}}
+\headcommand {\beamer@documentpages {50}}
+\headcommand {\gdef \inserttotalframenumber {38}}
