@@ -67,9 +67,9 @@ Artificiais}
 \end{frame}
 
 \begin{frame}{Seções}
-\begin{multicols}{2}
+%\begin{multicols}{2}
     \footnotesize \tableofcontents
-\end{multicols}
+%\end{multicols}
 \end{frame}
 
 % Section titles are shown in at the top of the slides with the current section 
@@ -81,13 +81,13 @@ Artificiais}
 \begin{frame}
     \frametitle{Introdução}
     \framesubtitle{Previsão de séries temporais de sistemas caóticos}
-    \justifying A predição de séries temporais é uma das aplicações mais interessantes do tratamento de informação. O desafio de antecipar padrões de comportamento e construir modelos que sejam apropriados para explicar determinados fenômenos da natureza tem importância para a:
+    \justifying O desafio de antecipar padrões de comportamento e construir modelos que sejam apropriados para explicar determinados fenômenos da natureza tem importância para a:
     
     \begin{itemize}[<+-| alert@+>]
+        \item Astronomia,
         \item Biologia,
-        \item Economia,
-        \item Automação Industrial,
         \item Meteorologia,
+        \item Automação,
         \item e várias outras áreas da ciência.
     \end{itemize}
 \end{frame}
@@ -123,10 +123,11 @@ Artificiais}
     \end{itemize} 
 \end{frame}
 
-\section{Cenários escolhidos}
+\subsection{Cenários escolhidos}
 
 \begin{frame}
-    \frametitle{Cenários escolhidos}
+    \frametitle{Introdução}
+    \framesubtitle{Cenários escolhidos}
     \justifying A comparação foi realizada considerando quatro cenários, sendo dois destes a tempo discreto e dois a tempo contínuo, sendo que foi gerado um conjunto de $5000$ amostras para cada sistema analisado. Os cenários escolhidos foram as séries temporais dos sistemas caóticos:
 
     \begin{itemize}[<+-| alert@+>]    
@@ -135,143 +136,6 @@ Artificiais}
     \item Sistema de Lorenz \cite{lorenz1963deterministic},
     \item Equações de Mackey-Glass \cite{mackey1977oscillation}.
     \end{itemize}
-\end{frame}
-
-\subsection{Mapa de Hénon}
-\begin{frame}
-	\frametitle{Cenários escolhidos}
-	\framesubtitle{Mapa de Hénon}
-	\justifying Esse sistema foi proposto por Michel Hénon em 1976 como um modelo simplificado de uma seção de Poincaré do atrator de Lorenz, sendo descrito pelas equações abaixo \cite{henon1976two}:
-\begin{subequations}
-\begin{equation}
-x[n+1] = y[n] + 1 - a\cdot (x[n])^2
-\end{equation}
-\begin{equation}
-y[n+1] = b \cdot x[n]
-\end{equation}
-\end{subequations}
-\end{frame}
-
-\begin{frame}
-	\frametitle{Cenários escolhidos}
-	\framesubtitle{Mapa de Hénon}
-\justifying Para esta pesquisa, foram utilizados os valores usuais para os parâmetros $a$ e $b$. Logo, têm-se que $a = 1.4$ e $b = 0.3$. Além disso, neste e nos outros sistemas. A figura \ref{fig:henon} mostra a série temporal referente à variável $x$ e o atrator obtido com a simulação para $[x[0]\; y[0]]^T = [1\; 0]^T$.
-\begin{figure}[H]
-     \begin{subfigure}[t]{0.3\textwidth}
-         \includegraphics[scale=0.2]{serie-henon-x.pdf}
-     \end{subfigure}
-     \centering
-     \begin{subfigure}[t]{0.3\textwidth}
-         \includegraphics[scale=0.2]{mapa-de-henon.png}
-     \end{subfigure}
-     \caption{À esquerda, as cem primeiras iterações da série temporal em $x$ do mapa de Hénon e, à direita, o atrator correspondente à simulação}
-     \label{fig:henon}
-\end{figure}
-\end{frame}
-
-\subsection{Mapa logístico}
-\begin{frame}
-	\frametitle{Cenários escolhidos}
-	\framesubtitle{Mapa logístico}
-	\justifying Descrito em 1976 por Robert May, o mapa logístico representa uma das formas de modelar a população de uma determinada espécie em certos instantes de tempo \cite{may1976simple}. A equação a diferenças que descreve este sistema pode ser vista abaixo:
-\begin{equation}\label{eq:logistic}
-x[n+1] = r\cdot x[n] \cdot (1 - x[n])
-\end{equation}
-\end{frame}
-
-\begin{frame}
-	\frametitle{Cenários escolhidos}
-	\framesubtitle{Mapa logístico}
-\justifying Como o estudo visa analisar o desempenho para sistemas caóticos, foi utilizado $r=3.86$, que, conforme será visto no diagrama de bifurcação abaixo, faz com que a série temporal dada pela equação (\ref{eq:logistic}) opere em caos.
-\begin{figure}[H]
-     \begin{subfigure}[t]{0.3\textwidth} 
-         \includegraphics[scale=0.2]{serie-logistico.pdf}
-         %\caption{$y=5/x$}
-     \end{subfigure}
-     \centering
-     \begin{subfigure}[t]{0.3\textwidth} 
-         \includegraphics[scale=0.2]{mapa-logistico.png}
-         %\caption{$y=x$}
-     \end{subfigure}
-     \begin{subfigure}[t]{0.3\textwidth} 
-         \includegraphics[scale=0.2]{mapa-logistico-zoom.png}
-         %\caption{$y=x$}
-     \end{subfigure}     
-     \caption{À esquerda, as cem primeiras iterações da série temporal do mapa logístico e, à direita, o diagrama de bifurcação deste sistema}
-     \label{fig:logistic}
-\end{figure}
-\end{frame}
-
-\subsection{Sistema de Lorenz}
-
-\begin{frame}
-	\frametitle{Cenários escolhidos}
-	\framesubtitle{Sistema de Lorenz}
-\justifying Num dos primeiros grandes trabalhos envolvendo a noção de regime caótico, sendo considerado por muitos a pesquisa que inaugurou a área \cite{gleick1998chaos}, Lorenz modela o fluxo de um fluido em um volume uniformemente aquecido na camada inferior e uniformemente resfriado na camada superior \cite{lorenz1963deterministic}:
-\begin{subequations}
-\begin{equation}
-\frac{dx}{dt} = -\sigma \cdot (x - y)
-\end{equation}
-\begin{equation}
-\frac{dy}{dt} = x \cdot (\rho - z) - y
-\end{equation}
-\begin{equation}
-\frac{dz}{dt} = x \cdot y - \beta \cdot z
-\end{equation}
-\end{subequations}
-\end{frame}
-
-\begin{frame}
-	\frametitle{Cenários escolhidos}
-	\framesubtitle{Sistema de Lorenz}
-\justifying Para a simulação numérica foi considerado que $\sigma = 10$, $\beta = \frac{8}{3}$, $\rho = 28$ e foi utilizado $dt = 0.01$. A figura \ref{fig:lorenz} mostra a série temporal na variável $x$ e o atrator de Lorenz para a condição inicial $[x(0)\; y(0)\; z(0)]^T = [0.1\; 0\; 0]^T$.
-\begin{figure}[H]
-     \begin{subfigure}[t]{0.3\textwidth} 
-         \includegraphics[scale=0.2]{serie-lorenz-x.pdf}
-         %\caption{$y=5/x$}
-     \end{subfigure}
-     \centering
-     \begin{subfigure}[t]{0.3\textwidth}
-         \includegraphics[scale=0.2]{diagrama-de-fases-lorenz.pdf}
-         %\caption{$y=x$}
-     \end{subfigure}
-     \caption{À esquerda, a série temporal em $x$ do sistema de Lorenz simulado e, à direita, o diagrama de fases correspondente à simulação}
-     \label{fig:lorenz}
-\end{figure}
-\end{frame}
-
-\subsection{Equações de Mackey-Glass}
-\begin{frame}
-	\frametitle{Cenários escolhidos}
-	\framesubtitle{Equações de Mackey-Glass}
-	\justifying O último sistema caótico simulado está associado às equações de Mackey-Glass, as quais modelam o controle hormonal da produção de células brancas do sangue e podem ser vistas abaixo \cite{mackey1977oscillation}:
-\begin{subequations}
-\begin{equation}
-\frac{dP(t)}{dt} = \frac{\beta_0\cdot \theta^n}{\theta^n + P(t - \tau)^n} - \gamma\cdot P(t)
-\end{equation}
-\begin{equation}\label{eq:mackey-glass-chaos}
-\frac{dP(t)}{dt} = \frac{\beta_0\cdot \theta^n \cdot P(t - \tau)}{\theta^n + P(t - \tau)^n} - \gamma\cdot P(t)
-\end{equation}
-\end{subequations}
-\end{frame}
-
-\begin{frame}
-	\frametitle{Cenários escolhidos}
-	\framesubtitle{Equações de Mackey-Glass}
-\justifying A equação (\ref{eq:mackey-glass-chaos}) exibe comportamento caótico para valores mais altos de $\tau$. Para a simulação numérica, foi utilizado $n = 10$, $\gamma = 0.1$, $\beta = 0.2$, $\theta = 1$, $\tau = 22$, $dt = 1.0$ e $P(0^-)=0.1$, gerando novamente $5000$ amostras. A série e o atrator obtidos podem ser vistos na figura \ref{fig:mackey-glass}.
-\begin{figure}[H]
-     \begin{subfigure}[t]{0.3\textwidth}
-         \includegraphics[scale=0.2]{serie-mackeyglass.pdf}
-         %\caption{$y=5/x$}
-     \end{subfigure}
-     \centering
-     \begin{subfigure}[t]{0.3\textwidth}
-         \includegraphics[scale=0.2]{atrator-mackeyglass.pdf}
-         %\caption{$y=x$}
-     \end{subfigure}
-     \caption{À esquerda, a série temporal da equação (\ref{eq:mackey-glass-chaos}) exibida de $t = 0 $ a $t = 800$ e, à direita, o atrator correspondente à simulação}
-     \label{fig:mackey-glass}
-\end{figure}
 \end{frame}
 
 \section{Redes neurais utilizadas para a previsão}
@@ -601,75 +465,7 @@ Em seguida, avaliamos a progressão do erro quadrático médio (EQM) em função
 \justifying Por fim, comparamos qual foi a média e o desvio padrão do EQM com o melhor valor de $K$ de cada modelo nos quatro cenários. O horizonte de predição utilizado foi $L=3$. Assim, iremos predizer o valor da terceira iteração à frente do valor atual da série temporal.
 \end{frame}
 
-\subsection{Configurações das redes neurais}
-
-\begin{frame}
-\frametitle{Metodologia}
-\framesubtitle{Configurações das redes neurais}
-\justifying Para cada arquitetura, um conjunto de valores candidatos foi gerado para cada hiperparâmetro e todas as combinações possíveis foram avaliadas tendo em vista o desempenho do modelo em dados de validação, utilizando um processo de busca em grade.
-
-Mais detalhes podem ser vistos no artigo enviado ao congresso.
-\end{frame}
-
-\subsection{Análise do melhor valor para $K$}
-
-\begin{frame}
-\frametitle{Metodologia}
-\framesubtitle{Análise do melhor valor para $K$}
-\justifying 
-
-Com as melhores configurações para cada rede e cenário obtidas, foi analisada a progressão do erro quadrático médio para cada valor de $K$. A faixa de valores para $K$ a ser testada foi determinada utilizando a autocorrelação parcial das séries temporais de cada sistema analisado, levando em consideração os valores de $K$ que têm as autocorrelações parciais mais relevantes.
-\end{frame}
-
-\begin{frame}
-\frametitle{Metodologia}
-\framesubtitle{Análise do melhor valor para $K$}
-\justifying 
-Para realizar esse procedimento, cada rede (com as configurações ótimas) foi treinada utilizando $85\%$ dos dados gerados, sendo que $10\%$ dos dados de treinamento foi utilizado como o conjunto de validação (nas redes MLP, LSTM e GRU). Em seguida, foi avaliado o EQM no conjunto de teste (que corresponde às últimas 750 amostras). Esse processo foi realizado $5$ vezes para cada $K$, obtendo assim um valor médio e desvio-padrão para cada modelo e em cada cenário. 
-\end{frame}
-
-\begin{frame}
-\frametitle{Metodologia}
-\framesubtitle{Análise do melhor valor para $K$}
-\justifying 
-A figura \ref{fig:mse-progression} mostra a progressão do EQM observada em cada cenário. 
-\begin{figure}[H]
-     \begin{subfigure}[t]{0.4\textwidth} 
-     \centering
-         \includegraphics[scale=0.17]{progressao-k-henon.pdf}
-         \caption{Mapa de Hénon}
-     \end{subfigure}
-     \centering
-     \begin{subfigure}[t]{0.4\textwidth} 
-     \centering
-         \includegraphics[scale=0.17]{progressao-k-logistic.pdf}
-         \caption{Mapa logístico}
-     \end{subfigure}
-     \centering
-     \\
-     \begin{subfigure}[t]{0.4\textwidth}
-     \centering
-         \includegraphics[scale=0.17]{progressao-k-lorenz.pdf}
-         \caption{Sistema de Lorenz}
-     \end{subfigure}
-     \centering
-     \begin{subfigure}[t]{0.4\textwidth} 
-     \centering
-         \includegraphics[scale=0.17]{progressao-k-mackeyglass.pdf}
-         \caption{Equações de Mackey-Glass}
-     \end{subfigure}  
-     \centering   
-     \caption{Progressão do erro quadrático médio para cada valor de $K$.}
-     \label{fig:mse-progression}
-\end{figure}
-\end{frame}
-
 \section{Resultados}
-
-\begin{frame}
-\frametitle{Resultados}
-\justifying Após identificarmos o melhor valor de $K$ para cada modelo, realizou-se novamente o processo mencionado na seção anterior e foi obtido o EQM para as melhores configurações (parâmetros e $K$) para cada modelo, em todos os cenários. 
-\end{frame}
 
 \begin{frame}
 \frametitle{Resultados}
@@ -762,7 +558,7 @@ A figura \ref{fig:mse-progression} mostra a progressão do EQM observada em cada
 
 \appendix
 
-\begin{frame}[allowframebreaks]{Referências}
+\begin{frame}{Referências}
     \tiny
     \bibliography{bib}
     \bibliographystyle{ieeetr}
