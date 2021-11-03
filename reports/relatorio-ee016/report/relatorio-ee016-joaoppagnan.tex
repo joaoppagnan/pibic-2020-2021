@@ -264,7 +264,7 @@ Assim, as próximas duas subseções abordarão especificamente as redes recorre
 \subsection{\textit{Gated Recurrent Unit} (GRU)}
 
 Como já mencionamos anteriormente, as redes recorrentes \textit{Gated Recurrent Unit} possuem células computacionais semelhantes às células das redes LSTM, apresentadas no relatório parcial. Sua estrutura interna pode ser vista na figura \ref{fig:gru-cell}, juntamente com as equações que a descrevem.
-\begin{figure}[H]
+\begin{figure}[!ht]
 \begin{minipage}{0.4\textwidth}
 \begin{center}
 \scalebox{0.9}{
@@ -406,7 +406,7 @@ Intuitivamente, pelo fato de as GRUs serem, em essência, uma versão mais simpl
 As redes neurais com estados de eco também são modelos recorrentes para processamento da informação, à semelhança da LSTM e da GRU. No entanto, apresentam um modo de operação e um esquema de treinamento bem diferentes  \cite{boccato2013novas}. 
 
 A figura \ref{fig:esn-model} apresenta a estrutura interna de uma rede ESN.
-\begin{figure}[H]
+\begin{figure}[!ht]
 \centering
 \includegraphics[scale = 0.8]{esn-network.pdf}
 \caption{Estrutura típica de uma rede ESN (figura adaptada de \cite{boccato2013novas}).}
@@ -474,7 +474,7 @@ Na busca em grade para a MLP, avaliamos diferentes tamanhos de \textit{batch} ($
 Ao final do processo completo de busca, foram identificadas as configurações "ótimas" da rede MLP em cada cenário, as quais são exibidas na tabela  \ref{tab:mlp}.
 \begin{table}[H]
 \begin{center}
-\scalebox{0.75}{
+\scalebox{0.7}{
 \begin{tabular}{c c c c c c c}
 \toprule
 \addlinespace
@@ -510,7 +510,7 @@ Para as redes recorrentes LSTM e GRU, foi avaliado o tamanho do \textit{batch} (
 As tabelas \ref{tab:lstm} e \ref{tab:gru} exibem as melhores configurações obtidas em cada cenário para as redes LSTM e GRU, respectivamente.
 \begin{table}[H]
 \begin{center}
-\scalebox{0.75}{
+\scalebox{0.8}{
 \begin{tabular}{c c c c c}
 \toprule
 \addlinespace
@@ -541,7 +541,7 @@ As tabelas \ref{tab:lstm} e \ref{tab:gru} exibem as melhores configurações obt
 
 \begin{table}[H]
 \begin{center}
-\scalebox{0.75}{
+\scalebox{0.8}{
 \begin{tabular}{c c c c c}
 \toprule
 \addlinespace
@@ -662,23 +662,27 @@ Além disso, como o ajuste de parâmetros da ESN possui solução em forma fecha
 A figura \ref{fig:mse-progression} mostra a progressão do EQM observada em cada cenário para cada uma das redes estudadas. 
 \begin{figure}[!ht]
      \begin{subfigure}[t]{0.45\textwidth} 
-         \includegraphics[scale=0.4]{progressao-k-henon.pdf}
+     \centering
+         \includegraphics[scale=0.39]{progressao-k-henon.pdf}
          \caption{Mapa de Hénon}
      \end{subfigure}
      \centering
      \begin{subfigure}[t]{0.45\textwidth} 
-         \includegraphics[scale=0.4]{progressao-k-logistic.pdf}
+     \centering
+         \includegraphics[scale=0.39]{progressao-k-logistic.pdf}
          \caption{Mapa logístico}
      \end{subfigure}
      \\
      \centering
      \begin{subfigure}[t]{0.45\textwidth}
-         \includegraphics[scale=0.4]{progressao-k-lorenz.pdf}
+     \centering
+         \includegraphics[scale=0.39]{progressao-k-lorenz.pdf}
          \caption{Sistema de Lorenz}
      \end{subfigure}
      \centering
      \begin{subfigure}[t]{0.45\textwidth} 
-         \includegraphics[scale=0.4]{progressao-k-mackeyglass.pdf}
+     \centering
+         \includegraphics[scale=0.39]{progressao-k-mackeyglass.pdf}
          \caption{Equações de Mackey-Glass}
      \end{subfigure}  
      \centering   
@@ -691,7 +695,7 @@ Nas tabelas \ref{tab:henon-eqm}, \ref{tab:logistic-eqm}, \ref{tab:lorenz-eqm} e 
 \begin{center}
 \begin{subtable}{1\textwidth}
 \begin{center}
-\scalebox{0.47}{
+\scalebox{0.55}{
 \begin{tabular}{c c c c c}
 \toprule
 \addlinespace
@@ -740,7 +744,7 @@ Nas tabelas \ref{tab:henon-eqm}, \ref{tab:logistic-eqm}, \ref{tab:lorenz-eqm} e 
 \end{subtable}
 \begin{subtable}{1\textwidth}
 \begin{center}
-\scalebox{0.47}{
+\scalebox{0.55}{
 \begin{tabular}{c c c c c}
 \addlinespace
 \addlinespace
@@ -788,7 +792,7 @@ Nas tabelas \ref{tab:henon-eqm}, \ref{tab:logistic-eqm}, \ref{tab:lorenz-eqm} e 
 \end{subtable}
 \begin{subtable}{1\textwidth}
 \begin{center}
-\scalebox{0.47}{
+\scalebox{0.55}{
 \begin{tabular}{c c c c c}
 \addlinespace
 \addlinespace
@@ -844,7 +848,7 @@ Nas tabelas \ref{tab:henon-eqm}, \ref{tab:logistic-eqm}, \ref{tab:lorenz-eqm} e 
 \end{subtable}
 \begin{subtable}{1\textwidth}
 \begin{center}
-\scalebox{0.47}{
+\scalebox{0.55}{
 \begin{tabular}{c c c c c}
 \addlinespace
 \addlinespace
@@ -897,24 +901,28 @@ Novamente, utilizando os três melhores valores de $K$, realizamos o processo me
 
 A figura \ref{fig:mse-progression-3best} mostra a nova progressão obtida em cada cenário para os modelos avaliados, e as tabelas \ref{tab:henon-eqm-3best}, \ref{tab:logistic-eqm-3best}, \ref{tab:lorenz-eqm-3best} e \ref{tab:mackeyglass-eqm-3best}, exibem os valores numéricos das médias e desvios-padrão para os valores selecionados do parâmetro $K$.
 \begin{figure}[!ht]
-     \begin{subfigure}[t]{0.45\textwidth} 
-         \includegraphics[scale=0.4]{henon-3best.pdf}
+     \begin{subfigure}[t]{0.49\textwidth} 
+     \centering
+         \includegraphics[scale=0.45]{henon-3best.pdf}
          \caption{Mapa de Hénon}
      \end{subfigure}
      \centering
-     \begin{subfigure}[t]{0.45\textwidth} 
-         \includegraphics[scale=0.4]{logistic-3best.pdf}
+     \begin{subfigure}[t]{0.49\textwidth} 
+     \centering
+         \includegraphics[scale=0.45]{logistic-3best.pdf}
          \caption{Mapa logístico}
      \end{subfigure}
      \\
      \centering
-     \begin{subfigure}[t]{0.45\textwidth}
-         \includegraphics[scale=0.4]{lorenz-3best.pdf}
+     \begin{subfigure}[t]{0.49\textwidth}
+     \centering
+         \includegraphics[scale=0.45]{lorenz-3best.pdf}
          \caption{Sistema de Lorenz}
      \end{subfigure}
      \centering
-     \begin{subfigure}[t]{0.45\textwidth} 
-         \includegraphics[scale=0.4]{mackeyglass-3best.pdf}
+     \begin{subfigure}[t]{0.49\textwidth} 
+     \centering
+         \includegraphics[scale=0.45]{mackeyglass-3best.pdf}
          \caption{Equações de Mackey-Glass}
      \end{subfigure}  
      \centering   
@@ -926,7 +934,7 @@ A figura \ref{fig:mse-progression-3best} mostra a nova progressão obtida em cad
 \begin{center}
 \begin{subtable}{0.35\textwidth}
 \begin{center}
-\scalebox{0.6}{
+\scalebox{0.7}{
 \begin{tabular}{c c c}
 \toprule
 \addlinespace
@@ -971,7 +979,7 @@ A figura \ref{fig:mse-progression-3best} mostra a nova progressão obtida em cad
 \end{subtable}
 \begin{subtable}{0.35\textwidth}
 \begin{center}
-\scalebox{0.6}{
+\scalebox{0.7}{
 \begin{tabular}{c c c}
 \toprule
 \addlinespace
@@ -1016,7 +1024,7 @@ A figura \ref{fig:mse-progression-3best} mostra a nova progressão obtida em cad
 \end{subtable}
 \begin{subtable}{0.35\textwidth}
 \begin{center}
-\scalebox{0.6}{
+\scalebox{0.7}{
 \begin{tabular}{c c c}
 \addlinespace
 \addlinespace
@@ -1064,7 +1072,7 @@ A figura \ref{fig:mse-progression-3best} mostra a nova progressão obtida em cad
 \end{subtable}
 \begin{subtable}{0.35\textwidth}
 \begin{center}
-\scalebox{0.6}{
+\scalebox{0.7}{
 \begin{tabular}{c c c}
 \addlinespace
 \addlinespace
@@ -1126,22 +1134,26 @@ Após identificarmos o melhor valor de $K$ para cada modelo, realizou-se novamen
 A figura \ref{fig:model-comparison} exibe o comparativo dos melhores desempenhos das redes neurais analisadas, e a figura \ref{fig:series-comparison} mostra uma comparação da predição em si de cada modelo em certos trechos das séries temporais nos quais a diferença foi mais perceptível visualmente.
 \begin{figure}[H]
      \begin{subfigure}[t]{0.45\textwidth}
+     \centering
          \includegraphics[scale=0.385]{comparacao-k-henon.pdf}
          \caption{Mapa de Hénon}
      \end{subfigure}
      \centering
      \begin{subfigure}[t]{0.45\textwidth} 
+     \centering
          \includegraphics[scale=0.385]{comparacao-k-logistic.pdf}
          \caption{Mapa logístico}
      \end{subfigure}
      \centering
      \\
      \begin{subfigure}[t]{0.45\textwidth}
+     \centering
          \includegraphics[scale=0.385]{comparacao-k-lorenz.pdf}
          \caption{Sistema de Lorenz}
      \end{subfigure}
      \centering
      \begin{subfigure}[t]{0.45\textwidth} 
+     \centering
          \includegraphics[scale=0.385]{comparacao-k-mackeyglass.pdf}
          \caption{Equações de Mackey-Glass}
      \end{subfigure}  
@@ -1151,22 +1163,26 @@ A figura \ref{fig:model-comparison} exibe o comparativo dos melhores desempenhos
 \end{figure}
 \begin{figure}[H]
      \begin{subfigure}[t]{0.4\textwidth} 
+     \centering
          \includegraphics[scale=0.35]{vs-henon-zoom.pdf}
          \caption{Mapa de Hénon}
      \end{subfigure}
      \centering
      \begin{subfigure}[t]{0.4\textwidth} 
+     \centering
          \includegraphics[scale=0.35]{vs-logistic-zoom.pdf}
          \caption{Mapa logístico}
      \end{subfigure}
      \centering
      \\
      \begin{subfigure}[t]{0.4\textwidth} 
+     \centering
          \includegraphics[scale=0.35]{vs-lorenz-zoom.pdf}
          \caption{Sistema de Lorenz}
      \end{subfigure}
      \centering
      \begin{subfigure}[t]{0.4\textwidth}
+     \centering
          \includegraphics[scale=0.35]{vs-mackeyglass-zoom.pdf}
          \caption{Equações de Mackey-Glass}
      \end{subfigure}
