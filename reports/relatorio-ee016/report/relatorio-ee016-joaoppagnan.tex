@@ -415,17 +415,33 @@ A figura \ref{fig:esn-model} apresenta a estrutura interna de uma rede ESN.
 
 As equações em (\ref{eq:esn}) descrevem a ESN, sendo $\mathbf{x}(n)$ o vetor de entrada, $\mathbf{W}_{in} \in \mathbb{R}^{N \times K}$ os pesos da camada de entrada, $\mathbf{u}(n)$ o vetor que representa as ativações dos $N$ neurônios não-lineares totalmente conectados do reservatório, representando os estados da rede, $\mathbf{W} \in \mathbb{R}^{N \times N}$ os pesos das conexões recorrentes do reservatório, $\mathbf{f}(\cdot)$ denota as funções de ativação das unidades internas da rede, $\mathbf{W}_{out} \in \mathbb{R}^{L \times N}$ é a matriz dos pesos da camada de saída e, por fim, $\mathbf{y}(n)$ denota as saídas da rede.
 \begin{subequations}\label{eq:esn}
-\begin{equation}
-\mathbf{u}(n+1) = \mathbf{f}(\mathbf{W}_{in} \cdot \mathbf{x}(n+1) + \mathbf{W} \cdot \mathbf{u}(n))
+\begin{equation} \label{eq:esn-1}
+\mathbf{u}(n+1) = \mathbf{f}(\mathbf{W}_{in} \cdot \mathbf{x}(n+1) + \mathbf{W} \cdot \mathbf{u}(n)) 
 \end{equation}
-\begin{equation}
+\begin{equation} \label{eq:esn-2}
 \mathbf{y}(n+1) = \mathbf{W}_{out} \cdot \mathbf{u}(n+1)
 \end{equation}
 \end{subequations}
 
 O grande diferencial prático desta rede é que os pesos das conexões recorrentes dentro do reservatório $\mathbf{W}$ são ajustados com valores fixos antes do treinamento da camada de saída. Em suma, esses parâmetros são determinados tendo em vista a propriedade de estados de eco, a qual assegura que o vetor de estados da rede tende a ser guiado por um histórico recente das entradas da rede, não mais sofrendo influência dos estados iniciais, desde que condições específicas ligadas à matriz de pesos recorrentes ($\mathbf{W}$) sejam satisfeitas. Conforme demonstrado em \cite{yildiz2012re} e \cite{gallicchio2018design}, existem alguns métodos simples para a criação aleatória dos pesos que garantam a propriedade. 
 
-Portanto, o ajuste dos parâmetros na camada de saída pode ser realizado com um procedimento de regressão linear, sem necessitar de um treinamento iterativo, como nas outras redes neurais estudadas nesta pesquisa. Esse fato economiza tempo de processamento e evita os conhecidos problemas de desvanecimento e de explosão do vetor gradiente, assim como outras instabilidades que podem ocorrer no treinamento de uma rede recorrente. 
+A definição formal das propriedades de estado de eco é feita sob as seguintes condições \cite{boccato2013novas}:
+
+\begin{enumerate}
+\item os sinais de entrada são extraídos de um espaço compacto \footnote{ A definição de espaços compactos foi apresentada em \cite{alexandroff1929memoire}.} $\mathcal{U}$;
+\item os estados da rede estão sempre contidos em um conjunto compacto $\mathcal{A} \subset \mathbb{R}^N$ de estados admissíveis, o que significa que a operação de atualização do vetor $\mathbf{u}(n)$, mostrada na equação (\ref{eq:esn-1}), sempre preserva os estados dentro de $\mathcal{A}$.
+\end{enumerate}
+
+Utilizando essas restrições, o autor da arquitetura ESN apresentou duas novas condições para a existência das propriedades de estado de eco. 
+
+A primeira condição mostra que, caso o máximo valor singular da matriz
+de pesos do reservatório $\mathbf{W}$, em módulo, esteja dentro do círculo unitário ($|\sigma_{max} (\mathbf{W})| < 1$), a rede recorrente apresenta estados de eco \cite{jaeger2001echo, jaeger2002short}.
+
+A segunda condição estabelece a não-existência de estados de eco em função do raio espectral, i.e., do autovalor de maior módulo da matriz de pesos internos $\mathbf{W}$, denotado por $\rho_s (\mathbf{W})$: se $\rho_s (\mathbf{W}) > 1$, então a rede não possui estados de eco \cite{jaeger2001echo}. Para isto, além das restrições apresentadas anteriormente, é assumido que a entrada é nula.
+
+Neste caso, considerando que os pesos internos da rede $\mathbf{W}$ representam uma espécie de reservatório de dinâmicas que, por sua vez, deve gerar um conjunto de comportamentos dinâmicos o mais diversificado possível, a matriz de pesos $\mathbf{W}$ deve ser criada com um certo grau de esparsidade, conforme demonstrado em \cite{jaeger2001echo}. Dessa forma, um conjunto de comportamentos dinâmicos é obtido sem um conhecimento prévio do sinal que se deseja modelar.
+
+Por fim, vale mencionar que o ajuste dos parâmetros na camada de saída pode ser realizado com um procedimento de regressão linear (neste caso, utilizando amostras passadas do sinal a ser previsto), sem necessitar de um treinamento iterativo, como nas outras redes neurais estudadas nesta pesquisa. Esse fato economiza tempo de processamento e evita os conhecidos problemas de desvanecimento e de explosão do vetor gradiente, assim como outras instabilidades que podem ocorrer no treinamento de uma rede recorrente. 
 
 Com isso, finalizamos o restante da exposição teórica desta pesquisa. A próxima seção descreverá  a metodologia utilizada nesta análise.
 
@@ -1183,7 +1199,7 @@ Logo, esse projeto forneceu os princípios para que o aluno possa atuar junto a 
 
 \bibliographystyle{ieeetr}
 
-{\footnotesize \bibliography{bib}}
+{\bibliography{bib}}
 
 \pdfinfo{
    /Title  (PIBIC 2020/2021 - Relatório Final - João Pedro O. Pagnan)
