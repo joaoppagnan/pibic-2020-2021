@@ -257,7 +257,7 @@ Com isso, finalizamos a exposição sobre os cenários de sistemas com dinâmica
 
 \section{Modelos estudados}
 
-Como o estudo de redes neurais artificiais foi iniciado na primeira metade da pesquisa, uma exposição mais detalhada dos fundamentos destes modelos (no caso, as redes MLP e as rede recorrentes LSTM) foi realizada no relatório da disciplina EE015.
+Como o estudo de redes neurais artificiais foi iniciado na primeira metade da pesquisa, uma exposição mais detalhada dos fundamentos destes modelos (no caso, as redes MLP e as redes recorrentes LSTM) foi realizada no relatório da disciplina EE015.
 
 Assim, as próximas duas subseções abordarão especificamente as redes recorrentes GRU e ESN.
 
@@ -397,7 +397,7 @@ $$\mathbf{y}(n) = \mathbf{h}(n) = \mathbf{z}(n) \otimes \mathbf{h}(n-1) + (1 - \
 \label{fig:gru-cell}
 \end{figure}
 
-Ao contrário da LSTM, a célula GRU explora um único vetor de estados $\mathbf{h}(n)$. No caso, o vetor $\mathbf{z}(n)$ determina se a memória armazenada em $\mathbf{h}(n-1)$ será mantida ou apagada, enquanto o vetor $\mathbf{g}(n)$ traz a informação nova que será agregada ao vetor de estados, sendo um reflexo do estado anterior e da entrada atual ($\mathbf{x}(n)$). 
+Ao contrário da LSTM, a célula GRU explora um único vetor de estados $\mathbf{h}(n)$. No caso, o vetor $\mathbf{z}(n)$ determina se a memória armazenada em $\mathbf{h}(n-1)$ será mantida ou apagada, enquanto o vetor $\mathbf{g}(n)$ traz a informação nova que será agregada ao vetor de estados, sendo um reflexo do estado anterior e da entrada atual ($\mathbf{x}(n)$).  
 
 Intuitivamente, pelo fato de as GRUs serem, em essência, uma versão mais simples das redes LSTM, não seria surpreendente se as LSTM alcançassem um melhor desempenho. Entretanto, conforme verificado em \cite{cho2014learning}, a GRU pode ser superior à LSTM em determinadas aplicações. Quanto à implementação em si, existe uma grande similaridade entre GRU e LSTM (especialmente se trabalhamos com pacotes que fornecem estas camadas para uso dentro de uma arquitetura neural, como é o caso do Keras/Tensorflow). 
 
