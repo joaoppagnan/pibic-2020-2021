@@ -94,7 +94,7 @@ Durante o primeiro semestre deste projeto de iniciação científica, realizamos
 
 A seção 2 apresenta os quatro cenários escolhidos para a análise do desempenho das redes neurais, sendo dois destes a tempo discreto e dois a tempo contínuo. No caso, os sistemas a tempo discreto foram o mapa de Hénon \cite{henon1976two} e o mapa logístico \cite{may1976simple}. Já os cenários a tempo contínuo envolveram o sistema de Lorenz \cite{lorenz1963deterministic} e as equações de Mackey-Glass \cite{mackey1977oscillation}.
 
-Por sua vez, na seção 3, discutiremos os dois modelos previamente citados (GRU e ESN) que foram estudados e implementados, juntamente com as redes neurais apresentadas no relatório parcial, nesta segunda parte da pesquisa. 
+Por sua vez, na seção 3, discutiremos os dois modelos previamente citados (GRU e ESN) que foram estudados e implementados, juntamente com as redes neurais apresentadas no relatório de EE015, nesta segunda parte da pesquisa. 
 
 A seção 4 detalha inicialmente a análise de sensibilidade paramétrica feita para cada modelo, indicando os parâmetros testados e os critérios definidos para o processo de busca em grade \cite{geron2019hands}. Além disso, a seção 4 também apresentará a metodologia utilizada para definir o número de amostras de entrada de cada modelo preditor (nesse caso, chamado de $K$), além de indicar qual foi a progressão do erro quadrático médio (EQM) em função do valor de $K$ para cada modelo nos quatro cenários.
 
@@ -257,13 +257,13 @@ Com isso, finalizamos a exposição sobre os cenários de sistemas com dinâmica
 
 \section{Modelos estudados}
 
-Como o estudo de redes neurais artificiais foi iniciado na primeira metade da pesquisa, uma exposição mais detalhada dos fundamentos destes modelos (no caso, as redes MLP e as rede recorrentes LSTM) pode ser vista no relatório parcial.
+Como o estudo de redes neurais artificiais foi iniciado na primeira metade da pesquisa, uma exposição mais detalhada dos fundamentos destes modelos (no caso, as redes MLP e as rede recorrentes LSTM) foi realizada no relatório da disciplina EE015.
 
 Assim, as próximas duas subseções abordarão especificamente as redes recorrentes GRU e ESN.
 
 \subsection{\textit{Gated Recurrent Unit} (GRU)}
 
-Como já mencionamos anteriormente, as redes recorrentes \textit{Gated Recurrent Unit} possuem células computacionais semelhantes às células das redes LSTM, apresentadas no relatório parcial. Sua estrutura interna pode ser vista na figura \ref{fig:gru-cell}, juntamente com as equações que a descrevem.
+Como já mencionamos anteriormente, as redes recorrentes \textit{Gated Recurrent Unit} possuem células computacionais semelhantes às células das redes LSTM, apresentadas no relatório da disciplina EE015. Sua estrutura interna pode ser vista na figura \ref{fig:gru-cell}, juntamente com as equações que a descrevem.
 \begin{figure}[!ht]
 \begin{minipage}{0.4\textwidth}
 \begin{center}
@@ -1206,7 +1206,7 @@ Esse resultado, aliado ao fato de que o treinamento da ESN é bem menos custoso 
 
 Como sugestão de trabalhos futuros, pode ser avaliada a eficácia da ESN em reconstruir atratores através de séries temporais experimentais de sistemas caóticos. Se o desempenho para essa tarefa for tão bom quanto o obtido na predição das séries estudadas, a ESN pode tornar-se uma ferramenta ainda mais poderosa para a modelagem de sistemas com dinâmica caótica.
 
-Com isso, finalizamos esta pesquisa de iniciação científica. Através dos processos descritos neste relatório final e, anteriormente, no relatório parcial, o aluno teve contato com ferramentas modernas de predição de séries temporais, úteis não só para séries originadas por dinâmicas caóticas, como também para cenários relacionados a outros tipos de sistemas.
+Com isso, finalizamos esta pesquisa de iniciação científica. Através dos processos descritos neste relatório referente a esta disciplina e, anteriormente, no relatório apresentado no semestre passado em EE015, o aluno teve contato com ferramentas modernas de predição de séries temporais, úteis não só para séries originadas por dinâmicas caóticas, como também para cenários relacionados a outros tipos de sistemas.
 
 Além disso, o aluno teve uma exposição a outras ferramentas de aprendizado de máquina que não necessariamente estão relacionadas com problemas de predição, mas que podem ser úteis para outros tipos de projetos de pesquisa que o estudante possa participar no futuro.
 
