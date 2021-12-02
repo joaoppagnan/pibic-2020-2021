@@ -19,9 +19,9 @@ setup(
         
         keywords=['python', 'first package'],
         classifiers= [
-            "Development Status :: Alpha",
+            "Development Status :: 1.0",
             "Intended Audience :: Pesquisadores e Estudantes",
             "Programming Language :: Python :: 3",
-            "Operating System :: Linux :: Ubuntu 20.04",
+            "Operating System :: Linux :: Ubuntu 18.04",
         ]
 )
