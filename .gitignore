@@ -10,6 +10,7 @@ dist/
 pibic2020.egg-info/
 references/
 reports/
+videos/
 
 # ignorar esses arquivos
 *.pyc
