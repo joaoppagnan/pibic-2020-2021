@@ -8,6 +8,8 @@ pibic2020-env/
 build/
 dist/
 pibic2020.egg-info/
+references/
+reports/
 
 # ignorar esses arquivos
 *.pyc
