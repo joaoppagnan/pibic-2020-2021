@@ -17,25 +17,25 @@ pip3 install -r requirements.txt
 
 Ou também, caso prefira o `conda` os comandos são os seguintes:
 ```
-conda create --prefix ./<nome_ambiente_virtual> --file requirements.txt 
-conda activate ./<nome_ambiente_virtual>
+conda create --prefix ./pibic2020-venv --file requirements.txt 
+conda activate ./pibic2020-venv
 ```
 
 Vale mencionar que, caso você utilize o *Jupyter Lab* para abrir os arquivos **.ipynb**, é necessário executar os seguintes comandos para habilitar o ambiente virtual dentro dele (considerando que o seu terminal já está dentro do ambiente virtual):
 ```
-ipython kernel install --user --name=<nome_ambiente_virtual>
+ipython kernel install --user --name=pibic2020-venv
 ```
 ### Docker Container para o sistema
 Caso você queira rodar o projeto na sua máquina utilizando o *Tensor Flow* com a sua GPU sem ter muitas dores de cabeça, você pode utilizar o arquivo **Dockerfile** disponibilizado para gerar uma imagem e criar um *container* em que os *drivers* e pacotes necessários para isso sejam instalados e rodem de forma isolada do restante da sua máquina. Isso também evita muito estresse com os problemas de compatibilidade entre as versões do *Tensor Flow*, *drivers* da NVIDIA e versões do seu sistema operacional.
 
 Dessa forma, você rodaria o seguinte comando para criar a imagem:
 ```
-docker build -t <nome_da_imagem> .
+docker build -t pibic2020-docker .
 ```
 
 Em seguida, para rodar um *container* com ela, que será deletado quando o encerrarmos (*flag* `-rm`):
 ```
-docker run -p 8888:8888 --gpus all -it -v $(pwd):/<nome-da-imagem> --rm <nome-da-imagem>
+docker run -p 8888:8888 --gpus all -it -v $(pwd):/pibic2020-docker --rm pibic2020-docker
 ```
 Vale mencionar que o **Dockerfile** já contém as instruções para instalar os pacotes necessários para o *Python*, evitando a necessidade de um ambiente virtual.
 
