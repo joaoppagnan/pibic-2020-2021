@@ -44,7 +44,9 @@ Para inicializar o *Jupyter Lab* no *container*:
 ```
 jupyter lab --ip='0.0.0.0' --port=8888 --no-browser --allow-root
 ```
-Em seguida, copie e cole o último *link* fornecido no seu navegador. O *Jupyter Lab* deve abrir.
+Ou, de maneira mais simples, execute o *script* `run_docker.sh`.
+
+De qualquer forma, ao final do processo, copie e cole o último *link* fornecido no seu navegador. O *Jupyter Lab* deve abrir.
 
 ### Instalação do pacote
 
