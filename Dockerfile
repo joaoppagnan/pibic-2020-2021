@@ -22,6 +22,8 @@ RUN apt install build-essential libssl-dev libffi-dev python3.8-dev -y
 RUN apt install texlive dvipng texlive-latex-extra texlive-fonts-recommended ghostscript cm-super -y
 
 # instala o pacote do python que eu fiz
+COPY setup.py /pibic2020-docker
+COPY pibic2020/ /pibic2020-docker/pibic2020
 RUN python3.8 setup.py install 
 
 # libera a porta pro jupyter
