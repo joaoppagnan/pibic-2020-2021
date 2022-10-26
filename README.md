@@ -35,6 +35,8 @@ Dessa forma, você rodaria o seguinte comando para criar a imagem:
 docker build -t pibic2020-docker .
 ```
 
+Ou, de maneira mais simples, execute o *script* `build_docker.sh`.
+
 Em seguida, para rodar um *container* com ela, que será deletado quando o encerrarmos (*flag* `-rm`):
 ```
 docker run -p 8888:8888 --gpus all -it -v $(pwd):/pibic2020-docker --rm pibic2020-docker
