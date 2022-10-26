@@ -3,6 +3,8 @@
 
 Repositório para guardar os meus arquivos do meu projeto do PIBIC 2020/2021: **Predição de Séries Temporais Baseada em Redes Neurais Artificiais**. O objetivo é o estudo da aplicabilidade de modelos preditores utilizando redes neurais artificiais (especialmente as redes *Multilayer Perceptron* e as recorrentes, como a *Long Short-Term Memory* e as de estado de eco) para a previsão de séries temporais originadas por sistemas com dinâmica caótica.
 
+Mais detalhes sobre a pesquisa podem ser vistos em: <https://proceedings.science/pibic-2021/papers/predicao-de-series-temporais-baseada-em-redes-neurais-artificiais?lang=pt-br>.
+
 ## Configuração
 
 ### Ambiente Virtual para o Python
