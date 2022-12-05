@@ -6,6 +6,10 @@ COPY requirements.txt /pibic2020-docker
 
 # conserta o problema da time zone
 RUN apt update
+RUN apt-key del 7fa2af80
+RUN apt install wget
+RUN wget https://developer.download.nvidia.com/compute/cuda/repos/$distro/$arch/cuda-keyring_1.0-1_all.deb
+RUN dpkg -i cuda-keyring_1.0-1_all.deb
 ENV TZ=America/Sao_Paulo
 RUN ln -fs /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
