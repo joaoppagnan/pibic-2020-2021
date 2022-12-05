@@ -4,12 +4,12 @@ FROM tensorflow/tensorflow:2.4.1-gpu
 WORKDIR /pibic2020-docker
 COPY requirements.txt /pibic2020-docker
 
-# conserta o problema da time zone
-RUN apt update
+# conserta o problema da nvidia
 RUN apt-key del 7fa2af80
-RUN apt install wget
-RUN wget https://developer.download.nvidia.com/compute/cuda/repos/$distro/$arch/cuda-keyring_1.0-1_all.deb
-RUN dpkg -i cuda-keyring_1.0-1_all.deb
+RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub
+RUN apt update
+
+# conserta o problema da time zone
 ENV TZ=America/Sao_Paulo
 RUN ln -fs /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
